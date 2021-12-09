@@ -1,0 +1,11 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboard",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "home",
+      "slug": "dashboard"
+    }
+  ]
+}
