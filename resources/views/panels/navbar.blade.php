@@ -65,10 +65,13 @@
         <ul class="nav navbar-nav align-items-center ms-auto">
           <li class="nav-item dropdown dropdown-language">
             <a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true">
-              <i class="flag-icon flag-icon-us"></i>
-              <span class="selected-language">English</span>
+              <i class="flag-icon flag-icon-es"></i>
+              <span class="selected-language">Español</span>
             </a>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag">
+              <a class="dropdown-item" href="{{url('lang/es')}}" data-language="es">
+                <i class="flag-icon flag-icon-es"></i> Español
+              </a>
               <a class="dropdown-item" href="{{url('lang/en')}}" data-language="en">
                 <i class="flag-icon flag-icon-us"></i> English
               </a>

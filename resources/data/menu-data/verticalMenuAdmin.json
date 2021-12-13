@@ -2,21 +2,21 @@
   "menu": [
     {
       "url": "/",
-      "name": "Dashboard",
+      "name": "dashboard",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "home",
       "slug": "dashboard"
     },
     {
       "url": "/employees/list",
-      "name": "Empleados",
+      "name": "employees",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "users",
       "slug": "employees"
     },
     {
       "url": "",
-      "name": "Inventario",
+      "name": "inventory",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "database",
       "slug": "inventory"
