@@ -111,7 +111,7 @@
                                             class="form-control form-control-merge @error('password') is-invalid @enderror"
                                             id="register-password" name="password"
                                             placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                            aria-describedby="register-password" tabindex="3" value="{{ $employee->password }}"/>
+                                            aria-describedby="register-password" tabindex="3" value="{{ $password }}"/>
                                         <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                         @error('password')
                                         <span class="invalid-feedback" role="alert">

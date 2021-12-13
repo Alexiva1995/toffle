@@ -67,9 +67,10 @@ class UserController extends Controller
 
         $this->validate($request, $fields, $msj);
 
-        $user = User::create($request->all());
+        $employee = User::create($request->all());
+        $employee->password = base64_encode($request->password);
         // $user->password = Hash::make($request->password);
-        // $user->save();
+        $employee->save();
 
         return redirect()->route('list.employees')->with('success', 'Empleado Registrado');
     }
@@ -94,9 +95,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $employee = User::find($id);
-
+        $password = base64_decode($employee->password);
         return view('admin.employees.edit')
-        ->with('employee', $employee);
+        ->with('employee', $employee)
+        ->with('password', $password);
     }
 
     /**
@@ -137,8 +139,10 @@ class UserController extends Controller
         $this->validate($request, $fields, $msj);
 
         $employee->update($request->all());
-        // $employee->password = Hash::make($request->password);
-        // $employee->save();
+        // $a = base64_encode('wdac27863106.');
+        // $b = base64_decode($a);
+        $employee->password = base64_encode($request->password);
+        $employee->update();
 
         return redirect()->route('list.employees')->with('success', 'Empleado Actualizado');
     }
