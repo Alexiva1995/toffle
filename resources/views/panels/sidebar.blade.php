@@ -116,7 +116,7 @@ $configData = Helper::applClasses();
           @endforeach
         @endif
         {{-- Foreach menu item ends --}}
-      @endif
+    @endif
     </ul>
   </div>
 </div>

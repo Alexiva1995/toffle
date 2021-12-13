@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('admin')->group(function () { 
         Route::group(['prefix' => 'employees'], function () {
-            Route::get('register', [UserController::class, 'create'])->name('register.employees');
+            Route::get('create', [UserController::class, 'create'])->name('create.employees');
             Route::post('store', [UserController::class, 'store'])->name('store.employees');
             Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit.employees');
             Route::patch('update/{id}', [UserController::class, 'update'])->name('update.employees');

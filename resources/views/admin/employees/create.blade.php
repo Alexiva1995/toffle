@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Registrar Nuevo Empleado')
+@section('title', 'Crear Empleado')
 
 @section('vendor-style')
     <!-- vendor css files -->

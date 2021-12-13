@@ -12,7 +12,7 @@
             <div class="card p-2">
                 <div class="row justify-content-end mb-2">
                     <div class="col-auto">
-                        <a href="{{ route('register.employees') }}" class="btn btn-primary">
+                        <a href="{{ route('create.employees') }}" class="btn btn-primary">
                             <i data-feather="plus"></i> Añadir Nuevo
                         </a>
                     </div>
