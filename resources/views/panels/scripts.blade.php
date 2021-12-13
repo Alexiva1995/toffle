@@ -19,6 +19,19 @@
 <!-- END: Theme JS-->
 <!-- BEGIN: Page JS-->
 
+<script>
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+</script>
+
+@yield('page-script')
+<!-- END: Page JS-->
+
+<script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
+
 <script type="text/javascript">
     $(window).on('load', function() {
       if (feather) {
@@ -66,14 +79,3 @@
       @endif
     })
   </script>
-
-<script>
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
-</script>
-
-@yield('page-script')
-<!-- END: Page JS-->

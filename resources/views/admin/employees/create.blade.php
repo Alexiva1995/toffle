@@ -6,14 +6,11 @@
     <!-- vendor css files -->
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
-
 @endsection
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
 @endsection
 
 @section('content')
@@ -188,12 +185,10 @@
   <script src="{{ asset(mix('vendors/js/pickers/pickadate/picker.time.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/pickadate/legacy.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
 @endsection
 @section('page-script')
   <!-- Page js files -->
   <script src="{{ asset(mix('js/scripts/forms/pickers/form-pickers.js')) }}"></script>
-  <script src="{{ asset(mix('js/scripts/extensions/ext-component-toastr.js')) }}"></script>
 
   <script>
     $(document).ready(function () {
