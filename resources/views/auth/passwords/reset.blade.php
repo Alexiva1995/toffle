@@ -1,9 +1,8 @@
-@extends('layouts/fullLayoutMaster')
+{{-- @extends('layouts/fullLayoutMaster')
 
 @section('title', 'Reset Password')
 
 @section('page-style')
-{{-- Page Css files --}}
 <link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-auth.css')) }}">
 @endsection
 
@@ -95,4 +94,4 @@
     <!-- /Reset Password v1 -->
   </div>
 </div>
-@endsection
+@endsection --}}

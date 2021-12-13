@@ -99,11 +99,11 @@
           <div class="mb-1">
             <div class="d-flex justify-content-between">
               <label class="form-label" for="login-password">Password</label>
-              @if (Route::has('password.request'))
+              {{-- @if (Route::has('password.request'))
               <a href="{{ route('password.request') }}">
                 <small>Forgot Password?</small>
               </a>
-              @endif
+              @endif --}}
             </div>
             <div class="input-group input-group-merge form-password-toggle">
               <input
@@ -136,7 +136,7 @@
           @endif
         </p> --}}
 
-        <div class="divider my-2">
+        {{-- <div class="divider my-2">
           <div class="divider-text">or</div>
         </div>
 
@@ -153,7 +153,7 @@
           <a href="#" class="btn btn-github">
             <i data-feather="github"></i>
           </a>
-        </div>
+        </div> --}}
       </div>
     </div>
     <!-- /Login v1 -->

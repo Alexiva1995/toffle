@@ -1,9 +1,8 @@
-@extends('layouts/fullLayoutMaster')
+{{-- @extends('layouts/fullLayoutMaster')
 
 @section('title', 'Login Page')
 
 @section('page-style')
-{{-- Page Css files --}}
 <link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-auth.css')) }}">
 @endsection
 
@@ -71,4 +70,4 @@
     <!-- /Login v1 -->
   </div>
 </div>
-@endsection
+@endsection --}}

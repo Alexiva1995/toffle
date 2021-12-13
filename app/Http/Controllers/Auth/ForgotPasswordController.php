@@ -26,7 +26,7 @@ class ForgotPasswordController extends Controller
         'blankPage' => true
       ];
 
-      return view('/auth/passwords/email', [
+      return view('/layouts/error/404', [
         'pageConfigs' => $pageConfigs
       ]);
     }
