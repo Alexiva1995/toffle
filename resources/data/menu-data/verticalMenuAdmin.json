@@ -12,7 +12,14 @@
       "name": "Empleados",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "users",
-      "slug": "dashboard"
+      "slug": "employees"
+    },
+    {
+      "url": "",
+      "name": "Inventario",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "database",
+      "slug": "inventory"
     }
   ]
 }

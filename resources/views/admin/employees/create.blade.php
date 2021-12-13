@@ -6,11 +6,14 @@
     <!-- vendor css files -->
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
+
 @endsection
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
 @endsection
 
 @section('content')
@@ -107,7 +110,7 @@
                                     <div class="input-group input-group-merge form-password-toggle">
                                         <input type="password"
                                             class="form-control form-control-merge @error('password') is-invalid @enderror"
-                                            id="register-password" name="password"
+                                            id="password" name="password"
                                             placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                             aria-describedby="register-password" tabindex="3" />
                                         <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
@@ -116,6 +119,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="col-auto mt-1">
+                                            <a class="btn btn-sm btn-primary" id="generate_password"> Generar Contraseña </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -180,9 +188,27 @@
   <script src="{{ asset(mix('vendors/js/pickers/pickadate/picker.time.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/pickadate/legacy.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
+  <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
 @endsection
 @section('page-script')
   <!-- Page js files -->
   <script src="{{ asset(mix('js/scripts/forms/pickers/form-pickers.js')) }}"></script>
+  <script src="{{ asset(mix('js/scripts/extensions/ext-component-toastr.js')) }}"></script>
+
+  <script>
+    $(document).ready(function () {
+        $('#generate_password').click(function (e) {
+            $.post("{{ route('generate.password') }}", {},
+                function (data, textStatus, jqXHR) {
+                    $('#password').val(data);
+                    toastr['success']('', 'Contraseña Generada', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                    });
+                },
+            );
+        });
+    });
+  </script>
 @endsection
 

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Models\User;
 use Carbon\Carbon;
+
 
 class UserController extends Controller
 {
@@ -66,10 +68,10 @@ class UserController extends Controller
         $this->validate($request, $fields, $msj);
 
         $user = User::create($request->all());
-        $user->password = Hash::make($request->password);
-        $user->save();
+        // $user->password = Hash::make($request->password);
+        // $user->save();
 
-        return redirect()->route('list.employees');
+        return redirect()->route('list.employees')->with('success', 'Empleado Registrado');
     }
 
     /**
@@ -135,10 +137,10 @@ class UserController extends Controller
         $this->validate($request, $fields, $msj);
 
         $employee->update($request->all());
-        $employee->password = Hash::make($request->password);
-        $employee->save();
+        // $employee->password = Hash::make($request->password);
+        // $employee->save();
 
-        return redirect()->route('list.employees');
+        return redirect()->route('list.employees')->with('success', 'Empleado Actualizado');
     }
 
     /**
@@ -157,5 +159,13 @@ class UserController extends Controller
         $employees = User::orderBy('id', 'DESC')->get();
 
         return view('admin/employees/list')->with('employees', $employees);
+    }
+
+    public function generatePassword(Request $request)
+    {
+        if ($request->ajax()) {
+            $password = Str::random(8);
+            return $password;
+        }
     }
 }
