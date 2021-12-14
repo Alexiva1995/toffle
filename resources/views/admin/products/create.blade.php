@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Crear Inventario')
+@section('title', 'Crear Producto')
 
 @section('vendor-style')
     <!-- vendor css files -->
@@ -23,7 +23,7 @@
                     <h4 class="card-title">Datos Requeridos</h4>
                 </div>
                 <div class="card-body">
-                    <form class="form form-vertical" action="{{ route('store.inventory') }}" method="POST">
+                    <form class="form form-vertical" action="{{ route('store.products') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-12 col-md-4">
@@ -59,13 +59,13 @@
                             </div>
                             <div class="col-12 col-md-4 mb-1">
                                 <div class="mb-1">
-                                    <label class="form-label" for="status">Alerta de Unidades de Reposición</label>
-                                    <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
+                                    <label class="form-label" for="units_reposition_alert">Alerta de Unidades de Reposición</label>
+                                    <select class="form-select @error('units_reposition_alert') is-invalid @enderror" id="units_reposition_alert" name="units_reposition_alert">
                                       <option selected disabled>Selecciona un Estatus</option>
                                       <option value="1">Activado</option>
                                       <option value="0">Desactivado</option>
                                     </select>
-                                    @error('status')
+                                    @error('units_reposition_alert')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -76,7 +76,7 @@
                         <div class="row justify-content-end mt-2">
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary me-1">Crear</button>
-                                <a href="{{ route('list.employees') }}"  class="btn btn-outline-secondary">Cancelar</a>
+                                <a href="{{ route('index.inventory') }}"  class="btn btn-outline-secondary">Cancelar</a>
                             </div>
                         </div>
                     </form>

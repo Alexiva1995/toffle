@@ -121,7 +121,7 @@
                         <div class="row justify-content-end mt-2">
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary me-1">Crear</button>
-                                <a href="{{ route('list.employees') }}"  class="btn btn-outline-secondary">Cancelar</a>
+                                <a href="{{ route('index.inventory') }}"  class="btn btn-outline-secondary">Cancelar</a>
                             </div>
                         </div>
                     </form>
@@ -145,3 +145,8 @@
   <script src="{{ asset(mix('js/scripts/forms/pickers/form-pickers.js')) }}"></script>
 @endsection
 
+@section('custom-js')
+    <script>
+        
+    </script>
+@endsection

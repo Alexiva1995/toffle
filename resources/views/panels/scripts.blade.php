@@ -19,16 +19,18 @@
 <!-- END: Theme JS-->
 <!-- BEGIN: Page JS-->
 
-<script>
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
-</script>
-
 @yield('page-script')
+
+@yield('custom-js')
 <!-- END: Page JS-->
+
+<script>
+  $.ajaxSetup({
+      headers: {
+          "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+      },
+  });
+</script>
 
 <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
 

@@ -15,7 +15,13 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        //
+        $inventories= Inventory::orderBy('id', 'DESC')->get();
+
+        $products= Product::orderBy('id', 'DESC')->get();
+
+        return view('admin.inventories.index')
+            ->with('inventories', $inventories)
+            ->with('products', $products);
     }
 
     /**
@@ -36,7 +42,29 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $fields = [
+            'name' => ['required'],
+            // 'total' => ['required'],
+            // 'deposit' => ['required'],
+            // 'local' => ['required'],
+            // 'public' => ['required'],
+            // 'cost' => ['required'],
+        ];
+
+        $msj = [
+            'name.required' => 'El nombre es requerido.',
+            // 'total.required' => 'La cantidad total es requerida.',
+            // 'deposit.required' => 'La cantidad de deposito es requerida.',
+            // 'local.required' => 'La cantidad local es requerida.',
+            // 'public.required' => 'La cantidad pública es requerida.',
+            // 'cost.required' => 'El correo es requerido.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $inventory = Inventory::create($request->all());
+
+        return redirect()->route('list.inventory')->with('success', 'Inventario Añadido');
     }
 
     /**
@@ -82,13 +110,6 @@ class InventoryController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function list()
-    {
-        $inventories= Inventory::orderBy('id', 'DESC')->get();
-
-        return view('admin.inventories.list')->with('inventories', $inventories);
     }
 
 }

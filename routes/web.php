@@ -20,6 +20,7 @@ use App\Http\Controllers\ChartsController;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ProductController;
 
 
 /*
@@ -54,7 +55,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::group(['prefix' => 'inventory'], function () {
-            Route::get('list', [InventoryController::class, 'list'])->name('list.inventory');
+            Route::get('/', [InventoryController::class, 'index'])->name('index.inventory');
             Route::get('create', [InventoryController::class, 'create'])->name('create.inventory');
             Route::post('store', [InventoryController::class, 'store'])->name('store.inventory');
             Route::get('edit/{id}', [InventoryController::class, 'edit'])->name('edit.inventory');
@@ -62,8 +63,8 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::group(['prefix' => 'products'], function () {
-            Route::get('list', [ProductController::class, 'list'])->name('list.products');
             Route::get('create', [ProductController::class, 'create'])->name('create.products');
+            Route::post('store', [ProductController::class, 'store'])->name('store.products');
             Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit.products');
             Route::patch('update/{id}', [ProductController::class, 'update'])->name('update.products');
         });

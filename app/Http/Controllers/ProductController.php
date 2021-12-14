@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -23,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.products.create');
     }
 
     /**
@@ -34,7 +35,21 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $fields = [
+            'name' => ['required'],
+            // 'gr' => ['required'],
+        ];
+
+        $msj = [
+            'name.required' => 'El nombre es requerido.',
+            // 'gr.required' => 'El Gr. es requerido.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $product = Product::create($request->all());
+
+        return redirect()->route('list.product')->with('success', 'Producto Añadido');
     }
 
     /**

@@ -18,7 +18,7 @@
 
 <script>
     $(document).ready( function () {
-        $('#table').DataTable({
+        $('.table').DataTable({
           language: {
             "decimal": "",
             "emptyTable": "No hay información",
