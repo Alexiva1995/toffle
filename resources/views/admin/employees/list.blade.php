@@ -34,34 +34,36 @@
                         </div>
                     </div>
                 </div>
-                <table class="datatables-ajax table table-responsive">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>DNI</th>
-                            <th>Correo</th>
-                            <th>Estatus</th>
-                            <th class="text-center">Fecha de Creación</th>
-                            <th class="text-center">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($employees as $employee)
-                        <tr>
-                            <td>{{ $employee->id }}</td>
-                            <td>{{ $employee->name }}</td>
-                            <td>{{ $employee->last_name }}</td>
-                            <td>{{ $employee->dni }}</td>
-                            <td>{{ $employee->email }}</td>
-                            <td> <span class="badge badge-light-{{ $employee->status == 0 ? 'danger' : 'success' }}">{{ $employee->status == 0 ? 'Inactivo' : 'Activo' }}</span> </td>
-                            <td class="text-center">{{ date('d-m-Y', strtotime($employee->created_at)) }}</td>
-                            <td class="text-center"> <a href="{{ route('edit.employees', $employee->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>DNI</th>
+                                <th>Correo</th>
+                                <th>Estatus</th>
+                                <th class="text-center">Fecha de Creación</th>
+                                <th class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($employees as $employee)
+                            <tr>
+                                <td>{{ $employee->id }}</td>
+                                <td>{{ $employee->name }}</td>
+                                <td>{{ $employee->last_name }}</td>
+                                <td>{{ $employee->dni }}</td>
+                                <td>{{ $employee->email }}</td>
+                                <td> <span class="badge badge-light-{{ $employee->status == 0 ? 'danger' : 'success' }}">{{ $employee->status == 0 ? 'Inactivo' : 'Activo' }}</span> </td>
+                                <td class="text-center">{{ date('d-m-Y', strtotime($employee->created_at)) }}</td>
+                                <td class="text-center"> <a href="{{ route('edit.employees', $employee->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

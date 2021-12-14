@@ -16,30 +16,32 @@
                     </div>
                 </div>
             </div>
-            <table class="datatables-ajax table table-responsive" id="table_products">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Gr.</th>
-                        <th class="text-center">Alerta de Reposición de Unidades</th>
-                        <th class="text-center">Fecha de Creación</th>
-                        <th class="text-center">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($products as $product)
-                    <tr>
-                        <td>{{ $product->id }}</td>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->gr }}</td>
-                        <td class="text-center">{{ $product->units_reposition_alert == 1 ? 'Activado' : 'Desactivado' }}</td>
-                        <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
-                        <td class="text-center"> <a href="{{ route('edit.product', $product->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table" id="table_products">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Gr.</th>
+                            <th class="text-center">Alerta de Reposición de Unidades</th>
+                            <th class="text-center">Fecha de Creación</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($products as $product)
+                        <tr>
+                            <td>{{ $product->id }}</td>
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->gr }}</td>
+                            <td class="text-center">{{ $product->units_reposition_alert == 1 ? 'Activado' : 'Desactivado' }}</td>
+                            <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
+                            <td class="text-center"> <a href="{{ route('edit.product', $product->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
