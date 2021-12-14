@@ -185,4 +185,5 @@ return [
     "dashboard" => "Dashboard",
     "employees" => "Employees",
     "inventory" => "Inventory",
+    "products" => "Products",
 ];

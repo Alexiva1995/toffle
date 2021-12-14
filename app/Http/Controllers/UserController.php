@@ -162,7 +162,7 @@ class UserController extends Controller
     {
         $employees = User::orderBy('id', 'DESC')->get();
 
-        return view('admin/employees/list')->with('employees', $employees);
+        return view('admin.employees.list')->with('employees', $employees);
     }
 
     public function generatePassword(Request $request)

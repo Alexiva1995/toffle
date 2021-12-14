@@ -15,7 +15,7 @@
       "slug": "employees"
     },
     {
-      "url": "",
+      "url": "/inventory/list",
       "name": "inventory",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "database",

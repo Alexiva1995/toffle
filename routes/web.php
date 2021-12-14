@@ -19,6 +19,7 @@ use App\Http\Controllers\ChartsController;
 
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\InventoryController;
 
 
 /*
@@ -44,12 +45,27 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('admin')->group(function () { 
         Route::group(['prefix' => 'employees'], function () {
+            Route::get('list', [UserController::class, 'list'])->name('list.employees');
             Route::get('create', [UserController::class, 'create'])->name('create.employees');
             Route::post('store', [UserController::class, 'store'])->name('store.employees');
             Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit.employees');
             Route::patch('update/{id}', [UserController::class, 'update'])->name('update.employees');
-            Route::get('list', [UserController::class, 'list'])->name('list.employees');
             Route::post('generate-password', [UserController::class, 'generatePassword'])->name('generate.password');
+        });
+
+        Route::group(['prefix' => 'inventory'], function () {
+            Route::get('list', [InventoryController::class, 'list'])->name('list.inventory');
+            Route::get('create', [InventoryController::class, 'create'])->name('create.inventory');
+            Route::post('store', [InventoryController::class, 'store'])->name('store.inventory');
+            Route::get('edit/{id}', [InventoryController::class, 'edit'])->name('edit.inventory');
+            Route::patch('update/{id}', [InventoryController::class, 'update'])->name('update.inventory');
+        });
+
+        Route::group(['prefix' => 'products'], function () {
+            Route::get('list', [ProductController::class, 'list'])->name('list.products');
+            Route::get('create', [ProductController::class, 'create'])->name('create.products');
+            Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit.products');
+            Route::patch('update/{id}', [ProductController::class, 'update'])->name('update.products');
         });
     });
 });

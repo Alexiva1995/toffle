@@ -16,8 +16,20 @@
                             <i data-feather="plus"></i> Añadir Nuevo
                         </a>
                     </div>
+
+                    <div class="row justify-content-between">
+                        <div class="col-12 col-md-3">
+                            <label for="status">Filtro de Estado</label>
+                            <select class="form-control" data-toggle="select" onchange="filterTable()" name="status"
+                                id="status_filter">
+                                <option value="">Todas los Estatus</option>
+                                <option value="Activo">Activos</option>
+                                <option value="Inactivo">Inactivos</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <table class="table" id="table">
+                <table class="datatables-ajax table table-responsive" id="table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -27,7 +39,7 @@
                             <th>Correo</th>
                             <th>Estatus</th>
                             <th class="text-center">Fecha de Creación</th>
-                            <th class="text-center">Editar</th>
+                            <th class="text-center">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,4 +67,32 @@
     <!-- Page js files -->
     <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
     @include('panels.datatable.scripts')
+
+    <script>
+        function filterTable() {
+            $('#table').DataTable().draw();
+        }
+    
+        $(document).ready(function () {
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    let userTypeColumnData = data[5];
+                    if (!filterByUserType(userTypeColumnData)) {
+                        return false;
+                    }
+                    return true;
+                }
+            );
+        });
+
+        function filterByUserType(userTypeColumnData) {
+            let userTypeSelected = $('#status_filter').val();
+            if (userTypeSelected === "") {
+                return true;
+            }
+            console.log(userTypeColumnData);
+            return userTypeColumnData == userTypeSelected;
+        }
+    
+    </script>
 @endsection
