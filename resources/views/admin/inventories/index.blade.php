@@ -4,6 +4,13 @@
 
 @include('panels.datatable.styles')
 
+@section('vendor-style')
+    <!-- vendor css files -->
+@endsection
+
+@section('page-style')
+@endsection
+
 @section('content')
 <!-- Basic table -->
 <section id="basic-datatable">
@@ -56,6 +63,7 @@
 @endsection
 
 @section('vendor-script')
+    <!-- vendor files -->
     <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
 @endsection
 

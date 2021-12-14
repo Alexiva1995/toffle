@@ -24,6 +24,9 @@
 @yield('custom-js')
 <!-- END: Page JS-->
 
+<script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
+<script src="{{ asset(mix('js/scripts/forms/form-select2.js')) }}"></script>
+
 <script>
   $.ajaxSetup({
       headers: {

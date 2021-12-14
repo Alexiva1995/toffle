@@ -19,6 +19,11 @@
 <script>
     $(document).ready( function () {
         $('.table').DataTable({
+          // processing: true,
+          // responsive: true,
+          // scrollX: true,            
+          // ordering: true,
+          pageLength: 50,
           language: {
             "decimal": "",
             "emptyTable": "No hay información",

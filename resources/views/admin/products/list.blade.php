@@ -9,14 +9,14 @@
                 <div class="col-12 col-md-6">
                     <div class="row justify-content-end">
                         <div class="col-auto mb-2">
-                            <a href="{{ route('create.products') }}" class="btn btn-primary mt-2">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#default">
                                 <i data-feather="plus"></i> Añadir Nuevo Producto
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <table class="datatables-ajax table table-responsive">
+            <table class="datatables-ajax table table-responsive" id="table_products">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -41,5 +41,30 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade text-start"
+  id="default"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel1">Añadir Producto</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            @include('admin.products.create')
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary"><i data-feather="plus"></i> Añadir</button>
+        </div>
+      </div>
     </div>
 </div>
