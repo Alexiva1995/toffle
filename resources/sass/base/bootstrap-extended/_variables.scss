@@ -11,7 +11,7 @@
 
 // Color system
 
-$white: #fff !default;
+$white: #F8EFD8 !default;
 $gray-50: #f6f6f6 !default;
 $gray-100: #babfc7 !default; // $gray-lightest
 $gray-200: #ededed !default; // $gray-lighter
@@ -25,12 +25,13 @@ $gray-900: #2a2e30 !default;
 $black: #22292f !default; // 231f48 22292f
 
 $purple: #7367f0 !default; //$primary
+$orange_toffle: #FF5933 !default; //$primary
 $green: #28c76f !default; //$success
 $blue: #00cfe8 !default; //$info
 $orange: #ff9f43 !default; //$warning
 $red: #ea5455 !default; //$danger
 
-$primary: $purple !default;
+$primary: $orange_toffle !default;
 $secondary: #82868b !default;
 $success: $green !default;
 $danger: $red !default;
