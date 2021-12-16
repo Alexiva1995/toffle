@@ -180,8 +180,25 @@ return [
     'Accordion' => 'Accordion',
     "Offcanvas" => "Offcanvas",
     "message" => "Cake sesame snaps cupcake gingerbread danish I love gingerbread. Apple pie pie jujubes chupa chups muffin halvah lollipop. Chocolate cake oat cake tiramisu marzipan sugar plum. Donut sweet pie oat cake dragée fruitcake cotton candy lemon drops.",
+
+    //Additional Translations
     "dashboard" => "Dashboard",
     "employees" => "Empleados",
-    "inventory" => "Inventarios",
-    "products" => "Productos",
+    "inventory" => "Inventario",
+    "plates" => "Platos",
+
+    //Reports
+    "reports" => "Informes",
+    "r_module" => "Módulo de Informes",
+    "r_cash_flow" => "Flujo de Caja",
+    "r_sales" => "Ventas",
+    "r_expenses" => "Gastos",
+    "r_gain" => "Ganancia",
+    "r_more_sold" => "Más Vendido",
+    "all_reports" => "Todos los Informes",
+    // End Reports
+
+    "expenses" => "Gastos",
+    "orders" => "Pedidos",
+    "flow_day" => "Flujo del día"
 ];

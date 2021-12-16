@@ -185,5 +185,21 @@ return [
     "dashboard" => "Dashboard",
     "employees" => "Employees",
     "inventory" => "Inventory",
-    "products" => "Products",
+
+    "plates" => "Plates",
+
+    //Reports
+    "reports" => "Reports",
+    "r_module" => "Reports Module",
+    "r_cash_flow" => "Cash Flow",
+    "r_sales" => "Sales",
+    "r_expenses" => "Expenses",
+    "r_gain" => "Gain",
+    "r_more_sold" => "More Sold",
+    "all_reports" => "All Reports",
+    // End Reports
+
+    "expenses" => "Expenses",
+    "orders" => "Orders",
+    "flow_day" => "Flow of the Day"
 ];

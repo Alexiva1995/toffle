@@ -6,6 +6,20 @@
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "home",
       "slug": "dashboard"
+    },
+    {
+      "url": "orders",
+      "name": "orders",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "shopping-bag",
+      "slug": "orders"
+    },
+    {
+      "url": "flow_day",
+      "name": "flow_day",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "sliders",
+      "slug": "flow_day"
     }
   ]
 }
