@@ -23,7 +23,7 @@
                 <ul class="nav nav-tabs justify-content-center" role="tablist">
                   <li class="nav-item">
                     <a
-                      class="nav-link active"
+                      class="nav-link {{ Session::has('products') == true ? '' : 'active' }}"
                       id="inventories-tab-center"
                       data-bs-toggle="tab"
                       href="#inventories-center"
@@ -35,7 +35,7 @@
                   </li>
                   <li class="nav-item">
                     <a
-                      class="nav-link"
+                      class="nav-link {{ Session::has('products') == true ? 'active' : '' }}"
                       id="products-tab-center"
                       data-bs-toggle="tab"
                       href="#products-center"
@@ -47,10 +47,10 @@
                   </li>
                 </ul>
                 <div class="tab-content">
-                  <div class="tab-pane active" id="inventories-center" aria-labelledby="inventories-tab-center" role="tabpanel">
+                  <div class="tab-pane {{ Session::has('products') == true ? '' : 'active' }}" id="inventories-center" aria-labelledby="inventories-tab-center" role="tabpanel">
                     @include('admin.inventories.list')
                   </div>
-                  <div class="tab-pane" id="products-center" aria-labelledby="products-tab-center" role="tabpanel">
+                  <div class="tab-pane {{ Session::has('products') == true ? 'active' : '' }}" id="products-center" aria-labelledby="products-tab-center" role="tabpanel">
                     @include('admin.products.list')
                   </div>
                 </div>
@@ -74,4 +74,16 @@
 
 @section('custom-js')
     @include('panels.datatable.scripts')
+    <script>
+      $(document).ready(function() {
+
+          $('#add_product').click( function() {
+              var this_button = $(this);
+              this_button.attr('disabled', 'disabled').addClass('disabled');
+              $('.loading_btn').addClass('spinner-border spinner-border-sm');
+
+              $('#form_add_product').submit();
+          });
+      });
+  </script>
 @endsection

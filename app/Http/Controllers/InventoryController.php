@@ -64,7 +64,7 @@ class InventoryController extends Controller
 
         $inventory = Inventory::create($request->all());
 
-        return redirect()->route('list.inventory')->with('success', 'Inventario Añadido');
+        return redirect()->route('index.inventory')->with('success', 'Inventario Añadido');
     }
 
     /**

@@ -9,7 +9,7 @@
                 <div class="col-12 col-md-6">
                     <div class="row justify-content-end">
                         <div class="col-auto mb-2">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#default">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_products">
                                 <i data-feather="plus"></i> Añadir Nuevo Producto
                             </button>
                         </div>
@@ -36,7 +36,7 @@
                             <td>{{ $product->gr }}</td>
                             <td class="text-center">{{ $product->units_reposition_alert == 1 ? 'Activado' : 'Desactivado' }}</td>
                             <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
-                            <td class="text-center"> <a href="{{ route('edit.product', $product->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> </td>
+                            <td class="text-center"> <a href="{{ route('edit.products', $product->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -49,7 +49,7 @@
 <!-- Modal -->
 <div
   class="modal fade text-start"
-  id="default"
+  id="modal_add_products"
   tabindex="-1"
   aria-labelledby="myModalLabel1"
   aria-hidden="true"
@@ -65,7 +65,9 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary"><i data-feather="plus"></i> Añadir</button>
+            <button type="button" class="btn btn-primary" id="add_product">
+                 <span class="loading_btn mr-2"></span> Añadir
+            </button>
         </div>
       </div>
     </div>

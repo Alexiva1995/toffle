@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Session;
 
 class ProductController extends Controller
 {
@@ -37,19 +38,20 @@ class ProductController extends Controller
     {
         $fields = [
             'name' => ['required'],
-            // 'gr' => ['required'],
+            'gr' => ['required'],
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
-            // 'gr.required' => 'El Gr. es requerido.',
+            'gr.required' => 'El Gr. es requerido.',
         ];
 
         $this->validate($request, $fields, $msj);
 
         $product = Product::create($request->all());
 
-        return redirect()->route('list.product')->with('success', 'Producto Añadido');
+        Session::flash('products', true); 
+        return redirect()->route('index.inventory')->with('success', 'Producto Añadido');
     }
 
     /**
