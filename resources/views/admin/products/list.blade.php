@@ -64,10 +64,10 @@
             @include('admin.products.create')
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
             <button type="button" class="btn btn-primary" id="add_product">
-                 <span class="loading_btn mr-2"></span> Añadir
+                <span class="loading_btn_p mr-2"></span> Añadir
             </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>

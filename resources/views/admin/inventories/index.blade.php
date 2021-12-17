@@ -75,15 +75,58 @@
 @section('custom-js')
     @include('panels.datatable.scripts')
     <script>
+      function submitForms (btn_id, load_class, form_id) {
+        $(btn_id).click( function() {
+            var this_button = $(this);
+            this_button.attr('disabled', 'disabled').addClass('disabled');
+            $(load_class).addClass('spinner-border spinner-border-sm');
+            $(form_id).submit();
+        });
+      }
+
+      submitForms('#add_inventory', '.loading_btn_i', '#form_add_inventory');
+      submitForms('#add_product', '.loading_btn_p', '#form_add_product');
+      submitForms('#btn_operation', '.loading_btn_op', '#form_operation');
+
+      function operation(department, operator, id) {
+          var title = '';
+          var btn_text = '';
+
+          var route = "{{ route('operation.inventory', 'id') }}";
+          route = route.replace('id', id);
+          $('#form_operation').attr('action', route);
+
+          if (operator == 'substract') {
+            btn_text = "Restar" ;
+          }
+
+          if (operator == 'sum') {
+            btn_text = "Sumar" ;
+          }
+
+          switch (department) {
+            case 'deposit':
+              title = btn_text+" Depósito" ;
+              break;
+            case 'local':
+              title = btn_text+" Local" ;
+              break;
+            case 'public':
+              title = btn_text+" Público" ;
+              break;
+          
+            default:
+              break;
+          }       
+
+          $('#modal_title').text(title);
+          $('#btn_text').text(btn_text);
+          $('#department').val(department); 
+          $('#operation').val(operator);   
+          $("#modal_operation").modal("show");
+      }
+
       $(document).ready(function() {
-
-          $('#add_product').click( function() {
-              var this_button = $(this);
-              this_button.attr('disabled', 'disabled').addClass('disabled');
-              $('.loading_btn').addClass('spinner-border spinner-border-sm');
-
-              $('#form_add_product').submit();
-          });
       });
   </script>
 @endsection

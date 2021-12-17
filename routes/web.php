@@ -56,14 +56,13 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'inventory'], function () {
             Route::get('/', [InventoryController::class, 'index'])->name('index.inventory');
-            Route::get('create', [InventoryController::class, 'create'])->name('create.inventory');
             Route::post('store', [InventoryController::class, 'store'])->name('store.inventory');
             Route::get('edit/{id}', [InventoryController::class, 'edit'])->name('edit.inventory');
             Route::patch('update/{id}', [InventoryController::class, 'update'])->name('update.inventory');
+            Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
         });
 
         Route::group(['prefix' => 'products'], function () {
-            Route::get('create', [ProductController::class, 'create'])->name('create.products');
             Route::post('store', [ProductController::class, 'store'])->name('store.products');
             Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit.products');
             Route::patch('update/{id}', [ProductController::class, 'update'])->name('update.products');

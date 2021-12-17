@@ -112,4 +112,86 @@ class InventoryController extends Controller
         //
     }
 
+    public function operation(Request $request, $id)
+    {
+        $inventory = Inventory::find($id);
+
+        $fields = [
+            'qty' => ['required'],
+        ];
+
+        $msj = [
+            'qty.required' => 'La cantidad es requerida.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $department = $request->department;
+        $operation = $request->operation;
+
+        if ($operation == 'sum') {
+
+            switch ($department) {
+                // case 'deposit':
+                //     $inventory->decrement('local', $request->qty);
+                //     break;
+
+                case 'local':
+                    if ($request->qty > $inventory->deposit) {
+                        return redirect()->route('index.inventory')->with('danger', 'La Cantidad a Sumar en Local es Mayor al Fondo Actual en Depósito');
+                    }else{
+                        $inventory->increment('local', $request->qty);
+                        $inventory->decrement('deposit', $request->qty);
+                    }
+                    break;
+
+                case 'public':
+                    if ($request->qty > $inventory->local) {
+                        return redirect()->route('index.inventory')->with('danger', 'La Cantidad a Sumar en Público es Mayor al Fondo Actual en Local');
+                    }else{ 
+                        $inventory->increment('public', $request->qty);
+                        $inventory->decrement('local', $request->qty);
+                    }
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
+        if ($operation == 'substract') {
+
+            switch ($department) {
+                // case 'deposit':
+                //     $inventory->increment('local', $request->qty);
+                //     break;
+
+                case 'local':
+                    if ($request->qty > $inventory->local) {
+                        return redirect()->route('index.inventory')->with('danger', 'La Cantidad a Restar en Local es Mayor al Fondo Actual en Local');
+                    }else{ 
+                        $inventory->decrement('local', $request->qty);
+                        $inventory->increment('deposit', $request->qty);
+                    }
+                    break;
+
+                case 'public':
+                    if ($request->qty > $inventory->public) {
+                        return redirect()->route('index.inventory')->with('danger', 'La Cantidad a Restar en Público es Mayor al Fondo Actual en Público');
+                    }else{ 
+                        $inventory->decrement('public', $request->qty);
+                        $inventory->increment('local', $request->qty);
+                    }
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
+        return redirect()->route('index.inventory')->with('success', 'Operación Éxitosa');
+    }
+
 }
