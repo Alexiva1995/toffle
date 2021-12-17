@@ -38,17 +38,17 @@
                             <td>{{ $inventory->name }}</td>
                             <td class="text-center">{{ $inventory->total }}</td>
                             <td class="text-center px-3"> 
-                                <span class="badge bg-dark" role="button" onclick="operation('deposit', 'substract', {{ $inventory->id }})"> - </span> 
+                                <span class="badge bg-dark" role="button" onclick="operation('deposit', 'subtract', {{ $inventory->id }})"> - </span> 
                                 {{ $inventory->deposit }}
                                 <span class="badge bg-primary" role="button" onclick="operation('deposit', 'sum', {{ $inventory->id }})"> + </span> 
                             </td>
                             <td class="text-center px-3"> 
-                                <span class="badge bg-dark" role="button" onclick="operation('local', 'substract', {{ $inventory->id }})"> - </span>
+                                <span class="badge bg-dark" role="button" onclick="operation('local', 'subtract', {{ $inventory->id }})"> - </span>
                                 {{ $inventory->local }}
                                 <span class="badge bg-primary" role="button" onclick="operation('local', 'sum', {{ $inventory->id }})"> + </span> 
                             </td>
                             <td class="text-center px-3"> 
-                                <span class="badge bg-dark" role="button" onclick="operation('public', 'substract', {{ $inventory->id }})"> - </span>
+                                <span class="badge bg-dark" role="button" onclick="operation('public', 'subtract', {{ $inventory->id }})"> - </span>
                                 {{ $inventory->public }}
                                 <span class="badge bg-primary" role="button" onclick="operation('public', 'sum', {{ $inventory->id }})"> + </span> 
                             </td>

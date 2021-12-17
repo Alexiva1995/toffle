@@ -128,6 +128,7 @@ class InventoryController extends Controller
 
         $department = $request->department;
         $operation = $request->operation;
+        $msg_end = '';
 
         if ($operation == 'sum') {
 
@@ -142,6 +143,7 @@ class InventoryController extends Controller
                     }else{
                         $inventory->increment('local', $request->qty);
                         $inventory->decrement('deposit', $request->qty);
+                        $msg_success = 'Operación de Suma en Local Éxitosa';
                     }
                     break;
 
@@ -151,6 +153,7 @@ class InventoryController extends Controller
                     }else{ 
                         $inventory->increment('public', $request->qty);
                         $inventory->decrement('local', $request->qty);
+                        $msg_success = 'Operación de Suma en Público Éxitosa';
                     }
                     break;
 
@@ -160,7 +163,7 @@ class InventoryController extends Controller
             }
         }
 
-        if ($operation == 'substract') {
+        if ($operation == 'subtract') {
 
             switch ($department) {
                 // case 'deposit':
@@ -173,6 +176,7 @@ class InventoryController extends Controller
                     }else{ 
                         $inventory->decrement('local', $request->qty);
                         $inventory->increment('deposit', $request->qty);
+                        $msg_success = 'Operación de Resta en Local Éxitosa';
                     }
                     break;
 
@@ -182,6 +186,7 @@ class InventoryController extends Controller
                     }else{ 
                         $inventory->decrement('public', $request->qty);
                         $inventory->increment('local', $request->qty);
+                        $msg_success = 'Operación de Resta en Público Éxitosa';
                     }
                     break;
 
@@ -191,7 +196,7 @@ class InventoryController extends Controller
             }
         }
 
-        return redirect()->route('index.inventory')->with('success', 'Operación Éxitosa');
+        return redirect()->route('index.inventory')->with('success', $msg_success);
     }
 
 }

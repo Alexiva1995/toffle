@@ -96,7 +96,7 @@
           route = route.replace('id', id);
           $('#form_operation').attr('action', route);
 
-          if (operator == 'substract') {
+          if (operator == 'subtract') {
             btn_text = "Restar" ;
           }
 
