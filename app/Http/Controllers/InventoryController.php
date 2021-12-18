@@ -134,6 +134,7 @@ class InventoryController extends Controller
 
             switch ($department) {
                 // case 'deposit':
+                //     $inventory->increment('deposit', $request->qty);
                 //     $inventory->decrement('local', $request->qty);
                 //     break;
 

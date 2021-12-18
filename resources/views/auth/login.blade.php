@@ -24,8 +24,9 @@
             <input
               type="text"
               class="form-control @error('email') is-invalid @enderror"
-              id="login-email"
+              id="email"
               name="email"
+              value="{{ session('email') }}"
               placeholder="john@example.com"
               aria-describedby="login-email"
               tabindex="1"
@@ -52,8 +53,9 @@
               <input
                 type="password"
                 class="form-control form-control-merge @error('password') is-invalid @enderror"
-                id="login-password"
+                id="password"
                 name="password"
+                value="{{ session('password') }}"
                 tabindex="2"
                 placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                 aria-describedby="login-password"
@@ -68,7 +70,9 @@
           </div>
           <div class="mb-1">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="remember" name="remember" tabindex="3" {{ old('remember') ? 'checked' : '' }} />
+              <input type="hidden" name="remember" value="0">
+              <input class="form-check-input" type="checkbox" id="remember" name="remember" value="1" tabindex="3" {{ old('remember') ? 'checked' : '' }} 
+              {{  session('remember') == 1 ? 'checked' : '' }} />
               <label class="form-check-label" for="remember"> Recordarme </label>
             </div>
           </div>

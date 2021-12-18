@@ -7,7 +7,7 @@
             <div class="card-body p-0 px-2">
                 <form class="form form-vertical" action="{{ route('store.inventory') }}" id="form_add_inventory" method="POST">
                     @csrf
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="name">Nombre</label>
@@ -24,7 +24,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-6 mb-1">
+                        {{-- <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="total">Cantidad Total</label>
                                 <div class="input-group input-group-merge">
@@ -98,7 +98,7 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </form>
             </div>

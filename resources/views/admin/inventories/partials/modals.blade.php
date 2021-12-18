@@ -54,19 +54,25 @@
                                   <div class="row justify-content-center">
                                       <div class="col-12 col-md-6 mb-1">
                                           <div class="mb-1">
-                                              <label class="form-label" for="qty">Cantidad</label>
-                                              <input type="number" id="qty" class="form-control form-control-lg @error('qty') is-invalid @enderror" name="qty"
-                                                      placeholder="Cant." />
-                                              @error('qty')
-                                              <span class="invalid-feedback" role="alert">
-                                                  <strong>{{ $message }}</strong>
-                                              </span>
-                                              @enderror
+                                                <label class="form-label" for="qty">Cantidad</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input type="number" id="qty" class="form-control form-control-lg @error('qty') is-invalid @enderror" name="qty"
+                                                            placeholder="Cant." />
+                                                    <span class="input-group-text text-white btn-max" id="btn_max" style="cursor: pointer">
+                                                        <i data-feather="plus"></i> MAX
+                                                    </span>
+                                                    @error('qty')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
                                           </div>
                                       </div>
 
                                         <input type="hidden" name="operation" id="operation" value="">
                                         <input type="hidden" name="department" id="department" value="">
+                                        <input type="hidden" id="max_value">
                                     </div>
                                 </form>
                             </div>

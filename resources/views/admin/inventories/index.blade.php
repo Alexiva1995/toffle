@@ -88,7 +88,7 @@
       submitForms('#add_product', '.loading_btn_p', '#form_add_product');
       submitForms('#btn_operation', '.loading_btn_op', '#form_operation');
 
-      function operation(department, operator, id) {
+      function operation(department, operator, id, max_value = 0) {
           var title = '';
           var btn_text = '';
 
@@ -123,10 +123,19 @@
           $('#btn_text').text(btn_text);
           $('#department').val(department); 
           $('#operation').val(operator);   
+          $('#qty').val('');
+          $('#max_value').val(max_value);   
           $("#modal_operation").modal("show");
       }
 
       $(document).ready(function() {
+          $('#btn_max').click( function() {
+              $('#qty').val( $('#max_value').val() );
+              toastr['success']('', 'Cantidad Máxima Agregada', {
+                  closeButton: true,
+                  tapToDismiss: false,
+              });
+          });
       });
   </script>
 @endsection
