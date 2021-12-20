@@ -66,7 +66,10 @@
                             </td>
                             {{-- <td class="text-center">{{ $inventory->cost }}</td> --}}
                             <td class="text-center">{{ date('d-m-Y', strtotime($inventory->created_at)) }}</td>
-                            <td class="text-center"> <a href="{{ route('edit.inventory', $inventory->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> </td>
+                            <td class="text-center"> 
+                                <a href="{{ route('show.inventory', $inventory->id) }}" class="btn btn-sm btn-primary"> <i data-feather="log-in"></i> </a>
+                                <a href="{{ route('edit.inventory', $inventory->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> 
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -85,7 +85,24 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+
+        $fields = [
+            'name' => ['required'],
+            'gr' => ['required'],
+        ];
+
+        $msj = [
+            'name.required' => 'El nombre es requerido.',
+            'gr.required' => 'El Gr. es requerido.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $product->update($request->all());
+
+        Session::flash('products', true); 
+        return redirect()->route('index.inventory')->with('success', 'Producto Editado');
     }
 
     /**

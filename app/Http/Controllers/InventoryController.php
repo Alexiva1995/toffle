@@ -75,7 +75,49 @@ class InventoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $inventory = Inventory::find($id);
+        $products = Product::all();
+                
+        return view('admin.inventories.show')
+        ->with('products', $products)
+        ->with('inventory', $inventory);
+    }
+
+    public function aggregateProductToInventory(Request $request, $id)
+    {
+        $inventory = Inventory::find($id);
+
+        $fields = [
+            'product_id' => ['required'],
+            'qty_package' => ['required'],
+            'unit_package' => ['required'],
+            'price' => ['required'],
+        ];
+
+        $msj = [
+            'product_id.required' => 'El producto es requerido.',
+            'qty_package.required' => 'La cantidad de bultos es requerida.',
+            'unit_package.required' => 'La unidad del bulto es requerida.',
+            'price.required' => 'El precio es requerido.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $inventory->products()->attach( [ $inventory->id => [
+            'product_id' => $request->product_id,
+            'qty_package' => $request->qty_package,
+            'unit_package' => $request->unit_package,
+            'price' => $request->price,
+            ]
+        ]);
+
+        $inventory->increment('deposit', 1);
+
+        $inventory->update([
+            'total' => (int) ($inventory->deposit + $inventory->local + $inventory->public)
+        ]);
+        
+        return redirect()->route('show.inventory', $inventory->id)->with('success', 'Producto Agregado al Inventario');
     }
 
     /**
@@ -196,6 +238,10 @@ class InventoryController extends Controller
                     break;
             }
         }
+
+        $inventory->update([
+            'total' => ( $inventory->deposit + $inventory->local + $inventory->public )
+        ]);
 
         return redirect()->route('index.inventory')->with('success', $msg_success);
     }

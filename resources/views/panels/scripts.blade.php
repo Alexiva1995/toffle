@@ -20,67 +20,12 @@
 <!-- BEGIN: Page JS-->
 
 @yield('page-script')
-
-@yield('custom-js')
 <!-- END: Page JS-->
 
 <script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
 <script src="{{ asset(mix('js/scripts/forms/form-select2.js')) }}"></script>
 
-<script>
-  $.ajaxSetup({
-      headers: {
-          "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-      },
-  });
-</script>
+@include('panels.custom.scripts')
 
-<script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
+@yield('custom-js')
 
-<script type="text/javascript">
-    $(window).on('load', function() {
-      if (feather) {
-        feather.replace({
-          width: 14,
-          height: 14
-        });
-      }
-
-      @if(session('success'))  
-          toastr['success']('{{ session('success') }}', '¡Exitoso!', {
-                  closeButton: true,
-                  tapToDismiss: false
-              });
-      @endif
-
-      @if(session('danger'))
-          toastr['error']('{{ session('danger') }}', 'Error', {
-                  closeButton: true,
-                  tapToDismiss: false
-              });
-      @endif
-
-      @if(session('warning'))
-          toastr['warning']('{{ session('warning') }}', 'Advertenecia', {
-                  closeButton: true,
-                  tapToDismiss: false
-              });
-      @endif
-
-      @if(session('info'))
-          toastr['info']('{{ session('info') }}', 'Informacion', {
-                  closeButton: true,
-                  tapToDismiss: false
-              });
-      @endif
-
-      @if(isset($errors))
-        @foreach ($errors->all() as $message)
-          toastr['error']('{{ $message }}', 'Validación fallida', {
-                  closeButton: true,
-                  tapToDismiss: false
-              });
-        @endforeach
-      @endif
-    })
-  </script>
