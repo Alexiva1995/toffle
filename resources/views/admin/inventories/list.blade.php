@@ -67,8 +67,21 @@
                             {{-- <td class="text-center">{{ $inventory->cost }}</td> --}}
                             <td class="text-center">{{ date('d-m-Y', strtotime($inventory->created_at)) }}</td>
                             <td class="text-center"> 
-                                <a href="{{ route('show.inventory', $inventory->id) }}" class="btn btn-sm btn-primary"> <i data-feather="log-in"></i> </a>
-                                <button class="btn btn-sm btn-info" onclick="editInventory({{ $inventory->id }}, '{{ $inventory->name }}')" > <i data-feather="edit"></i> </button> 
+                                <a href="{{ route('inventories.show', $inventory->id) }}" class="btn btn-sm btn-primary my-1"> <i data-feather="log-in"></i> </a>
+                                <button class="btn btn-sm btn-info my-1" onclick="editInventory({{ $inventory->id }}, '{{ $inventory->name }}')"> 
+                                    <i data-feather="edit"></i> 
+                                </button> 
+
+                                <span class="btn btn-sm btn-danger"
+                                        onclick="deleteElement( {{ $inventory->id }}, 
+                                        '#delete_inventory_', 
+                                        'Inventario' )"> 
+                                        <i data-feather="trash-2"></i> 
+                                </span>
+                                <form id="delete_inventory_{{ $inventory->id }}" action="{{ route('inventories.destroy', $inventory->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')                                      
+                                </form>
                             </td>
                         </tr>
                         @endforeach

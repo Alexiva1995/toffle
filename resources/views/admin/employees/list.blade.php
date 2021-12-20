@@ -27,7 +27,7 @@
                     <div class="col-12 col-md-6">
                         <div class="row justify-content-end mt-1">
                             <div class="col-auto">
-                                <a href="{{ route('create.employees') }}" class="btn btn-primary">
+                                <a href="{{ route('employees.create') }}" class="btn btn-primary">
                                     <i data-feather="plus"></i> Añadir Nuevo
                                 </a>
                             </div>
@@ -58,7 +58,21 @@
                                 <td>{{ $employee->email }}</td>
                                 <td> <span class="badge badge-light-{{ $employee->status == 0 ? 'danger' : 'success' }}">{{ $employee->status == 0 ? 'Inactivo' : 'Activo' }}</span> </td>
                                 <td class="text-center">{{ date('d-m-Y', strtotime($employee->created_at)) }}</td>
-                                <td class="text-center"> <a href="{{ route('edit.employees', $employee->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> </td>
+                                <td class="text-center"> 
+                                    <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-sm btn-info my-1"> <i data-feather="edit"></i> </a> 
+
+                                    <button class="btn btn-sm btn-danger"
+                                    onclick="deleteElement( {{ $employee->id }}, 
+                                    '#delete_employee_', 
+                                    'Empleado' )"> 
+                                        <i data-feather="trash-2"></i> 
+                                    </button>
+
+                                    <form id="delete_employee_{{ $employee->id }}" action="{{ route('employees.destroy', $employee->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')                                      
+                                    </form>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -98,6 +112,7 @@
             $('#status_filter').change( function() {
                 table.draw();
             });
+    
         });
     </script>
 @endsection

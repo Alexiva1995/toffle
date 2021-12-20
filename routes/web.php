@@ -45,31 +45,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
 
     Route::middleware('admin')->group(function () { 
+
+        // Employees
         Route::group(['prefix' => 'employees'], function () {
-            Route::get('list', [UserController::class, 'list'])->name('list.employees');
-            Route::get('create', [UserController::class, 'create'])->name('create.employees');
-            Route::post('store', [UserController::class, 'store'])->name('store.employees');
-            Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit.employees');
-            Route::patch('update/{id}', [UserController::class, 'update'])->name('update.employees');
+            Route::get('list', [UserController::class, 'list'])->name('employees.list');
             Route::post('generate-password', [UserController::class, 'generatePassword'])->name('generate.password');
         });
 
-        Route::group(['prefix' => 'inventory'], function () {
-            Route::get('/', [InventoryController::class, 'index'])->name('index.inventory');
-            Route::post('store', [InventoryController::class, 'store'])->name('store.inventory');
-            Route::get('edit/{id}', [InventoryController::class, 'edit'])->name('edit.inventory');
-            Route::patch('update/{id}', [InventoryController::class, 'update'])->name('update.inventory');
+        Route::resource('employees', UserController::class);
+
+        // Inventories
+        Route::group(['prefix' => 'inventoryies'], function () {
             Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
-            Route::get('show/{id}', [InventoryController::class, 'show'])->name('show.inventory');
-            Route::post('store-product-to-inventory/{id}', [InventoryController::class, 'storeProductToInventory'])->name('store.product.to.inventory');
-            Route::patch('update-product-to-inventory/{id}', [InventoryController::class, 'updateProductToInventory'])->name('update.product.to.inventory');
-
+            Route::post('product-to-inventory-store/{id}', [InventoryController::class, 'productToInventoryStore'])->name('product.to.inventory.store');
+            Route::patch('product-to-inventory-update/{array_id}', [InventoryController::class, 'productToInventoryUpdate'])->name('product.to.inventory.update');
+            Route::delete('product-to-inventory-destroy/{array_id}', [InventoryController::class, 'productToInventoryDestroy'])->name('product.to.inventory.destroy');
         });
 
-        Route::group(['prefix' => 'products'], function () {
-            Route::post('store', [ProductController::class, 'store'])->name('store.product');
-            Route::patch('update/{id}', [ProductController::class, 'update'])->name('update.product');
-        });
+        Route::resource('inventories', InventoryController::class);
+
+        // Products
+        Route::resource('products', ProductController::class);
     });
 });
 

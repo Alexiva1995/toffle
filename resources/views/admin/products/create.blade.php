@@ -5,7 +5,7 @@
                 <h5 class="card-title">Datos Requeridos</h4>
             </div>
             <div class="card-body px-2">
-                <form class="form form-vertical" action="{{ route('store.product') }}" id="form_add_product" method="POST">
+                <form class="form form-vertical" action="{{ route('products.store') }}" id="form_add_product" method="POST">
                     @csrf
                     <div class="row justify-content-center align-items-center">
                         <div class="col-12 col-md-6 mb-1">

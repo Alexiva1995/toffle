@@ -23,7 +23,7 @@
                     <h4 class="card-title">Datos Requeridos</h4>
                 </div>
                 <div class="card-body">
-                    <form class="form form-vertical" action="{{ route('update.employees', $employee->id) }}" method="POST">
+                    <form class="form form-vertical" action="{{ route('employees.update', $employee->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
 
@@ -163,7 +163,7 @@
                         <div class="row justify-content-end mt-2">
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary me-1">Actualizar</button>
-                                <a href="{{ route('list.employees') }}"  class="btn btn-outline-secondary">Cancelar</a>
+                                <a href="{{ route('employees.list') }}"  class="btn btn-outline-secondary">Cancelar</a>
                             </div>
                         </div>
                     </form>

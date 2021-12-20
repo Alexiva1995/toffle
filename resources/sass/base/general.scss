@@ -15,4 +15,8 @@ p, h1, h2, h3, h4, h5, h6, label, span, .form-label {
   background-color: #e02900e1
 }
 
-
+.btn-sm, .btn-group-sm > .btn {
+  padding: 0.286rem 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 0.358rem;
+}

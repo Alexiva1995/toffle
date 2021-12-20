@@ -21,7 +21,7 @@
                     <ol class="breadcrumb">
               
                             <li class="breadcrumb-item">
-                                <a href="{{ route('index.inventory') }}">
+                                <a href="{{ route('inventories.index') }}">
                                     Inventario
                                 </a>
                             </li>
@@ -80,17 +80,31 @@
                                 </td>
                                 <td class="text-center">{{ date('d-m-Y', strtotime($item->pivot->pricecreated_at)) }}</td>
                                 <td class="text-center"> 
-                                    <button class="btn btn-sm btn-info" 
+                                    <button class="btn btn-sm btn-info my-1" 
                                         onclick="editProductToInventory( 
                                         {{ $item->pivot->inventory_id }},
                                         {{ $item->pivot->id }}, 
                                         {{ $item->pivot->product_id }}, 
                                         {{ $item->pivot->qty_package }},
                                         {{ $item->pivot->unit_package }},
-                                        {{ $item->pivot->price }} 
-                                    )">
+                                        {{ $item->pivot->price }} )" >
                                         <i data-feather="edit"></i> 
                                     </button> 
+
+                                    <button class="btn btn-sm btn-danger"
+                                    onclick="deleteElement( {{ $item->pivot->id}}, 
+                                    '#delete_product_to_inventory_', 
+                                    'Producto del Inventario' )"> 
+                                        <i data-feather="trash-2"></i> 
+                                    </button>
+
+                                    <form id="delete_product_to_inventory_{{ $item->pivot->id }}" 
+                                        action="{{ route('product.to.inventory.destroy', $item->pivot->id) }}" 
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="inventory_id" value="{{ $inventory->id }}">
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach
@@ -175,14 +189,18 @@
         submitForms('#edit_product', '.loading_edi_p', '#form_edit_product');
 
         function editProductToInventory(inventory_id, inventory_product_id, product_id, qty_package, unit_package, price) {
-            var route = '{{route('update.product.to.inventory', 'replace_this')}}'.replace('replace_this', inventory_id);
+
+            var route = '{{route('product.to.inventory.update', 'replace_this')}}'.replace('replace_this', inventory_product_id);
             $('#form_edit_product').attr('action', route);
+
             $("#edit_product_id option[value="+ product_id +"]").attr("selected", 'selected').trigger('change');
             $('#edit_qty_package').val(qty_package);
             $('#edit_unit_package').val(unit_package);
             $('#edit_price').val(price);
-            $('#inventory_product_id').val(inventory_product_id);
+            $('#inventory_id').val(inventory_id);
+            
             $('#modal_edit_product_to_inventory').modal('show');
+
         }
     </script>
 

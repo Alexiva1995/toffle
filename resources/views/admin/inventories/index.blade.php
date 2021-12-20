@@ -88,7 +88,7 @@
       submitForms('#edit_product', '.loading_edit_p', '#form_edit_product');
 
       function editProduct(id, name, gr, alert) {
-        var route = '{{route('update.product', 'replace_this')}}'.replace('replace_this', id);
+        var route = '{{route('products.update', 'replace_this')}}'.replace('replace_this', id);
         $('#form_edit_product').attr('action', route);
         $('#edit_name').val(name);
         $('#edit_gr').val(gr);
@@ -98,7 +98,7 @@
       }
 
       function editInventory(id, name) {
-        var route = '{{route('update.inventory', 'replace_this')}}'.replace('replace_this', id);
+        var route = '{{route('inventories.update', 'replace_this')}}'.replace('replace_this', id);
         $('#form_edit_inventory').attr('action', route);
         $('#edit_name_inv').val(name);
         $('#modal_edit_inventory').modal('show');

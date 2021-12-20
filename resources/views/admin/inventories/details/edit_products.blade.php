@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="inventory_product_id" id="inventory_product_id">
+                        <input type="hidden" name="inventory_id" id="inventory_id">
                     </div>
                 </form>
             </div>

@@ -42,3 +42,5 @@
 @endif
 
 <link rel="stylesheet" href="{{ asset('vendors/css/extensions/toastr.min.css') }}">
+
+<link rel="stylesheet" href="{{ asset('vendors/css/jquery-confirm/jquery-confirm.min.css') }}">
