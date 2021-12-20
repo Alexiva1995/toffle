@@ -61,7 +61,9 @@ Route::middleware('auth')->group(function () {
             Route::patch('update/{id}', [InventoryController::class, 'update'])->name('update.inventory');
             Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
             Route::get('show/{id}', [InventoryController::class, 'show'])->name('show.inventory');
-            Route::post('aggregate-product/{id}', [InventoryController::class, 'aggregateProductToInventory'])->name('aggregate.product');
+            Route::post('store-product-to-inventory/{id}', [InventoryController::class, 'storeProductToInventory'])->name('store.product.to.inventory');
+            Route::patch('update-product-to-inventory/{id}', [InventoryController::class, 'updateProductToInventory'])->name('update.product.to.inventory');
+
         });
 
         Route::group(['prefix' => 'products'], function () {

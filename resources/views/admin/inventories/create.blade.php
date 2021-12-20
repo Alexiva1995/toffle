@@ -13,7 +13,7 @@
                                 <label class="form-label" for="name">Nombre</label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i data-feather="database"></i></span>
-                                    <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name"
+                                    <input type="text" id="create_name_inv" class="form-control @error('name') is-invalid @enderror" name="name"
                                         placeholder="Nombre" />
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">

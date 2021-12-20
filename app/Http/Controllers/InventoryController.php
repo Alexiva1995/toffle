@@ -83,7 +83,7 @@ class InventoryController extends Controller
         ->with('inventory', $inventory);
     }
 
-    public function aggregateProductToInventory(Request $request, $id)
+    public function storeProductToInventory(Request $request, $id)
     {
         $inventory = Inventory::find($id);
 
@@ -120,6 +120,36 @@ class InventoryController extends Controller
         return redirect()->route('show.inventory', $inventory->id)->with('success', 'Producto Agregado al Inventario');
     }
 
+    public function updateProductToInventory(Request $request, $id)
+    {
+        $inventory = Inventory::find($id);
+
+        $fields = [
+            'product_id' => ['required'],
+            'qty_package' => ['required'],
+            'unit_package' => ['required'],
+            'price' => ['required'],
+        ];
+
+        $msj = [
+            'product_id.required' => 'El producto es requerido.',
+            'qty_package.required' => 'La cantidad de bultos es requerida.',
+            'unit_package.required' => 'La unidad del bulto es requerida.',
+            'price.required' => 'El precio es requerido.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $inventory->products()->wherePivot('id', $request->inventory_product_id)->update([ 
+            'product_id' => $request->product_id,
+            'qty_package' => $request->qty_package,
+            'unit_package' => $request->unit_package,
+            'price' => $request->price,
+        ]);
+
+        return redirect()->route('show.inventory', $inventory->id)->with('success', 'Producto del Inventario Editado');
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -140,7 +170,21 @@ class InventoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $inventory = Inventory::find($id);
+
+        $fields = [
+            'name' => ['required'],
+        ];
+
+        $msj = [
+            'name.required' => 'El nombre es requerido.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $inventory->update($request->all());
+
+        return redirect()->route('index.inventory')->with('success', 'Inventario Editado');
     }
 
     /**

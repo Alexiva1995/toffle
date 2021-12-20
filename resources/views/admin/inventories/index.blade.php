@@ -78,6 +78,7 @@
       // Inventory
       submitForms('#add_inventory', '.loading_inv', '#form_add_inventory');
       submitForms('#aggregate_product', '.loading_aggr_p', '#form_aggregate_product');
+      submitForms('#edit_inventory', '.loading_edit_inv', '#form_edit_inventory');
 
       // Sum an Subtract
       submitForms('#btn_operation', '.loading_op', '#form_operation');
@@ -94,6 +95,13 @@
         $("#edit_units_reposition_alert > option[value="+ alert +"]").attr("selected", 'selected');
 
         $('#modal_edit_product').modal('show');
+      }
+
+      function editInventory(id, name) {
+        var route = '{{route('update.inventory', 'replace_this')}}'.replace('replace_this', id);
+        $('#form_edit_inventory').attr('action', route);
+        $('#edit_name_inv').val(name);
+        $('#modal_edit_inventory').modal('show');
       }
 
       function operation(department, operator, id, max_value = 0) {

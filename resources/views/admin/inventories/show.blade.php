@@ -80,7 +80,17 @@
                                 </td>
                                 <td class="text-center">{{ date('d-m-Y', strtotime($item->pivot->pricecreated_at)) }}</td>
                                 <td class="text-center"> 
-                                    <a href="{{ route('edit.inventory', $item->pivot->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> 
+                                    <button class="btn btn-sm btn-info" 
+                                        onclick="editProductToInventory( 
+                                        {{ $item->pivot->inventory_id }},
+                                        {{ $item->pivot->id }}, 
+                                        {{ $item->pivot->product_id }}, 
+                                        {{ $item->pivot->qty_package }},
+                                        {{ $item->pivot->unit_package }},
+                                        {{ $item->pivot->price }} 
+                                    )">
+                                        <i data-feather="edit"></i> 
+                                    </button> 
                                 </td>
                             </tr>
                             @endforeach
@@ -107,11 +117,38 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            @include('admin.inventories.aggregate_products')
+            @include('admin.inventories.details.add_products')
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="aggregate_product">
                 <span class="loading_aggr_p mr-2"></span> Agregar
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal Edit Products to Inventory-->
+<div
+  class="modal fade text-start"
+  id="modal_edit_product_to_inventory"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel1">Editar Productos del Inventario</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            @include('admin.inventories.details.edit_products')
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="edit_product">
+                <span class="loading_edi_p mr-2"></span> Editar
             </button>
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
@@ -131,11 +168,23 @@
 @endsection
 
 @section('custom-js')
-
+    @include('panels.datatable.scripts')
     <script>
         // Aggregate Product
         submitForms('#aggregate_product', '.loading_aggr_p', '#form_aggregate_product');
+        submitForms('#edit_product', '.loading_edi_p', '#form_edit_product');
+
+        function editProductToInventory(inventory_id, inventory_product_id, product_id, qty_package, unit_package, price) {
+            var route = '{{route('update.product.to.inventory', 'replace_this')}}'.replace('replace_this', inventory_id);
+            $('#form_edit_product').attr('action', route);
+            $("#edit_product_id option[value="+ product_id +"]").attr("selected", 'selected').trigger('change');
+            $('#edit_qty_package').val(qty_package);
+            $('#edit_unit_package').val(unit_package);
+            $('#edit_price').val(price);
+            $('#inventory_product_id').val(inventory_product_id);
+            $('#modal_edit_product_to_inventory').modal('show');
+        }
     </script>
 
-    @include('panels.datatable.scripts')
+
 @endsection

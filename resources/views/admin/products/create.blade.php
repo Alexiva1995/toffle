@@ -13,7 +13,7 @@
                                 <label class="form-label" for="name">Nombre</label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i data-feather="package"></i></span>
-                                    <input type="text" id="name" class="form-control requerid @error('name') is-invalid @enderror" name="name"
+                                    <input type="text" id="create_name_product" class="form-control requerid @error('name') is-invalid @enderror" name="name"
                                         placeholder="Nombre"/>
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -29,7 +29,7 @@
                                 <label class="form-label" for="gr">Gr.</label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i data-feather="archive"></i></span>
-                                    <input type="number" id="gr" class="form-control requerid @error('gr') is-invalid @enderror" name="gr"
+                                    <input type="number" id="create_gr_product" class="form-control requerid @error('gr') is-invalid @enderror" name="gr"
                                         placeholder="Gr." />
                                     @error('gr')
                                     <span class="invalid-feedback" role="alert">

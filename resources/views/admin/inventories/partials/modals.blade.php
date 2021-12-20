@@ -25,6 +25,33 @@
     </div>
 </div>
 
+<!-- Modal Edit Inventory-->
+<div
+  class="modal fade text-start"
+  id="modal_edit_inventory"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel1">Editar Inventario</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            @include('admin.inventories.edit')
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="edit_inventory">
+                <span class="loading_edit_inv mr-2"></span> Editar
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 {{-- Modal Sum and Subtract Operations --}}
 <div
   class="modal fade text-start"
