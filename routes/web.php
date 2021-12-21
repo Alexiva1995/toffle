@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DishController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LanguageController;
@@ -41,10 +42,10 @@ use App\Http\Controllers\ProductController;
 /* Route Dashboards */
 Auth::routes(['verify' => true]);
 
-Route::middleware('auth')->group(function () { 
+Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
 
-    Route::middleware('admin')->group(function () { 
+    Route::middleware('admin')->group(function () {
         Route::group(['prefix' => 'employees'], function () {
             Route::get('list', [UserController::class, 'list'])->name('list.employees');
             Route::get('create', [UserController::class, 'create'])->name('create.employees');
@@ -66,6 +67,20 @@ Route::middleware('auth')->group(function () {
             Route::post('store', [ProductController::class, 'store'])->name('store.products');
             Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit.products');
             Route::patch('update/{id}', [ProductController::class, 'update'])->name('update.products');
+        });
+
+        Route::group(['prefix' => 'dishes'], function () {
+            Route::get('/', [DishController::class, 'index'])->name('index.dishes');
+            Route::get('create', [DishController::class, 'create'])->name('create.dishes');
+            Route::post('store', [DishController::class, 'store'])->name('store.dishes');
+            Route::get('edit/{id}', [DishController::class, 'edit'])->name('edit.dishes');
+            Route::patch('update/{id}', [DishController::class, 'update'])->name('update.dishes');
+        });
+
+        Route::group(['prefix' => 'ingredients'], function () {
+            Route::post('store', [\App\Http\Controllers\IngredientController::class, 'store'])->name('store.ingredients');
+            Route::get('edit/{id}', [\App\Http\Controllers\IngredientController::class, 'edit'])->name('edit.ingredients');
+            Route::patch('update/{id}', [\App\Http\Controllers\IngredientController::class, 'update'])->name('update.ingredients');
         });
     });
 });
