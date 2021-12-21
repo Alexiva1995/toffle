@@ -25,10 +25,4 @@ class Inventory extends Model
         return $this->belongsToMany('App\Models\Product', 'product_inventory')
                         ->withPivot('id', 'product_id', 'inventory_id', 'qty_package', 'unit_package', 'price', 'created_at', 'updated_at');
     }
-
-    public function product_name($id)
-    {
-       $product_name = Product::where('id', $id)->firts();
-       return $product_name;
-    }
 }

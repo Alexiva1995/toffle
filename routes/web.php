@@ -21,6 +21,7 @@ use App\Http\Controllers\ChartsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ExpensesController;
 
 
 /*
@@ -66,6 +67,14 @@ Route::middleware('auth')->group(function () {
 
         // Products
         Route::resource('products', ProductController::class);
+
+        // Expenses
+        Route::group(['prefix' => 'expenses'], function () {
+            Route::get('list', [ExpensesController::class, 'list'])->name('expenses.list');
+            Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
+        });
+        
+        Route::resource('expenses', ExpensesController::class);
     });
 });
 

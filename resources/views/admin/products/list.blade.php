@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table" id="table_products">
+                <table class="table" id="table">
                     <thead>
                         <tr>
                             <th>ID</th>
