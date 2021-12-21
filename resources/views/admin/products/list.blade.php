@@ -9,7 +9,7 @@
                 <div class="col-12 col-md-6">
                     <div class="row justify-content-end">
                         <div class="col-auto mb-2">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_products">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_product">
                                 <i data-feather="plus"></i> Añadir Nuevo Producto
                             </button>
                         </div>
@@ -36,7 +36,10 @@
                             <td>{{ $product->gr }}</td>
                             <td class="text-center">{{ $product->units_reposition_alert == 1 ? 'Activado' : 'Desactivado' }}</td>
                             <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
-                            <td class="text-center"> <a href="{{ route('edit.products', $product->id) }}" class="btn btn-sm btn-info"> <i data-feather="edit"></i> </a> </td>
+                            <td class="text-center"> <button class="btn btn-sm btn-info" 
+                                onclick="editProduct({{ $product->id }}, '{{ $product->name }}', {{ $product->gr }}, {{ $product->units_reposition_alert }})"> 
+                                <i data-feather="edit"></i> </button> 
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -46,29 +49,4 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div
-  class="modal fade text-start"
-  id="modal_add_products"
-  tabindex="-1"
-  aria-labelledby="myModalLabel1"
-  aria-hidden="true"
->
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel1">Añadir Producto</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            @include('admin.products.create')
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="add_product">
-                <span class="loading_btn_p mr-2"></span> Añadir
-            </button>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-</div>
+@include('admin.products.partials.modals')

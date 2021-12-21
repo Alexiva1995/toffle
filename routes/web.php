@@ -61,12 +61,15 @@ Route::middleware('auth')->group(function () {
             Route::get('edit/{id}', [InventoryController::class, 'edit'])->name('edit.inventory');
             Route::patch('update/{id}', [InventoryController::class, 'update'])->name('update.inventory');
             Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
+            Route::get('show/{id}', [InventoryController::class, 'show'])->name('show.inventory');
+            Route::post('store-product-to-inventory/{id}', [InventoryController::class, 'storeProductToInventory'])->name('store.product.to.inventory');
+            Route::patch('update-product-to-inventory/{id}', [InventoryController::class, 'updateProductToInventory'])->name('update.product.to.inventory');
+
         });
 
         Route::group(['prefix' => 'products'], function () {
-            Route::post('store', [ProductController::class, 'store'])->name('store.products');
-            Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit.products');
-            Route::patch('update/{id}', [ProductController::class, 'update'])->name('update.products');
+            Route::post('store', [ProductController::class, 'store'])->name('store.product');
+            Route::patch('update/{id}', [ProductController::class, 'update'])->name('update.product');
         });
 
         Route::group(['prefix' => 'dishes'], function () {

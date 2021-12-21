@@ -1,4 +1,4 @@
-<!-- Modal -->
+<!-- Modal Add Inventory-->
 <div
   class="modal fade text-start"
   id="modal_add_inventory"
@@ -17,7 +17,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="add_inventory">
-                <span class="loading_btn_i mr-2"></span> Añadir
+                <span class="loading_inv mr-2"></span> Añadir
             </button>
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
@@ -25,7 +25,34 @@
     </div>
 </div>
 
-{{-- Modal Operations --}}
+<!-- Modal Edit Inventory-->
+<div
+  class="modal fade text-start"
+  id="modal_edit_inventory"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel1">Editar Inventario</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            @include('admin.inventories.edit')
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="edit_inventory">
+                <span class="loading_edit_inv mr-2"></span> Editar
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+{{-- Modal Sum and Subtract Operations --}}
 <div
   class="modal fade text-start"
   id="modal_operation"
@@ -39,7 +66,6 @@
               <h4 class="modal-title" id="modal_title"></h4>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          
             <div class="modal-body">
                 <div class="row justify-content-center">
                     <div class="col-12">
@@ -82,7 +108,7 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-primary" id="btn_operation">
-                    <span class="loading_btn_op mr-2"></span> <span id="btn_text"> </span>
+                    <span class="loading_op mr-2"></span> <span id="btn_text"> </span>
                 </button>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>

@@ -142,7 +142,7 @@ class UserController extends Controller
         $employee->update($request->all());
         $employee->password = Hash::make($request->password);
         $employee->token_crypt = Crypt::encrypt($request->password);
-        $employee->update();
+        $employee->save();
 
         return redirect()->route('list.employees')->with('success', 'Empleado Actualizado');
     }

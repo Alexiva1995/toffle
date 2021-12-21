@@ -17,7 +17,6 @@ class Product extends Model
 
     public function inventories()
     {
-        return $this->belongsToMany('App\Models\Inventory', 'product_inventory')
-                        ->withPivot('qty_package', 'unit_package', 'price');
+        return $this->belongsToMany('App\Models\Inventory', 'inventories');
     }
 }
