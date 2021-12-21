@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Inventarios')
+@section('title', 'Inventario')
 
 @include('panels.datatable.styles')
 
@@ -30,7 +30,7 @@
                       aria-controls="inventories-center"
                       role="tab"
                       aria-selected="false"
-                      >Inventarios</a
+                      >Inventario</a
                     >
                   </li>
                   <li class="nav-item">

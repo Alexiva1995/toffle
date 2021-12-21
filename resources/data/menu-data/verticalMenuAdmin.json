@@ -16,7 +16,7 @@
     },
     {
       "url": "inventories",
-      "name": "inventories",
+      "name": "inventory",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "database",
       "slug": "inventories.index"

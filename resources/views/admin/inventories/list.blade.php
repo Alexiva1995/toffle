@@ -3,7 +3,7 @@
         <div class="card p-2">
             <div class="row align-items-center">
                 <div class="col-12 col-md-6">
-                    <h3>Lista de Inventarios</h1>
+                    <h3>Lista de Inventario</h1>
                 </div>
 
                 <div class="col-12 col-md-6">

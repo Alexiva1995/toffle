@@ -184,7 +184,7 @@ return [
     //Additional Translations
     "dashboard" => "Dashboard",
     "employees" => "Empleados",
-    "inventories" => "Inventarios",
+    "inventory" => "Inventario",
     "plates" => "Platos",
 
     //Reports
