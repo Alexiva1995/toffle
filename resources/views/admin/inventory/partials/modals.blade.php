@@ -13,7 +13,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            @include('admin.inventories.create')
+            @include('admin.inventory.create')
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="add_inventory">
@@ -40,7 +40,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            @include('admin.inventories.edit')
+            @include('admin.inventory.edit')
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="edit_inventory">

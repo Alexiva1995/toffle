@@ -4,31 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Inventory;
-use App\Models\Product;
 
 class Inventory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'product_id',
+        'qty_package',
+        'unit_package',
+        'price',
+        'cost',
         'total',
         'deposit',
         'local',
         'public',
-        'cost',
     ];
 
-    public function products()
+    public function product()
     {
-        return $this->belongsToMany('App\Models\Product', 'product_inventory')
-                        ->withPivot('id', 'product_id', 'inventory_id', 'qty_package', 'unit_package', 'price', 'created_at', 'updated_at');
-    }
-
-    public function product_name($id)
-    {
-       $product_name = Product::where('id', $id)->firts();
-       return $product_name;
+        return $this->hasOne('App\Models\Product', 'id', 'product_id');
     }
 }

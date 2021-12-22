@@ -35,10 +35,10 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table" id="table">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>N°</th>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>DNI</th>
@@ -51,7 +51,7 @@
                         <tbody>
                             @foreach ($employees as $employee)
                             <tr>
-                                <td>{{ $employee->id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $employee->name }}</td>
                                 <td>{{ $employee->last_name }}</td>
                                 <td>{{ $employee->dni }}</td>
@@ -112,7 +112,8 @@
             $('#status_filter').change( function() {
                 table.draw();
             });
-    
         });
+
+        dataTable('#table');
     </script>
 @endsection
