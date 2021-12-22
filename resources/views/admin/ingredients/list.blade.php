@@ -9,9 +9,9 @@
                 <div class="col-12 col-md-6">
                     <div class="row justify-content-end">
                         <div class="col-auto mb-2">
-                            <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#modal_add_ingredient">
+                            <a href="{{ route('create.ingredients') }}" class="btn btn-primary mt-2">
                                 <i data-feather="plus"></i> Añadir Ingrediente
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -42,4 +42,4 @@
     </div>
 </div>
 
-@include('admin.inventories.partials.modals')
+

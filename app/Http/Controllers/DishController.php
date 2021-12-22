@@ -15,6 +15,7 @@ class DishController extends Controller
      */
     public function index()
     {
+
         $dishes = Dish::orderBy('id', 'DESC')->get();
 
         $ingredients = Ingredient::orderBy('id', 'DESC')->get();
@@ -42,6 +43,8 @@ class DishController extends Controller
      */
     public function store(Request $request)
     {
+
+        // dd($request);
         $fields = [
             'name' => ['required', 'min:2'],
             'ingredient' => ['required'],
@@ -69,6 +72,11 @@ class DishController extends Controller
 
         $dish = Dish::create($request->all());
 
+        // dd($request->ingredient);
+        foreach($request->ingredient as $ingredient){
+            $dish->ingredients()->attach($ingredient);
+        }
+
         return redirect()->route('index.dishes')->with('success', 'Plato Añadido');
     }
 
@@ -92,7 +100,8 @@ class DishController extends Controller
     public function edit(Request $request)
     {
         $dish = Dish::find($request->id);
-        return response()->view('admin.dishes.edit', compact('dish'));
+        $ingredients = Ingredient::orderBy('id', 'DESC')->get();
+        return response()->view('admin.dishes.edit', compact('dish', 'ingredients'));
     }
 
     /**
