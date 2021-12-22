@@ -24,25 +24,41 @@
                                                    placeholder="Nombre" />
                                             @error('name')
                                             <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-4">
+{{--                                <div class="col-12 col-md-4">--}}
+{{--                                    <div class="mb-1">--}}
+{{--                                        <label class="form-label" for="ingredients">Ingredientes</label>--}}
+{{--                                        <div class="input-group input-group-merge">--}}
+{{--                                            <span class="input-group-text"><i data-feather="book-open"></i></span>--}}
+{{--                                            <input type="text" id="ingredients" class="form-control @error('ingredients') is-invalid @enderror" name="ingredients"--}}
+{{--                                                   placeholder="Ingredientes" />--}}
+{{--                                            @error('ingredients')--}}
+{{--                                            <span class="invalid-feedback" role="alert">--}}
+{{--                                            <strong>{{ $message }}</strong>--}}
+{{--                                        </span>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+                                <div class="col-12 col-md-7 mb-1">
                                     <div class="mb-1">
-                                        <label class="form-label" for="ingredients">Ingredientes</label>
-                                        <div class="input-group input-group-merge">
-                                            <span class="input-group-text"><i data-feather="book-open"></i></span>
-                                            <input type="text" id="ingredients" class="form-control @error('ingredients') is-invalid @enderror" name="ingredients"
-                                                   placeholder="Ingredientes" />
-                                            @error('ingredients')
-                                            <span class="invalid-feedback" role="alert">
+                                        <label class="form-label" for="ingredient">Ingredientes</label>
+                                        <select class="select2 form-select @error('ingredient') is-invalid @enderror" id="ingredient" name="ingredient[]" multiple="multiple">
+                                            <option disabled>Selecciona un Ingrediente</option>
+                                            @foreach ($ingredients as $ingredient)
+                                                <option value="{{ $ingredient->id }}"> {{ $ingredient->name }} </option>
+                                            @endforeach
+                                        </select>
+                                        @error('ingredient')
+                                        <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                            @enderror
-                                        </div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4">
@@ -105,3 +121,11 @@
     </section>
 @endsection
 
+@section('custom-js')
+    <script>
+        $("#ingredient").select2({
+            tags: true,
+            tokenSeparators: [',']
+        })
+    </script>
+@endsection

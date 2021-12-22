@@ -29,7 +29,9 @@ class DishController extends Controller
      */
     public function create()
     {
-        return response()->view('admin.dishes.create');
+        $ingredients = Ingredient::orderBy('id', 'DESC')->get();
+
+        return response()->view('admin.dishes.create', compact('ingredients'));
     }
 
     /**
