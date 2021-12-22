@@ -15,12 +15,15 @@ class CreateInventoriesTable extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->integer('product_id');
+            $table->integer('qty_package');
+            $table->integer('unit_package');
+            $table->double('price');
+            $table->double('cost')->default(0);
             $table->integer('total')->default(0);
             $table->integer('deposit')->default(0);
             $table->integer('local')->default(0);
             $table->integer('public')->default(0);
-            $table->double('cost')->default(0);
             $table->timestamps();
         });
     }
@@ -33,5 +36,6 @@ class CreateInventoriesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('inventories');
+        Schema::dropIfExists('product_inventory');
     }
 }

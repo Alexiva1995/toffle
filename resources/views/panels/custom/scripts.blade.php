@@ -8,6 +8,8 @@
 
 <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
 
+<script src="{{ asset('vendors/js/jquery-confirm/jquery-confirm.min.js') }}"></script>
+
 <script type="text/javascript">
     $(window).on('load', function() {
         if (feather) {
@@ -64,6 +66,26 @@
             this_button.attr('disabled', 'disabled').addClass('disabled');
             $(load_class).addClass('spinner-border spinner-border-sm');
             $(form_id).submit();
+        });
+    }
+
+    function deleteElement(id,  form_id, text_element) {
+        $.confirm({
+            title: 'Confirmar!',
+            content: 'Estas seguro que quieres eliminar este '+text_element+'?',
+            buttons: {
+                confirm: {
+                    text: 'Eliminar',
+                    btnClass: 'btn-danger',
+                    action: function () {
+                        $(this).addClass('disabled');
+                        $(this).addClass('spinner-border spinner-border-sm');
+                        $(form_id+id).submit();
+                    }
+                },
+                cancelar: function () {
+                },
+            }
         });
     }
 </script>

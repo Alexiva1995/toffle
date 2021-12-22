@@ -11,12 +11,13 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'mark',
         'gr',
         'units_reposition_alert',
     ];
 
-    public function inventories()
+    public function inventory()
     {
-        return $this->belongsToMany('App\Models\Inventory', 'inventories');
+        return $this->belongsTo('App\Models\Inventory', 'id', 'product_id');
     }
 }

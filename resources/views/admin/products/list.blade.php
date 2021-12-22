@@ -17,11 +17,12 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table" id="table_products">
+                <table class="table" id="product_table">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>N°</th>
                             <th>Nombre</th>
+                            <th>Marca</th>
                             <th>Gr.</th>
                             <th class="text-center">Alerta de Reposición de Unidades</th>
                             <th class="text-center">Fecha de Creación</th>
@@ -31,14 +32,35 @@
                     <tbody>
                         @foreach ($products as $product)
                         <tr>
-                            <td>{{ $product->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $product->name }}</td>
+                            <td>{{ $product->mark }}</td>
                             <td>{{ $product->gr }}</td>
-                            <td class="text-center">{{ $product->units_reposition_alert == 1 ? 'Activado' : 'Desactivado' }}</td>
+                            <td class="text-center">{{ $product->units_reposition_alert }}</td>
                             <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
-                            <td class="text-center"> <button class="btn btn-sm btn-info" 
-                                onclick="editProduct({{ $product->id }}, '{{ $product->name }}', {{ $product->gr }}, {{ $product->units_reposition_alert }})"> 
-                                <i data-feather="edit"></i> </button> 
+                            <td class="text-center"> 
+
+                                <button class="btn btn-sm btn-info my-1"
+                                    onclick="editProduct(
+                                    {{ $product->id }}, 
+                                    '{{ $product->name }}',
+                                    '{{ $product->mark }}', 
+                                    {{ $product->gr }}, 
+                                    {{ $product->units_reposition_alert }})"> 
+
+                                    <i data-feather="edit"></i> 
+                                </button> 
+
+                                <button class="btn btn-sm btn-danger"
+                                    onclick="deleteElement( {{ $product->id }}, 
+                                    '#delete_product_', 
+                                    'Producto' )"> 
+                                    <i data-feather="trash-2"></i> 
+                                </button>
+                                <form id="delete_product_{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')                                      
+                                </form>
                             </td>
                         </tr>
                         @endforeach

@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Inventarios')
+@section('title', 'Inventario')
 
 @include('panels.datatable.styles')
 
@@ -30,7 +30,7 @@
                       aria-controls="inventories-center"
                       role="tab"
                       aria-selected="false"
-                      >Inventarios</a
+                      >Inventario</a
                     >
                   </li>
                   <li class="nav-item">
@@ -48,7 +48,7 @@
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane {{ Session::has('products') == true ? '' : 'active' }}" id="inventories-center" aria-labelledby="inventories-tab-center" role="tabpanel">
-                    @include('admin.inventories.list')
+                    @include('admin.inventory.list')
                   </div>
                   <div class="tab-pane {{ Session::has('products') == true ? 'active' : '' }}" id="products-center" aria-labelledby="products-tab-center" role="tabpanel">
                     @include('admin.products.list')
@@ -87,21 +87,27 @@
       submitForms('#add_product', '.loading_btn_p', '#form_add_product');
       submitForms('#edit_product', '.loading_edit_p', '#form_edit_product');
 
-      function editProduct(id, name, gr, alert) {
-        var route = '{{route('update.product', 'replace_this')}}'.replace('replace_this', id);
+      function editProduct(id, name, mark, gr, alert) {
+        var route = '{{route('products.update', 'replace_this')}}'.replace('replace_this', id);
         $('#form_edit_product').attr('action', route);
         $('#edit_name').val(name);
+        $('#edit_mark').val(mark);
         $('#edit_gr').val(gr);
-        $("#edit_units_reposition_alert > option[value="+ alert +"]").attr("selected", 'selected');
+        $("#edit_units_reposition_alert").val(alert);
 
         $('#modal_edit_product').modal('show');
       }
 
-      function editInventory(id, name) {
-        var route = '{{route('update.inventory', 'replace_this')}}'.replace('replace_this', id);
-        $('#form_edit_inventory').attr('action', route);
-        $('#edit_name_inv').val(name);
-        $('#modal_edit_inventory').modal('show');
+      function editInventory(id, product_id, qty_package, unit_package, price) {
+
+          var route = '{{route('inventory.update', 'replace_this')}}'.replace('replace_this', id);
+          $('#form_edit_inventory').attr('action', route);
+          $("#edit_product_id option[value="+ product_id +"]").attr("selected", 'selected').trigger('change');
+          $('#edit_qty_package').val(qty_package);
+          $('#edit_unit_package').val(unit_package);
+          $('#edit_price').val(price);
+          $('#modal_edit_inventory').modal('show');
+
       }
 
       function operation(department, operator, id, max_value = 0) {
@@ -145,6 +151,10 @@
       }
 
       $(document).ready(function() {
+        
+          dataTable('#table');
+          dataTable('#product_table');
+
           $('#btn_max').click( function() {
               $('#qty').val( $('#max_value').val() );
               toastr['success']('', 'Cantidad Máxima Agregada', {

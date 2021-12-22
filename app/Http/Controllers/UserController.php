@@ -73,7 +73,7 @@ class UserController extends Controller
         $employee->token_crypt = Crypt::encrypt($request->password);
         $employee->save();
 
-        return redirect()->route('list.employees')->with('success', 'Empleado Registrado');
+        return redirect()->route('employees.list')->with('success', 'Empleado Registrado');
     }
 
     /**
@@ -144,7 +144,7 @@ class UserController extends Controller
         $employee->token_crypt = Crypt::encrypt($request->password);
         $employee->save();
 
-        return redirect()->route('list.employees')->with('success', 'Empleado Actualizado');
+        return redirect()->route('employees.list')->with('success', 'Empleado Actualizado');
     }
 
     /**
@@ -155,7 +155,12 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $employee = User::find($id);
+
+        $employee->delete();
+
+        return redirect()->route('employees.list')->with('success', 'Empleado Eliminado');
+
     }
 
     public function list()

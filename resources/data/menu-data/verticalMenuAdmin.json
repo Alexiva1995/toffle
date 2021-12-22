@@ -12,14 +12,14 @@
       "name": "employees",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "users",
-      "slug": "list.employees"
+      "slug": "employees.list"
     },
     {
       "url": "inventory",
       "name": "inventory",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "database",
-      "slug": "index.inventory"
+      "slug": "inventory.index"
     },
 
     {
@@ -75,11 +75,11 @@
       ]
     },
     {
-      "url": "expenses",
+      "url": "expenses/list",
       "name": "expenses",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "trending-down",
-      "slug": ""
+      "slug": "expenses.list"
     },
     {
       "url": "orders",
