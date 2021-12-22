@@ -38,11 +38,13 @@ class ProductController extends Controller
     {
         $fields = [
             'name' => ['required'],
+            'mark' => ['required'],
             'gr' => ['required'],
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
+            'mark.required' => 'La marca del producto es requerida.',
             'gr.required' => 'El Gr. es requerido.',
         ];
 
@@ -51,7 +53,7 @@ class ProductController extends Controller
         $product = Product::create($request->all());
 
         Session::flash('products', true); 
-        return redirect()->route('inventories.index')->with('success', 'Producto Añadido');
+        return redirect()->route('inventory.index')->with('success', 'Producto Añadido');
     }
 
     /**
@@ -89,11 +91,13 @@ class ProductController extends Controller
 
         $fields = [
             'name' => ['required'],
+            'mark' => ['required'],
             'gr' => ['required'],
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
+            'mark.required' => 'La marca del producto es requerida.',
             'gr.required' => 'El Gr. es requerido.',
         ];
 
@@ -102,7 +106,7 @@ class ProductController extends Controller
         $product->update($request->all());
 
         Session::flash('products', true); 
-        return redirect()->route('inventories.index')->with('success', 'Producto Editado');
+        return redirect()->route('inventory.index')->with('success', 'Producto Editado');
     }
 
     /**
@@ -118,6 +122,6 @@ class ProductController extends Controller
         $product->delete();
 
         Session::flash('products', true); 
-        return redirect()->route('inventories.index')->with('success', 'Producto Eliminado');
+        return redirect()->route('inventory.index')->with('success', 'Producto Eliminado');
     }
 }

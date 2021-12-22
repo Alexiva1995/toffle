@@ -56,14 +56,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('employees', UserController::class);
 
         // Inventories
-        Route::group(['prefix' => 'inventoryies'], function () {
+        Route::group(['prefix' => 'inventory'], function () {
             Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
-            Route::post('product-to-inventory-store/{id}', [InventoryController::class, 'productToInventoryStore'])->name('product.to.inventory.store');
-            Route::patch('product-to-inventory-update/{array_id}', [InventoryController::class, 'productToInventoryUpdate'])->name('product.to.inventory.update');
-            Route::delete('product-to-inventory-destroy/{array_id}', [InventoryController::class, 'productToInventoryDestroy'])->name('product.to.inventory.destroy');
         });
 
-        Route::resource('inventories', InventoryController::class);
+        Route::resource('inventory', InventoryController::class);
 
         // Products
         Route::resource('products', ProductController::class);

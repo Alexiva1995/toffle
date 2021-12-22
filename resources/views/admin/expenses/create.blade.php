@@ -21,26 +21,30 @@
                     <form class="form form-vertical" action="{{ route('expenses.store') }}" method="POST">
                         @csrf
                         <div class="row justify-content-center">
-                            <div class="col-12 col-md-5">
-                                <div class="mb-1">
-                                    <label class="form-label" for="amount">Monto</label>
-                                    <div class="input-group input-group-merge">
-                                        <span class="input-group-text"><i data-feather="briefcase"></i></span>
-                                        <input type="number" id="amount" class="form-control @error('amount') is-invalid @enderror"
-                                            name="amount" placeholder="Monto" step="0.01"/>
-                                        @error('amount')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
+                            <div class="col-12 col-md-8">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <div class="mb-1">
+                                            <label class="form-label" for="amount">Monto</label>
+                                            <div class="input-group input-group-merge">
+                                                <span class="input-group-text"><i data-feather="briefcase"></i></span>
+                                                <input type="number" id="amount" class="form-control @error('amount') is-invalid @enderror"
+                                                    name="amount" placeholder="Monto" step="0.01"/>
+                                                @error('amount')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-8 mb-1">
+                                        <label class="label-required">
+                                            Descripción
+                                        </label>
+                                        <textarea type="text" name="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" rows="6" cols="50" value="{{ old('description') }}">{{ old('description') }}</textarea>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-8 mb-1">
-                                <label class="label-required">
-                                    Descripción
-                                </label>
-                                <textarea type="text" name="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" rows="6" cols="50" value="{{ old('description') }}">{{ old('description') }}</textarea>
                             </div>
                         </div>
                         <div class="row justify-content-end mt-2">

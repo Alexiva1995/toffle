@@ -16,8 +16,9 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('mark')->nullable();
             $table->string('gr')->nullable();
-            $table->boolean('units_reposition_alert')->default(false);
+            $table->integer('units_reposition_alert')->default(0);
             $table->timestamps();
         });
     }

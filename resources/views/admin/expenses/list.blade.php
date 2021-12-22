@@ -75,14 +75,14 @@
                     }
                 },
                 columns: [
-                // {
-                //     data: "id",
-                //     name: "id",
-                //     title: "N°",
-                //     "class": "text-center",
-                //     visible: true,
-                //     searchable: true,
-                // },
+                { 
+                    data: null,
+                    sortable: false, 
+                    title: "N°",
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }  
+                },
                 {
                     data: "day_at_timezone",
                     name: "day_at_timezone",

@@ -19,7 +19,7 @@ class InventoryController extends Controller
 
         $products= Product::orderBy('id', 'DESC')->get();
 
-        return view('admin.inventories.index')
+        return view('admin.inventory.index')
             ->with('inventories', $inventories)
             ->with('products', $products);
     }
@@ -31,7 +31,7 @@ class InventoryController extends Controller
      */
     public function create()
     {
-        return view('admin.inventories.create');
+        //
     }
 
     /**
@@ -43,28 +43,30 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $fields = [
-            'name' => ['required'],
-            // 'total' => ['required'],
-            // 'deposit' => ['required'],
-            // 'local' => ['required'],
-            // 'public' => ['required'],
-            // 'cost' => ['required'],
+            'product_id' => ['required', 'unique:inventories'],
+            'qty_package' => ['required'],
+            'unit_package' => ['required'],
+            'price' => ['required'],
         ];
 
         $msj = [
-            'name.required' => 'El nombre es requerido.',
-            // 'total.required' => 'La cantidad total es requerida.',
-            // 'deposit.required' => 'La cantidad de deposito es requerida.',
-            // 'local.required' => 'La cantidad local es requerida.',
-            // 'public.required' => 'La cantidad pública es requerida.',
-            // 'cost.required' => 'El correo es requerido.',
+            'product_id.required' => 'El producto es requerido.',
+            'product_id.unique' => 'Este producto ya fue registrado en un inventario.',
+            'qty_package.required' => 'La cantidad de bultos es requerida.',
+            'unit_package.required' => 'La unidad del bulto es requerida.',
+            'price.required' => 'El precio es requerido.',
         ];
 
         $this->validate($request, $fields, $msj);
 
+        $deposit = ($request->qty_package * $request->unit_package);
         $inventory = Inventory::create($request->all());
-
-        return redirect()->route('inventories.index')->with('success', 'Inventario Añadido');
+        $inventory->deposit = (int) $deposit;
+        $inventory->total = (int) ($deposit + $inventory->local + $inventory->public);
+        $inventory->cost = (int) ($request->price / $request->unit_package);
+        $inventory->save();
+        
+        return redirect()->route('inventory.index')->with('success', 'Inventario Añadido');
     }
 
     /**
@@ -73,84 +75,6 @@ class InventoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $inventory = Inventory::find($id);
-        $products = Product::all();
-                
-        return view('admin.inventories.show')
-        ->with('products', $products)
-        ->with('inventory', $inventory);
-    }
-
-    public function productToInventoryStore(Request $request, $id)
-    {
-        $inventory = Inventory::find($id);
-
-        $fields = [
-            'product_id' => ['required'],
-            'qty_package' => ['required'],
-            'unit_package' => ['required'],
-            'price' => ['required'],
-        ];
-
-        $msj = [
-            'product_id.required' => 'El producto es requerido.',
-            'qty_package.required' => 'La cantidad de bultos es requerida.',
-            'unit_package.required' => 'La unidad del bulto es requerida.',
-            'price.required' => 'El precio es requerido.',
-        ];
-
-        $this->validate($request, $fields, $msj);
-
-        $inventory->products()->attach( [ $inventory->id => [
-            'product_id' => $request->product_id,
-            'qty_package' => $request->qty_package,
-            'unit_package' => $request->unit_package,
-            'price' => $request->price,
-            ]
-        ]);
-
-        $count_deposit = count($inventory->products()->get());
-
-        $inventory->update([
-            'deposit' => $count_deposit,
-            'total' => (int) ($count_deposit + $inventory->local + $inventory->public)
-        ]);
-        
-        return redirect()->route('inventories.show', $inventory->id)->with('success', 'Producto Agregado al Inventario');
-    }
-
-    public function productToInventoryUpdate(Request $request, $id)
-    {
-        $inventory_id = $request->inventory_id;
-        $inventory = Inventory::find($inventory_id);
-
-        $fields = [
-            'product_id' => ['required'],
-            'qty_package' => ['required'],
-            'unit_package' => ['required'],
-            'price' => ['required'],
-        ];
-
-        $msj = [
-            'product_id.required' => 'El producto es requerido.',
-            'qty_package.required' => 'La cantidad de bultos es requerida.',
-            'unit_package.required' => 'La unidad del bulto es requerida.',
-            'price.required' => 'El precio es requerido.',
-        ];
-
-        $this->validate($request, $fields, $msj);
-
-        $inventory->products()->wherePivot('id', $id)->update([ 
-            'product_id' => $request->product_id,
-            'qty_package' => $request->qty_package,
-            'unit_package' => $request->unit_package,
-            'price' => $request->price,
-        ]);
-
-        return redirect()->route('inventories.show', $inventory->id)->with('success', 'Producto del Inventario Editado');
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -175,18 +99,38 @@ class InventoryController extends Controller
         $inventory = Inventory::find($id);
 
         $fields = [
-            'name' => ['required'],
+            'product_id' => ['required'],
+            'qty_package' => ['required'],
+            'unit_package' => ['required'],
+            'price' => ['required'],
         ];
 
         $msj = [
-            'name.required' => 'El nombre es requerido.',
+            'product_id.required' => 'El producto es requerido.',
+            'product_id.unique' => 'Este producto ya fue registrado en un inventario.',
+            'qty_package.required' => 'La cantidad de bultos es requerida.',
+            'unit_package.required' => 'La unidad del bulto es requerida.',
+            'price.required' => 'El precio es requerido.',
         ];
 
         $this->validate($request, $fields, $msj);
 
+        if ($inventory->product->id != $request->product_id) {
+            $product = Product::find($request->product_id);
+            if ($product->inventory != null) {
+                return redirect()->route('inventory.index')->with('danger', 'Error al Actualizar, el producto que intentas colocar ya está agregado en otro inventario');
+            }
+        }
+        
+        $deposit = ($request->qty_package * $request->unit_package);
         $inventory->update($request->all());
-
-        return redirect()->route('inventories.index')->with('success', 'Inventario Editado');
+        $inventory->update([
+            'deposit' => (int) $deposit,
+            'total' => (int) ($deposit + $inventory->local + $inventory->public),
+            'cost' => (int) ($request->price / $request->unit_package)
+        ]);
+        
+        return redirect()->route('inventory.index')->with('success', 'Inventario Actualizado');
     }
 
     /**
@@ -201,25 +145,7 @@ class InventoryController extends Controller
 
         $inventory->delete();
 
-        return redirect()->route('inventories.index')->with('success', 'Inventario Eliminado');
-    }
-
-    public function productToInventoryDestroy(Request $request, $id)
-    {
-        $inventory_id = $request->inventory_id;
-
-        $inventory = Inventory::find($inventory_id);
-
-        $inventory->products()->wherePivot('id', $id)->detach();
-
-        $count_deposit = count($inventory->products()->get());
-
-        $inventory->update([
-            'deposit' => $count_deposit,
-            'total' => (int) ($count_deposit + $inventory->local + $inventory->public)
-        ]);
-
-        return redirect()->route('inventories.show', $inventory->id)->with('success', 'Producto del Inventario Eliminado');
+        return redirect()->route('inventory.index')->with('success', 'Inventario Eliminado');
     }
 
     public function operation(Request $request, $id)
@@ -243,14 +169,19 @@ class InventoryController extends Controller
         if ($operation == 'sum') {
 
             switch ($department) {
-                // case 'deposit':
-                //     $inventory->increment('deposit', $request->qty);
-                //     $inventory->decrement('local', $request->qty);
-                //     break;
+                case 'deposit':
+                    if ($request->qty > $inventory->local) {
+                        return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Sumar en Depósito es Mayor al Fondo Actual en Local');
+                    }else{
+                        $inventory->increment('deposit', $request->qty);
+                        $inventory->decrement('local', $request->qty);
+                        $msg_success = 'Operación de Suma en Depósito Éxitosa';
+                    }
+                    break;
 
                 case 'local':
                     if ($request->qty > $inventory->deposit) {
-                        return redirect()->route('inventories.index')->with('danger', 'La Cantidad a Sumar en Local es Mayor al Fondo Actual en Depósito');
+                        return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Sumar en Local es Mayor al Fondo Actual en Depósito');
                     }else{
                         $inventory->increment('local', $request->qty);
                         $inventory->decrement('deposit', $request->qty);
@@ -260,7 +191,7 @@ class InventoryController extends Controller
 
                 case 'public':
                     if ($request->qty > $inventory->local) {
-                        return redirect()->route('inventories.index')->with('danger', 'La Cantidad a Sumar en Público es Mayor al Fondo Actual en Local');
+                        return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Sumar en Público es Mayor al Fondo Actual en Local');
                     }else{ 
                         $inventory->increment('public', $request->qty);
                         $inventory->decrement('local', $request->qty);
@@ -277,13 +208,19 @@ class InventoryController extends Controller
         if ($operation == 'subtract') {
 
             switch ($department) {
-                // case 'deposit':
-                //     $inventory->increment('local', $request->qty);
-                //     break;
+                case 'deposit':
+                    if ($request->qty > $inventory->deposit) {
+                        return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Restar en Depósito es Mayor al Fondo Actual en Depósito');
+                    }else{ 
+                        $inventory->decrement('deposit', $request->qty);
+                        $inventory->increment('local', $request->qty);
+                        $msg_success = 'Operación de Resta en Depósito Éxitosa';
+                    }
+                    break;
 
                 case 'local':
                     if ($request->qty > $inventory->local) {
-                        return redirect()->route('inventories.index')->with('danger', 'La Cantidad a Restar en Local es Mayor al Fondo Actual en Local');
+                        return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Restar en Local es Mayor al Fondo Actual en Local');
                     }else{ 
                         $inventory->decrement('local', $request->qty);
                         $inventory->increment('deposit', $request->qty);
@@ -293,7 +230,7 @@ class InventoryController extends Controller
 
                 case 'public':
                     if ($request->qty > $inventory->public) {
-                        return redirect()->route('inventories.index')->with('danger', 'La Cantidad a Restar en Público es Mayor al Fondo Actual en Público');
+                        return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Restar en Público es Mayor al Fondo Actual en Público');
                     }else{ 
                         $inventory->decrement('public', $request->qty);
                         $inventory->increment('local', $request->qty);
@@ -311,7 +248,7 @@ class InventoryController extends Controller
             'total' => ( $inventory->deposit + $inventory->local + $inventory->public )
         ]);
 
-        return redirect()->route('inventories.index')->with('success', $msg_success);
+        return redirect()->route('inventory.index')->with('success', $msg_success);
     }
 
 }

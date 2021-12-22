@@ -17,11 +17,12 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table" id="table">
+                <table class="table" id="product_table">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>N°</th>
                             <th>Nombre</th>
+                            <th>Marca</th>
                             <th>Gr.</th>
                             <th class="text-center">Alerta de Reposición de Unidades</th>
                             <th class="text-center">Fecha de Creación</th>
@@ -31,17 +32,19 @@
                     <tbody>
                         @foreach ($products as $product)
                         <tr>
-                            <td>{{ $product->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $product->name }}</td>
+                            <td>{{ $product->mark }}</td>
                             <td>{{ $product->gr }}</td>
-                            <td class="text-center">{{ $product->units_reposition_alert == 1 ? 'Activado' : 'Desactivado' }}</td>
+                            <td class="text-center">{{ $product->units_reposition_alert }}</td>
                             <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
                             <td class="text-center"> 
 
                                 <button class="btn btn-sm btn-info my-1"
                                     onclick="editProduct(
                                     {{ $product->id }}, 
-                                    '{{ $product->name }}', 
+                                    '{{ $product->name }}',
+                                    '{{ $product->mark }}', 
                                     {{ $product->gr }}, 
                                     {{ $product->units_reposition_alert }})"> 
 

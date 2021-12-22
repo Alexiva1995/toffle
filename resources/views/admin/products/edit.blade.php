@@ -1,6 +1,6 @@
 <div class="row justify-content-center mt-2">
     <div class="col-12">
-        <div class="card">
+        <div class="card mb-0">
             <div class="card-header">
                 <h5 class="card-title">Datos Requeridos</h4>
             </div>
@@ -25,7 +25,21 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="col-12 col-md-6 mb-1">
+                            <div class="mb-1">
+                                <label class="form-label" for="mark">Marca</label>
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i data-feather="tag"></i></span>
+                                    <input type="text" id="edit_mark" class="form-control requerid @error('mark') is-invalid @enderror" name="mark"
+                                        placeholder="Marca" />
+                                    @error('mark')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="gr">Gr.</label>
@@ -41,20 +55,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="units_reposition_alert">Alerta de Unidades de Reposición</label>
-                                <select class="form-select @error('units_reposition_alert') is-invalid @enderror" id="edit_units_reposition_alert" name="units_reposition_alert">
-                                  <option value='1'>Activado</option>
-                                  <option value='0'>Desactivado</option>
-                                </select>
-                                @error('units_reposition_alert')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i data-feather="alert-triangle"></i></span>
+                                    <input type="number" id="edit_units_reposition_alert" class="form-control requerid @error('units_reposition_alert') is-invalid @enderror" name="units_reposition_alert"
+                                        placeholder="Alerta" />
+                                    @error('units_reposition_alert')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>                       
+                        </div>                     
                     </div>
                 </form>
             </div>

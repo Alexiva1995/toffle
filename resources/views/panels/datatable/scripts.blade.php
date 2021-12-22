@@ -17,12 +17,13 @@
   <script src="{{ asset(mix('js/scripts/tables/table-datatables-basic.js')) }}"></script>
 
 <script>
-    $(document).ready( function () {
-        $('#table').DataTable({
-          language: {
-            url: '{!! asset('data/datatable/Spanish.json') !!}'
-          },
-        });
-    } );
+    function dataTable(table_id) {
+      // console.log(table_id);
+      $(table_id).DataTable({
+        language: {
+          url: '{!! asset('data/datatable/Spanish.json') !!}'
+        },
+      });
+    }
 </script>
 

@@ -48,14 +48,16 @@
                     <table class="table" id="table">
                         <thead>
                             <tr>
-                                <th class="text-center">Hora</th>
+                                <th class="text-center">N°</th>
+                                <th class="text-center">Descripción</th>
                                 <th class="text-center">Monto</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($expenses as $expense)
                             <tr>
-                                <td class="text-center">{{ date('H:i:s', strtotime($expense->created_at)) }}</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $expense->description }}</td>
                                 <td class="text-center">{{ $expense->amount}}</td>
                             </tr>
                             @endforeach
@@ -81,6 +83,6 @@
 @section('custom-js')
     @include('panels.datatable.scripts')
     <script>
-
+        dataTable('#table');
     </script>
 @endsection

@@ -71,7 +71,7 @@ class ExpensesController extends Controller
             ->first();
 
         $expenses = Expense::whereDate('created_at', $date)
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('created_at', 'ASC')
             ->get();
 
         return view('admin.expenses.show')
