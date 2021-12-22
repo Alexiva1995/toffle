@@ -21,8 +21,8 @@ use App\Http\Controllers\ChartsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ExpensesController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +64,13 @@ Route::middleware('auth')->group(function () {
 
         // Products
         Route::resource('products', ProductController::class);
+
+        // Categories
+        Route::group(['prefix' => 'categories'], function () {
+            Route::get('list', [CategoriesController::class, 'list'])->name('categories.list');
+        });
+        
+        Route::resource('categories', CategoriesController::class);
 
         // Expenses
         Route::group(['prefix' => 'expenses'], function () {

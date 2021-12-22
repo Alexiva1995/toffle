@@ -75,6 +75,13 @@
       ]
     },
     {
+      "url": "categories/list",
+      "name": "categories",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "bookmark",
+      "slug": "categories.list"
+    },
+    {
       "url": "expenses/list",
       "name": "expenses",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",

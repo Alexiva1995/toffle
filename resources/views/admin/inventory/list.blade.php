@@ -89,7 +89,7 @@
                                     <span class="btn btn-sm btn-danger"
                                             onclick="deleteElement( {{ $inventory->id }}, 
                                             '#delete_inventory_', 
-                                            'Inventario' )"> 
+                                            'este Inventario' )"> 
                                             <i data-feather="trash-2"></i> 
                                     </span>                                   
                                 </div>

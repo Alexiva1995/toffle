@@ -199,6 +199,7 @@ return [
     "all_reports" => "All Reports",
     // End Reports
 
+    "categories" => "Categories",
     "expenses" => "Expenses",
     "orders" => "Orders",
     "flow_day" => "Flow of the Day"
