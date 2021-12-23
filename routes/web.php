@@ -1,30 +1,32 @@
 <?php
 
-use App\Http\Controllers\DishController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppsController;
-use App\Http\Controllers\UserInterfaceController;
-use App\Http\Controllers\CardsController;
-use App\Http\Controllers\ComponentsController;
-use App\Http\Controllers\ExtensionController;
-use App\Http\Controllers\PageLayoutController;
-use App\Http\Controllers\FormsController;
-use App\Http\Controllers\TableController;
-use App\Http\Controllers\PagesController;
-use App\Http\Controllers\MiscellaneousController;
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\ChartsController;
-
-
+use App\Http\Controllers\DishController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\CardsController;
+use App\Http\Controllers\FormsController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\TableController;
+use App\Http\Controllers\ChartsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExtensionController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ComponentsController;
+
+
+use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\PageLayoutController;
+use App\Http\Controllers\MiscellaneousController;
+use App\Http\Controllers\UserInterfaceController;
+use App\Http\Controllers\AuthenticationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -97,12 +99,17 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
             // Orders
             Route::resource('orders', OrdersController::class);
+            Route::group(['prefix' => 'ingredients'], function () {
+                Route::get('create', [IngredientController::class, 'create'])->name('create.ingredients');
+                Route::post('store', [IngredientController::class, 'store'])->name('store.ingredients');
+                Route::get('edit/{id}', [IngredientController::class, 'edit'])->name('edit.ingredients');
+                Route::patch('update/{id}', [IngredientController::class, 'update'])->name('update.ingredients');
+            });
+
         });
 
     });
-
 });
-
 
 // Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
 
