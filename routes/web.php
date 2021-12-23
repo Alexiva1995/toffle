@@ -23,6 +23,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\OrdersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,43 +44,62 @@ use App\Http\Controllers\ExpensesController;
 Auth::routes(['verify' => true]);
 
 Route::middleware('auth')->group(function () { 
-    Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
+
+    Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
     Route::middleware('admin')->group(function () { 
 
-        // Employees
-        Route::group(['prefix' => 'employees'], function () {
-            Route::get('list', [UserController::class, 'list'])->name('employees.list');
-            Route::post('generate-password', [UserController::class, 'generatePassword'])->name('generate.password');
-        });
+        Route::group(['prefix' => 'admin'], function () {
 
-        Route::resource('employees', UserController::class);
+            Route::group(['prefix' => 'dashboard'], function () {
+                Route::get('/', [DashboardController::class, 'dashboardAdmin'])->name('dashboard-admin');
+            });
 
-        // Inventories
-        Route::group(['prefix' => 'inventory'], function () {
-            Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
-        });
+            // Employees
+            Route::group(['prefix' => 'employees'], function () {
+                Route::get('list', [UserController::class, 'list'])->name('employees.list');
+                Route::post('generate-password', [UserController::class, 'generatePassword'])->name('generate.password');
+            });
 
-        Route::resource('inventory', InventoryController::class);
+            Route::resource('employees', UserController::class);
 
-        // Products
-        Route::resource('products', ProductController::class);
+            // Inventories
+            Route::group(['prefix' => 'inventory'], function () {
+                Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
+            });
 
-        // Categories
-        Route::group(['prefix' => 'categories'], function () {
-            Route::get('list', [CategoriesController::class, 'list'])->name('categories.list');
-        });
+            Route::resource('inventory', InventoryController::class);
+
+            // Products
+            Route::resource('products', ProductController::class);
+
+            // Categories
+            Route::group(['prefix' => 'categories'], function () {
+                Route::get('list', [CategoriesController::class, 'list'])->name('categories.list');
+            });
         
-        Route::resource('categories', CategoriesController::class);
+            Route::resource('categories', CategoriesController::class);
 
-        // Expenses
-        Route::group(['prefix' => 'expenses'], function () {
-            Route::get('list', [ExpensesController::class, 'list'])->name('expenses.list');
-            Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
-        });
+            // Expenses
+            Route::group(['prefix' => 'expenses'], function () {
+                Route::get('list', [ExpensesController::class, 'list'])->name('expenses.list');
+                Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
+            });
         
-        Route::resource('expenses', ExpensesController::class);
+            Route::resource('expenses', ExpensesController::class);
+        });
     });
+
+    Route::group(['prefix' => 'employee'], function () { 
+
+        Route::group(['prefix' => 'dashboard'], function () {
+            Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
+            // Orders
+            Route::resource('orders', OrdersController::class);
+        });
+
+    });
+
 });
 
 
@@ -89,7 +109,6 @@ Route::middleware('auth')->group(function () {
 //     Route::get('analytics', [DashboardController::class, 'dashboardAnalytics'])->name('dashboard-analytics');
 //     Route::get('ecommerce', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
 // });
-
 
 /* Route Apps */
 Route::group(['prefix' => 'app'], function () {

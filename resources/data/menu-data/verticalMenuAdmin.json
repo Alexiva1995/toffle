@@ -8,14 +8,14 @@
       "slug": "dashboard"
     },
     {
-      "url": "employees/list",
+      "url": "admin/employees/list",
       "name": "employees",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "users",
       "slug": "employees.list"
     },
     {
-      "url": "inventory",
+      "url": "admin/inventory",
       "name": "inventory",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "database",
@@ -23,7 +23,7 @@
     },
 
     {
-      "url": "plates",
+      "url": "admin/plates",
       "name": "plates",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "layers",
@@ -37,37 +37,37 @@
       "slug": "reports",
       "submenu": [
         {
-          "url": "reports/module",
+          "url": "admin/reports/module",
           "name": "r_module",
           "icon": "circle",
           "slug": ""
         },
         {
-          "url": "reports/cash_flow",
+          "url": "admin/reports/cash_flow",
           "name": "r_cash_flow",
           "icon": "circle",
           "slug": ""
         },
         {
-          "url": "reports/sales",
+          "url": "admin/reports/sales",
           "name": "r_sales",
           "icon": "circle",
           "slug": ""
         },
         {
-          "url": "reports/expenses",
+          "url": "admin/reports/expenses",
           "name": "r_expenses",
           "icon": "circle",
           "slug": ""
         },
         {
-          "url": "reports/more_sold",
+          "url": "admin/reports/more_sold",
           "name": "r_gain",
           "icon": "circle",
           "slug": ""
         },
         {
-          "url": "reports/all_reports",
+          "url": "admin/reports/all_reports",
           "name": "all_reports",
           "icon": "circle",
           "slug": ""
@@ -75,21 +75,21 @@
       ]
     },
     {
-      "url": "categories/list",
+      "url": "admin/categories/list",
       "name": "categories",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "bookmark",
       "slug": "categories.list"
     },
     {
-      "url": "expenses/list",
+      "url": "admin/expenses/list",
       "name": "expenses",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "trending-down",
       "slug": "expenses.list"
     },
     {
-      "url": "orders",
+      "url": "admin/orders",
       "name": "orders",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "shopping-bag",
