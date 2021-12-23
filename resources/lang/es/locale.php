@@ -185,7 +185,7 @@ return [
     "dashboard" => "Dashboard",
     "employees" => "Empleados",
     "inventory" => "Inventario",
-    "plates" => "Platos",
+    "dishes" => "Platos",
 
     //Reports
     "reports" => "Informes",
