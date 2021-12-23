@@ -38,6 +38,25 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <div class="mb-1">
+                                            <label class="form-label" for="amount">Categoría</label>
+                                            <select class="select2 form-control" data-toggle="select" name="category_id"
+                                                id="category_id">
+                                                <option value selected disabled>Seleccionar una Categoría</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}"> {{ $category->name }} </option>
+                                                @endforeach
+                                            </select>
+                                            @error('category_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror    
+                                        </div>
+                                    </div>
+
                                     <div class="col-12 col-md-8 mb-1">
                                         <label class="label-required">
                                             Descripción

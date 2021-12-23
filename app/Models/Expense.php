@@ -11,9 +11,10 @@ class Expense extends Model
     use HasFactory;
 
     protected $fillable = [
-        'description',
         'amount',
-        'deposit',
+        'category_id',
+        'status',
+        'description',
     ];
 
     public function getCreatedAtTimezoneAttribute()
@@ -29,5 +30,10 @@ class Expense extends Model
     {
         $days = array("Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo");
         return $days[date('N', strtotime($date)) -1 ];
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category', 'category_id', 'id');
     }
 }

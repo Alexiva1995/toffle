@@ -64,7 +64,7 @@
                                     <button class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $employee->id }}, 
                                     '#delete_employee_', 
-                                    'Empleado' )"> 
+                                    'este Empleado' )"> 
                                         <i data-feather="trash-2"></i> 
                                     </button>
 

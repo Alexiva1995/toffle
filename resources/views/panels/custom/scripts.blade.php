@@ -72,7 +72,7 @@
     function deleteElement(id,  form_id, text_element) {
         $.confirm({
             title: 'Confirmar!',
-            content: 'Estas seguro que quieres eliminar este '+text_element+'?',
+            content: 'Estas seguro que quieres eliminar '+text_element+'?',
             buttons: {
                 confirm: {
                     text: 'Eliminar',

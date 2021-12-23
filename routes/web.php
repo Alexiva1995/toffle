@@ -22,8 +22,9 @@ use App\Http\Controllers\ChartsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ExpensesController;
-
+use App\Http\Controllers\OrdersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,47 +44,63 @@ use App\Http\Controllers\ExpensesController;
 /* Route Dashboards */
 Auth::routes(['verify' => true]);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
+Route::middleware('auth')->group(function () { 
+
+    Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
     Route::middleware('admin')->group(function () { 
 
-        // Employees
-        Route::group(['prefix' => 'employees'], function () {
-            Route::get('list', [UserController::class, 'list'])->name('employees.list');
-            Route::post('generate-password', [UserController::class, 'generatePassword'])->name('generate.password');
-        });
+        Route::group(['prefix' => 'admin'], function () {
 
-        Route::resource('employees', UserController::class);
+            Route::group(['prefix' => 'dashboard'], function () {
+                Route::get('/', [DashboardController::class, 'dashboardAdmin'])->name('dashboard-admin');
+            });
 
-        // Inventories
-        Route::group(['prefix' => 'inventory'], function () {
-            Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
-        });
+            // Employees
+            Route::group(['prefix' => 'employees'], function () {
+                Route::get('list', [UserController::class, 'list'])->name('employees.list');
+                Route::post('generate-password', [UserController::class, 'generatePassword'])->name('generate.password');
+            });
 
-        Route::resource('inventory', InventoryController::class);
+            Route::resource('employees', UserController::class);
 
-        // Products
-        Route::resource('products', ProductController::class);
-        Route::group(['prefix' => 'products'], function () {
-            Route::post('store', [ProductController::class, 'store'])->name('store.product');
-            Route::patch('update/{id}', [ProductController::class, 'update'])->name('update.product');
-        });
+            // Inventories
+            Route::group(['prefix' => 'inventory'], function () {
+                Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
+            });
 
-        Route::group(['prefix' => 'dishes'], function () {
-            Route::get('/', [DishController::class, 'index'])->name('index.dishes');
-            Route::get('create', [DishController::class, 'create'])->name('create.dishes');
-            Route::post('store', [DishController::class, 'store'])->name('store.dishes');
-            Route::get('edit/{id}', [DishController::class, 'edit'])->name('edit.dishes');
-            Route::patch('update/{id}', [DishController::class, 'update'])->name('update.dishes');
-        });
+            Route::resource('inventory', InventoryController::class);
 
-        Route::group(['prefix' => 'ingredients'], function () {
-            Route::post('store', [\App\Http\Controllers\IngredientController::class, 'store'])->name('store.ingredients');
-            Route::get('edit/{id}', [\App\Http\Controllers\IngredientController::class, 'edit'])->name('edit.ingredients');
-            Route::patch('update/{id}', [\App\Http\Controllers\IngredientController::class, 'update'])->name('update.ingredients');
+            // Products
+            Route::resource('products', ProductController::class);
+
+            // Categories
+            Route::group(['prefix' => 'categories'], function () {
+                Route::get('list', [CategoriesController::class, 'list'])->name('categories.list');
+            });
+        
+            Route::resource('categories', CategoriesController::class);
+
+            // Expenses
+            Route::group(['prefix' => 'expenses'], function () {
+                Route::get('list', [ExpensesController::class, 'list'])->name('expenses.list');
+                Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
+            });
+        
+            Route::resource('expenses', ExpensesController::class);
         });
     });
+
+    Route::group(['prefix' => 'employee'], function () { 
+
+        Route::group(['prefix' => 'dashboard'], function () {
+            Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
+            // Orders
+            Route::resource('orders', OrdersController::class);
+        });
+
+    });
+
 });
 
 
@@ -93,7 +110,6 @@ Route::middleware('auth')->group(function () {
 //     Route::get('analytics', [DashboardController::class, 'dashboardAnalytics'])->name('dashboard-analytics');
 //     Route::get('ecommerce', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
 // });
-
 
 /* Route Apps */
 Route::group(['prefix' => 'app'], function () {

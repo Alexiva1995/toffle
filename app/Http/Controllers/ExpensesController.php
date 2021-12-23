@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Expense;
+use App\Models\Category;
 use DataTables;
 use Carbon\Carbon;
 
@@ -27,7 +28,9 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-        return view('admin.expenses.create');
+        $categories = Category::all();
+        return view('admin.expenses.create')
+            ->with('categories', $categories);
     }
 
     /**
@@ -40,11 +43,13 @@ class ExpensesController extends Controller
     {
         $fields = [
             'amount' => ['required'],
+            'category_id' => ['required'],
             'description' => ['required'],
         ];
 
         $msj = [
             'amount.required' => 'El monto es requerido.',
+            'category_id.required' => 'La categorá es requerida.',
             'description.required' => 'La descripción es requerida.',
         ];
 
@@ -74,7 +79,10 @@ class ExpensesController extends Controller
             ->orderBy('created_at', 'ASC')
             ->get();
 
+        $categories = Category::all();
+
         return view('admin.expenses.show')
+            ->with('categories', $categories)
             ->with('expense_details', $expense_details)
             ->with('expenses', $expenses);
     }
@@ -99,7 +107,25 @@ class ExpensesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $expense = Expense::find($id);
+
+        $fields = [
+            'amount' => ['required'],
+            'category_id' => ['required'],
+            'description' => ['required'],
+        ];
+
+        $msj = [
+            'amount.required' => 'El monto es requerido.',
+            'category_id.required' => 'La categorá es requerida.',
+            'description.required' => 'La descripción es requerida.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $expense->update($request->all());
+
+        return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->created_at)) )->with('success', 'Gasto Actualizado');
     }
 
     /**
@@ -110,7 +136,11 @@ class ExpensesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $expense = Expense::find($id);
+
+        $expense->delete();
+
+        return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->created_at)) )->with('success', 'Gasto Eliminado');
     }
 
     public function list()

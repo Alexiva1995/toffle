@@ -198,6 +198,7 @@ return [
     "all_reports" => "Todos los Informes",
     // End Reports
 
+    "categories" => "Categorías",
     "expenses" => "Gastos",
     "orders" => "Pedidos",
     "flow_day" => "Flujo del día"
