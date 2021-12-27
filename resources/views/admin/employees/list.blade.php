@@ -34,8 +34,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table" id="table">
+                <div class="table-responsive rounded-1 border-primary p-1">
+                    <table class="table" id="table" >
                         <thead>
                             <tr>
                                 <th>N°</th>
