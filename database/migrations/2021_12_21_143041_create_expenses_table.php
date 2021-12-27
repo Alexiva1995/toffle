@@ -17,7 +17,7 @@ class CreateExpensesTable extends Migration
             $table->id();
             $table->double('amount');
             $table->integer('category_id');
-            $table->enum('status', [0, 1])->default(0)->comment('0 - Por Pagar, 1 - Pagados');
+            $table->enum('status', [0, 1])->default(1)->comment('0 - Por Pagar, 1 - Pagado');
             $table->text('description');
             $table->timestamps();
         });
