@@ -15,4 +15,9 @@ class Dish extends Model
     {
         return $this->belongsToMany('App\Models\Ingredient', 'dishes_ingredients');
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany('App\Models\Order', 'orders');
+    }
 }
