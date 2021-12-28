@@ -7,6 +7,7 @@ use App\Models\Expense;
 use App\Models\Category;
 use DataTables;
 use Carbon\Carbon;
+use Session;
 
 
 class ExpensesController extends Controller
@@ -72,10 +73,14 @@ class ExpensesController extends Controller
     {
         $date = $id;
 
-        $expense_details = Expense::selectRaw('DATE(created_at) as date, sum(amount) as amount')
-            ->whereDate('created_at', $date)
-            ->groupBy('date')
-            ->first();
+        $expense_details = Expense::selectRaw('DATE(created_at) as date')
+        ->whereDate('created_at', $date)
+        ->groupBy('date')
+        ->first();
+
+        if ($expense_details == null) {
+            return redirect()->route('expenses.list');
+        }
 
         $expenses = Expense::whereDate('created_at', $date)
             ->orderBy('created_at', 'ASC')
@@ -127,6 +132,8 @@ class ExpensesController extends Controller
 
         $expense->update($request->all());
 
+        Session::flash('paid_out', $request->status == 1 ? null : true);
+
         return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->created_at)) )->with('success', 'Gasto Actualizado');
     }
 
@@ -136,11 +143,13 @@ class ExpensesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $expense = Expense::find($id);
 
         $expense->delete();
+
+        Session::flash('paid_out', $request->status == 1 ? null : true);
 
         return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->created_at)) )->with('success', 'Gasto Eliminado');
     }
@@ -152,7 +161,8 @@ class ExpensesController extends Controller
 
     public function data(Request $request)
     {
-        $expenses = Expense::selectRaw('DATE(created_at) as date, sum(amount) as amount')
+        $expenses = Expense::selectRaw('DATE(created_at) as date,
+        sum(CASE WHEN status = "1" THEN amount ELSE 0 END) as amount')
         ->orderBy('date', 'DESC')
         ->groupBy('date');
             
