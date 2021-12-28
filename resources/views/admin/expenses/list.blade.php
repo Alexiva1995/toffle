@@ -125,7 +125,9 @@
             ],
             fnCreatedRow: function (elemt, data, iDataIndex) {},
 
-            }).on('processing.dt', function (e, settings, processing) {});
+            }).on('processing.dt', function (e, settings, processing) {
+                feather.replace();
+            });
 
             $('#timestamp').change(function() {
                 table.search('').draw();

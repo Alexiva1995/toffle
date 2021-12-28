@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\Dish;
+use App\Models\Category;
 use Auth;
 
 class DashboardController extends Controller
@@ -45,6 +48,9 @@ class DashboardController extends Controller
   {
     $pageConfigs = ['pageHeader' => false];
 
-    return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs]);
+    $orders = Order::all();
+
+    return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
+      ->with('orders', $orders);
   }
 }
