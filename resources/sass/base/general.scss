@@ -92,3 +92,12 @@ p, h1, h2, h3, h4, h5, h6, label, span, .form-label {
 .modal .modal-header .btn-close{
   background-color: #FF5933 !important; 
 }
+
+table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before{
+  background-image: url('./svg/arrow-up.svg') !important;
+
+}
+
+table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{
+  background-image: url('./svg/arrow-down.svg') !important;
+}
