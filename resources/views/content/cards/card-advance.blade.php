@@ -809,7 +809,7 @@
         </div>
         <!-- Submit Chat form -->
         <form class="chat-app-form" action="javascript:void(0);" onsubmit="enterChat();">
-          <div class="input-group input-group-merge me-50 w-75 form-send-message">
+          <div class="input-group input-group-merge rounded border-primary me-50 w-75 form-send-message">
             <span class="input-group-text">
               <label for="attach-doc" class="attachment-icon mb-0">
                 <i data-feather="image" class="cursor-pointer text-secondary"></i>

@@ -118,7 +118,7 @@
           <div class="mb-1">
             <label for="register-password" class="form-label">Password</label>
 
-            <div class="input-group input-group-merge form-password-toggle @error('password') is-invalid @enderror">
+            <div class="input-group input-group-merge rounded border-primary form-password-toggle @error('password') is-invalid @enderror">
               <input
                 type="password"
                 class="form-control form-control-merge @error('password') is-invalid @enderror"
@@ -140,7 +140,7 @@
           <div class="mb-1">
             <label for="register-password-confirm" class="form-label">Confirm Password</label>
 
-            <div class="input-group input-group-merge form-password-toggle">
+            <div class="input-group input-group-merge rounded border-primary form-password-toggle">
               <input
                 type="password"
                 class="form-control form-control-merge"

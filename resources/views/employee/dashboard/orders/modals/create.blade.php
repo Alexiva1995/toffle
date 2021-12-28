@@ -52,7 +52,7 @@
                                     <div class="col-12 col-md-6 mb-1">
                                         <div class="mb-1">
                                             <label class="form-label" for="customer_name">Nombre del Cliente</label>
-                                            <div class="input-group input-group-merge">
+                                            <div class="input-group input-group-merge rounded border-primary">
                                                 <span class="input-group-text"><i data-feather="user"></i></span>
                                                 <input type="text" id="customer_name" class="form-control requerid @error('customer_name') is-invalid @enderror" name="customer_name"
                                                     placeholder="Nombre"/>
@@ -67,7 +67,7 @@
                                     <div class="col-12 col-md-6 mb-1">
                                         <div class="mb-1">
                                             <label class="form-label" for="table">Mesa</label>
-                                            <div class="input-group input-group-merge">
+                                            <div class="input-group input-group-merge rounded border-primary">
                                                 <span class="input-group-text"><i data-feather="tag"></i></span>
                                                 <input type="text" id="table" class="form-control requerid @error('table') is-invalid @enderror" name="table"
                                                     placeholder="Mesa" />
@@ -82,7 +82,7 @@
                                     <div class="col-12 col-md-6 mb-1">
                                         <div class="mb-1">
                                             <label class="form-label" for="total_amount">Monto de lo Pedido</label>
-                                            <div class="input-group input-group-merge">
+                                            <div class="input-group input-group-merge rounded border-primary">
                                                 <span class="input-group-text"><i data-feather="archive"></i></span>
                                                 <input type="number" id="total_amount" class="form-control requerid @error('total_amount') is-invalid @enderror" name="total_amount"
                                                     placeholder="Monto Total" />

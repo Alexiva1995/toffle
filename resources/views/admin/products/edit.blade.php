@@ -13,7 +13,7 @@
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="name">Nombre</label>
-                                <div class="input-group input-group-merge">
+                                <div class="input-group input-group-merge rounded border-primary">
                                     <span class="input-group-text"><i data-feather="package"></i></span>
                                     <input type="text" id="edit_name" class="form-control requerid @error('name') is-invalid @enderror" name="name"
                                         placeholder="Nombre"/>
@@ -28,7 +28,7 @@
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="mark">Marca</label>
-                                <div class="input-group input-group-merge">
+                                <div class="input-group input-group-merge rounded border-primary">
                                     <span class="input-group-text"><i data-feather="tag"></i></span>
                                     <input type="text" id="edit_mark" class="form-control requerid @error('mark') is-invalid @enderror" name="mark"
                                         placeholder="Marca" />
@@ -43,7 +43,7 @@
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="gr">Gr.</label>
-                                <div class="input-group input-group-merge">
+                                <div class="input-group input-group-merge rounded border-primary">
                                     <span class="input-group-text"><i data-feather="archive"></i></span>
                                     <input type="number" id="edit_gr" class="form-control requerid @error('gr') is-invalid @enderror" name="gr"
                                         placeholder="Gr." />
@@ -58,7 +58,7 @@
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="units_reposition_alert">Alerta de Unidades de Reposición</label>
-                                <div class="input-group input-group-merge">
+                                <div class="input-group input-group-merge rounded border-primary">
                                     <span class="input-group-text"><i data-feather="alert-triangle"></i></span>
                                     <input type="number" id="edit_units_reposition_alert" class="form-control requerid @error('units_reposition_alert') is-invalid @enderror" name="units_reposition_alert"
                                         placeholder="Alerta" />

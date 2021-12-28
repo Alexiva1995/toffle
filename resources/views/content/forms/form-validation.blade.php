@@ -69,7 +69,7 @@
             </div>
             <div class="mb-1">
               <label class="form-label" for="select-country1">Country</label>
-              <select class="form-select" id="select-country1" required>
+              <select class="form-select rounded border-primary" id="select-country1" required>
                 <option value="">Select Country</option>
                 <option value="usa">USA</option>
                 <option value="uk">UK</option>
@@ -199,7 +199,7 @@
             </div>
             <div class="mb-1">
               <label class="form-label" for="select-country">Country</label>
-              <select class="form-select select2" id="select-country" name="select-country">
+              <select class="form-select rounded border-primary select2" id="select-country" name="select-country">
                 <option value="">Select Country</option>
                 <option value="usa">USA</option>
                 <option value="uk">UK</option>

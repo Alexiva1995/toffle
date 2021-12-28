@@ -72,7 +72,7 @@
 <section id="ecommerce-searchbar" class="ecommerce-searchbar">
   <div class="row mt-1">
     <div class="col-sm-12">
-      <div class="input-group input-group-merge">
+      <div class="input-group input-group-merge rounded border-primary">
         <input
           type="text"
           class="form-control search-product"

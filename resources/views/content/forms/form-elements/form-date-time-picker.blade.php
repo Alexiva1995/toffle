@@ -25,7 +25,7 @@
       <div class="row">
         <div class="col-md-6 mb-1">
           <label class="form-label" for="fp-default">Default</label>
-          <input type="text" id="fp-default" class="form-control flatpickr-basic" placeholder="YYYY-MM-DD" />
+          <input type="text" id="fp-default" class="form-control flatpickr-basic rounded border-primary" placeholder="YYYY-MM-DD" />
         </div>
         <div class="col-md-6 mb-1">
           <label class="form-label" for="fp-time">Time picker</label>
