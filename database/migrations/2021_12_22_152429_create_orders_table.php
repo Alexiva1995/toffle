@@ -15,6 +15,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('customer_name');
+            $table->string('table');
+            $table->double('total_amount');
+            $table->enum('status', [0, 1, 2, 3])->default(0)->comment('0 - Pendientes, 1 - En Espera, 2 - Finalizados, 3 - Cancelados');
             $table->timestamps();
         });
     }

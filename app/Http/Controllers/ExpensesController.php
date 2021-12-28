@@ -45,11 +45,13 @@ class ExpensesController extends Controller
             'amount' => ['required'],
             'category_id' => ['required'],
             'description' => ['required'],
+            'status' => ['required'],
         ];
 
         $msj = [
             'amount.required' => 'El monto es requerido.',
-            'category_id.required' => 'La categorá es requerida.',
+            'category_id.required' => 'La categoría es requerida.',
+            'status.required' => 'El Estado es requerido.',
             'description.required' => 'La descripción es requerida.',
         ];
 
