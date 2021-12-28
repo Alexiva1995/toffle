@@ -7,6 +7,28 @@ p, h1, h2, h3, h4, h5, h6, label, span, .form-label {
     color: #512F26
 }
 
+// input[type=text], input[type=password] , input[type=email], input[type=checkbox], input[type=search], input[type=number]{
+//   border: 1px solid #512F26 !important;
+// }
+
+// .input-group-text > input[type=text], input[type=password] , input[type=email], input[type=checkbox], input[type=search], input[type=number]{
+//   border-left: transparent !important;
+// }
+
+// span.input-group-text {
+//   background: transparent;
+//   border-color: #512F26 !important;
+// }
+
+.btn-outline-secondary:hover{
+  background-color: #512F26 !important;
+  color: #fff !important;
+}
+
+::placeholder{
+  color: #512F26 !important;
+}
+
 .btn-max {
   background-color: #FF5933 
 }
@@ -19,4 +41,54 @@ p, h1, h2, h3, h4, h5, h6, label, span, .form-label {
   padding: 0.286rem 0.5rem;
   font-size: 0.9rem;
   border-radius: 0.358rem;
+}
+
+.table:not(.table-dark):not(.table-light) thead:not(.table-dark) th, .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th{
+
+  background-color: #512F26;
+  color: #fff;
+}
+
+.border-primary {
+  border: 1px solid #512F26 !important;
+}
+
+.main-menu.menu-light .navigation > li.active span.menu-title.text-truncate{
+  color: #fff !important;
+}
+
+.page-item.previous .page-link, .page-item.prev .page-link, .page-item.next .page-link, .page-item.first .page-link, .page-item.last .page-link{
+
+  color: #fff;
+}
+
+.page-item.active {
+  background-color: #512F26;
+}
+
+.page-item:not(.prev-item) .page-link, .page-item:not(.next-item) .page-link, .page-item:not(.first) .page-link, .page-item:not(.last) .page-link, .page-item:not(.active) .page-link {
+  background-color: #512F26;
+}
+
+.dataTables_info{
+  color: #512F26 !important;
+}
+
+.page-item.next .page-link:after{
+
+  color: #fff;
+}
+
+.modal .modal-header {
+  background-color: #512F26 !important;
+}
+
+#myModalLabel1{
+  color: #FF5933 !important;
+  margin-left: 22px !important;
+  font-weight: bolder !important;
+}
+
+.modal .modal-header .btn-close{
+  background-color: #FF5933 !important; 
 }

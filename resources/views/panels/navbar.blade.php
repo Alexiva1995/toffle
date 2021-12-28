@@ -41,6 +41,9 @@
           <ul class="nav navbar-nav d-xl-none">
             <li class="nav-item"><a class="nav-link menu-toggle" href="javascript:void(0);"><i class="ficon" data-feather="menu"></i></a></li>
           </ul>
+          <span class="h2 pt-1">
+           <b>@yield('title')</b>
+          </span>
         {{--<ul class="nav navbar-nav bookmark-icons">
             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{url('app/email')}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Email"><i class="ficon" data-feather="mail"></i></a></li>
             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{url('app/chat')}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Chat"><i class="ficon" data-feather="message-square"></i></a></li>
@@ -86,7 +89,7 @@
               </a>
             </div>
           </li>
-          <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="{{($configData['theme'] === 'dark') ? 'sun' : 'moon' }}"></i></a></li>
+          {{-- <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="{{($configData['theme'] === 'dark') ? 'sun' : 'moon' }}"></i></a></li> --}}
           {{-- <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon" data-feather="search"></i></a>
             <div class="search-input">
               <div class="search-input-icon"><i data-feather="search"></i></div>
