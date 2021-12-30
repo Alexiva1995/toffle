@@ -23,7 +23,7 @@
                             <form class="form form-vertical" action="{{ route('orders.store') }}" id="form_add_order" method="POST">
                                 @csrf
                                 <div class="row justify-content-center align-items-center">
-                                    <div class="col-12 col-md-4 mb-1">
+                                    <div class="col-12 col-md-6 mb-1">
                                         <div class="mb-1">
                                             <label class="form-label" for="customer_name">Nombre del Cliente</label>
                                             <div class="input-group input-group-merge">
@@ -38,7 +38,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-4 mb-1">
+                                    <div class="col-12 col-md-6 mb-1">
                                         <div class="mb-1">
                                             <label class="form-label" for="table">Mesa</label>
                                             <div class="input-group input-group-merge">
@@ -53,7 +53,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-4 mb-1">
+                                    {{-- <div class="col-12 col-md-4 mb-1">
                                         <div class="mb-1">
                                             <label class="form-label" for="total_amount">Monto Total de lo Pedido</label>
                                             <div class="input-group input-group-merge">
@@ -67,14 +67,16 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                    </div>    
+                                    </div>     --}}
 
+                                    <hr>
                                     <div class="col-12 mb-1">
                                         <div class="mb-1">
                                             <div class="row justify-content-center">
+                                                <h5 class="text-center mb-2">Añadir Platos</h5>
                                                 <div class="col-12 col-md-6">
                                                     <select class="select2 form-control" data-toggle="select" class="form-control" id="selected_dish">
-                                                        <option disabled selected value="">Selecciona un Plato</option>
+                                                        <option disabled selected value=''>Selecciona un Plato</option>
                                                         <optgroup label="Postres"> 
                                                             <option value="plate1">Postre1</option>
                                                             <option value="plate2">Postre2</option> 
@@ -116,7 +118,7 @@
                                                 <tr style="font-weight: bold; font-size: 14px;">
                                                     <td style="border-top: none !important;"></td>
                                                     <td colspan="2" class="text-right">TOTAL</td>
-                                                    <td colspan="2" class="text-right" style="padding-right: 20px;"><input type="text" class="form-control" name="total" id="total" value="0.00" style="border: none !important; font-size: 14px !important;" readonly></td>
+                                                    <td colspan="2" class="text-right" style="padding-right: 20px;"><input type="text" class="form-control" name="total" id="total_amount" value="0.00" style="border: none !important; font-size: 14px !important;" readonly></td>
                                                 </tr>
                                             </tfoot>
                                         </table>           

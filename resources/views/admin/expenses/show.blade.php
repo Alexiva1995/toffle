@@ -25,69 +25,45 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                Detalles
+                                Detalles {{  Session::has('paid_out')  }}
                             </li>
                         </ol>
                   </div>
-                <div class="row align-items-center">
-                    <div class="col-12 col-md-6">
-                        <div class="row my-3">
-                            <div class="col-auto">
-                                <h5>Fecha: <span class="h6"> {{ $expense_details->date }} </span> </h5> 
-                            </div>
-                            <div class="col-auto">
-                                <h5>Día <span class="h6"> {{ $expense_details->getDay($expense_details->date) }} </span> </h5>
-                            </div>
-                            <div class="col-auto">
-                                <h5>Monto Total: <span class="h6"> {{ $expense_details->amount }} </span> </h5>
-                            </div>
-                        </div>
+                  <ul class="nav nav-tabs justify-content-center" role="tablist">
+                    <li class="nav-item">
+                      
+                      <a
+                        class="nav-link {{ Session::has('paid_out') == true ? '' : 'active' }}"
+                        id="paid-out-tab-center"
+                        data-bs-toggle="tab"
+                        href="#paid-out-center"
+                        aria-controls="paid-out-center"
+                        role="tab"
+                        aria-selected="false"
+                        >Pagados</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link {{ Session::has('paid_out') == true ? 'active' : '' }}"
+                        id="to-pay-tab-center"
+                        data-bs-toggle="tab"
+                        href="#to-pay-center"
+                        aria-controls="to-pay-center"
+                        role="tab"
+                        aria-selected="false"
+                        >Por Pagar</a
+                      >
+                    </li>
+                  </ul>
+                  <div class="tab-content">
+                    <div class="tab-pane {{ Session::has('paid_out') == true ? '' : 'active' }}" id="paid-out-center" aria-labelledby="paid-out-tab-center" role="tabpanel">
+                      @include('admin.expenses.partials.paid_out')
                     </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table" id="table">
-                        <thead>
-                            <tr>
-                                <th class="text-center">N°</th>
-                                <th class="text-center">Categoría</th>
-                                <th class="text-center">Monto</th>
-                                <th class="text-center">Estado</th>
-                                <th class="text-center">Descripción</th>
-                                <th class="text-center">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($expenses as $expense)
-                            <tr>
-                                <td class="text-center">{{ $loop->iteration }}</td>
-                                <td class="text-center">{{ $expense->category->name}}</td>
-                                <td class="text-center">{{ $expense->amount}}</td>
-                                <td class="text-center"> 
-                                    <span class="badge badge-light-{{ $expense->status == 0 ? 'warning' : 'success' }}">
-                                        {{ $expense->status == 0 ? 'Por Pagar' : 'Pagado' }}
-                                    </span>
-                                </td>
-                                
-                                <td class="text-center">{{ $expense->description }}</td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-info my-1" data-description = "{{ $expense->description }}"
-                                        onclick="editExpense( $(this), {{ $expense->id }}, {{ $expense->category_id }}, {{ $expense->amount }}, {{ $expense->status }} )">
-                                        <i data-feather="edit"></i> 
-                                    </button> 
-
-                                    <button class="btn btn-sm btn-danger" onclick="deleteElement( {{ $expense->id }}, '#delete_expense_', 'este Gasto' )"> 
-                                        <i data-feather="trash-2"></i> 
-                                    </button>
-                                    <form id="delete_expense_{{ $expense->id }}" action="{{ route('expenses.destroy', $expense->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')                                      
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    <div class="tab-pane {{ Session::has('paid_out') == true ? 'active' : '' }}" id="to-pay-center" aria-labelledby="to-pay-tab-center" role="tabpanel">
+                        @include('admin.expenses.partials.to_pay')
+                    </div>
+                  </div>
             </div>
         </div>
     </div>
@@ -137,7 +113,7 @@
 
         submitForms('#edit_expense', '.loading_edit_exp', '#form_edit_expense');
 
-        function editExpense(element, id, category_id, amount, status, description) {
+        function editExpense(element, id, category_id, amount, status) {
             var route = '{{route('expenses.update', 'replace_this')}}'.replace('replace_this', id);
             $('#form_edit_expense').attr('action', route);
             $("#category_id option[value="+ category_id +"]").attr("selected", true).trigger('change');
@@ -147,6 +123,8 @@
             $('#modal_edit_expense').modal('show');
         }
 
-        dataTable('#table');
+        dataTable('#table_orders_paid_out');
+        dataTable('#table_orders_to_pay');
+
     </script>
 @endsection
