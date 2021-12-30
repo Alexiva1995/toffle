@@ -18,68 +18,68 @@
                 </thead>
                 <tbody>
                     @foreach ($orders->whereIn('status', [0, 1]) as $order)
-                    <tr>
-                        <td class="text-center"> {{ $loop->iteration }} </td>
-                        <td class="text-center"> {{ $order->customer_name }} </td>
-                        <td class="text-center"> {{ $order->table }} </td>
-                        <td class="text-center">  
-                            <div class="d-flex align-items-center justify-content-center">
+                        <tr>
+                            <td class="text-center"> {{ $loop->iteration }} </td>
+                            <td class="text-center"> {{ $order->customer_name }} </td>
+                            <td class="text-center"> {{ $order->table }} </td>
+                            <td class="text-center">  
+                                <div class="d-flex align-items-center justify-content-center">
 
-                                @switch($order->status)
-                                    @case(0)
-                                        <div class="avatar bg-light-warning me-1">
-                                            <div class="avatar-content">
-                                                <i data-feather="alert-circle" class="font-medium-3"></i>
-                                            </div>
-                                        </div>
-                                        @break
-                                    @case(1)
-                                        <div class="avatar bg-light-info me-1">
-                                            <div class="avatar-content">
-                                                <i data-feather="clock" class="font-medium-3"></i>
-                                            </div>
-                                        </div>
-                                        @break
-                                    @case(2)
-                                        <div class="avatar bg-light-success me-1">
-                                            <div class="avatar-content">
-                                                <i data-feather="dollar-sign" class="font-medium-3"></i>
-                                            </div>
-                                        </div>
-                                        @break
-                                    @case(3)
-                                        <div class="avatar bg-light-danger me-1">
-                                            <div class="avatar-content">
-                                                <i data-feather="x-circle" class="font-medium-3"></i>
-                                            </div>
-                                        </div>
-                                        @break
-                                    @default                                           
-                                @endswitch
-
-                                <span>
                                     @switch($order->status)
                                         @case(0)
-                                            Pendiente
+                                            <div class="avatar bg-light-warning me-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather="alert-circle" class="font-medium-3"></i>
+                                                </div>
+                                            </div>
                                             @break
                                         @case(1)
-                                            En Espera
+                                            <div class="avatar bg-light-info me-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather="clock" class="font-medium-3"></i>
+                                                </div>
+                                            </div>
                                             @break
                                         @case(2)
-                                            Finalizado
+                                            <div class="avatar bg-light-success me-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather="dollar-sign" class="font-medium-3"></i>
+                                                </div>
+                                            </div>
                                             @break
                                         @case(3)
-                                            Cancelado
+                                            <div class="avatar bg-light-danger me-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather="x-circle" class="font-medium-3"></i>
+                                                </div>
+                                            </div>
                                             @break
                                         @default                                           
                                     @endswitch
-                                </span>
-                            </div>
-                        </td>
-                        <td class="text-center">
-                            <a href="" class="btn btn-sm btn-info my-1"> <i data-feather="edit"></i> </a>
-                        </td>
-                    </tr>
+
+                                    <span>
+                                        @switch($order->status)
+                                            @case(0)
+                                                Pendiente
+                                                @break
+                                            @case(1)
+                                                En Espera
+                                                @break
+                                            @case(2)
+                                                Finalizado
+                                                @break
+                                            @case(3)
+                                                Cancelado
+                                                @break
+                                            @default                                           
+                                        @endswitch
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-info my-1"> <i data-feather="edit"></i> </a>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>

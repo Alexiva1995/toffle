@@ -97,8 +97,15 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'dashboard'], function () {
             Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
+
             // Orders
+            Route::group(['prefix' => 'orders'], function () {
+                Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
+                Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
+            });
             Route::resource('orders', OrdersController::class);
+
+
             Route::group(['prefix' => 'ingredients'], function () {
                 Route::get('create', [IngredientController::class, 'create'])->name('create.ingredients');
                 Route::post('store', [IngredientController::class, 'store'])->name('store.ingredients');
