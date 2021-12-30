@@ -7,6 +7,7 @@ p, h1, h2, h3, h4, h5, h6, label, span, .form-label {
     color: #512F26
 }
 
+// CSS para los inputs
 // input[type=text], input[type=password] , input[type=email], input[type=checkbox], input[type=search], input[type=number]{
 //   border: 1px solid #512F26 !important;
 // }
@@ -20,13 +21,30 @@ p, h1, h2, h3, h4, h5, h6, label, span, .form-label {
 //   border-color: #512F26 !important;
 // }
 
-.btn-outline-secondary:hover{
-  background-color: #512F26 !important;
+// css sidebard
+.main-menu.menu-light .navigation > li.active span.menu-title.text-truncate{
   color: #fff !important;
 }
 
+.main-menu .shadow-bottom{
+  background: rgb(255,255,255);
+  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(248,239,216,1) 0%);
+}
+
+// color de los placeholder
 ::placeholder{
   color: #512F26 !important;
+}
+
+// borde de los inputs
+.border-primary {
+  border: 1px solid #512F26 !important;
+}
+
+// css botones
+.btn-outline-secondary:hover{
+  background-color: #512F26 !important;
+  color: #fff !important;
 }
 
 .btn-max {
@@ -43,18 +61,20 @@ p, h1, h2, h3, h4, h5, h6, label, span, .form-label {
   border-radius: 0.358rem;
 }
 
+// css datatable
 .table:not(.table-dark):not(.table-light) thead:not(.table-dark) th, .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th{
 
   background-color: #512F26;
   color: #fff;
 }
 
-.border-primary {
-  border: 1px solid #512F26 !important;
+table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before{
+  background-image: url('./svg/arrow-up.svg') !important;
+
 }
 
-.main-menu.menu-light .navigation > li.active span.menu-title.text-truncate{
-  color: #fff !important;
+table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{
+  background-image: url('./svg/arrow-down.svg') !important;
 }
 
 .page-item.previous .page-link, .page-item.prev .page-link, .page-item.next .page-link, .page-item.first .page-link, .page-item.last .page-link{
@@ -79,6 +99,7 @@ p, h1, h2, h3, h4, h5, h6, label, span, .form-label {
   color: #fff;
 }
 
+// css modales
 .modal .modal-header {
   background-color: #512F26 !important;
 }
@@ -92,3 +113,8 @@ p, h1, h2, h3, h4, h5, h6, label, span, .form-label {
 .modal .modal-header .btn-close{
   background-color: #FF5933 !important; 
 }
+
+.btn-close{
+  background-image: url('./svg/close.svg') !important;
+}
+

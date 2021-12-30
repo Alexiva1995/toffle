@@ -65,7 +65,7 @@ $configData = Helper::applClasses();
             <div class="d-flex justify-content-between">
               <label class="form-label" for="reset-password-new">New Password</label>
             </div>
-            <div class="input-group input-group-merge form-password-toggle">
+            <div class="input-group input-group-merge rounded border-primary form-password-toggle">
               <input class="form-control form-control-merge" id="reset-password-new" type="password" name="reset-password-new" placeholder="············" aria-describedby="reset-password-new" autofocus="" tabindex="1" />
               <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
             </div>
@@ -74,7 +74,7 @@ $configData = Helper::applClasses();
             <div class="d-flex justify-content-between">
               <label class="form-label" for="reset-password-confirm">Confirm Password</label>
             </div>
-            <div class="input-group input-group-merge form-password-toggle">
+            <div class="input-group input-group-merge rounded border-primary form-password-toggle">
               <input class="form-control form-control-merge" id="reset-password-confirm" type="password" name="reset-password-confirm" placeholder="············" aria-describedby="reset-password-confirm" tabindex="2" />
               <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
             </div>

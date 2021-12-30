@@ -85,7 +85,7 @@
             <div class="invoice-number-date mt-md-0 mt-2">
               <div class="d-flex align-items-center justify-content-md-end mb-1">
                 <h4 class="invoice-title">Invoice</h4>
-                <div class="input-group input-group-merge invoice-edit-input-group">
+                <div class="input-group input-group-merge rounded border-primary invoice-edit-input-group">
                   <div class="input-group-text">
                     <i data-feather="hash"></i>
                   </div>
@@ -159,7 +159,7 @@
                     <div class="row w-100 pe-lg-0 pe-1 py-2">
                       <div class="col-lg-5 col-12 mb-lg-0 mb-2 mt-lg-0 mt-2">
                         <p class="card-text col-title mb-md-50 mb-0">Item</p>
-                        <select class="form-select item-details">
+                        <select class="form-select rounded border-primary item-details">
                           <option value="App Design">App Design</option>
                           <option value="App Customization" selected>App Customization</option>
                           <option value="ABC Template">ABC Template</option>
@@ -225,7 +225,7 @@
                           <div class="form-row mt-50">
                             <div class="mb-1 col-md-6">
                               <label for="tax-1-input" class="form-label">Tax 1</label>
-                              <select name="tax-1-input" id="tax-1-input" class="form-select tax-select">
+                              <select name="tax-1-input" id="tax-1-input" class="form-select rounded border-primary tax-select">
                                 <option value="0%" selected>0%</option>
                                 <option value="1%">1%</option>
                                 <option value="10%">10%</option>
@@ -235,7 +235,7 @@
                             </div>
                             <div class="mb-1 col-md-6">
                               <label for="tax-2-input" class="form-label">Tax 2</label>
-                              <select name="tax-2-input" id="tax-2-input" class="form-select tax-select">
+                              <select name="tax-2-input" id="tax-2-input" class="form-select rounded border-primary tax-select">
                                 <option value="0%" selected>0%</option>
                                 <option value="1%">1%</option>
                                 <option value="10%">10%</option>
@@ -338,7 +338,7 @@ It was a pleasure working with you and your team. We hope you will keep us in mi
       </div>
       <div class="mt-2">
         <p class="mb-50">Accept payments via</p>
-        <select class="form-select">
+        <select class="form-select rounded border-primary">
           <option value="Bank Account">Bank Account</option>
           <option value="Paypal">Paypal</option>
           <option value="UPI Transfer">UPI Transfer</option>
@@ -467,7 +467,7 @@ We would appreciate payment of this invoice by 05/11/2019</textarea
             </div>
             <div class="mb-1">
               <label class="form-label" for="payment-method">Payment Method</label>
-              <select class="form-select" id="payment-method">
+              <select class="form-select rounded border-primary" id="payment-method">
                 <option value="" selected disabled>Select payment method</option>
                 <option value="Cash">Cash</option>
                 <option value="Bank Transfer">Bank Transfer</option>

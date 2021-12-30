@@ -18,7 +18,7 @@
                                 <div class="col-12 col-md-4">
                                     <div class="mb-1">
                                         <label class="form-label" for="name">Nombre</label>
-                                        <div class="input-group input-group-merge">
+                                        <div class="input-group input-group-merge rounded border-primary">
                                             <span class="input-group-text"><i data-feather="clipboard"></i></span>
                                             <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name"
                                                    placeholder="Nombre" />

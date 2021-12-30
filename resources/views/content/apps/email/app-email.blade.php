@@ -36,7 +36,7 @@
       <i data-feather="menu" class="font-medium-5"></i>
     </div>
     <div class="d-flex align-content-center justify-content-between w-100">
-      <div class="input-group input-group-merge">
+      <div class="input-group input-group-merge rounded border-primary">
         <span class="input-group-text"><i data-feather="search" class="text-muted"></i></span>
         <input
           type="text"

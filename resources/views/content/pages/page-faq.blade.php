@@ -20,7 +20,7 @@
 
       <!-- search input -->
       <form class="faq-search-input">
-        <div class="input-group input-group-merge">
+        <div class="input-group input-group-merge rounded border-primary">
           <div class="input-group-text">
             <i data-feather="search"></i>
           </div>

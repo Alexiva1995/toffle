@@ -93,7 +93,7 @@
             </div>
             <div class="mb-1">
               <label class="form-label" for="user-role">User Role</label>
-              <select id="user-role" class="form-select">
+              <select id="user-role" class="form-select rounded border-primary">
                 <option value="subscriber">Subscriber</option>
                 <option value="editor">Editor</option>
                 <option value="maintainer">Maintainer</option>
@@ -103,7 +103,7 @@
             </div>
             <div class="mb-2">
               <label class="form-label" for="user-plan">Select Plan</label>
-              <select id="user-plan" class="form-select">
+              <select id="user-plan" class="form-select rounded border-primary">
                 <option value="basic">Basic</option>
                 <option value="enterprise">Enterprise</option>
                 <option value="company">Company</option>

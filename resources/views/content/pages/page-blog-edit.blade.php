@@ -72,7 +72,7 @@
               <div class="col-md-6 col-12">
                 <div class="mb-2">
                   <label class="form-label" for="blog-edit-status">Status</label>
-                  <select class="form-select" id="blog-edit-status">
+                  <select class="form-select rounded border-primary" id="blog-edit-status">
                     <option value="Published">Published</option>
                     <option value="Pending">Pending</option>
                     <option value="Draft">Draft</option>

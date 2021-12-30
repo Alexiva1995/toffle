@@ -31,7 +31,7 @@
                             <div class="col-12 col-md-4">
                                 <div class="mb-1">
                                     <label class="form-label" for="name">Nombres</label>
-                                    <div class="input-group input-group-merge">
+                                    <div class="input-group input-group-merge rounded border-primary">
                                         <span class="input-group-text"><i data-feather="user"></i></span>
                                         <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name"
                                             placeholder="Nombres" value="{{ $employee->name }}"/>
@@ -46,7 +46,7 @@
                             <div class="col-12 col-md-4">
                                 <div class="mb-1">
                                     <label class="form-label" for="last_name">Apellidos</label>
-                                    <div class="input-group input-group-merge">
+                                    <div class="input-group input-group-merge rounded border-primary">
                                         <span class="input-group-text"><i data-feather="user"></i></span>
                                         <input type="text" id="last_name" class="form-control @error('last_name') is-invalid @enderror" name="last_name"
                                             placeholder="Apellidos" value="{{ $employee->last_name }}"/>
@@ -61,7 +61,7 @@
                             <div class="col-12 col-md-4">
                                 <div class="mb-1">
                                     <label class="form-label" for="dni">DNI</label>
-                                    <div class="input-group input-group-merge">
+                                    <div class="input-group input-group-merge rounded border-primary">
                                         <span class="input-group-text"><i data-feather="credit-card"></i></span>
                                         <input type="text" id="dni" class="form-control @error('dni') is-invalid @enderror" name="dni"
                                             placeholder="DNI" value="{{ $employee->dni }}"/>
@@ -76,7 +76,7 @@
                             <div class="col-12 col-md-4">
                                 <div class="mb-1">
                                     <label class="form-label" for="phone">Número de Teléfono</label>
-                                    <div class="input-group input-group-merge">
+                                    <div class="input-group input-group-merge rounded border-primary">
                                         <span class="input-group-text"><i data-feather="smartphone"></i></span>
                                         <input type="text" id="phone" class="form-control @error('phone') is-invalid @enderror"
                                             name="phone" placeholder="Teléfono" value="{{ $employee->phone }}"/>
@@ -91,7 +91,7 @@
                             <div class="col-12 col-md-4">
                                 <div class="mb-1">
                                     <label class="form-label" for="email">Correo</label>
-                                    <div class="input-group input-group-merge">
+                                    <div class="input-group input-group-merge rounded border-primary">
                                         <span class="input-group-text"><i data-feather="mail"></i></span>
                                         <input type="email" id="email" class="form-control @error('email') is-invalid @enderror" name="email"
                                             placeholder="Correo" value="{{ $employee->email }}"/>
@@ -106,7 +106,7 @@
                             <div class="col-12 col-md-4">
                                 <div class="mb-1">
                                     <label for="register-password" class="form-label">Contraseña</label>
-                                    <div class="input-group input-group-merge form-password-toggle">
+                                    <div class="input-group input-group-merge rounded border-primary form-password-toggle">
                                         <input type="password"
                                             class="form-control form-control-merge @error('password') is-invalid @enderror"
                                             id="register-password" name="password"
@@ -124,7 +124,7 @@
                             <div class="col-12 col-md-4">
                                 <div class="mb-1">
                                     <label class="form-label" for="salary">Sueldo</label>
-                                    <div class="input-group input-group-merge">
+                                    <div class="input-group input-group-merge rounded border-primary">
                                         <span class="input-group-text"><i data-feather="briefcase"></i></span>
                                         <input type="number" id="salary" class="form-control @error('salary') is-invalid @enderror"
                                             name="salary" placeholder="Sueldo" step="0.01" value="{{ $employee->salary }}"/>
@@ -138,7 +138,7 @@
                             </div>
                             <div class="col-12 col-md-4 mb-1">
                                 <label class="form-label" for="date_birth">Fecha de Nacimiento</label>
-                                <input type="text" id="date_birth" name="date_birth" class="form-control flatpickr-basic @error('date_birth') is-invalid @enderror" placeholder="YYYY-MM-DD" value="{{ $employee->date_birth }}"/>
+                                <input type="text" id="date_birth" name="date_birth" class="form-control flatpickr-basic rounded border-primary @error('date_birth') is-invalid @enderror" placeholder="YYYY-MM-DD" value="{{ $employee->date_birth }}"/>
                                 @error('date_birth')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -148,7 +148,7 @@
                             <div class="col-12 col-md-4 mb-1">
                                 <div class="mb-1">
                                     <label class="form-label" for="status" class="">Estatus</label>
-                                    <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
+                                    <select class="form-select rounded border-primary @error('status') is-invalid @enderror" id="status" name="status">
                                       <option {{ $employee->status == 1 ? 'selected' : '' }} value="1">Activo</option>
                                       <option {{ $employee->status == 0 ? 'selected' : '' }} value="0">Inactivo</option>
                                     </select>

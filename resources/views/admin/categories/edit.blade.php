@@ -13,7 +13,7 @@
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="name">Nombre</label>
-                                <div class="input-group input-group-merge">
+                                <div class="input-group input-group-merge rounded border-primary">
                                     <span class="input-group-text"><i data-feather="bookmark"></i></span>
                                     <input type="text" id="edit_name" class="form-control requerid @error('name') is-invalid @enderror" name="name"
                                         placeholder="Nombre"/>

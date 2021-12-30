@@ -18,7 +18,7 @@
                                 <div class="col-12 col-md-4">
                                     <div class="mb-1">
                                         <label class="form-label" for="name">Nombre</label>
-                                        <div class="input-group input-group-merge">
+                                        <div class="input-group input-group-merge rounded border-primary">
                                             <span class="input-group-text"><i data-feather="clipboard"></i></span>
                                             <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name"
                                                    placeholder="Nombre" />
@@ -33,7 +33,7 @@
 {{--                                <div class="col-12 col-md-4">--}}
 {{--                                    <div class="mb-1">--}}
 {{--                                        <label class="form-label" for="ingredients">Ingredientes</label>--}}
-{{--                                        <div class="input-group input-group-merge">--}}
+{{--                                        <div class="input-group input-group-merge rounded border-primary">--}}
 {{--                                            <span class="input-group-text"><i data-feather="book-open"></i></span>--}}
 {{--                                            <input type="text" id="ingredients" class="form-control @error('ingredients') is-invalid @enderror" name="ingredients"--}}
 {{--                                                   placeholder="Ingredientes" />--}}
@@ -64,7 +64,7 @@
                                 <div class="col-12 col-md-4">
                                     <div class="mb-1">
                                         <label class="form-label" for="portion">Porción</label>
-                                        <div class="input-group input-group-merge">
+                                        <div class="input-group input-group-merge rounded border-primary">
                                             <span class="input-group-text"><i data-feather="pie-chart"></i></span>
                                             <input type="text" id="portion" class="form-control @error('portion') is-invalid @enderror" name="portion"
                                                    placeholder="Porción" />
@@ -79,7 +79,7 @@
                                 <div class="col-12 col-md-4">
                                     <div class="mb-1">
                                         <label class="form-label" for="percentage">Porcentaje de Ganancia (%)</label>
-                                        <div class="input-group input-group-merge">
+                                        <div class="input-group input-group-merge rounded border-primary">
                                             <span class="input-group-text"><i data-feather="percent"></i></span>
                                             <input type="text" id="percentage" class="form-control @error('percentage') is-invalid @enderror"
                                                    name="percentage" placeholder="Porcentaje de Ganancia" />
@@ -94,7 +94,7 @@
                                 <div class="col-12 col-md-4">
                                     <div class="mb-1">
                                         <label class="form-label" for="category">Categoría</label>
-                                        <div class="input-group input-group-merge">
+                                        <div class="input-group input-group-merge rounded border-primary">
                                             <span class="input-group-text"><i data-feather="bookmark"></i></span>
                                             <input type="text" id="category" class="form-control @error('category') is-invalid @enderror" name="category"
                                                    placeholder="Categoría" />
