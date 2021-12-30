@@ -19,7 +19,7 @@
             <button type="button" class="btn btn-primary" id="add_inventory">
                 <span class="loading_inv mr-2"></span> Añadir
             </button>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button> 
         </div>
       </div>
     </div>

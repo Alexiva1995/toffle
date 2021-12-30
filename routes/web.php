@@ -21,7 +21,6 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ComponentsController;
 
 
-use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\PageLayoutController;
 use App\Http\Controllers\MiscellaneousController;
 use App\Http\Controllers\UserInterfaceController;
@@ -65,6 +64,13 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::resource('employees', UserController::class);
+
+            // Dishes
+            Route::group(['prefix' => 'dishes'], function () {
+                Route::get('list', [DishController::class, 'list'])->name('dishes.list');
+            });
+
+            Route::resource('dishes', DishController::class);
 
             // Inventories
             Route::group(['prefix' => 'inventory'], function () {

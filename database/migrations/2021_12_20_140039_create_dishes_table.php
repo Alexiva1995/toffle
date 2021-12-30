@@ -15,7 +15,13 @@ class CreateDishesTable extends Migration
     {
         Schema::create('dishes', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
+            $table->string('name');
+            $table->double('cost_price');
+            $table->double('suggested_price');
+            $table->double('designated_price');
+            $table->string('percentage_profit');
+            $table->string('category_id');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

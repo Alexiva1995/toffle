@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dish;
-use App\Models\Ingredient;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 
 class DishController extends Controller
@@ -18,9 +18,9 @@ class DishController extends Controller
 
         $dishes = Dish::orderBy('id', 'DESC')->get();
 
-        $ingredients = Ingredient::orderBy('id', 'DESC')->get();
+        $ingredients = Inventory::orderBy('id', 'DESC')->get();
 
-        return response()->view('admin.dishes.index', compact('dishes', 'ingredients'));
+        return view('admin.dishes.list', compact('dishes', 'ingredients'));
     }
 
     /**
@@ -30,9 +30,9 @@ class DishController extends Controller
      */
     public function create()
     {
-        $ingredients = Ingredient::orderBy('id', 'DESC')->get();
+        $ingredients = Inventory::orderBy('id', 'DESC')->get();
 
-        return response()->view('admin.dishes.create', compact('ingredients'));
+        return view('admin.dishes.create', compact('ingredients'));
     }
 
     /**
@@ -70,6 +70,16 @@ class DishController extends Controller
 
         $this->validate($request, $fields, $msj);
 
+        // $dish->dishes()->attach( [ $dish->id => 
+        //         [
+        //             'order_id' => $dish->id,
+        //             'dish_id' => $item['dish_id'],
+        //             'unit' => $item['unit'],            
+        //             'price' => number_format($item['price'], 2, '.', ''),
+        //         ]
+        //     ]);
+
+
         $dish = Dish::create($request->all());
 
         // dd($request->ingredient);
@@ -100,8 +110,8 @@ class DishController extends Controller
     public function edit(Request $request)
     {
         $dish = Dish::find($request->id);
-        $ingredients = Ingredient::orderBy('id', 'DESC')->get();
-        return response()->view('admin.dishes.edit', compact('dish', 'ingredients'));
+        $ingredients = Inventory::orderBy('id', 'DESC')->get();
+        return view('admin.dishes.edit', compact('dish', 'ingredients'));
     }
 
     /**

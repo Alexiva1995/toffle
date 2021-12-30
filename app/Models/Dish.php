@@ -8,16 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Dish extends Model
 {
 
-    protected $guarded = ['id'];
     use HasFactory;
 
-    public function ingredients()
+    protected $fillable = [
+        'name',
+        'cost_price',
+        'suggested_price',
+        'designated_price',
+        'percentage_profit',
+        'category_id',
+        'status',
+    ];
+
+    public function Inventory()
     {
-        return $this->belongsToMany('App\Models\Ingredient', 'dishes_ingredients');
+        return $this->belongsToMany('App\Models\Inventory', 'dish_ingredient')
+                ->withPivot('id', 'dish_id', 'ingredient_id', 'portion', 'created_at', 'updated_at');
     }
 
-    public function orders()
+    public function category()
     {
-        return $this->belongsToMany('App\Models\Order', 'orders');
+        return $this->belongsTo('App\Models\Category', 'category_id', 'id');
     }
 }
