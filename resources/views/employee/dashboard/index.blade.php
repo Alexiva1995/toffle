@@ -53,6 +53,10 @@
     <div class="col-lg-6 col-12">
       @include('employee.dashboard.orders.history')
     </div>
+
+    <div class="col-lg-6 col-12">
+      @include('employee.dashboard.table.list')
+    </div>
   </div>
 
 </section>
@@ -75,6 +79,7 @@
   <script>
       dataTable('#order_history_table');
       dataTable('#pending_order_table');
+      dataTable('#table_list');
 
       submitForms('#add_order', '.loading_add_order', '#form_add_order');
 

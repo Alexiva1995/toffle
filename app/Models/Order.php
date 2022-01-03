@@ -21,4 +21,11 @@ class Order extends Model
         return $this->belongsToMany('App\Models\Dish', 'order_dish')
                 ->withPivot('id', 'order_id', 'dish_id', 'unit', 'price', 'created_at', 'updated_at');
     }
+
+    public function getOrderIds($table)
+    {
+        $order_ids = Order::where('table', $table)->orderBy('id','ASC')->get();
+
+        return $order_ids;
+    }
 }

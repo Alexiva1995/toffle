@@ -50,7 +50,10 @@ class DashboardController extends Controller
 
     $orders = Order::all();
 
+    $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
+
     return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
+      ->with('tables', $tables)
       ->with('orders', $orders);
   }
 }
