@@ -200,7 +200,13 @@ return [
     // End Reports
 
     "categories" => "Categories",
+
+    // Expenses
     "expenses" => "Expenses",
+    "historical" => "Historical",
+    "to_pay" => "To Pay",
+    // End Expenses
+
     "orders" => "Orders",
     "flow_day" => "Flow of the Day"
 ];

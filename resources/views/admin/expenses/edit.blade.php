@@ -43,20 +43,23 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-4 mb-2">
-                            <div class="mb-1">
-                                <label class="form-label" for="amount">Estado</label>
-                                <select class="select2 form-control" data-toggle="select" name="status"
-                                    id="status">
-                                    <option value="0"> Por Pagar </option>
-                                    <option value="1"> Pagado </option>                                 
-                                </select>
-                                @error('status')
-                                <span class="invalid-feedback" role="alert">
+                        <div class="col-12 col-md-6 mb-2">
+                            <h5 class="text-center">Estado</h5>
+                            <div class="d-flex justify-content-center @error('status') is-invalid @enderror">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input @error('status') is-invalid @enderror" type="checkbox" name="status" id="to_pay" value="0" />
+                                  <label class="form-check-label" for="to_pay">Por Pagar</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input @error('status') is-invalid @enderror" type="checkbox" name="status" id="paid_out" value="1" />
+                                  <label class="form-check-label" for="paid_out">Pagado</label>
+                                </div>
+                            </div>
+                            @error('status')
+                                <span class="invalid-feedback text-center" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
-                                @enderror    
-                            </div>
+                            @enderror   
                         </div>
 
                         <div class="col-12 col-md-8 mb-1">
@@ -65,6 +68,8 @@
                             </label>
                             <textarea type="text" id="description" name="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" rows="6" cols="50">  </textarea>
                         </div> 
+
+                        <input type="hidden" id="type" name="type">
                     </div>
                 </form>
             </div>

@@ -60,7 +60,11 @@ class ExpensesController extends Controller
 
         $expense = Expense::create($request->all());
 
-        return redirect()->route('expenses.list')->with('success', 'Gasto Añadido');
+        if ($request->status == '0') {
+            return redirect()->route('expenses.list.to.pay')->with('success', 'Gasto Añadido');
+        }else{
+            return redirect()->route('expenses.list.historical')->with('success', 'Gasto Añadido');
+        }
     }
 
     /**
@@ -73,17 +77,17 @@ class ExpensesController extends Controller
     {
         $date = $id;
 
-        $expense_details = Expense::selectRaw('DATE(created_at) as date')
-        ->whereDate('created_at', $date)
+        $expense_details = Expense::selectRaw('DATE(updated_at) as date')
+        ->whereDate('updated_at', $date)
         ->groupBy('date')
         ->first();
 
         if ($expense_details == null) {
-            return redirect()->route('expenses.list');
+            return redirect()->route('expenses.list.historical');
         }
 
-        $expenses = Expense::whereDate('created_at', $date)
-            ->orderBy('created_at', 'ASC')
+        $expenses = Expense::whereDate('updated_at', $date)
+            ->orderBy('updated_at', 'ASC')
             ->get();
 
         $categories = Category::all();
@@ -131,10 +135,15 @@ class ExpensesController extends Controller
         $this->validate($request, $fields, $msj);
 
         $expense->update($request->all());
+        
+        if ($request->type == 'to_pay') {
+            return redirect()->route('expenses.list.to.pay')->with('success', 'Gasto Actualizado');
+        }
 
-        Session::flash('paid_out', $request->status == 1 ? null : true);
+        if ($request->type == 'paid_out') {   
+            return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->updated_at)) )->with('success', 'Gasto Actualizado');
+        }
 
-        return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->created_at)) )->with('success', 'Gasto Actualizado');
     }
 
     /**
@@ -149,20 +158,38 @@ class ExpensesController extends Controller
 
         $expense->delete();
 
-        Session::flash('paid_out', $request->status == 1 ? null : true);
+        if ($request->status == 'to_pay') {
+            return redirect()->route('expenses.list.to.pay')->with('success', 'Gasto Eliminado');
+        }
 
-        return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->created_at)) )->with('success', 'Gasto Eliminado');
+        if ($request->status == 'paid_out') {   
+            return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->updated_at)) )->with('success', 'Gasto Eliminado');
+        }
+
     }
 
-    public function list()
+    public function listHistorical()
     {
-        return view('admin.expenses.list');
+        return view('admin.expenses.list_historical');
+    }
+
+    public function listToPay()
+    {
+        $expenses = Expense::where("status", '0')
+        ->orderBy('created_at', 'ASC')
+        ->get();
+
+        $categories = Category::all();
+
+        return view('admin.expenses.list_to_pay')
+            ->with('categories', $categories)
+            ->with('expenses', $expenses);
     }
 
     public function data(Request $request)
     {
-        $expenses = Expense::selectRaw('DATE(created_at) as date,
-        sum(CASE WHEN status = "1" THEN amount ELSE 0 END) as amount')
+        $expenses = Expense::where("status", '1')->selectRaw('DATE(updated_at) as date,
+        sum(amount) as amount')
         ->orderBy('date', 'DESC')
         ->groupBy('date');
             
@@ -170,14 +197,14 @@ class ExpensesController extends Controller
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
                 $start = date("Y-m-d",strtotime(request('from')));
                 $end = date("Y-m-d",strtotime(request('to')));
-                $query->whereBetween('created_at',[$start. " 00:00:00", $end. " 23:59:59"]);
+                $query->whereBetween('updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
         }, true)
         ->addColumn('day_at_timezone', function (Expense $expenses) {
             return $expenses->getDay($expenses->date);
         })
-        ->addColumn('created_at_timezone', function (Expense $expenses) {
-            return $expenses->created_at_timezone;
+        ->addColumn('updated_at_timezone', function (Expense $expenses) {
+            return $expenses->updated_at_timezone;
         })
         ->toJson();
     }

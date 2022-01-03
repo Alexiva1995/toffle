@@ -85,7 +85,8 @@ Route::middleware('auth')->group(function () {
 
             // Expenses
             Route::group(['prefix' => 'expenses'], function () {
-                Route::get('list', [ExpensesController::class, 'list'])->name('expenses.list');
+                Route::get('list-historical', [ExpensesController::class, 'listHistorical'])->name('expenses.list.historical');
+                Route::get('list-to-pay', [ExpensesController::class, 'listToPay'])->name('expenses.list.to.pay');
                 Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
             });
         

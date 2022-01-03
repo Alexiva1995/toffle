@@ -199,7 +199,13 @@ return [
     // End Reports
 
     "categories" => "Categorías",
+
+    // Expenses
     "expenses" => "Gastos",
+    "historical" => "Histórico",
+    "to_pay" => "Por Pagar",
+    // End Expenses
+
     "orders" => "Pedidos",
     "flow_day" => "Flujo del día"
 ];

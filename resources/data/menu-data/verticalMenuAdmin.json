@@ -82,11 +82,24 @@
       "slug": "categories.list"
     },
     {
-      "url": "admin/expenses/list",
       "name": "expenses",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "trending-down",
-      "slug": "expenses.list"
+      "slug": "expenses",
+      "submenu": [ 
+        {
+          "url": "admin/expenses/list-historical",
+          "name": "historical",
+          "icon": "circle",
+          "slug": "expenses.list.historical"
+        },
+        {
+          "url": "admin/expenses/list-to-pay",
+          "name": "to_pay",
+          "icon": "circle",
+          "slug": "expenses.list.to.pay"
+        }
+      ]
     },
     {
       "url": "admin/orders",

@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Detalles de Gasto')
+@section('title', 'Gastos Por Pagar')
 
 @include('panels.datatable.styles')
 
@@ -25,25 +25,10 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                Detalles {{  Session::has('paid_out')  }}
+                                Por Pagar
                             </li>
                         </ol>
                   </div>
-                  <div class="row align-items-center">
-                    <div class="col-12 col-md-6">
-                        <div class="row my-3">
-                            <div class="col-auto">
-                                <h5>Fecha de Creación: <span class="h6"> {{ $expense_details->date }} </span> </h5> 
-                            </div>
-                            <div class="col-auto">
-                                <h5>Día <span class="h6"> {{ $expense_details->getDay($expense_details->date) }} </span> </h5>
-                            </div>
-                            <div class="col-auto">
-                                <h5>Monto Total Pagado: <span class="h6"> {{ number_format($expenses->where('status', 1)->sum('amount'), 2, '.', '') }} </span> </h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="table-responsive">
                     <table class="table" id="table_orders_paid_out">
                         <thead>
@@ -53,25 +38,29 @@
                                 <th class="text-center">Monto</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Descripción</th>
+                                <th class="text-center">Fecha de Creación</th>
                                 <th class="text-center">Acción</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($expenses->where('status', 1) as $expense)
+                            @foreach ($expenses as $expense)
                             <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                <td class="text-center">{{ $expense->category->name }}</td>
-                                <td class="text-center">{{ number_format($expense->amount, 2, '.', '') }}</td>
+                                <td class="text-center">{{ $expense->category->name}}</td>
+                                <td class="text-center">{{ number_format($expense->amount, 2, '.', '')}}</td>
                                 <td class="text-center"> 
-                                    <span class="badge badge-light-success">
-                                        Pagado
+                                    <span class="badge badge-light-warning">
+                                        Por Pagar
                                     </span>
                                 </td>
                                 
                                 <td class="text-center">{{ $expense->description }}</td>
+
+                                <td class="text-center">{{ date('d-m-Y', strtotime($expense->created_at)) }}</td>
+
                                 <td class="text-center">
                                     <button class="btn btn-sm btn-info my-1" data-description = "{{ $expense->description }}"
-                                        onclick="editExpense( $(this), {{ $expense->id }}, {{ $expense->category_id }}, {{ $expense->amount }}, {{ $expense->status }}, 'paid_out' )">
+                                        onclick="editExpense( $(this), {{ $expense->id }}, {{ $expense->category_id }}, {{ $expense->amount }}, {{ $expense->status }}, 'to_pay' )">
                                         <i data-feather="edit"></i> 
                                     </button> 
                 
@@ -81,7 +70,7 @@
                                     <form id="delete_expense_{{ $expense->id }}" action="{{ route('expenses.destroy', $expense->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')      
-                                        <input type="hidden" name="status" value="paid_out">
+                                        <input type="hidden" name="status" value="to_pay">
                                     </form>
                                 </td>
                             </tr>
