@@ -123,6 +123,13 @@
       }
 
       function deleteRow(row){
+
+          for( var i = 0; i < ids.length; i++){ 
+            if ( ids[i] === $("#dish_ids_"+row).val()) { 
+              ids.splice(i, 1); 
+            }
+          }
+          
           $("#row_"+row).remove();
           numRows--;
       }
@@ -131,7 +138,7 @@
           let unit = $("#unit_"+row).val();
           let price = $("#price_"+row).val();
 
-          $("#total_"+row).val(parseInt(unit) * parseFloat(price));
+          $("#total_"+row).val( (parseInt(unit) * parseFloat(price)).toFixed(2) );
           var total = 0;
 
           for (var i = 1; i <= numRows; i++){

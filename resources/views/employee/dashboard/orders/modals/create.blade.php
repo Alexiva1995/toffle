@@ -118,7 +118,7 @@
                                                 <tr style="font-weight: bold; font-size: 14px;">
                                                     <td style="border-top: none !important;"></td>
                                                     <td colspan="2" class="text-right">TOTAL</td>
-                                                    <td colspan="2" class="text-right" style="padding-right: 20px;"><input type="text" class="form-control" name="total" id="total_amount" value="0.00" style="border: none !important; font-size: 14px !important;" readonly></td>
+                                                    <td colspan="2" class="text-right" style="padding-right: 20px;"><input type="text" class="form-control" name="total_amount" id="total_amount" value="0.00" style="border: none !important; font-size: 14px !important;" readonly></td>
                                                 </tr>
                                             </tfoot>
                                         </table>           
