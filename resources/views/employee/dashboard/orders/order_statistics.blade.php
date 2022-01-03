@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="my-auto">
-                        <h4 class="fw-bolder mb-0">230k</h4>
+                        <h4 class="fw-bolder mb-0"> {{ count( $orders->where('status', 0) ) }} </h4>
                         <p class="card-text font-small-3 mb-0">Pendientes</p>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="my-auto">
-                        <h4 class="fw-bolder mb-0">8.549k</h4>
+                        <h4 class="fw-bolder mb-0"> {{ count( $orders->where('status', 1) )  }} </h4>
                         <p class="card-text font-small-3 mb-0">En Espera</p>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="my-auto">
-                        <h4 class="fw-bolder mb-0">1.423k</h4>
+                        <h4 class="fw-bolder mb-0"> {{ count( $orders->where('status', 2) )  }} </h4>
                         <p class="card-text font-small-3 mb-0">Finalizados</p>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="my-auto">
-                        <h4 class="fw-bolder mb-0">$9745</h4>
+                        <h4 class="fw-bolder mb-0"> {{ count( $orders->where('status', 3) )  }} </h4>
                         <p class="card-text font-small-3 mb-0">Cancelados</p>
                     </div>
                 </div>
