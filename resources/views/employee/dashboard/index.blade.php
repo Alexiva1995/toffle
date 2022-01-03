@@ -42,7 +42,7 @@
 
     {{-- Order-Statistics --}}
     <div class="col-xl-9 col-md-6 col-12">
-      @include('employee.dashboard.orders.order_statistics')
+      @include('employee.dashboard.orders.statistics')
     </div>
     {{--/ Order-Statistics --}}
  
@@ -54,8 +54,16 @@
       @include('employee.dashboard.orders.history')
     </div>
 
-    <div class="col-lg-6 col-12">
+    <div class="col-lg-4 col-12">
       @include('employee.dashboard.table.list')
+    </div>
+
+    <div class="col-lg-4 col-12">
+      @include('employee.dashboard.money_flow.list')
+    </div>
+
+    <div class="col-lg-4 col-12">
+      @include('employee.dashboard.inventory_reposition.list')
     </div>
   </div>
 
@@ -80,6 +88,8 @@
       dataTable('#order_history_table');
       dataTable('#pending_order_table');
       dataTable('#table_list');
+      dataTable('#money_flow_table');
+      dataTable('#inventory_reposition_table');
 
       submitForms('#add_order', '.loading_add_order', '#form_add_order');
 
