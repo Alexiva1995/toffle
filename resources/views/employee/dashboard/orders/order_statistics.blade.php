@@ -38,7 +38,7 @@
                 <div class="d-flex flex-row">
                     <div class="avatar bg-light-success me-2">
                         <div class="avatar-content">
-                            <i data-feather="dollar-sign" class="avatar-icon"></i>
+                            <i data-feather="check-circle" class="avatar-icon"></i>
                         </div>
                     </div>
                     <div class="my-auto">

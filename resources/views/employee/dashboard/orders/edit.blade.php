@@ -40,7 +40,7 @@
                                     <label class="form-label" for="customer_name">Nombre del Cliente</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text"><i data-feather="user"></i></span>
-                                        <input type="text" id="customer_name" class="form-control requerid" name="customer_name" value="{{ $order->customer_name }}" placeholder="Nombre" required/>
+                                        <input type="text" id="customer_name" class="form-control requerid" name="customer_name" value="{{ $order->customer_name }}" placeholder="Nombre" oninput="editOrder(this)" required/>
                                     </div>
                                 </div>
                             </div>
@@ -49,24 +49,23 @@
                                     <label class="form-label" for="table">Mesa</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text"><i data-feather="tag"></i></span>
-                                        <input type="number" id="table" class="form-control requerid" name="table" value="{{ $order->table }}" placeholder="Mesa" required/>
+                                        <input type="number" id="table" class="form-control requerid" name="table" value="{{ $order->table }}" placeholder="Mesa" oninput="editOrder(this)" required/>
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="col-12 col-md-4 mb-1">
-                                <div class="mb-1">
-                                    <label class="form-label" for="total_amount">Monto Total de lo Pedido</label>
-                                    <div class="input-group input-group-merge">
-                                        <span class="input-group-text"><i data-feather="archive"></i></span>
-                                        <input type="number" id="total_amount" class="form-control requerid @error('total_amount') is-invalid @enderror" name="total_amount" value="{{ number_format($order->total_amount, 2, '.','') }}" placeholder="" value="0.00" required/>
-                                        @error('total_amount')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
+                            
+                            <div class="col-12 col-md-4 mb-1">
+                                <div class="mb-1"> 
+                                    <label class="form-label text_status" for="status"> <i class="icon_status d-none" data-feather="check-circle"></i> Estado</label>                         
+                                    <select class="select2-icons form-control status" data-toggle="select" name="status"
+                                        id="status" onchange="editOrder(this)">
+                                        <option data-icon="alert-circle" value="0" {{ $order->status == 0 ? 'selected' : '' }}> Pendiente </option>
+                                        <option data-icon="clock" value="1" {{ $order->status == 1 ? 'selected' : '' }}> En Espera </option>
+                                        <option data-icon="check-circle" value="2" {{ $order->status == 2 ? 'selected' : '' }}> Finalizado </option>
+                                        <option data-icon="x-circle" value="3" {{ $order->status == 3 ? 'selected' : '' }}> Cancelado </option>
+                                    </select>
                                 </div>
-                            </div>                                  --}}
+                            </div>
                         </div>
                     </form>
 
@@ -198,11 +197,12 @@
             });
         }
 
-        $(document).on( 'change', '#form_edit_order input', function() {
+        function editOrder(element) {
+            console.log('probando');
             let item = {}
-            let input = this
+            let input = element
 
-            item [this.attributes.name.value] = this.value;
+            item [element.attributes.name.value] = element.value;
             item ['form'] = 'edit_order';
 
             item ['_method'] = 'PATCH';
@@ -210,8 +210,20 @@
             .done(function(data){
                 $(input).removeClass('is-invalid')
                 $(input).addClass('is-valid')
+
+                if ($(element).hasClass('status')) {
+                    $('.icon_status').removeClass('d-none');
+                    $('.text_status').addClass('text-success');
+                }
+
                 setTimeout(() => {
                     $(input).removeClass('is-valid')
+
+                    if ($(element).hasClass('status')) {
+                        $('.icon_status').addClass('d-none');
+                        $('.text_status').removeClass('text-success');
+                    }
+
                 },1000)
             })
             .fail(function(data) {
@@ -229,6 +241,6 @@
 
                 $(input).addClass('is-invalid')
             });
-        });
+        }
     </script>
 @endsection

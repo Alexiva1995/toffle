@@ -165,6 +165,13 @@ class OrdersController extends Controller
                     ];
 
                     break;
+                case 'status':
+
+                    $fields = [
+                        "status" => ['required'],
+                    ];
+        
+                    break;
                 default:
 
                     break;
