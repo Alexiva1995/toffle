@@ -94,7 +94,7 @@
                 {
                     data: "updated_at_timezone",
                     name: "updated_at_timezone",
-                    title: "Fecha",
+                    title: "Fecha de Pago",
                     "class": "text-center",
                     visible: true,
                     searchable: true
