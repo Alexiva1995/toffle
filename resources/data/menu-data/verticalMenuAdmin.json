@@ -89,7 +89,7 @@
       "slug": "expenses.list"
     },
     {
-      "url": "admin/orders",
+      "url": "orders",
       "name": "orders",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "shopping-bag",

@@ -96,8 +96,11 @@ Route::middleware('auth')->group(function () {
             });
         
             Route::resource('expenses', ExpensesController::class);
+
         });
     });
+
+    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 
     Route::group(['prefix' => 'employee'], function () { 
 
@@ -109,7 +112,7 @@ Route::middleware('auth')->group(function () {
                 Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
                 Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
             });
-            Route::resource('orders', OrdersController::class);
+            Route::resource('orders', OrdersController::class)->except(['index']);
 
 
             Route::group(['prefix' => 'ingredients'], function () {
