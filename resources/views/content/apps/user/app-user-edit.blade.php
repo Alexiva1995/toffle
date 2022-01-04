@@ -488,7 +488,7 @@
             <div class="row">
               <div class="col-lg-4 col-md-6 mb-1">
                 <label class="form-label" for="twitter-input">Twitter</label>
-                <div class="input-group input-group-merge rounded border-primary">
+                <div class="input-group input-group-merge ">
                   <span class="input-group-text" id="basic-addon3">
                     <i data-feather="twitter" class="font-medium-2"></i>
                   </span>
@@ -504,7 +504,7 @@
               </div>
               <div class="col-lg-4 col-md-6 mb-1">
                 <label class="form-label" for="facebook-input">Facebook</label>
-                <div class="input-group input-group-merge rounded border-primary">
+                <div class="input-group input-group-merge ">
                   <span class="input-group-text" id="basic-addon4">
                     <i data-feather="facebook" class="font-medium-2"></i>
                   </span>
@@ -520,7 +520,7 @@
               </div>
               <div class="col-lg-4 col-md-6 mb-1">
                 <label class="form-label" for="instagram-input">Instagram</label>
-                <div class="input-group input-group-merge rounded border-primary">
+                <div class="input-group input-group-merge ">
                   <span class="input-group-text" id="basic-addon5">
                     <i data-feather="instagram" class="font-medium-2"></i>
                   </span>
@@ -536,7 +536,7 @@
               </div>
               <div class="col-lg-4 col-md-6 mb-1">
                 <label class="form-label" for="github-input">Github</label>
-                <div class="input-group input-group-merge rounded border-primary">
+                <div class="input-group input-group-merge ">
                   <span class="input-group-text" id="basic-addon9">
                     <i data-feather="github" class="font-medium-2"></i>
                   </span>
@@ -552,7 +552,7 @@
               </div>
               <div class="col-lg-4 col-md-6 mb-1">
                 <label class="form-label" for="codepen-input">Codepen</label>
-                <div class="input-group input-group-merge rounded border-primary">
+                <div class="input-group input-group-merge ">
                   <span class="input-group-text" id="basic-addon12">
                     <i data-feather="codepen" class="font-medium-2"></i>
                   </span>
@@ -568,7 +568,7 @@
               </div>
               <div class="col-lg-4 col-md-6 mb-1">
                 <label class="form-label" for="slack-input">Slack</label>
-                <div class="input-group input-group-merge rounded border-primary">
+                <div class="input-group input-group-merge ">
                   <span class="input-group-text" id="basic-addon11">
                     <i data-feather="slack" class="font-medium-2"></i>
                   </span>

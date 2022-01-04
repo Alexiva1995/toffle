@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Dish;
+use Illuminate\Support\Facades\DB;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 
@@ -146,6 +147,10 @@ class DishController extends Controller
      */
     public function destroy(Dish $dish)
     {
-        //
+        $pivote = DB::delete('DELETE FROM dish_ingredient WHERE dish_id = ?', [$dish->id]);
+        $dish = Dish::find($dish->id);
+        $dish->delete();
+
+        return redirect()->route('dishes.index')->with('success', 'Plato Eliminado');
     }
 }

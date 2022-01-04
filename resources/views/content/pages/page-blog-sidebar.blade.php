@@ -1,7 +1,7 @@
 <div class="blog-sidebar my-2 my-lg-0">
   <!-- Search bar -->
   <div class="blog-search">
-    <div class="input-group input-group-merge rounded border-primary">
+    <div class="input-group input-group-merge ">
       <input type="text" class="form-control" placeholder="Search here" />
       <span class="input-group-text cursor-pointer">
         <i data-feather="search"></i>

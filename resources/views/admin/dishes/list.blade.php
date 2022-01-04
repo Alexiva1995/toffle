@@ -65,12 +65,12 @@
 
                                     <button class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $item->id }}, 
-                                    '#delete_employee_', 
-                                    'este Empleado' )"> 
+                                    '#delete_dish_', 
+                                    'este Plato' )"> 
                                         <i data-feather="trash-2"></i> 
                                     </button>
 
-                                    <form id="delete_employee_{{ $item->id }}" action="{{ route('dishes.destroy', $item->id) }}" method="POST">
+                                    <form id="delete_dish_{{ $item->id }}" action="{{ route('dishes.destroy', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')                                      
                                     </form>

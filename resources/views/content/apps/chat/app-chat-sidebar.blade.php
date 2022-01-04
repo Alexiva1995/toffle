@@ -132,7 +132,7 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
           <span class="avatar-status-online"></span>
         </div>
       </div>
-      <div class="input-group input-group-merge rounded border-primary ms-1 w-100">
+      <div class="input-group input-group-merge  ms-1 w-100">
         <span class="input-group-text round"><i data-feather="search" class="text-muted"></i></span>
         <input
           type="text"

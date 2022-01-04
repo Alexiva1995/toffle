@@ -86,7 +86,7 @@
             <div class="invoice-number-date mt-md-0 mt-2">
               <div class="d-flex align-items-center justify-content-md-end mb-1">
                 <h4 class="invoice-title">Invoice</h4>
-                <div class="input-group input-group-merge rounded border-primary invoice-edit-input-group">
+                <div class="input-group input-group-merge  invoice-edit-input-group">
                   <div class="input-group-text">
                     <i data-feather="hash"></i>
                   </div>

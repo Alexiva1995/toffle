@@ -17,7 +17,7 @@
   <div class="row">
     <div class="col-12">
       <div class="icon-search-wrapper my-3 mx-auto">
-        <div class="mb-1 input-group input-group-merge rounded border-primary">
+        <div class="mb-1 input-group input-group-merge ">
           <span class="input-group-text"><i data-feather="search"></i></span>
           <input type="text" class="form-control" id="icons-search" placeholder="Search Icons..." />
         </div>

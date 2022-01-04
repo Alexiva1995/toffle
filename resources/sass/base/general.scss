@@ -47,12 +47,9 @@ span,
 
 // borde de los inputs
 .border-primary {
-    border: 1px transparent !important;
-// }
-// .border-table{
-//     border: 2px 2px #FF5933 !important;
-// }
-// css botones
+    border: 1 #FF5933 !important;
+}
+
 .btn-outline-secondary:hover {
     background-color: #512F26 !important;
     color: #fff !important;

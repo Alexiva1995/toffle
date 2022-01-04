@@ -388,7 +388,7 @@
           <div class="card">
             <div class="card-body">
               <label class="section-label form-label mb-1">Options</label>
-              <div class="coupons input-group input-group-merge rounded border-primary">
+              <div class="coupons input-group input-group-merge ">
                 <input
                   type="text"
                   class="form-control"

@@ -22,7 +22,7 @@
             <span>Popular searches: </span><span class="fw-bolder">Sales automation, Email marketing</span>
           </p>
           <form class="kb-search-input">
-            <div class="input-group input-group-merge rounded border-primary">
+            <div class="input-group input-group-merge ">
               <span class="input-group-text"><i data-feather="search"></i></span>
               <input type="text" class="form-control" id="searchbar" placeholder="Ask a question..." />
             </div>

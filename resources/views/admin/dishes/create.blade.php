@@ -6,7 +6,7 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="name">Nombre del plato</label>
-                        <div class="input-group input-group-merge rounded border-primary">
+                        <div class="input-group input-group-merge ">
                             <span class="input-group-text"></i></span>
                             <input type="text" id="name"
                                 class="form-control requerid @error('name') is-invalid @enderror" name="name"
@@ -52,7 +52,7 @@
                                 <div class="col-12 col-md-4">
                                     <div class="mb-1">
                                         <label class="form-label" for="portion">Porcion en Gramos</label>
-                                        <div class="input-group input-group-merge rounded border-primary">
+                                        <div class="input-group input-group-merge ">
                                             <input type="number" id="portion_dish"
                                                 class="form-control requerid @error('portion') is-invalid @enderror"
                                                 name="portion" required />
@@ -80,7 +80,7 @@
                     <div class="col-12 col-md-3 mb-1">
                         <div class="mb-1">
                             <label class="form-label" for="percentage_profit">% ganancia</label>
-                            <div class="input-group input-group-merge rounded border-primary" id="profit">
+                            <div class="input-group input-group-merge " id="profit">
                                 <input type="number" id="percentage_profit" class="form-control requerid @error('percentage_profit') is-invalid @enderror"
                                     name="percentage_profit" id="percentage_profit" oninput="calculate()" required />
                                 @error('percentage_profit')
@@ -95,7 +95,7 @@
                     <div class="col-12 col-md-3 mb-1">
                         <div class="mb-1">
                             <label class="form-label" for="cost_price">Costo</label>
-                            <div class="input-group input-group-merge rounded border-primary" id="cost">
+                            <div class="input-group input-group-merge " id="cost">
 
                                 <input type="text" id="cost_price"
                                     class="form-control requerid @error('cost_price') is-invalid @enderror"
@@ -112,7 +112,7 @@
                     <div class="col-12 col-md-3 mb-1">
                         <div class="mb-1">
                             <label class="form-label" for="suggested_price">Sugerido</label>
-                            <div class="input-group input-group-merge rounded border-primary" id="suggested">
+                            <div class="input-group input-group-merge " id="suggested">
 
                                 <input type="text" id="suggested_price"
                                     class="form-control requerid @error('suggested_price') is-invalid @enderror"
@@ -129,7 +129,7 @@
                     <div class="col-12 col-md-3 mb-1">
                         <div class="mb-1">
                             <label class="form-label" for="designated_price">Designado</label>
-                            <div class="input-group input-group-merge rounded border-primary">
+                            <div class="input-group input-group-merge ">
 
                                 <input type="number" id="designated_price"
                                     class="form-control requerid @error('designated_price') is-invalid @enderror"
@@ -145,7 +145,7 @@
 
                     <section id="basic-datatable">
                         <div class="table-responsive">
-                            <table class="table rounded border-table" id="items_table">
+                            <table class="table rounded border-primary" id="items_table">
                                 <thead class="thead-light text-center">
                                     <th>N°</th>
                                     <th>Ingrediente</th>

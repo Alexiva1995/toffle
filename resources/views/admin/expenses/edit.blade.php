@@ -13,7 +13,7 @@
                         <div class="col-12 col-md-4 mb-2">
                             <div class="mb-1">
                                 <label class="form-label" for="amount">Monto</label>
-                                <div class="input-group input-group-merge rounded border-primary">
+                                <div class="input-group input-group-merge ">
                                     <span class="input-group-text"><i data-feather="briefcase"></i></span>
                                     <input type="number" id="amount" class="form-control @error('amount') is-invalid @enderror"
                                         name="amount" placeholder="Monto" step="0.01"/>

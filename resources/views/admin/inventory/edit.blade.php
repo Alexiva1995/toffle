@@ -30,7 +30,7 @@
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="qty_package">Cantidad de Bultos</label>
-                                <div class="input-group input-group-merge rounded border-primary">
+                                <div class="input-group input-group-merge ">
                                     <span class="input-group-text"><i data-feather="archive"></i></span>
                                     <input type="number" id="edit_qty_package" class="form-control @error('qty_package') is-invalid @enderror" name="qty_package"
                                         placeholder="Cantidad" />
@@ -45,7 +45,7 @@
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="unit_package">Unidad de Bulto</label>
-                                <div class="input-group input-group-merge rounded border-primary">
+                                <div class="input-group input-group-merge ">
                                     <span class="input-group-text"><i data-feather="package"></i></span>
                                     <input type="number" id="edit_unit_package" class="form-control @error('unit_package') is-invalid @enderror"
                                         name="unit_package" placeholder="Unidad" />
@@ -60,7 +60,7 @@
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="price">Precio</label>
-                                <div class="input-group input-group-merge rounded border-primary">
+                                <div class="input-group input-group-merge ">
                                     <span class="input-group-text"><i data-feather="credit-card"></i></span>
                                     <input type="number" id="edit_price" class="form-control @error('price') is-invalid @enderror" name="price"
                                         placeholder="Precio" step="0.01" />

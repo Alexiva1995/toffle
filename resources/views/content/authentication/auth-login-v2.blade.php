@@ -72,7 +72,7 @@ $configData = Helper::applClasses();
                 <small>Forgot Password?</small>
               </a>
             </div>
-            <div class="input-group input-group-merge rounded border-primary form-password-toggle">
+            <div class="input-group input-group-merge  form-password-toggle">
               <input class="form-control form-control-merge" id="login-password" type="password" name="login-password" placeholder="············" aria-describedby="login-password" tabindex="2" />
               <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
             </div>

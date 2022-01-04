@@ -80,7 +80,7 @@
             <div class="d-flex justify-content-between">
               <label class="form-label" for="reset-password-new">New Password</label>
             </div>
-            <div class="input-group input-group-merge rounded border-primary form-password-toggle">
+            <div class="input-group input-group-merge  form-password-toggle">
               <input
                 type="password"
                 class="form-control form-control-merge"
@@ -98,7 +98,7 @@
             <div class="d-flex justify-content-between">
               <label class="form-label" for="reset-password-confirm">Confirm Password</label>
             </div>
-            <div class="input-group input-group-merge rounded border-primary form-password-toggle">
+            <div class="input-group input-group-merge  form-password-toggle">
               <input
                 type="password"
                 class="form-control form-control-merge"

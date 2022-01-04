@@ -79,7 +79,7 @@
             <td><input type="text" name="ingredient[]" class="form-control dish" id="selected_dish_'+numRows+'" value="'+$("#selected_dish option:selected").text()+'" required readonly></td>\
             <td><input type="text" name="portion[]" class="form-control price" id="portion_'+numRows+'" value="'+$("#portion_dish").val()+'" readonly required></td>\
             <td><input type="text" name="price[]" class="form-control price" id="price_'+numRows+'" value="'+$('#selected_dish option:selected').attr("price")+'" readonly required></td>\
-            <td class="text-center"><a href="javascript:;" onclick="deleteRow('+numRows+')"> Eliminar <i class="text-danger" data-feather="x-circle"></i> </a></td>\
+            <td class="text-center"><a href="javascript:;" onclick="deleteRow('+numRows+')" style="color: #512F26;"><b>Eliminar</b> <i style="color: #512F26;" data-feather="x-circle"></i> </a></td>\
             </tr>';
             $("#items_table>tbody").append(content);
             feather.replace();
