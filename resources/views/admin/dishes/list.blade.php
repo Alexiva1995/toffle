@@ -61,7 +61,7 @@
                                 {{-- <td> <span class="badge badge-light-{{ $item->status == 0 ? 'danger' : 'success' }}">{{ $item->status == 0 ? 'Inactivo' : 'Activo' }}</span> </td> --}}
                                 {{-- <td class="text-center">{{ date('d-m-Y', strtotime($item->created_at)) }}</td> --}}
                                 <td class="text-center"> 
-                                    <a href="{{ route('dishes.edit', $item->id) }}" class="btn btn-sm btn-info my-1"> <i data-feather="edit"></i> </a> 
+                                    <button class="btn btn-sm btn-info my-1" data-bs-toggle="modal" data-bs-target="#modal_edit_dish"> <i data-feather="edit"></i> </button> 
 
                                     <button class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $item->id }}, 

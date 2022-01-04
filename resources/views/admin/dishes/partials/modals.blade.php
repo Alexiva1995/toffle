@@ -30,7 +30,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {{-- @include('admin.dishes.edit') --}}
+                @include('admin.dishes.edit')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="edit_dish">
