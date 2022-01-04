@@ -16,9 +16,18 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pedidos = Order::orderBy('id', 'desc')->get();
+        if(isset($request->fecha_ini) && !isset($request->fecha_fin)){
+            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', '>=' ,$request->fecha_ini)->get();
+        }elseif(!isset($request->fecha_ini) && isset($request->fecha_fin)){
+            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', '<=' ,$request->fecha_fin)->get();
+        }elseif(isset($request->fecha_ini) && isset($request->fecha_fin)){
+            $pedidos = Order::orderBy('id', 'desc')->whereBetween('created_at', [$request->fecha_ini, $request->fecha_fin])->get();
+        }else{
+            $pedidos = Order::orderBy('id', 'desc')->get();
+        }
+        
     
         return view('/orders/index', ['pedidos' => $pedidos]);
     }

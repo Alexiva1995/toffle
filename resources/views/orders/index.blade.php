@@ -21,10 +21,20 @@
         <div class="card bg-lp">
             <div class="card-content">
                 <div class="card-body card-dashboard">
-                    <div>
-                        <input type="text" id="fecha_ini" name="fecha_ini" class="form-control flatpickr-basic rounded border-primary" placeholder="YYYY-MM-DD"/>
-                        <input type="text" id="fecha_fin" name="fecha_ini" class="form-control flatpickr-basic rounded border-primary" placeholder="YYYY-MM-DD"/>
-                    </div>
+                    <form action="" method="GET">
+                    @csrf
+                        <div class="row g-0 justify-content-end">
+                            <div class="col-2">
+                                <input type="date" id="fecha_ini" name="fecha_ini" class="form-control flatpickr-basic rounded border-primary" placeholder="fecha inicial" @if(Request::get('fecha_ini') != null) value="{{Request::get('fecha_ini')}}" @endif required/>
+                            </div>
+                            <div class="col-2">
+                                <input type="date" id="fecha_fin" name="fecha_fin" class="form-control flatpickr-basic rounded border-primary" placeholder="fecha final" @if(Request::get('fecha_fin') != null) value="{{Request::get('fecha_fin')}}" @endif required/>
+                            </div>
+                            <div class="col-1">
+                                <button type="submit" class="btn btn-primary">Buscar</button>
+                            </div>
+                        </div>
+                    </form>
                     <div>
                         <table class="table myTable table-striped">
                             <thead class="">
@@ -57,7 +67,36 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            
+                                            <h1>{{$pedido->dishes}}}</h1>
+                                            {{--
+                                            @foreach ($pedido->dishes as $detalle)
+                                                <tr class="text-center">
+                                                    <td></td>
+                                                    <td>{{$detalle->unit}}</td>
+                                                    <td>{{$detalle->price}}</td>
+                                                </tr>
+                                            @endforeach
+                                            --}}
+                                            {{--
+                                            <table class="table myTable table-striped">
+                                                <thead class="">
+                                                    <tr class="text-center ">
+                                                        <th>Plato</th>
+                                                        <th>cantidad</th>
+                                                        <th>precio</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($pedido->dishes as $detalle)
+                                                        <tr class="text-center">
+                                                            <td></td>
+                                                            <td>{{$detalle->unit}}</td>
+                                                            <td>{{$detalle->price}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            --}}
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
