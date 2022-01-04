@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table rounded border-primary" id="table" >
+                    <table class="table rounded border-table border-primary" id="table" >
                         <thead>
                             <tr>
                                 <th>N°</th>
@@ -44,38 +44,39 @@
                                 <th>Precio sugerido</th>
                                 <th>Precio designado</th>
                                 <th>Categoria</th>
-                                <th>Estatus</th>
-                                <th class="text-center">Fecha de Creación</th>
+                                {{-- <th>Estatus</th> --}}
+                                {{-- <th class="text-center">Fecha de Creación</th> --}}
                                 <th class="text-center">Acción</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($employees as $employee)
+                            @foreach ($dishes as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $employee->name }}</td>
-                                <td>{{ $employee->last_name }}</td>
-                                <td>{{ $employee->dni }}</td>
-                                <td>{{ $employee->email }}</td>
-                                <td> <span class="badge badge-light-{{ $employee->status == 0 ? 'danger' : 'success' }}">{{ $employee->status == 0 ? 'Inactivo' : 'Activo' }}</span> </td>
-                                <td class="text-center">{{ date('d-m-Y', strtotime($employee->created_at)) }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->cost_price }}</td>
+                                <td>{{ $item->suggested_price }}</td>
+                                <td>{{ $item->designated_price }}</td>
+                                <td>{{ $item->category->name }}</td>
+                                {{-- <td> <span class="badge badge-light-{{ $item->status == 0 ? 'danger' : 'success' }}">{{ $item->status == 0 ? 'Inactivo' : 'Activo' }}</span> </td> --}}
+                                {{-- <td class="text-center">{{ date('d-m-Y', strtotime($item->created_at)) }}</td> --}}
                                 <td class="text-center"> 
-                                    <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-sm btn-info my-1"> <i data-feather="edit"></i> </a> 
+                                    <a href="{{ route('dishes.edit', $item->id) }}" class="btn btn-sm btn-info my-1"> <i data-feather="edit"></i> </a> 
 
                                     <button class="btn btn-sm btn-danger"
-                                    onclick="deleteElement( {{ $employee->id }}, 
+                                    onclick="deleteElement( {{ $item->id }}, 
                                     '#delete_employee_', 
                                     'este Empleado' )"> 
                                         <i data-feather="trash-2"></i> 
                                     </button>
 
-                                    <form id="delete_employee_{{ $employee->id }}" action="{{ route('employees.destroy', $employee->id) }}" method="POST">
+                                    <form id="delete_employee_{{ $item->id }}" action="{{ route('dishes.destroy', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')                                      
                                     </form>
                                 </td>
                             </tr>
-                            @endforeach --}}
+                            @endforeach 
                         </tbody>
                     </table>
                 </div>

@@ -47,9 +47,11 @@ span,
 
 // borde de los inputs
 .border-primary {
-    border: 1px solid #512F26 !important;
-}
-
+    border: 1px transparent !important;
+// }
+// .border-table{
+//     border: 2px 2px #FF5933 !important;
+// }
 // css botones
 .btn-outline-secondary:hover {
     background-color: #512F26 !important;
@@ -72,6 +74,10 @@ span,
 }
 
 // css datatable
+
+.table > :not(:last-child) > :last-child > * {
+    border-bottom-color: #EBE9F1;
+}
 .table:not(.table-dark):not(.table-light) thead:not(.table-dark) th,
 .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th {
 

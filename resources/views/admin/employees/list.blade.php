@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table rounded border-primary" id="table" >
+                    <table class="table rounded border-table" id="table" >
                         <thead>
                             <tr>
                                 <th>N°</th>

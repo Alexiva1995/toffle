@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Dish;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
@@ -15,12 +16,13 @@ class DishController extends Controller
      */
     public function index()
     {
-
         $dishes = Dish::orderBy('id', 'DESC')->get();
 
         $ingredients = Inventory::orderBy('id', 'DESC')->get();
 
-        return view('admin.dishes.list', compact('dishes', 'ingredients'));
+        $category = Category::orderBy('id', 'DESC')->get();
+
+        return view('admin.dishes.list', compact('dishes', 'ingredients', 'category'));
     }
 
     /**
@@ -30,9 +32,7 @@ class DishController extends Controller
      */
     public function create()
     {
-        $ingredients = Inventory::orderBy('id', 'DESC')->get();
-
-        return view('admin.dishes.create', compact('ingredients'));
+        return view('admin.dishes.create');
     }
 
     /**
@@ -44,50 +44,62 @@ class DishController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request);
-        $fields = [
-            'name' => ['required', 'min:2'],
-            'ingredient' => ['required'],
-            'portion' => ['required'],
-            // 'total' => ['required'],
-            // 'deposit' => ['required'],
-            // 'local' => ['required'],
-            // 'public' => ['required'],
-            // 'cost' => ['required'],
-        ];
+        // dd($request->all());
 
-        $msj = [
-            'name.required' => 'El nombre es requerido.',
-            'name.min' => 'El nombre debe contener al menos 2 caracteres.',
-            'ingredient.required' => 'El ingrediente es requerido.',
-            'portion.required' => 'La porción es requerida',
-            // 'total.required' => 'La cantidad total es requerida.',
-            // 'deposit.required' => 'La cantidad de deposito es requerida.',
-            // 'local.required' => 'La cantidad local es requerida.',
-            // 'public.required' => 'La cantidad pública es requerida.',
-            // 'cost.required' => 'El correo es requerido.',
-        ];
+        // $fields = [
+        //     'name' => ['required', 'min:2'],
+        //     'category_id' => ['required'],
+        //     'portion' => ['required'],
+        //     'percentage_profit' => ['required'],
+        //     'cost_price' => ['required'],
+        //     'suggested_price' => ['required'],
+        //     'designated_price' => ['required'],
+        //     'ingredient' => ['required'],
+        //     'price' => ['required'],
+        // ];
 
-        $this->validate($request, $fields, $msj);
+        // $msj = [
+        //     'name.required' => 'El nombre es requerido.',
+        //     'category_id.required' => 'La categoria es requerido.',
+        //     'portion.required' => 'La porcion es requerido.',
+        //     'percentage_profit.required' => 'El porcentage es requerido.',
+        //     'cost_price.required' => 'El costo es requerido.',
+        //     'suggested_price.required' => 'El sugerido es requerido.',
+        //     'designated_price.required' => 'El designado es requerido.',
+        //     'ingredient.required' => 'El ingrediente es requerido.',
+        //     'price.required' => 'El precio es requerido.',
+        // ];
 
-        // $dish->dishes()->attach( [ $dish->id => 
-        //         [
-        //             'order_id' => $dish->id,
-        //             'dish_id' => $item['dish_id'],
-        //             'unit' => $item['unit'],            
-        //             'price' => number_format($item['price'], 2, '.', ''),
-        //         ]
-        //     ]);
-
+        // $this->validate($request, $fields, $msj);
 
         $dish = Dish::create($request->all());
 
-        // dd($request->ingredient);
-        foreach($request->ingredient as $ingredient){
-            $dish->ingredients()->attach($ingredient);
+         $ingredient = array_combine($request->ingredient_ids, $request->portion); 
+         $dish_ingredient = array_merge_recursive($ingredient); 
+         $array_dish = [];
+
+
+        foreach ($dish_ingredient as $key => $dishe) {
+
+            $ingredient_ = array([
+                'ingredient_id' => str_replace("ingredient_", "", $key),
+                'portion' => $dishe,
+            ]);
+
+            $array_dish = array_merge($array_dish, $ingredient_);
         }
 
-        return redirect()->route('index.dishes')->with('success', 'Plato Añadido');
+        foreach ($array_dish as $key => $item) {
+            $dish->ingredients()->attach([ $dish->id => 
+                [
+                    'dish_id' => $dish->id,
+                    'inventory_id' => $item['ingredient_id'],
+                    'portion' => $item['portion'],            
+                ]
+            ]);
+        }
+
+        return redirect()->route('dishes.index')->with('success', 'Plato Añadido');
     }
 
     /**
