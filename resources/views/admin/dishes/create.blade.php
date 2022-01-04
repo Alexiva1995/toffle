@@ -7,7 +7,6 @@
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="name">Nombre del plato</label>
                         <div class="input-group input-group-merge ">
-                            <span class="input-group-text"></i></span>
                             <input type="text" id="name"
                                 class="form-control requerid @error('name') is-invalid @enderror" name="name"
                                 required />

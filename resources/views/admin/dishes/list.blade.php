@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card p-2">
                 <div class="row mb-2">
-                    <div class="col-12 col-md-6">
+                    {{-- <div class="col-12 col-md-6">
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <label for="status">Filtrar Estatus</label>
@@ -23,8 +23,8 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6">
+                    </div> --}}
+                    <div class="col-12 col-md-12">
                         <div class="row justify-content-end mt-1">
                             <div class="col-auto">
                                 <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#modal_add_dish">
