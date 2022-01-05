@@ -92,9 +92,9 @@
                     searchable: true,
                 },
                 {
-                    data: "created_at_timezone",
-                    name: "created_at_timezone",
-                    title: "Fecha",
+                    data: "updated_at_timezone",
+                    name: "updated_at_timezone",
+                    title: "Fecha de Pago",
                     "class": "text-center",
                     visible: true,
                     searchable: true
@@ -106,6 +106,9 @@
                     "class": "text-center",
                     visible: true,
                     searchable: true,
+                    render: function (data, type, row, meta) {
+                        return row.amount.toFixed(2);
+                    }  
                 },
                 {
                     data: "date",

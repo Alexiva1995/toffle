@@ -91,13 +91,17 @@ Route::middleware('auth')->group(function () {
 
             // Expenses
             Route::group(['prefix' => 'expenses'], function () {
-                Route::get('list', [ExpensesController::class, 'list'])->name('expenses.list');
+                Route::get('list-historical', [ExpensesController::class, 'listHistorical'])->name('expenses.list.historical');
+                Route::get('list-to-pay', [ExpensesController::class, 'listToPay'])->name('expenses.list.to.pay');
                 Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
             });
         
             Route::resource('expenses', ExpensesController::class);
+
         });
     });
+
+    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 
     Route::group(['prefix' => 'employee'], function () { 
 
@@ -109,7 +113,7 @@ Route::middleware('auth')->group(function () {
                 Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
                 Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
             });
-            Route::resource('orders', OrdersController::class);
+            Route::resource('orders', OrdersController::class)->except(['index']);
 
 
             Route::group(['prefix' => 'ingredients'], function () {

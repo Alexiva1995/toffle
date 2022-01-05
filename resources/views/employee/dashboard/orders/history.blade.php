@@ -9,6 +9,7 @@
                 <thead>
                     <tr>
                         <th class="text-center px-0">N°</th>
+                        <th class="text-center px-0">Id</th>
                         <th class="text-center px-0">Cliente</th>
                         <th class="text-center px-0">Mesa</th>
                         <th class="text-center px-0">Estado</th>
@@ -18,6 +19,7 @@
                     @foreach ($orders as $order)
                     <tr>
                         <td class="text-center"> {{ $loop->iteration }} </td>
+                        <td class="text-center"> {{ $order->id }} </td>
                         <td class="text-center"> {{ $order->customer_name }} </td>
                         <td class="text-center"> {{ $order->table }} </td>
                         <td class="text-center">  

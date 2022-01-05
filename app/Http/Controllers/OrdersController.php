@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Dish;
 use App\Models\Category;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class OrdersController extends Controller
 {
@@ -17,7 +18,9 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
+        $pedidos = Order::orderBy('id', 'desc')->get();
+    
+        return view('/orders/index', ['pedidos' => $pedidos]);
     }
 
     /**

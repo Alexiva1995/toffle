@@ -87,7 +87,7 @@
                         <div class="row justify-content-end mt-2">
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary me-1">Añadir</button>
-                                <a href="{{ route('expenses.list') }}"  class="btn btn-outline-secondary">Cancelar</a>
+                                <a href="{{ route('expenses.list.historical') }}"  class="btn btn-outline-secondary">Cancelar</a>
                             </div>
                         </div>
                     </form>
