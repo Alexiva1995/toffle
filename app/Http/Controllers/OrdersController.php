@@ -66,7 +66,7 @@ class OrdersController extends Controller
 
         $this->validate($request, $fields, $msj);
 
-        $order = Order::create($request->all());
+        // $order = Order::create($request->all());
 
         $units = array_combine($request->dish_ids, $request->unit); 
         $prices = array_combine($request->dish_ids, $request->price); 
@@ -77,7 +77,7 @@ class OrdersController extends Controller
         foreach ($dishes as $key => $dish) {
 
             $plate = array([
-                'dish_id' => str_replace("plate", "", $key),
+                'dish_id' => str_replace("dish_", "", $key),
                 'unit' => $dish[0],
                 'price' => $dish[1],
             ]);
@@ -86,6 +86,17 @@ class OrdersController extends Controller
         }
 
         foreach ($array_dish as $key => $item) {
+
+            // $dish = Dish::find($item['dish_id']);
+
+            // foreach ($dish->ingredients() as $key => $value) {
+            //     $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
+            //     $grams = $inventory->product()->gr;
+
+            //     $grams_used = $inventory->product()->gr * $item['unit'];
+
+            // }
+
             $order->dishes()->attach( [ $order->id => 
                 [
                     'order_id' => $order->id,

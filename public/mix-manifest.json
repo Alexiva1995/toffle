@@ -65,6 +65,7 @@
     "/js/scripts/cards/card-statistics.js": "/js/scripts/cards/card-statistics.js",
     "/js/scripts/charts/chart-apex.js": "/js/scripts/charts/chart-apex.js",
     "/js/scripts/charts/chart-chartjs.js": "/js/scripts/charts/chart-chartjs.js",
+    "/js/scripts/charts/reports.js": "/js/scripts/charts/reports.js",
     "/js/scripts/components/components-accordion.js": "/js/scripts/components/components-accordion.js",
     "/js/scripts/components/components-alerts.js": "/js/scripts/components/components-alerts.js",
     "/js/scripts/components/components-bs-toast.js": "/js/scripts/components/components-bs-toast.js",

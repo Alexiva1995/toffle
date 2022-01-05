@@ -76,6 +76,7 @@ Route::middleware('auth')->group(function () {
             // Inventories
             Route::group(['prefix' => 'inventory'], function () {
                 Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
+                Route::post('add-product-to-inventory', [InventoryController::class, 'addProductToInventory'])->name('add.product.to.inventory');
             });
 
             Route::resource('inventory', InventoryController::class);
@@ -116,6 +117,7 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'dashboard'], function () {
             Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
+            Route::post('data-chart-amount-vs-gain', [DashboardController::class, 'dataChartAmountVsGain'])->name('data-chart.amount.vs.gain');
 
             // Orders
             Route::group(['prefix' => 'orders'], function () {
