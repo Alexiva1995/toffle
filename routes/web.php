@@ -98,6 +98,7 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'dashboard'], function () {
             Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
+            Route::post('data-chart-amount-vs-gain', [DashboardController::class, 'dataChartAmountVsGain'])->name('data-chart.amount.vs.gain');
 
             // Orders
             Route::group(['prefix' => 'orders'], function () {

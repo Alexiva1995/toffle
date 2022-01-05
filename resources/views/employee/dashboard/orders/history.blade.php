@@ -1,4 +1,3 @@
-<!-- Company Table Card -->
 <div class="card card-company-table">
     <div class="card-header">
         <h3>Historial de Pedidos</h3>
@@ -83,4 +82,3 @@
         </div>
     </div>
 </div>
-<!--/ Company Table Card -->

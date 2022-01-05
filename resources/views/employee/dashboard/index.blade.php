@@ -11,14 +11,12 @@
   {{-- Page css files --}}
   <link rel="stylesheet" href="{{ asset(mix('css/base/pages/dashboard-ecommerce.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/charts/chart-apex.css')) }}">
-  {{-- <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}"> --}}
 @endsection
 
 @section('content')
-<!-- Dashboard Ecommerce Starts -->
 <section id="dashboard-ecommerce">
   <div class="row match-height">
-    <!-- Medal Card -->
+    <!-- Add Order Card -->
     <div class="col-xl-3 col-md-6 col-12">
       <div class="card card-congratulation-medal">
         <div class="card-body">
@@ -35,7 +33,7 @@
         </div>
       </div>
     </div>
-    <!--/ Medal Card -->
+    <!-- Add Order Card -->
 
     {{-- Modals --}}
     @include('employee.dashboard.orders.modals.create')
@@ -46,29 +44,39 @@
     </div>
     {{--/ Order-Statistics --}}
  
+    {{-- Orders-Pending --}}
     <div class="col-lg-6 col-12">
       @include('employee.dashboard.orders.pending')
     </div>
+    {{--/ Orders-Pending --}}
 
+    {{-- Orders-History --}}
     <div class="col-lg-6 col-12">
       @include('employee.dashboard.orders.history')
     </div>
+    {{--/ Orders-Pending --}}
 
+    {{-- Tables --}}
     <div class="col-lg-4 col-12">
       @include('employee.dashboard.table.list')
     </div>
+    {{--/ Tables --}}
 
+    {{-- Money Flow --}}
     <div class="col-lg-4 col-12">
       @include('employee.dashboard.money_flow.list')
     </div>
+    {{--/ Money Flow --}}
 
+    {{-- Inventory Reposition --}}
     <div class="col-lg-4 col-12">
       @include('employee.dashboard.inventory_reposition.list')
     </div>
+    {{--/ Inventory Reposition --}}
+
   </div>
 
 </section>
-<!-- Dashboard Ecommerce ends -->
 @endsection
 
 @section('vendor-script')
@@ -78,7 +86,6 @@
 @endsection
 @section('page-script')
   {{-- Page js files --}}
-  {{-- <script src="{{ asset(mix('js/scripts/pages/dashboard-ecommerce.js')) }}"></script> --}}
 @endsection
 
 @section('custom-js')

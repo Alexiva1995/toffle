@@ -65,7 +65,7 @@ class OrdersController extends Controller
         foreach ($dishes as $key => $dish) {
 
             $plate = array([
-                'dish_id' => str_replace("plate", "", $key),
+                'dish_id' => str_replace("dish_", "", $key),
                 'unit' => $dish[0],
                 'price' => $dish[1],
             ]);

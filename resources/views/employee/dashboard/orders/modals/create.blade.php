@@ -53,22 +53,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-12 col-md-4 mb-1">
-                                        <div class="mb-1">
-                                            <label class="form-label" for="total_amount">Monto Total de lo Pedido</label>
-                                            <div class="input-group input-group-merge">
-                                                <span class="input-group-text"><i data-feather="archive"></i></span>
-                                                <input type="number" id="total_amount" class="form-control requerid @error('total_amount') is-invalid @enderror" name="total_amount"
-                                                    placeholder="" value="0.00" required/>
-                                                @error('total_amount')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>     --}}
-
                                     <hr>
                                     <div class="col-12 mb-1">
                                         <div class="mb-1">
@@ -78,12 +62,12 @@
                                                     <select class="select2 form-control" data-toggle="select" class="form-control" id="selected_dish">
                                                         <option disabled selected value=''>Selecciona un Plato</option>
                                                         <optgroup label="Postres"> 
-                                                            <option value="plate1">Postre1</option>
-                                                            <option value="plate2">Postre2</option> 
+                                                            <option value="dish_1">Postre1</option>
+                                                            <option value="dish_2">Postre2</option> 
                                                         </optgroup>
                                                         <optgroup label="Bebidas"> 
-                                                            <option value="plate3">Bebida1</option>
-                                                            <option value="plate4">Bebida2</option> 
+                                                            <option value="dish_3">Bebida1</option>
+                                                            <option value="dish_4">Bebida2</option> 
                                                         </optgroup>
                                                     </select>
                                                 </div>

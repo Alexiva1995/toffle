@@ -1,4 +1,4 @@
-<!-- Modal Add Order -->
+<!-- Modal Add Dish -->
 <div
   class="modal fade text-start"
   id="modal_add_dish"
