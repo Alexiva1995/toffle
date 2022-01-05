@@ -18,6 +18,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ComponentsController;
 
 
@@ -45,11 +46,11 @@ use App\Http\Controllers\AuthenticationController;
 /* Route Dashboards */
 Auth::routes(['verify' => true]);
 
-Route::middleware('auth')->group(function () { 
+Route::middleware('auth')->group(function () {
 
     Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
-    Route::middleware('admin')->group(function () { 
+    Route::middleware('admin')->group(function () {
 
         Route::group(['prefix' => 'admin'], function () {
 
@@ -86,7 +87,15 @@ Route::middleware('auth')->group(function () {
             Route::group(['prefix' => 'categories'], function () {
                 Route::get('list', [CategoriesController::class, 'list'])->name('categories.list');
             });
-        
+
+            //Reports
+            Route::group(['prefix' => 'reports'], function () {
+                Route::get('list', [ReportController::class, 'index'])->name('reports.index');
+                Route::get('gain', [ReportController::class, 'gain'])->name('reports.gain');
+                Route::get('expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
+                Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
+            });
+
             Route::resource('categories', CategoriesController::class);
 
             // Expenses
@@ -95,7 +104,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('list-to-pay', [ExpensesController::class, 'listToPay'])->name('expenses.list.to.pay');
                 Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
             });
-        
+
             Route::resource('expenses', ExpensesController::class);
 
         });
@@ -103,7 +112,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 
-    Route::group(['prefix' => 'employee'], function () { 
+    Route::group(['prefix' => 'employee'], function () {
 
         Route::group(['prefix' => 'dashboard'], function () {
             Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
