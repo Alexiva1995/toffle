@@ -2,13 +2,13 @@
 $configData = Helper::applClasses();
 @endphp
 <div class="main-menu menu-fixed {{(($configData['theme'] === 'dark') || ($configData['theme'] === 'semi-dark')) ? 'menu-dark' : 'menu-light'}} menu-accordion menu-shadow" data-scroll-to-active="true">
-  <div class="navbar-header">
+  <div class="navbar-header mb-5">
     <ul class="nav navbar-nav flex-row">
       <li class="nav-item me-auto">
-        <a class="navbar-brand" href="{{url('/')}}">
+        <a class="navbar-brandd" href="{{url('/')}}">
           {{-- <img class="d-block mx-auto" src="{{ asset('images/logo/logo-toffle.png') }}" alt="" width="100px" height="50px"> --}}
-          <span class="brand-logo">
-            <img class="" src="{{ asset('images/logo/logo-toffle.png') }}" alt="">
+          <span class="brand-logo d-flex justify-content-center">
+            <img class="img-fluid" src="{{ asset('images/logo/logo-toffle.png') }}"  width="200px" alt="">
             {{-- <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24">
               <defs>
                 <lineargradient id="linearGradient-1" x1="100%" y1="10.5120544%" x2="50%" y2="89.4879456%">
@@ -33,7 +33,7 @@ $configData = Helper::applClasses();
               </g>
             </svg> --}}
           </span>
-          <h2 class="brand-text">Toffle</h2>
+          {{-- <h2 class="brand-text">Toffle</h2> --}}
         </a>
       </li>
       <li class="nav-item nav-toggle">
@@ -45,7 +45,7 @@ $configData = Helper::applClasses();
     </ul>
   </div>
   <div class="shadow-bottom"></div>
-  <div class="main-menu-content">
+  <div class="main-menu-content pt-5">
     <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
       {{-- Para Usuarios Normales --}}
       @if (Auth::user()->role == 0)

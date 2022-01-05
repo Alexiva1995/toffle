@@ -21,7 +21,7 @@
           <!-- Basic Select -->
           <div class="mb-1">
             <label class="form-label" for="basicSelect">Basic Select</label>
-            <select class="form-select" id="basicSelect">
+            <select class="form-select rounded border-primary" id="basicSelect">
               <option>IT</option>
               <option>Blade Runner</option>
               <option>Thor Ragnarok</option>
@@ -31,7 +31,7 @@
           <!-- Disabled Select -->
           <div class="mb-1">
             <label class="form-label" for="disabledSelect">Disabled Select</label>
-            <select class="form-select" disabled="disabled" id="disabledSelect">
+            <select class="form-select rounded border-primary" disabled="disabled" id="disabledSelect">
               <option>Green</option>
               <option>Red</option>
               <option>Blue</option>
@@ -41,7 +41,7 @@
           <!-- Multiple Select -->
           <div class="mb-1">
             <label class="form-label" for="normalMultiSelect">Multiple Select</label>
-            <select class="form-select" id="normalMultiSelect" multiple="multiple">
+            <select class="form-select rounded border-primary" id="normalMultiSelect" multiple="multiple">
               <option selected="selected">Square</option>
               <option>Rectangle</option>
               <option selected="selected">Rombo</option>
@@ -66,7 +66,7 @@
         <div class="card-body">
           <div class="mb-1">
             <label class="form-label" for="selectLarge">Select Large</label>
-            <select class="form-select form-select-lg" id="selectLarge">
+            <select class="form-select rounded border-primary form-select-lg" id="selectLarge">
               <option selected>Open this select menu</option>
               <option value="1">One</option>
               <option value="2">Two</option>
@@ -76,7 +76,7 @@
 
           <div class="mb-1">
             <label class="form-label" for="selectDefault">Default</label>
-            <select class="form-select" id="selectDefault">
+            <select class="form-select rounded border-primary" id="selectDefault">
               <option selected>Open this select menu</option>
               <option value="1">One</option>
               <option value="2">Two</option>
@@ -86,7 +86,7 @@
 
           <div class="mb-1">
             <label class="form-label" for="selectSmall">Select Small</label>
-            <select class="form-select form-select-sm" id="selectSmall">
+            <select class="form-select rounded border-primary form-select-sm" id="selectSmall">
               <option selected>Open this select menu</option>
               <option value="1">One</option>
               <option value="2">Two</option>
@@ -95,7 +95,7 @@
           </div>
           <div class="mb-1">
             <label class="form-label" for="multiSelectSizing">Using Size Attribute</label>
-            <select class="form-select" size="3" aria-label="size 3 select" id="multiSelectSizing">
+            <select class="form-select rounded border-primary" size="3" aria-label="size 3 select" id="multiSelectSizing">
               <option selected>Open this select menu</option>
               <option value="1">One</option>
               <option value="2">Two</option>

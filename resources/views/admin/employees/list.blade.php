@@ -15,7 +15,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <label for="status">Filtrar Estatus</label>
-                                <select class="select2 form-control" data-toggle="select" name="status"
+                                <select class="form-control" data-toggle="select" name="status"
                                     id="status_filter">
                                     <option value="">Todas los Estatus</option>
                                     <option value="Activo">Activos</option>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table" id="table">
+                    <table class="table rounded border-table" id="table" >
                         <thead>
                             <tr>
                                 <th>N°</th>

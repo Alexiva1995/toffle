@@ -22,6 +22,19 @@ class Order extends Model
                 ->withPivot('id', 'order_id', 'dish_id', 'unit', 'price', 'created_at', 'updated_at');
     }
 
+    public function estado()
+    {
+        if($this->status == '0'){
+            return "pendiente";
+        }else if($this->status == '1'){
+            return "En espera";
+        }else if($this->status == '2'){
+            return "Finalizados";
+        }else if($this->status == '3'){
+            return "Cancelados";
+        }
+    }
+    
     public function getOrderIds($table)
     {
         $order_ids = Order::where('table', $table)->orderBy('id','ASC')->get();

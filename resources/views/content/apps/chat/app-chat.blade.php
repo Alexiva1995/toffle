@@ -203,7 +203,7 @@
 
     <!-- Submit Chat form -->
     <form class="chat-app-form" action="javascript:void(0);" onsubmit="enterChat();">
-      <div class="input-group input-group-merge me-1 form-send-message">
+      <div class="input-group input-group-merge  me-1 form-send-message">
         <span class="speech-to-text input-group-text"><i data-feather="mic" class="cursor-pointer"></i></span>
         <input type="text" class="form-control message" placeholder="Type your message or use speech to text" />
         <span class="input-group-text">

@@ -1,11 +1,6 @@
 <!-- Modal Add Order -->
-<div
-  class="modal fade text-start"
-  id="modal_add_order"
-  tabindex="-1"
-  aria-labelledby="myModalLabel1"
-  aria-hidden="true"
->
+<div class="modal fade text-start" id="modal_add_order" tabindex="-1" aria-labelledby="myModalLabel1"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -26,7 +21,7 @@
                                     <div class="col-12 col-md-6 mb-1">
                                         <div class="mb-1">
                                             <label class="form-label" for="customer_name">Nombre del Cliente</label>
-                                            <div class="input-group input-group-merge">
+                                            <div class="input-group input-group-merge ">
                                                 <span class="input-group-text"><i data-feather="user"></i></span>
                                                 <input type="text" id="customer_name" class="form-control requerid @error('customer_name') is-invalid @enderror" name="customer_name"
                                                     placeholder="Nombre" required/>
@@ -41,7 +36,7 @@
                                     <div class="col-12 col-md-6 mb-1">
                                         <div class="mb-1">
                                             <label class="form-label" for="table">Mesa</label>
-                                            <div class="input-group input-group-merge">
+                                            <div class="input-group input-group-merge ">
                                                 <span class="input-group-text"><i data-feather="tag"></i></span>
                                                 <input type="number" id="table" class="form-control requerid @error('table') is-invalid @enderror" name="table"
                                                     placeholder="Mesa" required/>
@@ -78,7 +73,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>                                    
 
                                     <div class="table-responsive">
                                         <table class="table" id="items_table">
@@ -112,14 +106,13 @@
                         </div>
                     </div>
                 </div>
-            </div>       
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="add_order">
+                    <span class="loading_add_order mr-2"></span> Agregar
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="add_order">
-                <span class="loading_add_order mr-2"></span> Agregar
-            </button>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
     </div>
 </div>

@@ -24,7 +24,7 @@
             </div>
             <div class="col-xl-4 col-md-6 col-sm-12 mb-2">
               <label class="form-label" for="phone-number">Phone Number</label>
-              <div class="input-group input-group-merge">
+              <div class="input-group input-group-merge ">
                 <span class="input-group-text">US (+1)</span>
                 <input
                   type="text"

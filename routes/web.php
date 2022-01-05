@@ -21,7 +21,6 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ComponentsController;
 
 
-use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\PageLayoutController;
 use App\Http\Controllers\MiscellaneousController;
 use App\Http\Controllers\UserInterfaceController;
@@ -66,6 +65,13 @@ Route::middleware('auth')->group(function () {
 
             Route::resource('employees', UserController::class);
 
+            // Dishes
+            Route::group(['prefix' => 'dishes'], function () {
+                Route::get('list', [DishController::class, 'list'])->name('dishes.list');
+            });
+
+            Route::resource('dishes', DishController::class);
+
             // Inventories
             Route::group(['prefix' => 'inventory'], function () {
                 Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
@@ -91,8 +97,11 @@ Route::middleware('auth')->group(function () {
             });
         
             Route::resource('expenses', ExpensesController::class);
+
         });
     });
+
+    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 
     Route::group(['prefix' => 'employee'], function () { 
 
@@ -105,7 +114,7 @@ Route::middleware('auth')->group(function () {
                 Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
                 Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
             });
-            Route::resource('orders', OrdersController::class);
+            Route::resource('orders', OrdersController::class)->except(['index']);
 
 
             Route::group(['prefix' => 'ingredients'], function () {

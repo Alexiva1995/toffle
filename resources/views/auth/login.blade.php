@@ -49,7 +49,7 @@
               </a>
               @endif --}}
             </div>
-            <div class="input-group input-group-merge form-password-toggle">
+            <div class="input-group input-group-merge  form-password-toggle">
               <input
                 type="password"
                 class="form-control form-control-merge @error('password') is-invalid @enderror"

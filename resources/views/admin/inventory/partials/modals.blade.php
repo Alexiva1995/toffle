@@ -19,7 +19,7 @@
             <button type="button" class="btn btn-primary" id="add_inventory">
                 <span class="loading_inv mr-2"></span> Añadir
             </button>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button> 
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
                                       <div class="col-12 col-md-6 mb-1">
                                           <div class="mb-1">
                                                 <label class="form-label" for="qty">Cantidad</label>
-                                                <div class="input-group input-group-merge">
+                                                <div class="input-group input-group-merge ">
                                                     <input type="number" id="qty" class="form-control form-control-lg @error('qty') is-invalid @enderror" name="qty"
                                                             placeholder="Cant." />
                                                     <span class="input-group-text text-white btn-max" id="btn_max" style="cursor: pointer">

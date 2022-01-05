@@ -23,8 +23,8 @@
     },
 
     {
-      "url": "admin/plates",
-      "name": "plates",
+      "url": "admin/dishes",
+      "name": "dishes",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "layers",
       "slug": "index.dishes"
@@ -102,7 +102,7 @@
       ]
     },
     {
-      "url": "admin/orders",
+      "url": "orders",
       "name": "orders",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "shopping-bag",

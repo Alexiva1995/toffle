@@ -13,10 +13,11 @@ class CreateDishesIngredientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('dishes_ingredients', function (Blueprint $table) {
+        Schema::create('dish_ingredient', function (Blueprint $table) {
             $table->id();
             $table->string('dish_id');
-            $table->string('ingredient_id');
+            $table->string('inventory_id');
+            $table->string('portion');
             $table->timestamps();
         });
     }
