@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
             // Inventories
             Route::group(['prefix' => 'inventory'], function () {
                 Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
+                Route::post('add-product-to-inventory', [InventoryController::class, 'addProductToInventory'])->name('add.product.to.inventory');
             });
 
             Route::resource('inventory', InventoryController::class);

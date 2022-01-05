@@ -46,9 +46,7 @@ class DashboardController extends Controller
 
     $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
 
-    $inventories = Inventory::whereHas('product', function($q) {
-        $q->where('units_reposition_alert', '>', 0);
-      })->orderBy('id', 'ASC')->get();
+    $inventories = Inventory::all();
 
     return view('admin.dashboard.index', ['pageConfigs' => $pageConfigs])
       ->with('tables', $tables)
@@ -62,15 +60,16 @@ class DashboardController extends Controller
 
     $orders = Order::all();
 
+    $dishes = Dish::all();
+
     $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
 
-    $inventories = Inventory::whereHas('product', function($q) {
-        $q->where('units_reposition_alert', '>', 0);
-      })->orderBy('id', 'ASC')->get();
+    $inventories = Inventory::all();
 
     return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
       ->with('tables', $tables)
       ->with('inventories', $inventories)
+      ->with('dishes', $dishes)
       ->with('orders', $orders);
   }
 

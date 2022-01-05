@@ -45,7 +45,7 @@
     {{--/ Order-Statistics --}}
  
     {{-- Orders-Pending --}}
-    <div class="col-lg-6 col-12">
+    <div class="col-12">
       @include('employee.dashboard.orders.pending')
     </div>
     {{--/ Orders-Pending --}}
@@ -57,19 +57,19 @@
     {{--/ Orders-Pending --}}
 
     {{-- Tables --}}
-    <div class="col-lg-4 col-12">
+    <div class="col-lg-6 col-12">
       @include('employee.dashboard.table.list')
     </div>
     {{--/ Tables --}}
 
     {{-- Money Flow --}}
-    <div class="col-lg-4 col-12">
+    <div class="col-lg-6 col-12">
       @include('employee.dashboard.money_flow.list')
     </div>
     {{--/ Money Flow --}}
 
     {{-- Inventory Reposition --}}
-    <div class="col-lg-4 col-12">
+    <div class="col-lg-6 col-12">
       @include('employee.dashboard.inventory_reposition.list')
     </div>
     {{--/ Inventory Reposition --}}

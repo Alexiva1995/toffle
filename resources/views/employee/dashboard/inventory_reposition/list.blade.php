@@ -4,7 +4,7 @@
         <h3>
             <div class="avatar bg-light-warning">
                 <div class="avatar-content">
-                    <i data-feather="alert-triangle" class="avatar-icon"></i>
+                    <i data-feather="alert-circle" class="avatar-icon"></i>
                 </div>
             </div>
             Reposición de Inventario
@@ -15,18 +15,28 @@
             <table class="table" id="inventory_reposition_table">
                 <thead>
                     <tr>
+                        <th class="text-center px-0">Id del Inventario</th>
                         <th class="text-center px-0">Producto</th>
-                        <th class="text-center px-0"> Reposición de Unidades</th>
+                        <th class="text-center px-0">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($inventories as $inventory)
-                    <tr>
-                        <td class="text-center"> {{ $inventory->product->name }} </td>
-                        <td class="text-center"> 
-                            {{ $inventory->product->units_reposition_alert }} 
-                        </td>
-                    </tr>
+                        @if ($inventory->local <= $inventory->product->units_reposition_alert )
+                            <tr>
+                                <td class="text-center text-dark"> 
+                                    {{ $inventory->id }}
+                                </td>  
+                                <td class="text-center text-dark"> 
+                                    {{ $inventory->product->name }}
+                                </td>  
+                                <td class="text-center"> 
+                                    <span class="badge badge-light-info text white"> 
+                                        <i data-feather="alert-circle"></i> Reponer Producto
+                                    </span>  
+                                </td>                       
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>

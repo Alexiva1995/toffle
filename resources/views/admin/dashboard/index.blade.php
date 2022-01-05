@@ -40,12 +40,7 @@
 @section('vendor-script')
   {{-- vendor files --}}
   <script src="{{ asset(mix('vendors/js/charts/apexcharts.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/pickers/pickadate/picker.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/pickers/pickadate/picker.date.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/pickers/pickadate/picker.time.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/pickers/pickadate/legacy.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endsection
 @section('page-script')
   {{-- Page js files --}}

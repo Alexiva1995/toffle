@@ -20,7 +20,7 @@
                 <table class="table" id="product_table">
                     <thead>
                         <tr>
-                            <th>N°</th>
+                            <th>ID</th>
                             <th>Nombre</th>
                             <th>Marca</th>
                             <th>Gr.</th>
@@ -32,7 +32,8 @@
                     <tbody>
                         @foreach ($products as $product)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            {{-- <td>{{ $loop->iteration }}</td> --}}
+                            <td>{{ $product->id }}</td>
                             <td>{{ $product->name }}</td>
                             <td>{{ $product->mark }}</td>
                             <td>{{ $product->gr }}</td>
