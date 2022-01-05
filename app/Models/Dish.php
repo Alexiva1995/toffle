@@ -30,4 +30,5 @@ class Dish extends Model
     {
         return $this->belongsTo('App\Models\Category', 'category_id', 'id');
     }
+
 }

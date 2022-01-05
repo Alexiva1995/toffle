@@ -27,9 +27,9 @@
                     <div class="col-12 col-md-12">
                         <div class="row justify-content-end mt-1">
                             <div class="col-auto">
-                                <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#modal_add_dish">
+                                <a href="{{ route('dishes.create') }}" class="btn btn-primary mt-2">
                                     <i data-feather="plus"></i> Añadir Plato
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                                 {{-- <td> <span class="badge badge-light-{{ $item->status == 0 ? 'danger' : 'success' }}">{{ $item->status == 0 ? 'Inactivo' : 'Activo' }}</span> </td> --}}
                                 {{-- <td class="text-center">{{ date('d-m-Y', strtotime($item->created_at)) }}</td> --}}
                                 <td class="text-center"> 
-                                    <button class="btn btn-sm btn-info my-1" data-bs-toggle="modal" data-bs-target="#modal_edit_dish"> <i data-feather="edit"></i> </button> 
+                                    <a href="{{  route('dishes.edit', $item->id) }}" class="btn btn-sm btn-info my-1"> <i data-feather="edit"></i> </a> 
 
                                     <button class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $item->id }}, 
@@ -85,7 +85,7 @@
     </div>
 </section>
 
-@include('admin.dishes.partials.modals')
+@include('admin.dishes.partials.script')
 
 @endsection
 
@@ -101,23 +101,23 @@
 @section('custom-js')
     @include('panels.datatable.scripts')
     <script>
-        $.fn.dataTable.ext.search.push(
-            function( settings, data, dataIndex ) {
-                var tdStatus = data[5];
-                var filterStatus = $('#status_filter option').filter(':selected').val();
-                if (filterStatus == '') {
-                    return true;
-                }
-                return tdStatus == filterStatus;
-            }
-        );
+        // $.fn.dataTable.ext.search.push(
+        //     function( settings, data, dataIndex ) {
+        //         var tdStatus = data[5];
+        //         var filterStatus = $('#status_filter option').filter(':selected').val();
+        //         if (filterStatus == '') {
+        //             return true;
+        //         }
+        //         return tdStatus == filterStatus;
+        //     }
+        // );
 
-        $(document).ready(function() {
-            var table = $('.table').DataTable();
-            $('#status_filter').change( function() {
-                table.draw();
-            });
-        });
+        // $(document).ready(function() {
+        //     var table = $('.table').DataTable();
+        //     $('#status_filter').change( function() {
+        //         table.draw();
+        //     });
+        // });
 
         dataTable('#table');
     </script>

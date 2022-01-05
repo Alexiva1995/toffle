@@ -33,7 +33,13 @@ class DishController extends Controller
      */
     public function create()
     {
-        return view('admin.dishes.create');
+        $dishes = Dish::orderBy('id', 'DESC')->get();
+
+        $ingredients = Inventory::orderBy('id', 'DESC')->get();
+
+        $category = Category::orderBy('id', 'DESC')->get();
+
+        return view('admin.dishes.create', compact('dishes', 'ingredients', 'category'));
     }
 
     /**
@@ -120,11 +126,14 @@ class DishController extends Controller
      * @param  \App\Models\Dish  $dish
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit($id)
     {
-        $dish = Dish::find($request->id);
+
+        $dish = Dish::find($id);
         $ingredients = Inventory::orderBy('id', 'DESC')->get();
-        return view('admin.dishes.edit', compact('dish', 'ingredients'));
+        $category = Category::orderBy('id', 'DESC')->get();
+
+        return view('admin.dishes.edit', compact('dish', 'ingredients', 'category'));
     }
 
     /**
