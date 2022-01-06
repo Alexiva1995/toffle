@@ -23,12 +23,10 @@
                             <div class="card p-2">
                                 <div class="row align-items-center">
                                     <div class="col-12 col-md-6">
-                                        <h3>Lista de Informes</h1>
+                                        <h3>Lista de Ventas</h1>
                                     </div>
                                 </div>
-
                                 <div class="table-responsive">
-
                                     <table class="table myTable table-striped">
                                         <thead>
                                             <tr>

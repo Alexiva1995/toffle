@@ -36,17 +36,12 @@
       "icon": "clipboard",
       "slug": "reports",
       "submenu": [
+
         {
-          "url": "admin/reports/module",
-          "name": "r_module",
-          "icon": "circle",
-          "slug": ""
-        },
-        {
-          "url": "admin/reports/cash_flow",
+          "url": "admin/reports/cashflow",
           "name": "r_cash_flow",
           "icon": "circle",
-          "slug": ""
+          "slug": "reports.cashflow"
         },
         {
           "url": "admin/reports/sales",
@@ -67,10 +62,10 @@
           "slug": "reports.gain"
         },
         {
-          "url": "admin/reports/list",
-          "name": "all_reports",
+          "url": "admin/reports/BestSeller",
+          "name": "r_more_sold",
           "icon": "circle",
-          "slug": "reports.index"
+          "slug": "reports.BestSeller"
         }
       ]
     },
