@@ -20,10 +20,10 @@ class CreateInventoriesTable extends Migration
             $table->integer('unit_package');
             $table->double('price');
             $table->double('cost')->default(0);
-            $table->integer('total')->default(0);
-            $table->integer('deposit')->default(0);
-            $table->integer('local')->default(0);
-            $table->integer('public')->default(0);
+            $table->double('total')->default(0);
+            $table->double('deposit')->default(0);
+            $table->double('local')->default(0);
+            $table->double('public')->default(0);
             $table->timestamps();
         });
     }

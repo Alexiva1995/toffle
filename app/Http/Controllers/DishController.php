@@ -45,8 +45,6 @@ class DishController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->all());
-
         // $fields = [
         //     'name' => ['required', 'min:2'],
         //     'category_id' => ['required'],

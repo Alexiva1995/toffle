@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Dish;
 use App\Models\Category;
+use App\Models\Inventory;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -78,15 +79,19 @@ class OrdersController extends Controller
 
         foreach ($array_dish as $key => $item) {
 
-            // $dish = Dish::find($item['dish_id']);
+            $dish = Dish::find($item['dish_id']);
 
-            // foreach ($dish->ingredients() as $key => $value) {
-            //     $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
-            //     $grams = $dish->pivot->portion;
+            foreach ($dish->ingredients()->get() as $key => $value) {
+                $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
+                $grams = $value->pivot->portion;
+                $grams_used = $value->pivot->portion * $item['unit'];
+                $units = $grams_used / 1000;
 
-            //     $grams_used = $dish->pivot->portion * $item['unit'];
-
-            // }
+                $inventory->decrement('local', $units);
+                $inventory->update([
+                    'total' => $inventory->deposit + $inventory->local + $inventory->public
+                ]);
+            }
 
             $order->dishes()->attach( [ $order->id => 
                 [
