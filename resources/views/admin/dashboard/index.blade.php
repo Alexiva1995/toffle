@@ -239,33 +239,23 @@
                       stacked: true,
                       parentHeightOffset: 0,
                       toolbar: {
-                        show: false
+                        show: true
                       }
                     },
                     plotOptions: {
                       bar: {
                         columnWidth: '15%',
                         distributed: true,
-                        // colors: {
-                        //   backgroundBarColors: [
-                        //     chartColors.column.series1,
-                        //     chartColors.column.series2,
-                        //     chartColors.column.bg,
-                        //     chartColors.donut.series1,
-                        //     chartColors.donut.series2
-                        //   ],
-                        //   backgroundBarRadius: 10
-                        // }
                       }
                     },
                     dataLabels: {
                       enabled: false
                     },
-                    legend: {
-                      show: true,
-                      position: 'top',
-                      horizontalAlign: 'start'
-                    },
+                    // legend: {
+                    //   show: true,
+                    //   position: 'top',
+                    //   horizontalAlign: 'start'
+                    // },
                     // colors: [chartColors.column.series1, chartColors.column.series2],
                     stroke: {
                       show: true,
