@@ -28,14 +28,13 @@
                                             <label class="form-label" for="dish_id">Plato</label>
                                             <select class="select2 form-control" data-toggle="select" name="dish_id" id="dish_id">
                                                 <option disabled selected value="">Selecciona un Plato</option>
-                                                <optgroup label="Postres"> 
-                                                    <option value="1">Postre1</option>
-                                                    <option value="2">Postre2</option> 
-                                                </optgroup>
-                                                <optgroup label="Bebidas"> 
-                                                    <option value="3">Bebida1</option>
-                                                    <option value="4">Bebida2</option> 
-                                                </optgroup>
+                                                @foreach ($dish_category as $item)
+                                                    <optgroup label="{{ $item->category->name }}"> 
+                                                        @foreach ($item->collectionDishes($item->category_id) as $dish)
+                                                            <option data-price = {{ $dish->designated_price }} value="{{ $dish->id }}">{{ $dish->name }}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div> 
@@ -59,7 +58,7 @@
                                             <label class="form-label" for="price">Precio Unitario</label>
                                             <div class="input-group input-group-merge">
                                                 <span class="input-group-text"><i data-feather="tag"></i></span>
-                                                <input type="number" id="price" class="form-control requerid @error('price') is-invalid @enderror" name="price" placeholder="Precio por Unidad" required/>
+                                                <input type="number" id="price" class="form-control requerid @error('price') is-invalid @enderror" name="price" placeholder="Precio por Unidad" readonly required/>
                                                 @error('price')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

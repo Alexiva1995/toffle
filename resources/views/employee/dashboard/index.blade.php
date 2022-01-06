@@ -5,12 +5,9 @@
 
 @section('vendor-style')
   {{-- vendor css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/charts/apexcharts.css')) }}">
 @endsection
 @section('page-style')
   {{-- Page css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/pages/dashboard-ecommerce.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/charts/chart-apex.css')) }}">
 @endsection
 
 @section('content')
@@ -128,13 +125,16 @@
                 <td><input type="text" name="dish[]" class="form-control dish" id="dish_'+numRows+'" value="'+$("#selected_dish option:selected").text()+'" required disabled></td>\
                 <input type="hidden" name="dish_ids[]" class="form-control dish_ids" id="dish_ids_'+numRows+'" value="'+$("#selected_dish option:selected").val()+'" required>\
                 <td><input type="number" name="unit[]" class="form-control units" id="unit_'+numRows+'" value="1" oninput="calculate('+numRows+')" required></td>\
-                <td><input type="text" name="price[]" class="form-control price" id="price_'+numRows+'" value="0.00" oninput="calculate('+numRows+')" required></td>\
-                <td><input type="text" name="total[]" class="form-control total" id="total_'+numRows+'" value="0.00" readonly></td>\
+                <td><input type="text" name="price[]" class="form-control price" id="price_'+numRows+'" value="'+$("#selected_dish option:selected").data("price").toFixed(2)+'" readonly required></td>\
+                <td><input type="text" name="total[]" class="form-control total" id="total_'+numRows+'" value="'+$("#selected_dish option:selected").data("price")+'" readonly></td>\
                 <td><a href="javascript:;" onclick="deleteRow('+numRows+')"> <i class="text-danger" data-feather="x-circle"></i> </a></td>\
                 </tr>';
                 $("#items_table>tbody").append(content);
                 feather.replace();
                 $("#selected_dish").val("").trigger('change');
+
+                calculate(numRows);
+
             }else{
               toastr['error']('', 'Este Plato ya fue añadido', {
                   closeButton: true,
@@ -154,6 +154,8 @@
           
           $("#row_"+row).remove();
           numRows--;
+
+          calculate(numRows);
       }
 
       function calculate(row){
