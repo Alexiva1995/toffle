@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('mark')->nullable();
             $table->string('gr')->nullable();
-            $table->integer('units_reposition_alert')->default(0);
+            $table->double('units_reposition_alert')->default(0);
             $table->timestamps();
         });
     }
