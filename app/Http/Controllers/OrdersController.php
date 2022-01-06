@@ -57,7 +57,7 @@ class OrdersController extends Controller
 
         $this->validate($request, $fields, $msj);
 
-        // $order = Order::create($request->all());
+        $order = Order::create($request->all());
 
         $units = array_combine($request->dish_ids, $request->unit); 
         $prices = array_combine($request->dish_ids, $request->price); 
@@ -82,9 +82,9 @@ class OrdersController extends Controller
 
             // foreach ($dish->ingredients() as $key => $value) {
             //     $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
-            //     $grams = $inventory->product()->gr;
+            //     $grams = $dish->pivot->portion;
 
-            //     $grams_used = $inventory->product()->gr * $item['unit'];
+            //     $grams_used = $dish->pivot->portion * $item['unit'];
 
             // }
 
@@ -124,6 +124,8 @@ class OrdersController extends Controller
 
         $dishes = $order->dishes()->get();
 
+        $dish_category = Dish::select('category_id')->distinct()->get();
+
         $array_dish = array();
 
         foreach ($dishes as $key => $dish) {
@@ -132,6 +134,7 @@ class OrdersController extends Controller
 
         return view('employee.dashboard.orders.edit')
             ->with('array_dish', json_encode($array_dish))
+            ->with('dish_category', $dish_category)
             ->with('order', $order);
     }
 

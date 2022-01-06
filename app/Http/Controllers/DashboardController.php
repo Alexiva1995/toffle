@@ -60,7 +60,7 @@ class DashboardController extends Controller
 
     $orders = Order::all();
 
-    $dishes = Dish::all();
+    $dish_category = Dish::select('category_id')->distinct()->get();
 
     $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
 
@@ -69,7 +69,7 @@ class DashboardController extends Controller
     return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
       ->with('tables', $tables)
       ->with('inventories', $inventories)
-      ->with('dishes', $dishes)
+      ->with('dish_category', $dish_category)
       ->with('orders', $orders);
   }
 

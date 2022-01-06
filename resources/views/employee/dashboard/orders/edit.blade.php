@@ -242,5 +242,12 @@
                 $(input).addClass('is-invalid')
             });
         }
+
+        $(document).ready(function() {
+            $('#dish_id').change( function() {
+                var price = $('option:selected',this).data("price");
+                $('#price').val(price);
+            });
+        });
     </script>
 @endsection

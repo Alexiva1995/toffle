@@ -61,14 +61,13 @@
                                                     <div class="col-12 col-md-6">
                                                         <select class="select2 form-control" data-toggle="select" class="form-control" id="selected_dish">
                                                             <option disabled selected value=''>Selecciona un Plato</option>
-                                                            <optgroup label="Postres"> 
-                                                                <option value="plate1">Postre1</option>
-                                                                <option value="plate2">Postre2</option> 
-                                                            </optgroup>
-                                                            <optgroup label="Bebidas"> 
-                                                                <option value="plate3">Bebida1</option>
-                                                                <option value="plate4">Bebida2</option> 
-                                                            </optgroup>
+                                                            @foreach ($dish_category as $item)
+                                                                <optgroup label="{{ $item->category->name }}"> 
+                                                                    @foreach ($item->collectionDishes($item->category_id) as $dish)
+                                                                        <option data-price = {{ $dish->designated_price }} value="dish_{{ $dish->id }}">{{ $dish->name }}</option>
+                                                                    @endforeach
+                                                                </optgroup>
+                                                            @endforeach
                                                         </select>
                                                     </div>
     
@@ -83,10 +82,10 @@
                                         <div class="table-responsive">
                                             <table class="table" id="items_table">
                                                 <thead class="thead-light text-center">
-                                                    <th class="col-5">Plato</th>
+                                                    <th class="col-4">Plato</th>
                                                     <th class="col-2">N°</th>
-                                                    <th class="col-2">Precio Unitario</th>
-                                                    <th class="col-2">Total</th>
+                                                    <th class="col-3">Precio Unitario</th>
+                                                    <th class="col-3">Total</th>
                                                     <th class="col-2"></th>
                                                 </thead>
                                                 <tbody>
@@ -102,7 +101,7 @@
                                                     <tr style="font-weight: bold; font-size: 14px;">
                                                         <td style="border-top: none !important;"></td>
                                                         <td colspan="2" class="text-right">TOTAL</td>
-                                                        <td colspan="2" class="text-right" style="padding-right: 20px;"><input type="text" class="form-control" name="total" id="total_amount" value="0.00" style="border: none !important; font-size: 14px !important;" readonly></td>
+                                                        <td colspan="2" class="text-right" style="padding-right: 20px;"><input type="text" class="form-control" name="total_amount" id="total_amount" value="0.00" style="border: none !important; font-size: 14px !important;" readonly></td>
                                                     </tr>
                                                 </tfoot>
                                             </table>           
