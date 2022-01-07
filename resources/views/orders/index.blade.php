@@ -49,61 +49,54 @@
                             <tbody>
                                 
                                 @foreach ($pedidos as $pedido)
-                                <tr class="text-center">
-                                    <td>{{$pedido->id}}</td>
-                                    <td>{{$pedido->total_amount}}</td>
-                                    <td>{{$pedido->estado()}}</td>
-                                    <td>{{$pedido->created_at->format('d/m/Y')}}</td>
-                                    <td>
-                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDetalles{{$pedido->id}}">Detalles</button>
-                                    </td>
-                                </tr>
-                                <!-- Modal -->
-                                <div class="modal fade" id="modalDetalles{{$pedido->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Detalles</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h1>{{$pedido->dishes}}}</h1>
-                                            {{--
-                                            @foreach ($pedido->dishes as $detalle)
-                                                <tr class="text-center">
-                                                    <td></td>
-                                                    <td>{{$detalle->unit}}</td>
-                                                    <td>{{$detalle->price}}</td>
-                                                </tr>
-                                            @endforeach
-                                            --}}
-                                            {{--
-                                            <table class="table myTable table-striped">
-                                                <thead class="">
-                                                    <tr class="text-center ">
-                                                        <th>Plato</th>
-                                                        <th>cantidad</th>
-                                                        <th>precio</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($pedido->dishes as $detalle)
-                                                        <tr class="text-center">
-                                                            <td></td>
-                                                            <td>{{$detalle->unit}}</td>
-                                                            <td>{{$detalle->price}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                            --}}
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
+                                    <tr class="text-center">
+                                        <td>{{$pedido->id}}</td>
+                                        <td>{{$pedido->total_amount}}</td>
+                                        <td>{{$pedido->estado()}}</td>
+                                        <td>{{$pedido->created_at->format('d/m/Y')}}</td>
+                                        <td>
+                                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDetalles{{$pedido->id}}">Detalles</button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="modalDetalles{{$pedido->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Detalles</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @foreach ($pedido->dishes as $detalle)
+                                                                <table class="table">
+                                                                    <thead class="">
+                                                                        <tr class="text-center ">
+                                                                            <th>Plato</th>
+                                                                            <th>cantidad</th>
+                                                                            <th>precio</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach ($pedido->dishes as $detalle)
+                                                                        <tr class="text-center">
+                                                                            <td>{{$detalle->name}}</td>
+                                                                            <td>{{$detalle->pivot->unit}}</td>
+                                                                            <td>{{$detalle->pivot->price}}</td>
+                                                                        </tr>
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            @endforeach
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                
                                 @endforeach
                             </tbody>
                         </table>
