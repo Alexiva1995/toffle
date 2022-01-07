@@ -66,238 +66,25 @@
 @section('custom-js')
 
   @include('panels.datatable.scripts')
+  @include('panels.custom.charts.weekly_sales')
+  @include('panels.custom.charts.amount_vs_gain')
   <script>
       dataTable('#money_flow_table');
       dataTable('#inventory_reposition_table');
 
-      // Line Chart
+      // Amount Vs Gain
       // --------------------------------------------------------------------
-      function dataChartAmountVsGain() {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('data.chart.amount.vs.gain') }}",
-            success: function (response) {
-                console.log(response);
-                var labels = response.data.map(function (e) {
-                    return e.created_at
-                })
+      dataChartAmountVsGain();
+
+      // Weekly Sales
+      // --------------------------------------------------------------------
+      dataChartWeeklySales();
     
-                var data_amount = response.data.map(function (e) {
-                    return e.total_amount
-                })
-    
-                isRtl = $('html').attr('data-textdirection') === 'rtl';
-
-                var lineChartEl = document.querySelector('#line-chart'),
-                lineChartConfig = {
-                  chart: {
-                    height: 400,
-                    type: 'line',
-                    zoom: {
-                      zoom: {
-                          wheel: {
-                            enabled: true,
-                          },
-                          pinch: {
-                            enabled: true
-                          },
-                          mode: 'xy',
-                        }
-                    },
-                    parentHeightOffset: 0,
-                    toolbar: {
-                      show: false
-                    }
-                  },
-                  series: [
-                    {
-                      name: 'Monto de Venta',
-                      data: data_amount
-                    },
-                    {
-                      name: 'Ganancia Real',
-                      data: [60, 80, 70, 110, 80, 100, 90, 180, 160, 140, 200, 220, 275]
-                    },
-                  ],
-                  markers: {
-                    strokeWidth: 7,
-                    strokeOpacity: 1,
-                    strokeColors: [window.colors.solid.white],
-                    colors: [window.colors.solid.warning]
-                  },
-                  dataLabels: {
-                    enabled: false
-                  },
-                  stroke: {
-                    curve: 'straight'
-                  },
-                  colors: [window.colors.solid.warning, window.colors.solid.success],
-                  grid: {
-                    xaxis: {
-                      lines: {
-                        show: true
-                      }
-                    },
-                    padding: {
-                      top: -20
-                    }
-                  },
-                  xaxis: {
-                      labels: {
-                          labels,
-                          datetimeFormatter: {
-                            year: 'yyyy',
-                            month: 'MMM \'yy',
-                            day: 'dd MMM',
-                            hour: 'HH:mm'
-                          },
-                          
-                      },
-                  },
-                  tooltip: {
-                    y: [
-                      {
-                        title: {
-                          formatter: function (val) {
-                            return val
-                          }
-                        }
-                      },
-                      {
-                        title: {
-                          formatter: function (val) {
-                            return val
-                          }
-                        }
-                      },  
-                    ]
-                  },
-                  yaxis: {
-                    opposite: isRtl
-                  }
-                };
-              if (typeof lineChartEl !== undefined && lineChartEl !== null) {
-                var lineChart = new ApexCharts(lineChartEl, lineChartConfig);
-                lineChart.render();
-              }
-            },
-            error: function(xhr) {
-                console.log(xhr.responseJSON);
-            }
-        });
-    }
-    dataChartAmountVsGain();
-
-    // Column Chart
-    // --------------------------------------------------------------------
-
-    // isRtl = $('html').attr('data-textdirection') === 'rtl';
-
-    var columnChartEl = document.querySelector('#column-chart'),
-    columnChartConfig = {
-      chart: {
-        height: 400,
-        type: 'bar',
-        stacked: true,
-        parentHeightOffset: 0,
-        toolbar: {
-          show: false
-        }
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          columnWidth: '25%',
-          distributed: true,
-          dataLabels: {
-            position: 'top',
-          },
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        offsetY: -20,
-        style: {
-          fontSize: '12px',
-          colors: ["#fff"]
-        }
-      },
-      legend: {
-        show: false,
-        formatter: function (val, context) {
-          console.log(context.w.globals.series[0][context.seriesIndex] );
-          return val+': '+context.w.globals.series[0][context.seriesIndex] ;
-        },
-      },
-      stroke: {
-        show: true,
-        colors: ['transparent']
-      },
-      grid: {
-        xaxis: {
-          lines: {
-            show: true
-          }
-        }
-      },
-      series: [],
-      noData: {
-        text: 'Cargando...'
-      },
-      fill: {
-        opacity: 1
-      },
-    };
-
-    var columnChart = new ApexCharts(columnChartEl, columnChartConfig);
-    columnChart.render();
-
-    function dataChartWeeklySales() {
-        var parametros = { 
-           "week" : $('#week').val()
-        }
-        $.ajax({
-            type: "POST",
-            data:  parametros,
-            url: "{{ route('data.chart.weekly.sales') }}",
-            success: function (response) {
-
-                var dates = response.dates;
-
-                var labels = dates.map(function (e) {
-                    return e.date
-                })
-    
-                console.log(labels);
-
-                var data_amount = dates.map(function (e) {
-                    return e.total_amount
-                })
-
-                console.log(data_amount);
-                columnChart.updateSeries([{
-                  name: 'Monto de Venta',
-                  data: data_amount
-                }])
-                columnChart.updateOptions({
-                  xaxis: {
-                    categories: labels
-                  }
-                })
-            },
-            error: function(xhr) {
-                console.log(xhr.responseJSON);
-            }
-        });
-    }
-
-    dataChartWeeklySales();
-    
-    $(document).ready(function () {
-        $('#week').change(function() {
-          dataChartWeeklySales();
-        });
-    });
+      $(document).ready(function () {
+          $('#week').change(function() {
+            dataChartWeeklySales();
+          });
+      });
 
   </script>
 @endsection
