@@ -11,11 +11,12 @@
         >
             <h4 class="card-title">Informes de Ventas Semanales</h4>
             <div class="d-flex align-items-center mt-md-0 mt-1">
-              <i class="font-medium-2" data-feather="calendar"></i>
               <input
-                type="text"
-                class="form-control flat-picker bg-transparent border-0 shadow-none"
-                placeholder="YYYY-MM-DD"
+                type="week"
+                class="form-control shadow-none"
+                name="week"
+                id="week"
+                value="{{ date("Y") }}-W{{ date("W") }}"
               />
             </div>
         </div>

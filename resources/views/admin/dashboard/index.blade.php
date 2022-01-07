@@ -7,14 +7,11 @@
   {{-- vendor css files --}}
   <link rel="stylesheet" href="{{ asset(mix('vendors/css/charts/apexcharts.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
 @endsection
 @section('page-style')
   {{-- Page css files --}}
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/charts/chart-apex.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
-
 @endsection
 
 @section('content')
@@ -38,10 +35,10 @@
         <div class="card-body">
           <div class="row justify-content-center">
               <div class="col-auto">
-                <a href="" class="btn btn-info mx-1">
+                <a href="{{ route('inventory.index') }}" class="btn btn-info mx-1">
                   <i data-feather="archive"></i> Añadir al Inventario 
                 </a>
-                <a href="" class="btn btn-primary mx-1"> <i data-feather="trending-down"></i> Añadir Gasto</a>
+                <a href="{{ route('expenses.create') }}" class="btn btn-primary mx-1"> <i data-feather="trending-down"></i> Añadir Gasto</a>
               </div>
           </div>
         </div>
@@ -63,7 +60,6 @@
 @endsection
 @section('page-script')
   {{-- Page js files --}}
-  <script src="{{ asset(mix('js/scripts/forms/pickers/form-pickers.js')) }}"></script>
   {{-- <script src="{{ asset(mix('js/scripts/charts/reports.js')) }}"></script> --}}
 @endsection
 
@@ -74,10 +70,12 @@
       dataTable('#money_flow_table');
       dataTable('#inventory_reposition_table');
 
+      // Line Chart
+      // --------------------------------------------------------------------
       function dataChartAmountVsGain() {
         $.ajax({
             type: "POST",
-            url: "{{ route('data-chart.amount.vs.gain') }}",
+            url: "{{ route('data.chart.amount.vs.gain') }}",
             success: function (response) {
                 console.log(response);
                 var labels = response.data.map(function (e) {
@@ -157,23 +155,23 @@
                       },
                   },
                   tooltip: {
-          y: [
-            {
-              title: {
-                formatter: function (val) {
-                  return val
-                }
-              }
-            },
-            {
-              title: {
-                formatter: function (val) {
-                  return val
-                }
-              }
-            },  
-          ]
-        },
+                    y: [
+                      {
+                        title: {
+                          formatter: function (val) {
+                            return val
+                          }
+                        }
+                      },
+                      {
+                        title: {
+                          formatter: function (val) {
+                            return val
+                          }
+                        }
+                      },  
+                    ]
+                  },
                   yaxis: {
                     opposite: isRtl
                   }
@@ -188,115 +186,118 @@
             }
         });
     }
-    // Line Chart
-    // --------------------------------------------------------------------
     dataChartAmountVsGain();
 
+    // Column Chart
+    // --------------------------------------------------------------------
+
+    // isRtl = $('html').attr('data-textdirection') === 'rtl';
+
+    var columnChartEl = document.querySelector('#column-chart'),
+    columnChartConfig = {
+      chart: {
+        height: 400,
+        type: 'bar',
+        stacked: true,
+        parentHeightOffset: 0,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          columnWidth: '25%',
+          distributed: true,
+          dataLabels: {
+            position: 'top',
+          },
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        offsetY: -20,
+        style: {
+          fontSize: '12px',
+          colors: ["#fff"]
+        }
+      },
+      legend: {
+        show: false,
+        formatter: function (val, context) {
+          console.log(context.w.globals.series[0][context.seriesIndex] );
+          return val+': '+context.w.globals.series[0][context.seriesIndex] ;
+        },
+      },
+      stroke: {
+        show: true,
+        colors: ['transparent']
+      },
+      grid: {
+        xaxis: {
+          lines: {
+            show: true
+          }
+        }
+      },
+      series: [],
+      noData: {
+        text: 'Cargando...'
+      },
+      fill: {
+        opacity: 1
+      },
+    };
+
+    var columnChart = new ApexCharts(columnChartEl, columnChartConfig);
+    columnChart.render();
+
     function dataChartWeeklySales() {
+        var parametros = { 
+           "week" : $('#week').val()
+        }
         $.ajax({
             type: "POST",
-            url: "{{ route('data-chart.amount.vs.gain') }}",
+            data:  parametros,
+            url: "{{ route('data.chart.weekly.sales') }}",
             success: function (response) {
-                console.log(response);
-                var labels = response.data.map(function (e) {
-                    return e.created_at
+
+                var dates = response.dates;
+
+                var labels = dates.map(function (e) {
+                    return e.date
                 })
     
-                var data_amount = response.data.map(function (e) {
+                console.log(labels);
+
+                var data_amount = dates.map(function (e) {
                     return e.total_amount
                 })
-    
-                isRtl = $('html').attr('data-textdirection') === 'rtl';
-                chartColors = {
-                    column: {
-                      series1: '#826af9',
-                      series2: '#d2b0ff',
-                      bg: '#f8d3ff'
-                    },
-                    success: {
-                      shade_100: '#7eefc7',
-                      shade_200: '#06774f'
-                    },
-                    donut: {
-                      series1: '#ffe700',
-                      series2: '#00d4bd',
-                      series3: '#826bf8',
-                      series4: '#2b9bf4',
-                      series5: '#FFA1A1'
-                    },
-                    area: {
-                      series3: '#a4f8cd',
-                      series2: '#60f2ca',
-                      series1: '#2bdac7'
-                    }
-                };
 
-                var columnChartEl = document.querySelector('#column-chart'),
-                  columnChartConfig = {
-                    chart: {
-                      height: 400,
-                      type: 'bar',
-                      stacked: true,
-                      parentHeightOffset: 0,
-                      toolbar: {
-                        show: true
-                      }
-                    },
-                    plotOptions: {
-                      bar: {
-                        columnWidth: '15%',
-                        distributed: true,
-                      }
-                    },
-                    dataLabels: {
-                      enabled: false
-                    },
-                    // legend: {
-                    //   show: true,
-                    //   position: 'top',
-                    //   horizontalAlign: 'start'
-                    // },
-                    // colors: [chartColors.column.series1, chartColors.column.series2],
-                    stroke: {
-                      show: true,
-                      colors: ['transparent']
-                    },
-                    grid: {
-                      xaxis: {
-                        lines: {
-                          show: true
-                        }
-                      }
-                    },
-                    series: [
-                      {
-                        name: 'Monto de Ventas',
-                        data: [85, 100, 30, 40, 95, 90, 30]
-                      }
-                    ],
-                    xaxis: {
-                      categories: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
-                    },
-                    fill: {
-                      opacity: 1
-                    },
-                    yaxis: {
-                      opposite: isRtl
-                    }
-                  };
-
-                  if (typeof columnChartEl !== undefined && columnChartEl !== null) {
-                    var columnChart = new ApexCharts(columnChartEl, columnChartConfig);
-                    columnChart.render();
+                console.log(data_amount);
+                columnChart.updateSeries([{
+                  name: 'Monto de Venta',
+                  data: data_amount
+                }])
+                columnChart.updateOptions({
+                  xaxis: {
+                    categories: labels
                   }
-             
+                })
             },
             error: function(xhr) {
                 console.log(xhr.responseJSON);
             }
         });
     }
-    
+
     dataChartWeeklySales();
+    
+    $(document).ready(function () {
+        $('#week').change(function() {
+          dataChartWeeklySales();
+        });
+    });
+
   </script>
 @endsection
