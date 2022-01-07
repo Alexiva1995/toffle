@@ -24,7 +24,7 @@
                             <div class="card p-2">
                                 <div class="row align-items-center">
                                     <div class="col-12 col-md-6">
-                                        <h3>Lista de Informes</h1>
+                                        <h3>Informe de lo mas vendido</h1>
                                     </div>
                                 </div>
 
@@ -32,25 +32,19 @@
                                     <table class="table myTable table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
-                                                <th>Fecha</th>
+                                                <th>Producto</th>
                                                 <th>Categoria</th>
-                                                <th>Estado</th>
+                                                <th># de Ventas</th>
+                                                <th>Ganancia</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           @foreach ($reports as $item)
+                                           @foreach ($dishes as $item)
                                                 <tr>
-                                                    <td>{{ $item->id }}</td>
-                                                    <td>{{ $item->created_at }}</td>
-                                                    <td>{{ $item->categorie }}</td>
-                                                    @if ($item->status == 0)
-                                                        <td>En espera</td>
-                                                    @elseif ($item->status == 1)
-                                                        <td>Aprobado</td>
-                                                    @elseif ($item->status == 2)
-                                                        <td>Cancelado</td>
-                                                    @endif
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->categoriy_id }}</td>
+                                                    <td>{{ $item->name_count}}</td>
+                                                    <td>{{ $item->percentage_profit }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

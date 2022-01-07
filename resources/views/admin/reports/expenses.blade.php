@@ -24,7 +24,7 @@
                             <div class="card p-2">
                                 <div class="row align-items-center">
                                     <div class="col-12 col-md-6">
-                                        <h3>Lista de Informes</h1>
+                                        <h3>Lista de Gastos</h1>
                                     </div>
                                 </div>
 

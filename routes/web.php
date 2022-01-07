@@ -91,8 +91,9 @@ Route::middleware('auth')->group(function () {
 
             //Reports
             Route::group(['prefix' => 'reports'], function () {
-                Route::get('list', [ReportController::class, 'index'])->name('reports.index');
+                Route::get('BestSeller', [ReportController::class, 'BestSeller'])->name('reports.BestSeller');
                 Route::get('gain', [ReportController::class, 'gain'])->name('reports.gain');
+                Route::get('cashflow', [ReportController::class, 'cashflow'])->name('reports.cashflow');
                 Route::get('expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
                 Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
             });
