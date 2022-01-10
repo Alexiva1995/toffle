@@ -101,23 +101,23 @@
 @section('custom-js')
     @include('panels.datatable.scripts')
     <script>
-        $.fn.dataTable.ext.search.push(
-            function( settings, data, dataIndex ) {
-                var tdStatus = data[5];
-                var filterStatus = $('#status_filter option').filter(':selected').val();
-                if (filterStatus == '') {
-                    return true;
-                }
-                return tdStatus == filterStatus;
-            }
-        );
+        // $.fn.dataTable.ext.search.push(
+        //     function( settings, data, dataIndex ) {
+        //         var tdStatus = data[5];
+        //         var filterStatus = $('#status_filter option').filter(':selected').val();
+        //         if (filterStatus == '') {
+        //             return true;
+        //         }
+        //         return tdStatus == filterStatus;
+        //     }
+        // );
 
-        $(document).ready(function() {
-            var table = $('.table').DataTable();
-            $('#status_filter').change( function() {
-                table.draw();
-            });
-        });
+        // $(document).ready(function() {
+        //     var table = $('.table').DataTable();
+        //     $('#status_filter').change( function() {
+        //         table.draw();
+        //     });
+        // });
 
         dataTable('#table');
     </script>

@@ -143,12 +143,28 @@ class DishController extends Controller
      * @param  \App\Models\Dish  $dish
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Dish $dish)
+    public function destroy($id)
     {
-        $pivote = DB::delete('DELETE FROM dish_ingredient WHERE dish_id = ?', [$dish->id]);
-        $dish = Dish::find($dish->id);
+        $dish = Dish::find($id);
+
+        $dish->ingredients()->detach();
+
         $dish->delete();
 
         return redirect()->route('dishes.index')->with('success', 'Plato Eliminado');
+    }
+
+    public function removeIngredient(Request $request, $id)
+    {
+        $dish = Dish::find($request->dish_id);
+
+        $ingredient = $dish->ingredients()->wherePivot('id', $id)->first();
+
+        if ($ingredient != null) {
+
+            $dish->ingredients()->wherePivot('id', $id)->detach();
+        }
+
+        return redirect()->route('dishes.index')->with('success', 'Ingrediente Eliminado del Plato');
     }
 }
