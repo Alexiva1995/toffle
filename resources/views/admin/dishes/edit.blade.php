@@ -11,8 +11,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form form-vertical" action="{{ route('dishes.store') }}" id="form_add_dish"
+                    <form class="form form-vertical" action="{{ route('dishes.update', $dish->id) }}" id="form_add_dish"
                         method="POST">
+                        @method('PATCH')
                         @csrf
                         <div class="row justify-content-center align-items-center">
                             <div class="col-12 col-md-6">
@@ -33,7 +34,7 @@
                                 <label class="form-label" for="ingredients">Categoria</label>
                                 <select class="select2 form-control" name="category_id" data-toggle="select"
                                     class="form-control" id="category">
-                                    <option disabled selected value="{{ $dish->category }}">{{ $dish->category->name }}</option>
+                                    <option selected value="{{ $dish->category->id }}">{{ $dish->category->name }}</option>
                                     @foreach ($category as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
@@ -67,7 +68,7 @@
                                                 <div class="input-group input-group-merge ">
                                                     <input type="number" id="portion_dish"
                                                         class="form-control requerid @error('portion') is-invalid @enderror"
-                                                        name="portion" required />
+                                                        name="portion" />
                                                     @error('portion')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -79,7 +80,7 @@
 
                                         <div class="col-12 col-md-3 mt-2">
                                             <a class="btn btn-primary" href="javascript:;"
-                                                onclick="addRow();">Añadir</a>
+                                                onclick="addRow();">Añadir ingrediente</a>
                                         </div>
 
                                     </div>
@@ -182,16 +183,14 @@
                                                 </td>
                                                 <td class="text-center"> 
                                                     <button class="btn btn-sm btn-danger"
-                                                    onclick="deleteElement( {{ $item->pivot->id }}, 
-                                                    '#delete_dish_', 
-                                                    'este Plato' )"> 
+                                                    onclick="deleteElement()"> 
                                                         <i data-feather="trash-2"></i> 
                                                     </button>
                 
-                                                    <form id="delete_dish_{{ $item->pivot->id }}" action="{{ route('dish.remove', $item->pivot->id) }}" method="POST">
+                                                    <form id="delete_dish_{{ $item->pivot->id }}" action="{{ route('ingredients.remove', $item->pivot->inventory_id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <input type="hidden" name="order_id" value="{{ $dish->id }}">                                      
+                                                        <input type="hidden" name="dish_id" value="{{ $dish->id }}">                                      
                                                     </form>
                                                 </td>
                                             </tr>
@@ -201,6 +200,10 @@
                                 </div>
                             </section>
 
+                        </div>
+                        <div class="card-footer d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary pr-2">Crear plato</button>
+                            <a href="{{ route('dishes.index') }}" class="btn btn-outline-secondary ml-4">Cancelar</a>
                         </div>
                     </form>
                 </div>

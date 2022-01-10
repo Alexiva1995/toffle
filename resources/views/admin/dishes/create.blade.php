@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Editar plato')
+@section('title', 'Crear plato')
 
 @include('panels.datatable.styles')
 
