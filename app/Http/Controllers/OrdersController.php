@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class OrdersController extends Controller
 {
@@ -17,9 +18,19 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pedidos = Order::orderBy('id', 'desc')->get();
+        if(isset($request->fecha_ini) && !isset($request->fecha_fin)){
+            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', '>=' ,$request->fecha_ini)->get();
+        }elseif(!isset($request->fecha_ini) && isset($request->fecha_fin)){
+            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', '<=' ,$request->fecha_fin)->get();
+        }elseif(isset($request->fecha_ini) && isset($request->fecha_fin)){
+            $pedidos = Order::orderBy('id', 'desc')->whereBetween('created_at', [$request->fecha_ini, $request->fecha_fin])->get();
+        }else{
+            $hoy = Carbon::now();
+            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', $hoy)->get();
+        }
+        
     
         return view('/orders/index', ['pedidos' => $pedidos]);
     }

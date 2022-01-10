@@ -196,7 +196,7 @@ return [
     "r_expenses" => "Expenses",
     "r_gain" => "Gain",
     "r_more_sold" => "More Sold",
-    "all_reports" => "All Reports",
+    "r_more_sold" => "Best sellers",
     // End Reports
 
     "categories" => "Categories",

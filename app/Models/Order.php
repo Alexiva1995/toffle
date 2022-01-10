@@ -34,7 +34,7 @@ class Order extends Model
             return "Cancelados";
         }
     }
-    
+
     public function getOrderIds($table)
     {
         $order_ids = Order::where('table', $table)->orderBy('id','ASC')->get();

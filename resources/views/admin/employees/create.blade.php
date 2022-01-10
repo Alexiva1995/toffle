@@ -29,7 +29,7 @@
                             <div class="col-12 col-md-4">
                                 <div class="mb-1">
                                     <label class="form-label" for="name">Nombres</label>
-                                    <div class="input-group input-group-merge  rounded border-primary">
+                                    <div class="input-group input-group-merge  rounded ">
                                         <span class="input-group-text"><i data-feather="user"></i></span>
                                         <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name"
                                             placeholder="Nombres" />
@@ -119,7 +119,7 @@
                                     </div>
                                     <div class="row justify-content-end">
                                         <div class="col-auto mt-1">
-                                            <a class="btn btn-sm btn-primary" id="generate_password"> Generar Contraseña </a>
+                                            <a class="btn  btn-primary" id="generate_password"> Generar Contraseña </a>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-12 col-md-4 mb-1">
                                 <label class="form-label" for="date_birth">Fecha de Nacimiento</label>
-                                <input type="text" id="date_birth" name="date_birth" class="form-control flatpickr-basic rounded border-primary @error('date_birth') is-invalid @enderror" placeholder="YYYY-MM-DD"/>
+                                <input type="text" id="date_birth" name="date_birth" class="form-control flatpickr-basic rounded  @error('date_birth') is-invalid @enderror" placeholder="YYYY-MM-DD"/>
                                 @error('date_birth')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
