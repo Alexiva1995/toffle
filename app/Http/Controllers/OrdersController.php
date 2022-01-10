@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Dish;
 use App\Models\Category;
+use App\Models\Inventory;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -68,7 +69,7 @@ class OrdersController extends Controller
         foreach ($dishes as $key => $dish) {
 
             $plate = array([
-                'dish_id' => str_replace("plate", "", $key),
+                'dish_id' => str_replace("dish_", "", $key),
                 'unit' => $dish[0],
                 'price' => $dish[1],
             ]);
@@ -77,6 +78,21 @@ class OrdersController extends Controller
         }
 
         foreach ($array_dish as $key => $item) {
+
+            $dish = Dish::find($item['dish_id']);
+
+            foreach ($dish->ingredients()->get() as $key => $value) {
+                $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
+                $grams = $value->pivot->portion;
+                $grams_used = $value->pivot->portion * $item['unit'];
+                $units = $grams_used / 1000;
+
+                $inventory->decrement('local', $units);
+                $inventory->update([
+                    'total' => $inventory->deposit + $inventory->local + $inventory->public
+                ]);
+            }
+
             $order->dishes()->attach( [ $order->id => 
                 [
                     'order_id' => $order->id,
@@ -113,6 +129,8 @@ class OrdersController extends Controller
 
         $dishes = $order->dishes()->get();
 
+        $dish_category = Dish::select('category_id')->distinct()->get();
+
         $array_dish = array();
 
         foreach ($dishes as $key => $dish) {
@@ -121,6 +139,7 @@ class OrdersController extends Controller
 
         return view('employee.dashboard.orders.edit')
             ->with('array_dish', json_encode($array_dish))
+            ->with('dish_category', $dish_category)
             ->with('order', $order);
     }
 

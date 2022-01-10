@@ -5,20 +5,15 @@
 
 @section('vendor-style')
   {{-- vendor css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/charts/apexcharts.css')) }}">
 @endsection
 @section('page-style')
   {{-- Page css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/pages/dashboard-ecommerce.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/charts/chart-apex.css')) }}">
-  {{-- <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}"> --}}
 @endsection
 
 @section('content')
-<!-- Dashboard Ecommerce Starts -->
 <section id="dashboard-ecommerce">
   <div class="row match-height">
-    <!-- Medal Card -->
+    <!-- Add Order Card -->
     <div class="col-xl-3 col-md-6 col-12">
       <div class="card card-congratulation-medal">
         <div class="card-body">
@@ -35,7 +30,7 @@
         </div>
       </div>
     </div>
-    <!--/ Medal Card -->
+    <!-- Add Order Card -->
 
     {{-- Modals --}}
     @include('employee.dashboard.orders.modals.create')
@@ -46,29 +41,39 @@
     </div>
     {{--/ Order-Statistics --}}
  
-    <div class="col-lg-6 col-12">
+    {{-- Orders-Pending --}}
+    <div class="col-12">
       @include('employee.dashboard.orders.pending')
     </div>
+    {{--/ Orders-Pending --}}
 
+    {{-- Orders-History --}}
     <div class="col-lg-6 col-12">
       @include('employee.dashboard.orders.history')
     </div>
+    {{--/ Orders-Pending --}}
 
-    <div class="col-lg-4 col-12">
+    {{-- Tables --}}
+    <div class="col-lg-6 col-12">
       @include('employee.dashboard.table.list')
     </div>
+    {{--/ Tables --}}
 
-    <div class="col-lg-4 col-12">
+    {{-- Money Flow --}}
+    <div class="col-lg-6 col-12">
       @include('employee.dashboard.money_flow.list')
     </div>
+    {{--/ Money Flow --}}
 
-    <div class="col-lg-4 col-12">
+    {{-- Inventory Reposition --}}
+    <div class="col-lg-6 col-12">
       @include('employee.dashboard.inventory_reposition.list')
     </div>
+    {{--/ Inventory Reposition --}}
+
   </div>
 
 </section>
-<!-- Dashboard Ecommerce ends -->
 @endsection
 
 @section('vendor-script')
@@ -78,7 +83,6 @@
 @endsection
 @section('page-script')
   {{-- Page js files --}}
-  {{-- <script src="{{ asset(mix('js/scripts/pages/dashboard-ecommerce.js')) }}"></script> --}}
 @endsection
 
 @section('custom-js')
@@ -121,13 +125,16 @@
                 <td><input type="text" name="dish[]" class="form-control dish" id="dish_'+numRows+'" value="'+$("#selected_dish option:selected").text()+'" required disabled></td>\
                 <input type="hidden" name="dish_ids[]" class="form-control dish_ids" id="dish_ids_'+numRows+'" value="'+$("#selected_dish option:selected").val()+'" required>\
                 <td><input type="number" name="unit[]" class="form-control units" id="unit_'+numRows+'" value="1" oninput="calculate('+numRows+')" required></td>\
-                <td><input type="text" name="price[]" class="form-control price" id="price_'+numRows+'" value="0.00" oninput="calculate('+numRows+')" required></td>\
-                <td><input type="text" name="total[]" class="form-control total" id="total_'+numRows+'" value="0.00" readonly></td>\
+                <td><input type="text" name="price[]" class="form-control price" id="price_'+numRows+'" value="'+$("#selected_dish option:selected").data("price").toFixed(2)+'" readonly required></td>\
+                <td><input type="text" name="total[]" class="form-control total" id="total_'+numRows+'" value="'+$("#selected_dish option:selected").data("price")+'" readonly></td>\
                 <td><a href="javascript:;" onclick="deleteRow('+numRows+')"> <i class="text-danger" data-feather="x-circle"></i> </a></td>\
                 </tr>';
                 $("#items_table>tbody").append(content);
                 feather.replace();
                 $("#selected_dish").val("").trigger('change');
+
+                calculate(numRows);
+
             }else{
               toastr['error']('', 'Este Plato ya fue añadido', {
                   closeButton: true,
@@ -147,6 +154,8 @@
           
           $("#row_"+row).remove();
           numRows--;
+
+          calculate(numRows);
       }
 
       function calculate(row){

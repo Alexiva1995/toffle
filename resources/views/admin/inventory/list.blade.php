@@ -10,7 +10,7 @@
                     <div class="row justify-content-end">
                         <div class="col-auto mb-2">
                             <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#modal_add_inventory">
-                                <i data-feather="plus"></i> Añadir Inventario
+                                <i data-feather="plus"></i> Añadir Productos
                             </button>
                         </div>
                     </div>
@@ -20,7 +20,7 @@
                 <table class="table" id="table">
                     <thead>
                         <tr>
-                            <th class="text-center">N°</th>
+                            <th class="text-center">ID</th>
                             <th class="text-center">Producto</th>
                             <th class="text-center">Total</th>
                             <th class="text-center">Depósito</th>
@@ -34,7 +34,8 @@
                     <tbody>
                         @foreach ($inventories as $inventory)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            {{-- <td>{{ $loop->iteration }}</td> --}}
+                            <td>{{ $inventory->id }}</td>
                             <td class="text-center">{{ $inventory->product->name }}</td>
                             <td class="text-center">{{ $inventory->total }}</td>
                             <td class="text-center px-3"> 
@@ -73,7 +74,7 @@
                             <td class="text-center">{{ $inventory->cost }}</td>
                             <td class="text-center">{{ date('d-m-Y', strtotime($inventory->created_at)) }}</td>
                             <td class="text-center px-3"> 
-                                <div class="d-flex">
+                                {{-- <div class="d-flex">
                                     <button class="btn btn-sm btn-info me-1" 
                                         onclick="editInventory(
                                         {{ $inventory->id }}, 
@@ -81,9 +82,7 @@
                                         {{ $inventory->qty_package }},
                                         {{ $inventory->unit_package }},
                                         {{ $inventory->price }} )"> 
-
-                                        <i data-feather="edit"></i> 
-                                        
+                                        <i data-feather="edit"></i>                                   
                                     </button> 
     
                                     <span class="btn btn-sm btn-danger"
@@ -92,7 +91,14 @@
                                             'este Inventario' )"> 
                                             <i data-feather="trash-2"></i> 
                                     </span>                                   
-                                </div>
+                                </div> --}}
+                                <span class="btn btn-sm btn-danger"
+                                    onclick="deleteElement( {{ $inventory->id }}, 
+                                    '#delete_inventory_', 
+                                    'este Inventario' )"> 
+                                    <i data-feather="trash-2"></i> 
+                                </span> 
+                        
                                 <form id="delete_inventory_{{ $inventory->id }}" action="{{ route('inventory.destroy', $inventory->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')                                      

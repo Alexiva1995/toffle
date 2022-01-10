@@ -1,4 +1,3 @@
-<!-- Company Table Card -->
 <div class="card card-company-table">
     <div class="card-header">
         <h3>Historial de Pedidos</h3>
@@ -58,21 +57,7 @@
                                 @endswitch
 
                                 <span>
-                                    @switch($order->status)
-                                        @case(0)
-                                            Pendiente
-                                            @break
-                                        @case(1)
-                                            En Espera
-                                            @break
-                                        @case(2)
-                                            Finalizado
-                                            @break
-                                        @case(3)
-                                            Cancelado
-                                            @break
-                                        @default                                           
-                                    @endswitch
+                                    {{ $order->estado() }}
                                 </span>
                             </div>
                         </td>
@@ -83,4 +68,3 @@
         </div>
     </div>
 </div>
-<!--/ Company Table Card -->

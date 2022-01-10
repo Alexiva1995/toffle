@@ -54,16 +54,27 @@
                                 </div>
                             </div>
                             
-                            <div class="col-12 col-md-4 mb-1">
-                                <div class="mb-1"> 
-                                    <label class="form-label text_status" for="status"> <i class="icon_status d-none" data-feather="check-circle"></i> Estado</label>                         
-                                    <select class="select2-icons form-control status" data-toggle="select" name="status"
-                                        id="status" onchange="editOrder(this)">
-                                        <option data-icon="alert-circle" value="0" {{ $order->status == 0 ? 'selected' : '' }}> Pendiente </option>
-                                        <option data-icon="clock" value="1" {{ $order->status == 1 ? 'selected' : '' }}> En Espera </option>
-                                        <option data-icon="check-circle" value="2" {{ $order->status == 2 ? 'selected' : '' }}> Finalizado </option>
-                                        <option data-icon="x-circle" value="3" {{ $order->status == 3 ? 'selected' : '' }}> Cancelado </option>
-                                    </select>
+                            <div class="col-12 col-md-6 mb-2">
+                                <h5 class="text-center">Estado</h5>
+                                <div class="row justify-content-center @error('status') is-invalid @enderror">
+                                    <div class="col-auto">
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="to_pay" value="0" {{ $order->status == 0 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="to_pay">Pendiente</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="paid_out" value="1" {{ $order->status == 1 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="paid_out">En Espera</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="paid_out" value="2" {{ $order->status == 2 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="paid_out">Finalizado</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="paid_out" value="3" {{ $order->status == 3 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="paid_out">Cancelado</label>
+                                        </div>  
+                                    </div>                                   
                                 </div>
                             </div>
                         </div>
@@ -198,7 +209,7 @@
         }
 
         function editOrder(element) {
-            console.log('probando');
+            // console.log('probando');
             let item = {}
             let input = element
 
@@ -211,19 +222,8 @@
                 $(input).removeClass('is-invalid')
                 $(input).addClass('is-valid')
 
-                if ($(element).hasClass('status')) {
-                    $('.icon_status').removeClass('d-none');
-                    $('.text_status').addClass('text-success');
-                }
-
                 setTimeout(() => {
                     $(input).removeClass('is-valid')
-
-                    if ($(element).hasClass('status')) {
-                        $('.icon_status').addClass('d-none');
-                        $('.text_status').removeClass('text-success');
-                    }
-
                 },1000)
             })
             .fail(function(data) {
@@ -242,5 +242,12 @@
                 $(input).addClass('is-invalid')
             });
         }
+
+        $(document).ready(function() {
+            $('#dish_id').change( function() {
+                var price = $('option:selected',this).data("price");
+                $('#price').val(price);
+            });
+        });
     </script>
 @endsection

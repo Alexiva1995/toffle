@@ -34,6 +34,33 @@ class InventoryController extends Controller
         //
     }
 
+    public function addProductToInventory(Request $request)
+    {
+        $fields = [
+            'product_id' => ['required'],
+            'qty_package' => ['required'],
+            'unit_package' => ['required'],
+            'price' => ['required'],
+        ];
+
+        $msj = [
+            'product_id.required' => 'El producto es requerido.',
+            'qty_package.required' => 'La cantidad de bultos es requerida.',
+            'unit_package.required' => 'La unidad del bulto es requerida.',
+            'price.required' => 'El precio es requerido.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $inventory = Inventory::where('product_id', $request->product_id)->first();
+        if ($inventory == null) {
+            $this->store($request);
+        }else{
+            $this->update($request, $inventory->id);
+        }
+
+        return redirect()->route('inventory.index')->with('success', 'Productos Añadidos al Inventario');
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -42,31 +69,12 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        $fields = [
-            'product_id' => ['required', 'unique:inventories'],
-            'qty_package' => ['required'],
-            'unit_package' => ['required'],
-            'price' => ['required'],
-        ];
-
-        $msj = [
-            'product_id.required' => 'El producto es requerido.',
-            'product_id.unique' => 'Este producto ya fue registrado en un inventario.',
-            'qty_package.required' => 'La cantidad de bultos es requerida.',
-            'unit_package.required' => 'La unidad del bulto es requerida.',
-            'price.required' => 'El precio es requerido.',
-        ];
-
-        $this->validate($request, $fields, $msj);
-
         $deposit = ($request->qty_package * $request->unit_package);
         $inventory = Inventory::create($request->all());
         $inventory->deposit = (int) $deposit;
         $inventory->total = (int) ($deposit + $inventory->local + $inventory->public);
-        $inventory->cost = (int) ($request->price / $request->unit_package);
+        $inventory->cost = number_format($request->price / $request->unit_package, 2, '.', '');
         $inventory->save();
-        
-        return redirect()->route('inventory.index')->with('success', 'Inventario Añadido');
     }
 
     /**
@@ -97,40 +105,18 @@ class InventoryController extends Controller
     public function update(Request $request, $id)
     {
         $inventory = Inventory::find($id);
-
-        $fields = [
-            'product_id' => ['required'],
-            'qty_package' => ['required'],
-            'unit_package' => ['required'],
-            'price' => ['required'],
-        ];
-
-        $msj = [
-            'product_id.required' => 'El producto es requerido.',
-            'product_id.unique' => 'Este producto ya fue registrado en un inventario.',
-            'qty_package.required' => 'La cantidad de bultos es requerida.',
-            'unit_package.required' => 'La unidad del bulto es requerida.',
-            'price.required' => 'El precio es requerido.',
-        ];
-
-        $this->validate($request, $fields, $msj);
-
-        if ($inventory->product->id != $request->product_id) {
-            $product = Product::find($request->product_id);
-            if ($product->inventory != null) {
-                return redirect()->route('inventory.index')->with('danger', 'Error al Actualizar, el producto que intentas colocar ya está agregado en otro inventario');
-            }
-        }
         
-        $deposit = ($request->qty_package * $request->unit_package);
-        $inventory->update($request->all());
+        $deposit = $inventory->deposit + ($request->qty_package * $request->unit_package);
         $inventory->update([
-            'deposit' => (int) $deposit,
+            'qty_package' => $request->qty_package,
+            'unit_package' => $request->unit_package,
+            'price' => $request->price,
+            'cost' => number_format($request->price / $request->unit_package, 2, '.', ''),
             'total' => (int) ($deposit + $inventory->local + $inventory->public),
-            'cost' => (int) ($request->price / $request->unit_package)
+            'deposit' => (int) ($deposit),
+            'local' => (int) ($inventory->local),
+            'public' => (int) ($inventory->public),
         ]);
-        
-        return redirect()->route('inventory.index')->with('success', 'Inventario Actualizado');
     }
 
     /**
@@ -145,7 +131,7 @@ class InventoryController extends Controller
 
         $inventory->delete();
 
-        return redirect()->route('inventory.index')->with('success', 'Inventario Eliminado');
+        return redirect()->route('inventory.index')->with('success', 'Producto Eliminado del Inventario');
     }
 
     public function operation(Request $request, $id)
