@@ -57,21 +57,7 @@
                                 @endswitch
 
                                 <span>
-                                    @switch($order->status)
-                                        @case(0)
-                                            Pendiente
-                                            @break
-                                        @case(1)
-                                            En Espera
-                                            @break
-                                        @case(2)
-                                            Finalizado
-                                            @break
-                                        @case(3)
-                                            Cancelado
-                                            @break
-                                        @default                                           
-                                    @endswitch
+                                    {{ $order->estado() }}
                                 </span>
                             </div>
                         </td>

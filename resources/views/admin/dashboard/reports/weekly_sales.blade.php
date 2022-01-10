@@ -19,6 +19,10 @@
                 value="{{ date("Y") }}-W{{ date("W") }}"
               />
             </div>
+            {{-- <div class="col-12 col-md-6 mb-1 position-relative">
+                <label class="form-label" for="range_week">Semana</label>
+                <input type="text" id="range_week" class="form-control" value="{{ date( "Y-m-d", strtotime('this week last sunday')) }}" />
+            </div> --}}
         </div>
         <div class="card-body">
             <div id="column-chart"></div>
