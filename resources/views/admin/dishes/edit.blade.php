@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form form-vertical" action="{{ route('dishes.update', $dish->id) }}" id="form_add_dish"
+                    <form class="form form-vertical" action="{{ route('dishes.update', $dish->id) }}" id="form_edit_dish"
                         method="POST">
                         @method('PATCH')
                         @csrf
@@ -173,21 +173,23 @@
                                             @foreach ($dish->ingredients()->get() as $item)
                                             <tr id="edit_dish_to_order_{{ $item->pivot->id  }}">
                                                     <td class="text-center">{{ $item->pivot->id }}</td>
-                                                    <td><input type="text" name="ingredient" class="form-control units" id="selected_dish_{{ $item->pivot->id }}" value="{{ $item->product->name }}" readonly oninput="updateDish( {{ $item->pivot->id }}, this )" required>
+                                                    <td><input type="text" name="ingredient" class="form-control units" id="selected_dish_{{ $item->pivot->id }}" value="{{ $item->product->name }}" readonly required>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="portion" class="form-control price" id="portion_{{ $item->pivot->id }}" value="{{ $item->pivot->portion }}" readonly oninput="updateDish( {{ $item->pivot->id }}, this )" required>
+                                                    <input type="text" name="portion" class="form-control price" id="portion_{{ $item->pivot->id }}" value="{{ $item->pivot->portion }}" readonly required>
                                                 </td>
                                                 <td>
                                                     <input type="text" name="price" class="form-control total" id="price_{{ $item->pivot->id }}" value="{{ $item->pivot->price }}" readonly>
                                                 </td>
                                                 <td class="text-center"> 
                                                     <button class="btn btn-sm btn-danger"
-                                                    onclick="deleteElement()"> 
+                                                        onclick="deleteElement( {{ $item->pivot->id }}, 
+                                                        '#delete_ingredient_', 
+                                                        'este Ingrediente')"> 
                                                         <i data-feather="trash-2"></i> 
                                                     </button>
                 
-                                                    <form id="delete_dish_{{ $item->pivot->id }}" action="{{ route('ingredients.remove', $item->pivot->inventory_id) }}" method="POST">
+                                                    <form id="delete_ingredient_{{ $item->pivot->id }}" action="{{ route('ingredients.remove', $item->pivot->inventory_id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <input type="hidden" name="dish_id" value="{{ $dish->id }}">                                      
@@ -202,7 +204,9 @@
 
                         </div>
                         <div class="card-footer d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary pr-2">Editar plato</button>
+                            <button type="submit" class="btn btn-primary me-2" id="edit_dish">
+                                <span class="loading_edit_dish mr-2"></span> Editar plato
+                            </button>
                             <a href="{{ route('dishes.index') }}" class="btn btn-outline-secondary ml-4">Cancelar</a>
                         </div>
                     </form>
@@ -212,8 +216,24 @@
     </div>
 
 </section>
+@endsection
 
-@include('admin.dishes.partials.script');
+
+@section('vendor-script')
+  {{-- vendor files --}}
+@endsection
+
+@section('page-script')
+  {{-- Page js files --}}
+@endsection
+
+@section('custom-js')
+
+    @include('admin.dishes.partials.script');
+
+    <script>
+        submitForms('#edit_dish', '.loading_edit_dish', '#form_edit_dish');
+    </script>
 
 @endsection
 

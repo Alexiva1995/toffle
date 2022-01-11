@@ -141,10 +141,10 @@ class DishController extends Controller
      * @param  \App\Models\Dish  $dish
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Dish $dish)
+    public function update(Request $request, $id)
     {
 
-                // dd($request->all());
+        dd($request->all());
 
         // $fields = [
         //     'name' => ['required', 'min:2'],

@@ -52,11 +52,10 @@
                                         <div class="col-12 col-md-5">
                                             <label class="form-label" for="ingredients">Ingrediente</label>
                                             <select class="select2 form-control" data-toggle="select"
-                                                class="form-control" id="selected_dish">
+                                                class="form-control" name="ingredient" id="selected_ingredient">
                                                 <option disabled selected value="">Selecciona un Ingrediente</option>
                                                 @foreach ($ingredients as $item)
-                                                <option value="ingredient_{{ $item->id }}" price="{{ $item->price }}">
-                                                    {{ $item->product->name }}</option>
+                                                <option data-gr = {{ $item->product->gr }} data-cost="{{ $item->cost }}" value="ingredient_{{ $item->id }}">{{ $item->product->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -74,11 +73,12 @@
                                                     </span>
                                                     @enderror
                                                 </div>
+                                                <input type="hidden" id="calculate_cost">
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-md-3 mt-2">
-                                            <a class="btn btn-primary" href="javascript:;"
+                                            <a class="btn btn-primary" id="btn_add_ingredient" href="javascript:;"
                                                 onclick="addRow();">Añadir ingrediente</a>
                                         </div>
 
@@ -169,7 +169,7 @@
                                             <th>N°</th>
                                             <th>Ingrediente</th>
                                             <th>Porcion</th>
-                                            <th>Precio</th>
+                                            <th>Costo</th>
                                             <th>Accion</th>
                                         </thead>
                                         <tbody>
@@ -187,7 +187,9 @@
 
                         </div>
                         <div class="card-footer d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary pr-2">Crear plato</button>
+                            <button type="submit" class="btn btn-primary pr-2">
+                                <span class="loading_create_dish mr-2"></span> Crear Plato
+                            </button>
                             <a href="{{ route('dishes.index') }}" class="btn btn-outline-secondary ml-4">Cancelar</a>
                         </div>
                     </form>
@@ -197,7 +199,46 @@
     </div>
 
 </section>
+@endsection
 
-@include('admin.dishes.partials.script');
+@section('vendor-script')
+  {{-- vendor files --}}
+@endsection
+
+@section('page-script')
+  {{-- Page js files --}}
+@endsection
+
+@section('custom-js')
+
+    @include('admin.dishes.partials.script');
+
+    <script>
+        submitForms('#edit_dish', '.loading_edit_dish', '#form_edit_dish');
+
+        $(document).ready(function() {
+            $('#portion_dish').keyup( function() {
+                value = $(this).val();
+                cost = $('#selected_dish option:selected').data("cost");
+                gr = $('#selected_dish option:selected').data("gr");
+
+                cost_ingredient =  parseFloat( (value * cost) / gr ).toFixed(2);
+                $('#calculate_cost').val(cost_ingredient);
+            });
+
+            $('#selected_dish').change( function() {
+
+                value = $('#calculate_cost').val();
+                cost = $(this).data("cost");
+                gr = $(this).data("gr");
+
+                cost_ingredient =  parseFloat( (value * cost) / gr ).toFixed(2);
+
+                $('#calculate_cost').val(cost_ingredient);
+            });
+
+        });
+    </script>
 
 @endsection
+

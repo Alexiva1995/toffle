@@ -1,10 +1,5 @@
 <script>
 
-   function submit(){
-     $('#form_add_dish').submit()
-   }
-
-
   numRows = 0;
   
   var ids = [];
@@ -31,10 +26,10 @@
             numRows++;
             let content = '<tr id="row_'+numRows+'">\
             <td class="text-center">'+numRows+'</td>\
-            <input type="hidden" name="ingredient_ids[]" class="form-control dish_ids" id="dish_ids_'+numRows+'" value="'+$("#selected_dish option:selected").val()+'" required>\
-            <td><input type="text" name="ingredient[]" class="form-control dish" id="selected_dish_'+numRows+'" value="'+$("#selected_dish option:selected").text()+'" required readonly></td>\
-            <td><input type="text" name="portion[]" class="form-control price" id="portion_'+numRows+'" value="'+$("#portion_dish").val()+'" readonly required></td>\
-            <td><input type="text" name="price[]" class="form-control price" id="price_'+numRows+'" value="'+$('#selected_dish option:selected').attr("price")+'" readonly required></td>\
+            <input type="hidden" name="ingredient_ids[]" class="form-control text-center dish_ids" id="dish_ids_'+numRows+'" value="'+$("#selected_dish option:selected").val()+'" required>\
+            <td><input type="text" name="ingredient[]" class="form-control text-center dish" id="selected_dish_'+numRows+'" value="'+$("#selected_dish option:selected").text()+'" required readonly></td>\
+            <td><input type="text" name="portion[]" class="form-control text-center price" id="portion_'+numRows+'" value="'+$("#portion_dish").val()+'" readonly required></td>\
+            <td><input type="text" name="price[]" class="form-control text-center price" id="price_'+numRows+'" value="'+$('#calculate_cost').val()+'" readonly required></td>\
             <td class="text-center"><a href="javascript:;" onclick="deleteRow('+numRows+')" style="color: #512F26;"><b>Eliminar</b> <i style="color: #512F26;" data-feather="x-circle"></i> </a></td>\
             </tr>';
             $("#items_table>tbody").append(content);
@@ -69,21 +64,28 @@
   }
 
   function calculate(row){
+      var total = 0;
 
-          var total = 0;
-
-          for (var i = 1; i <= numRows; i++){
-              total += parseFloat($("#price_"+i).val());
-          }
-
-          profit = $("#percentage_profit").val();
-          cost = $("#cost_price").val(total);
-          sugg = $("#suggested_price").val(total * profit);
-
+      for (var i = 1; i <= numRows; i++){
+          total += parseFloat($("#price_"+i).val());
       }
 
-      function deleteRow(row){
-          $("#row_"+row).remove();
-          numRows--;
+      profit = $("#percentage_profit").val();
+      cost = $("#cost_price").val(total);
+      sugg = $("#suggested_price").val(total * profit);
+
+  }
+
+  function deleteRow(row){
+      for( var i = 0; i < ids.length; i++){ 
+        if ( ids[i] === $("#dish_ids_"+row).val()) { 
+          ids.splice(i, 1); 
+        }
       }
+
+      $("#row_"+row).remove();
+      numRows--;
+
+      calculate(numRows);
+  }
 </script>
