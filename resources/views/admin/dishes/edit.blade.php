@@ -134,7 +134,7 @@
                                             class="form-control requerid @error('suggested_price') is-invalid @enderror"
                                             name="suggested_price" required readonly value="{{ $dish->suggested_price }}" />
                                         @error('suggested_price')
-                                        <span class="invalid-feedback" role="alert">
+                                        <span class="invalid-feedback" role="alert">}
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
@@ -202,7 +202,7 @@
 
                         </div>
                         <div class="card-footer d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary pr-2">Crear plato</button>
+                            <button type="submit" class="btn btn-primary pr-2">Editar plato</button>
                             <a href="{{ route('dishes.index') }}" class="btn btn-outline-secondary ml-4">Cancelar</a>
                         </div>
                     </form>

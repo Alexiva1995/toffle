@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
 
             // Dishes
             Route::group(['prefix' => 'dishes'], function () {
-                Route::delete('ingredients-remove/{id}', [DishController::class, 'IngredientRemove'])->name('ingredients.remove');
+                Route::delete('ingredients-remove/{id}', [DishController::class, 'removeIngredient'])->name('ingredients.remove');
                 Route::get('list', [DishController::class, 'list'])->name('dishes.list');
             });
 

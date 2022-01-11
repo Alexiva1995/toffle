@@ -198,23 +198,6 @@ class DishController extends Controller
 
     }
 
-    public function IngredientRemove(Request $request, $id)
-    {
-        $dish = Dish::find($request->dish_id);
-
-        $dish_p = $dish->ingredients()->wherePivot('id', $id)->first();
-        dd($dish_p);
-
-        if ($dish != null) {
-
-            $dish_p->ingredients()->wherePivot('id', $id)->detach();
-        }
-
-        return redirect()->route('dishes.edit', $request->id)->with('success', 'Ingrediente Removido del plato');
-
-
-    }
-
     /**
      * Remove the specified resource from storage.
      *
