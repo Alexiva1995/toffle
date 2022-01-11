@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form form-vertical" action="{{ route('dishes.update', $dish->id) }}" id="form_add_dish"
+                    <form class="form form-vertical" action="{{ route('dishes.update', $dish->id) }}" id="form_edit_dish"
                         method="POST">
                         @method('PATCH')
                         @csrf
@@ -34,9 +34,8 @@
                                 <label class="form-label" for="ingredients">Categoria</label>
                                 <select class="select2 form-control" name="category_id" data-toggle="select"
                                     class="form-control" id="category">
-                                    <option selected value="{{ $dish->category->id }}">{{ $dish->category->name }}</option>
                                     @foreach ($category as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}" {{ $dish->category_id == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -53,11 +52,10 @@
                                         <div class="col-12 col-md-5">
                                             <label class="form-label" for="ingredients">Ingrediente</label>
                                             <select class="select2 form-control" data-toggle="select"
-                                                class="form-control" id="selected_dish">
-                                                <option disabled selected value="">Selecciona un Ingrediente</option>
+                                                class="form-control" name="ingredient" id="selected_ingredient">
+                                                <option value="" disabled selected> Selecciona un Ingrediente </option>
                                                 @foreach ($ingredients as $item)
-                                                <option value="ingredient_{{ $item->id }}" price="{{ $item->price }}">
-                                                    {{ $item->product->name }}</option>
+                                                <option data-gr="{{ $item->product->gr }}" data-cost="{{ $item->cost }}" value="ingredient_{{ $item->id }}" >{{ $item->product->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -75,12 +73,13 @@
                                                     </span>
                                                     @enderror
                                                 </div>
+                                                <input type="hidden" id="calculate_cost">
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-md-3 mt-2">
                                             <a class="btn btn-primary" href="javascript:;"
-                                                onclick="addRow();">Añadir ingrediente</a>
+                                                onclick="addRow('edit');">Añadir ingrediente</a>
                                         </div>
 
                                     </div>
@@ -93,8 +92,9 @@
 
                             <div class="col-12 col-md-3 mb-1">
                                 <div class="mb-1">
-                                    <label class="form-label" for="percentage_profit">% ganancia</label>
+                                    <label class="form-label" for="percentage_profit">Ganancia</label>
                                     <div class="input-group input-group-merge " id="profit">
+                                        <span class="input-group-text"> % </span>
                                         <input type="number" id="percentage_profit"
                                             class="form-control requerid @error('percentage_profit') is-invalid @enderror"
                                             name="percentage_profit" id="percentage_profit" oninput="calculate()" value="{{ $dish->percentage_profit }}"
@@ -149,7 +149,7 @@
 
                                         <input type="number" id="designated_price"
                                             class="form-control requerid @error('designated_price') is-invalid @enderror"
-                                            name="designated_price" required value="{{ $dish->designated_price }}" />
+                                            name="designated_price" required value="{{ $dish->designated_price }}" step="0.0001"/>
                                         @error('designated_price')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -166,32 +166,30 @@
                                             <th>N°</th>
                                             <th>Ingrediente</th>
                                             <th>Porcion</th>
-                                            <th>Precio</th>
+                                            <th>Costo</th>
                                             <th>Accion</th>
                                         </thead>
                                         <tbody>
-                                            @foreach ($dish->ingredients()->get() as $item)
+                                            @foreach ($dish->ingredients()->orderBy('dish_ingredient.id', 'ASC')->get() as $item)
+
                                             <tr id="edit_dish_to_order_{{ $item->pivot->id  }}">
-                                                    <td class="text-center">{{ $item->pivot->id }}</td>
-                                                    <td><input type="text" name="ingredient" class="form-control units" id="selected_dish_{{ $item->pivot->id }}" value="{{ $item->product->name }}" readonly oninput="updateDish( {{ $item->pivot->id }}, this )" required>
+                                                <td class="text-center">{{ $item->pivot->id }}</td>
+                                                    <input type="hidden" name="ingredient_ids[]" class="form-control text-center dish_ids" id="dish_ids_{{ $item->pivot->id }}" value="ingredient_{{ $item->id }}" required> 
+                                                <td>
+                                                    <input type="text" name="ingredient[]" class="form-control text-center data_pivot_id" 
+                                                    data-id="ingredient_{{ $item->id }}" id="selected_ingredient_{{ $item->pivot->id }}" value="{{ $item->product->name }}" readonly required>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="portion" class="form-control price" id="portion_{{ $item->pivot->id }}" value="{{ $item->pivot->portion }}" readonly oninput="updateDish( {{ $item->pivot->id }}, this )" required>
+                                                    <input type="text" name="portion[]" class="form-control text-center price" id="portion_{{ $item->pivot->id }}" value="{{ $item->pivot->portion }}" readonly required>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="price" class="form-control total" id="price_{{ $item->pivot->id }}" value="{{ $item->pivot->price }}" readonly>
+                                                    <input type="text" name="price[]" class="form-control text-center total data_pivot_cost" id="price_{{ $item->pivot->id }}" value="{{ $item->pivot->designated_cost }}" readonly>
                                                 </td>
                                                 <td class="text-center"> 
-                                                    <button class="btn btn-sm btn-danger"
-                                                    onclick="deleteElement()"> 
+                                                    <a class="btn btn-sm btn-danger" id="delete_ingredient"
+                                                        onclick="deleteIngredient( null, {{ $item->pivot->id }}, {{ $dish->id }} )"> 
                                                         <i data-feather="trash-2"></i> 
-                                                    </button>
-                
-                                                    <form id="delete_dish_{{ $item->pivot->id }}" action="{{ route('ingredients.remove', $item->pivot->inventory_id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <input type="hidden" name="dish_id" value="{{ $dish->id }}">                                      
-                                                    </form>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -202,7 +200,9 @@
 
                         </div>
                         <div class="card-footer d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary pr-2">Editar plato</button>
+                            <button type="submit" class="btn btn-primary me-2" id="edit_dish">
+                                <span class="loading_edit_dish mr-2"></span> Editar plato
+                            </button>
                             <a href="{{ route('dishes.index') }}" class="btn btn-outline-secondary ml-4">Cancelar</a>
                         </div>
                     </form>
@@ -210,10 +210,73 @@
             </div>
         </div>
     </div>
-
 </section>
+@endsection
 
-@include('admin.dishes.partials.script');
+
+@section('vendor-script')
+  {{-- vendor files --}}
+@endsection
+
+@section('page-script')
+  {{-- Page js files --}}
+@endsection
+
+@section('custom-js')
+
+    @include('admin.dishes.partials.script');
+
+    <script>
+        submitForms('#edit_dish', '.loading_edit_dish', '#form_edit_dish');
+
+        function deleteIngredient(numRows = null, id = null, dish_id = null) {
+            $.confirm({
+            title: 'Confirmar!',
+            content: 'Estas seguro que quieres eliminar este Ingrediente ?',
+            buttons: {
+                confirm: {
+                    text: 'Eliminar',
+                    btnClass: 'btn-danger',
+                    action: function () {
+                        if (numRows != null) {
+                            deleteRow(numRows);
+                            toastr['success']('', 'Ingrediente Removido', {
+                                closeButton: true,
+                                tapToDismiss: false,
+                            });
+                        }else{
+                            url = "{{ route('ingredients.remove', 'parameter') }}";
+                            url = url.replace('parameter', id);
+                            $.post(url, {
+                                    dish_id: dish_id,
+                                },
+                                function (data, textStatus, jqXHR) {
+                                    $('#selected_ingredient_'+id).removeClass('data_pivot_id');
+                                    $('#price_'+id).removeClass('data_pivot_cost');
+                                    $('#edit_dish_to_order_'+id).addClass('d-none');
+                                    toastr['success']('', data, {
+                                        closeButton: true,
+                                        tapToDismiss: false,
+                                    });
+                                    for( var i = 0; i < ids.length; i++){ 
+                                        if ( ids[i] === $("#dish_ids_"+id).val()) { 
+                                          ids.splice(i, 1); 
+                                        }
+                                    }
+                                    calculate();
+                                },
+                            );
+                        }
+
+                    }
+                },
+                cancelar: function () {
+                },
+            }
+        });
+        }
+
+    </script>
 
 @endsection
 
