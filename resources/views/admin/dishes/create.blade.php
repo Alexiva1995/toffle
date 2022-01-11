@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form form-vertical" action="{{ route('dishes.store') }}" id="form_add_dish"
+                    <form class="form form-vertical" action="{{ route('dishes.store') }}" id="form_create_dish"
                         method="POST">
                         @csrf
                         <div class="row justify-content-center align-items-center">
@@ -55,7 +55,7 @@
                                                 class="form-control" name="ingredient" id="selected_ingredient">
                                                 <option disabled selected value="">Selecciona un Ingrediente</option>
                                                 @foreach ($ingredients as $item)
-                                                <option data-gr = {{ $item->product->gr }} data-cost="{{ $item->cost }}" value="ingredient_{{ $item->id }}">{{ $item->product->name }}</option>
+                                                <option data-gr="{{ $item->product->gr }}" data-cost="{{ $item->cost }}" value="ingredient_{{ $item->id }}">{{ $item->product->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -79,7 +79,7 @@
 
                                         <div class="col-12 col-md-3 mt-2">
                                             <a class="btn btn-primary" id="btn_add_ingredient" href="javascript:;"
-                                                onclick="addRow();">Añadir ingrediente</a>
+                                                onclick="addRow('create');">Añadir ingrediente</a>
                                         </div>
 
                                     </div>
@@ -92,8 +92,9 @@
 
                             <div class="col-12 col-md-3 mb-1">
                                 <div class="mb-1">
-                                    <label class="form-label" for="percentage_profit">% ganancia</label>
+                                    <label class="form-label" for="percentage_profit">% Ganancia</label>
                                     <div class="input-group input-group-merge " id="profit">
+                                        <span class="input-group-text"> % </span>
                                         <input type="number" id="percentage_profit"
                                             class="form-control requerid @error('percentage_profit') is-invalid @enderror"
                                             name="percentage_profit" id="percentage_profit" oninput="calculate()"
@@ -148,7 +149,7 @@
 
                                         <input type="number" id="designated_price"
                                             class="form-control requerid @error('designated_price') is-invalid @enderror"
-                                            name="designated_price" required />
+                                            name="designated_price" required step="0.0001" />
                                         @error('designated_price')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -187,7 +188,7 @@
 
                         </div>
                         <div class="card-footer d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary pr-2">
+                            <button type="submit" class="btn btn-primary me-2" id="create_dish">
                                 <span class="loading_create_dish mr-2"></span> Crear Plato
                             </button>
                             <a href="{{ route('dishes.index') }}" class="btn btn-outline-secondary ml-4">Cancelar</a>
@@ -214,30 +215,7 @@
     @include('admin.dishes.partials.script');
 
     <script>
-        submitForms('#edit_dish', '.loading_edit_dish', '#form_edit_dish');
-
-        $(document).ready(function() {
-            $('#portion_dish').keyup( function() {
-                value = $(this).val();
-                cost = $('#selected_dish option:selected').data("cost");
-                gr = $('#selected_dish option:selected').data("gr");
-
-                cost_ingredient =  parseFloat( (value * cost) / gr ).toFixed(2);
-                $('#calculate_cost').val(cost_ingredient);
-            });
-
-            $('#selected_dish').change( function() {
-
-                value = $('#calculate_cost').val();
-                cost = $(this).data("cost");
-                gr = $(this).data("gr");
-
-                cost_ingredient =  parseFloat( (value * cost) / gr ).toFixed(2);
-
-                $('#calculate_cost').val(cost_ingredient);
-            });
-
-        });
+        submitForms('#create_dish', '.loading_create_dish', '#form_create_dish');
     </script>
 
 @endsection

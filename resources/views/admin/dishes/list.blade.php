@@ -40,10 +40,10 @@
                             <tr>
                                 <th>N°</th>
                                 <th>Nombre</th>
-                                <th>Precio costo</th>
-                                <th>Precio sugerido</th>
-                                <th>Precio designado</th>
-                                <th>Categoria</th>
+                                <th class="text-center">Precio costo</th>
+                                <th class="text-center">Precio sugerido</th>
+                                <th class="text-center">Precio designado</th>
+                                <th class="text-center">Categoria</th>
                                 {{-- <th>Estatus</th> --}}
                                 {{-- <th class="text-center">Fecha de Creación</th> --}}
                                 <th class="text-center">Acción</th>
@@ -54,10 +54,10 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td>{{ $item->cost_price }}</td>
-                                <td>{{ $item->suggested_price }}</td>
-                                <td>{{ $item->designated_price }}</td>
-                                <td>{{ $item->category->name }}</td>
+                                <td class="text-center">{{ $item->cost_price }}</td>
+                                <td class="text-center">{{ $item->suggested_price }}</td>
+                                <td class="text-center">{{ $item->designated_price }}</td>
+                                <td class="text-center">{{ $item->category->name }}</td>
                                 {{-- <td> <span class="badge badge-light-{{ $item->status == 0 ? 'danger' : 'success' }}">{{ $item->status == 0 ? 'Inactivo' : 'Activo' }}</span> </td> --}}
                                 {{-- <td class="text-center">{{ date('d-m-Y', strtotime($item->created_at)) }}</td> --}}
                                 <td class="text-center"> 
@@ -85,7 +85,7 @@
     </div>
 </section>
 
-@include('admin.dishes.partials.script')
+{{-- @include('admin.dishes.partials.script') --}}
 
 @endsection
 
@@ -101,24 +101,6 @@
 @section('custom-js')
     @include('panels.datatable.scripts')
     <script>
-        // $.fn.dataTable.ext.search.push(
-        //     function( settings, data, dataIndex ) {
-        //         var tdStatus = data[5];
-        //         var filterStatus = $('#status_filter option').filter(':selected').val();
-        //         if (filterStatus == '') {
-        //             return true;
-        //         }
-        //         return tdStatus == filterStatus;
-        //     }
-        // );
-
-        // $(document).ready(function() {
-        //     var table = $('.table').DataTable();
-        //     $('#status_filter').change( function() {
-        //         table.draw();
-        //     });
-        // });
-
         dataTable('#table');
     </script>
 @endsection

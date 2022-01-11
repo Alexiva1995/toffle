@@ -23,7 +23,7 @@ class Dish extends Model
     public function ingredients()
     {
         return $this->belongsToMany('App\Models\Inventory', 'dish_ingredient')
-                ->withPivot('id', 'dish_id', 'inventory_id', 'portion', 'created_at', 'updated_at');
+                ->withPivot('id', 'dish_id', 'inventory_id', 'portion', 'designated_cost', 'created_at', 'updated_at');
     }
 
     public function category()
