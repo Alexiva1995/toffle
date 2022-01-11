@@ -22,7 +22,7 @@
   <div class="row match-height">
 
     <div class="col-12">
-      @include('admin.dashboard.reports.sales_vs_profit')
+      @include('admin.dashboard.reports.sales_vs_gain')
     </div>
 
     <div class="col-lg-6 col-12">
@@ -68,13 +68,13 @@
 @section('page-script')
   {{-- Page js files --}}
   <script src="{{ asset(mix('js/scripts/forms/pickers/form-pickers.js')) }}"></script>
+  <script src="{{ asset(mix('vendors/js/pickers/flatpickr/extensions/dist/plugins/weekSelect/weekSelect.js')) }}"></script>
 @endsection
 
 @section('custom-js')
-
   @include('panels.datatable.scripts')
-  @include('panels.custom.charts.weekly_sales')
-  @include('panels.custom.charts.amount_vs_gain')
+  @include('panels.custom.script_charts.weekly_sales')
+  @include('panels.custom.script_charts.sales_vs_gain')
   <script>
       dataTable('#money_flow_table');
       dataTable('#inventory_reposition_table');
@@ -93,7 +93,7 @@
           });
       });
 
-      flatpickrWeek('#range_week');
+      flatpickrWeek('#week');
 
-  </script>
+  </script>  
 @endsection

@@ -25,13 +25,13 @@ class Order extends Model
     public function estado()
     {
         if($this->status == '0'){
-            return "pendiente";
+            return "Pendiente";
         }else if($this->status == '1'){
-            return "En espera";
+            return "En Espera";
         }else if($this->status == '2'){
-            return "Finalizados";
+            return "Finalizado";
         }else if($this->status == '3'){
-            return "Cancelados";
+            return "Cancelado";
         }
     }
     

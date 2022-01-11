@@ -75,10 +75,24 @@ class DashboardController extends Controller
   }
 
   public function dataChartAmountVsGain() {
-      $orders = Order::where('status', '2')->get();
- 
+      $orders = Order::selectRaw('DATE(orders.updated_at) as date')
+        ->selectRaw('sum(orders.total_amount) as total_amount')
+        ->selectRaw('sum((c.designated_price - c.cost_price) * b.unit) as gain')
+        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+        ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+        ->where('orders.status', '2')
+        ->orderBy('date', 'ASC')
+        ->groupBy('date')
+        ->get();
+
+      // dd($orders);
+
+      $esJson = file_get_contents(base_path('resources/data/apexcharts/locale/es.json'));
+      $esData = json_decode($esJson);
+
       return response()->json([
-          'data' => $orders
+          'data' => $orders,
+          'es' => $esData
       ]);
  }
 

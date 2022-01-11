@@ -90,9 +90,12 @@
     }
 </script>
 
-{{-- <script>
+<script>
     function flatpickrWeek(id) {
         $(id).flatpickr({
+            mode: "range",
+            dateFormat: "W-Y",
+            defaultDate: ["today"],
             locale: {
                 weekdays: {
                   shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
@@ -102,14 +105,35 @@
                   shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
                   longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 },
+                weekAbbreviation: "Sem",
+                yearAriaLabel: "Año",
+                monthAriaLabel: "Mes",
+                hourAriaLabel: "Hora",
+                minuteAriaLabel: "Minuto",
             },
-            weekNumbers: true,
-            enable:[ 
-              function(date) {
-                  return date.getDay() === 0;
-              }
-            ]
+            // weekNumbers: true,
+            "plugins": [new weekSelect({})],
+            onChange: [function(selectedDates, dateStr, instance){
+
+                const year = this.selectedDates[0]
+                    ? this.currentYear
+                    : null;
+
+                const weekNumber = this.selectedDates[0]
+                    ? this.config.getWeek(this.selectedDates[0])
+                    : null;
+
+                dataWeek = '';
+
+                if (weekNumber > 10) {
+                    dataWeek = year+'-W'+weekNumber;
+                }else{
+                    dataWeek = year+'-W0'+weekNumber;
+                }
+                $('#week').data('week', dataWeek)
+                console.log($('#range_week').val());
+            }]
         });
     }
 
-</script> --}}
+</script>
