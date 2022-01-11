@@ -92,7 +92,7 @@
 
                             <div class="col-12 col-md-3 mb-1">
                                 <div class="mb-1">
-                                    <label class="form-label" for="percentage_profit">% Ganancia</label>
+                                    <label class="form-label" for="percentage_profit">Ganancia</label>
                                     <div class="input-group input-group-merge " id="profit">
                                         <span class="input-group-text"> % </span>
                                         <input type="number" id="percentage_profit"
