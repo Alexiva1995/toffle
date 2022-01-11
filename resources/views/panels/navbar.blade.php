@@ -66,7 +66,8 @@
           </ul>--}}
         </div>
         <ul class="nav navbar-nav align-items-center ms-auto">
-          <li class="nav-item dropdown dropdown-language">
+          
+          {{-- <li class="nav-item dropdown dropdown-language">
             <a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true">
               <i class="flag-icon flag-icon-es"></i>
               <span class="selected-language">Español</span>
@@ -88,8 +89,12 @@
                 <i class="flag-icon flag-icon-pt"></i> Portuguese
               </a>
             </div>
-          </li>
+          </li> --}}
+
+          
           {{-- <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="{{($configData['theme'] === 'dark') ? 'sun' : 'moon' }}"></i></a></li> --}}
+          
+          
           {{-- <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon" data-feather="search"></i></a>
             <div class="search-input">
               <div class="search-input-icon"><i data-feather="search"></i></div>
@@ -98,6 +103,8 @@
               <ul class="search-list search-list-main"></ul>
             </div>
           </li> --}}
+
+
           {{-- <li class="nav-item dropdown dropdown-cart me-25">
             <a class="nav-link" href="javascript:void(0);" data-bs-toggle="dropdown">
               <i class="ficon" data-feather="shopping-cart"></i>
@@ -196,7 +203,9 @@
               </li>
             </ul>
           </li> --}}
-          <li class="nav-item dropdown dropdown-notification me-25">
+
+
+          {{-- <li class="nav-item dropdown dropdown-notification me-25">
             <a class="nav-link" href="javascript:void(0);" data-bs-toggle="dropdown">
               <i class="ficon" data-feather="bell"></i>
               <span class="badge rounded-pill bg-danger badge-up">5</span>
@@ -297,7 +306,9 @@
                 <a class="btn btn-primary w-100" href="javascript:void(0)">Read all notifications</a>
               </li>
           </ul>
-        </li>
+        </li> --}}
+
+
         <li class="nav-item dropdown dropdown-user">
           <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true">
             <div class="user-nav d-sm-flex d-none">

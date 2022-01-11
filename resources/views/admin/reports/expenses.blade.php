@@ -1,56 +1,40 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Informes')
+@section('title', 'Gastos')
 
 @include('panels.datatable.styles')
 
-@section('vendor-style')
-    <!-- vendor css files -->
-@endsection
-
-@section('page-style')
-@endsection
-
 @section('content')
-<!-- Basic table -->
-<section id="basic-datatable">
-    <div class="row match-height">
-        <!-- Centered Aligned Tabs starts -->
+    <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <div class="card p-2">
-                                <div class="row align-items-center">
-                                    <div class="col-12 col-md-6">
-                                        <h3>Lista de Gastos</h1>
-                                    </div>
-                                </div>
-
+                            <div class="card">
                                 <div class="table-responsive">
-                                    <table class="table myTable table-striped">
+                                    <table class="table rounded border-table border-primary" id="table">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
-                                                <th>Descripcion</th>
-                                                <th>Monto</th>
-                                                <th>Estado</th>
-                                                <th>Categoria</th>
+                                                <th class="text-center">Id</th>
+                                                <th class="text-center">Descripcion</th>
+                                                <th class="text-center">Monto</th>
+                                                <th class="text-center">Estado</th>
+                                                <th class="text-center">Categoria</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($expenses as $item)
                                                 <tr>
-                                                    <td>{{ $item->id }}</td>
-                                                    <td>{{ $item->description }}</td>
-                                                    <td>{{ $item->amount }}</td>
+                                                    <td class="text-center">{{ $item->id }}</td>
+                                                    <td class="text-center">{{ $item->description }}</td>
+                                                    <td class="text-center fw-bolder text-danger">{{ $item->amount }}$</td>
                                                     @if ($item->status == 0)
-                                                        <td>Por Pagar</td>
+                                                        <td class="text-center">Por Pagar</td>
                                                     @else
-                                                        <td>Pagado</td>
+                                                        <td class="text-center">Pagado</td>
                                                     @endif
-                                                    <td>{{ $item->category_id }}</td>
+                                                    <td class="text-center">{{ $item->category->name }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -63,19 +47,14 @@
             </div>
         </div>
     </div>
-</section>
-
 @endsection
 
 @section('custom-js')
-    <script src="{{ asset(mix('vendors/js/tables/datatable/jquery.dataTables.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/dataTables.bootstrap5.min.js')) }}"></script>
-    <script>
-         $('.myTable').DataTable({
-            responsive: true,
-            order: [
-                [0, "desc"]
-            ],
-        })
-    </script>
+
+@include('panels.datatable.scripts')
+
+<script>
+    $('#table').dataTable();
+</script>
+
 @endsection

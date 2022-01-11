@@ -7,24 +7,22 @@ use App\Models\Expense;
 use App\Models\Order;
 use App\Models\Dish;
 
-use Illuminate\Http\Request;
-
 class ReportController extends Controller
 {
-
     //Permite  obtener el listado de los productos mas vendidos
     public function BestSeller()
     {
-        $dishes = Dish::select(\DB::raw('COUNT(category_id) as cantidad'), 'category_id')->groupBy('category_id')->get();
-        return view('admin.reports.BestSeller',compact('dishes'));
+        $dishes = Dish::all();
+
+        return view('admin.reports.bestSeller',compact('dishes'));
     }
 
     //permite obtener el listado de informes de ganancias
     public function gain()
     {
+        $dishes = Dish::all();
 
-
-        return view('admin.reports.gain');
+        return view('admin.reports.gain',compact('dishes'));
     }
 
     //Permite obtener el listado de informes de Gastos
@@ -46,11 +44,16 @@ class ReportController extends Controller
     //premite obtener el listado de informes del flujo de caja
     public function cashflow()
     {
-        $order = Order::where('status', '=', '2')->orderBy('id', 'desc')->get();
-        $expenses = expense::where('status', '=', '1')->orderBy('id', 'desc')->get();
+        $profit = Order::where('status', '=', '2')->sum('total_amount');
 
-        $capitalDisponible = Order::where('status', '=', '2')->sum('total_amount');
+        $discharge = expense::
+        selectRaw('SUM(amount) as expense')
+        ->selectRaw('created_at as date')->groupBy('date')->get();
+        
+        $income = Order::
+        selectRaw('SUM(total_amount) as gain')
+        ->selectRaw('created_at as date')->groupBy('date')->get();
 
-        return view('admin.reports.cashflow', compact('order','capitalDisponible', 'expenses'));
+        return view('admin.reports.cashflow', compact('income','profit', 'discharge'));
     }
 }

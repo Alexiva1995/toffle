@@ -41,4 +41,11 @@ class Order extends Model
 
         return $order_ids;
     }
+
+    public function getcategory($category)
+    {
+        $category = Category::where('id', $category)->first();
+
+        return $category;
+    }
 }

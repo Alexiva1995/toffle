@@ -72,9 +72,10 @@ span,
 
 // css datatable
 
-.table > :not(:last-child) > :last-child > * {
+.table> :not(:last-child)> :last-child>* {
     border-bottom-color: #EBE9F1;
 }
+
 .table:not(.table-dark):not(.table-light) thead:not(.table-dark) th,
 .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th {
 
@@ -165,7 +166,13 @@ body::-webkit-scrollbar-thumb {
     border-radius: 7px !important;
 }
 
-body::-webkit-scrollbar-thumb:horizontal{
+body::-webkit-scrollbar-thumb:horizontal {
     background: #FF5933 !important;
     border-radius: 7px !important;
+}
+
+
+.avatar .avatar-content {
+    width: 45px !important;
+    height: 43px !important;
 }

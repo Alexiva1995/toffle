@@ -1,102 +1,145 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Informes')
+@section('title', 'Flujo de caja')
 
 @include('panels.datatable.styles')
 
 @section('vendor-style')
-    <!-- vendor css files -->
+<!-- vendor css files -->
 @endsection
 
 @section('page-style')
 @endsection
 @section('content')
 <!-- Basic table -->
-<div class="col-12">
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 col-12">
-                <div class="d-flex flex-row">
-                    <div class="avatar bg-light-success me-2">
-                    <div class="avatar-content">
-                        <i data-feather="dollar-sign" class="avatar-icon"></i>
-                    </div>
-                    </div>
-                    <div class="my-auto">
-                    <h4 class="fw-bolder mb-0">$
-                        @if(isset($capitalDisponible))
-                        {{$capitalDisponible}}
-                        @else
-                        0
-                        @endif
-                        </h4>
-                    <p class="card-text font-small-3 mb-0">Capital a Favor</p>
-                    </div>
 
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <div class="d-flex flex-row">
+                            <div class="avatar bg-light-success me-2">
+                                <div class="avatar-content">
+                                    <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                </div>
+                            </div>
+                            <div class="my-auto">
+                                <h4 class="fw-bolder mb-0">$
+                                    @if(isset($capitalDisponible))
+                                    {{$capitalDisponible}}
+                                    @else
+                                    0
+                                    @endif
+                                </h4>
+                                <p class="card-text font-small-3 mb-0">Capital a Favor</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <div class="d-flex flex-row">
+                            <div class="avatar bg-light-danger me-2">
+                                <div class="avatar-content">
+                                    <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                </div>
+                            </div>
+                            <div class="my-auto">
+                                <h4 class="fw-bolder mb-0">$
+                                    @if(isset($capitalDisponible))
+                                    {{$capitalDisponible}}
+                                    @else
+                                    0
+                                    @endif
+                                </h4>
+                                <p class="card-text font-small-3 mb-0">Capital en contra</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <section id="basic-datatable">
     <div class="row match-height">
-        <!-- Centered Aligned Tabs starts -->
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-
                         <div class="col-12">
                             <div class="card p-2">
-                                <h2>Ingresos</h2>
+                                <h2>Ingresos <i data-feather="trending-up"
+                                    class="text-success font-medium-1"></i></h2>
                                 <div class="table-responsive">
-                                    <table class="table myTable table-striped">
+                                    <table class="table rounded border-table border-primary" id="table">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
-                                                <th>ingresos</th>
-                                                <th>Fecha</th>
+                                                <th class="text-center">Id</th>
+                                                <th class="text-center">ingresos</th>
+                                                <th class="text-center">Fecha</th>
                                         </thead>
                                         <tbody>
-                                           @foreach ($order as $item)
-                                                <tr>
-                                                    <td>{{ $item->id }}</td>
-                                                    <td class="fw-bolder text-success">+ {{ number_format($item->total_amount, 2, '.', '') }}
-                                                        <i data-feather="trending-up" class="text-success font-medium-1"></i>
-                                                    </td>
-                                                    <td>{{ $item->created_at->format('Y-m-d')}}</td>
-
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <h2>Egresos</h2>
-                                <div class="table-responsive">
-                                    <table class="table myTable table-striped">
-                                        <thead>
+                                            @foreach ($income as $item)
                                             <tr>
-                                                <th>Id</th>
-                                                <th>egresos</th>
-                                                <th>Fecha</th>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($expenses as $item)
-                                            <tr>
-                                                <td>{{ $item->id }}</td>
-                                                <td class="fw-bolder text-danger">- {{ number_format($item->amount, 2, '.', '') }}
-                                                    <i data-feather="trending-down" class="text-danger font-medium-1"></i>
-                                                </td>
-                                                <td>{{ $item->created_at->format('Y-m-d')}}</td>
+                                                <td class="text-center">{{ $loop->iteration }}</td>
+                                                <td class="fw-bolder text-success text-center">+{{ $item->gain }}$</td>
+                                                <td class="text-center">{{ date('d-m-Y', strtotime($item->date)) }}</td>
                                             </tr>
-
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
+
+<section id="basic-datatable">
+    <div class="row match-height">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card p-2">
+                                <h2>Egresos <i data-feather="trending-down"
+                                class="text-danger font-medium-1"></i></h2>
+                                <div class="table-responsive">
+                                    <table class="table rounded border-table border-primary" id="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Id</th>
+                                                <th class="text-center">ingresos</th>
+                                                <th class="text-center">Fecha</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($discharge as $item)
+                                            <tr>
+                                                <td class="text-center">{{ $loop->iteration }}</td>
+                                                <td class="fw-bolder text-danger text-center">-{{ $item->expense }}$</td>
+                                                <td class="text-center">{{ date('d-m-Y', strtotime($item->date)) }}</td>
+
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -109,14 +152,13 @@
 @endsection
 
 @section('custom-js')
-    <script src="{{ asset(mix('vendors/js/tables/datatable/jquery.dataTables.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/dataTables.bootstrap5.min.js')) }}"></script>
-    <script>
-         $('.myTable').DataTable({
-            responsive: true,
-            order: [
-                [0, "desc"]
-            ],
-        })
-    </script>
+
+@include('panels.datatable.scripts')
+
+<script>
+    $('#table').dataTable( {
+    "order": [[ 3, 'asc' ]]
+} );
+</script>
+
 @endsection
