@@ -2,7 +2,15 @@
 
 @section('title', 'Gastos')
 
-@include('panels.datatable.styles')
+@section('vendor-style')
+  {{-- vendor css files --}}
+    @include('panels.datatable.styles')
+@endsection
+
+@section('page-style')
+  {{-- Page css files --}}
+  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
+@endsection
 
 @section('content')
 <!-- Basic table -->
@@ -136,17 +144,19 @@
                 table.search('').draw();
             });
 
-            $('#timestamp').flatpickr({
-                mode:'range',
-                ariaDateFormat:'Y-m-d',
-                dateFormat:'Y-m-d',
-                onChange:function(selectedDates){
-                    var _this=this;
-                    var dateArr=selectedDates.map(function(date){return _this.formatDate(date,'Y-m-d');});
-                    $('#from').val(dateArr[0]);
-                    $('#to').val(dateArr[1]);
-                },
-            });
+            // $('#timestamp').flatpickr({
+            //     mode:'range',
+            //     ariaDateFormat:'Y-m-d',
+            //     dateFormat:'Y-m-d',
+            //     onChange:function(selectedDates){
+            //         var _this=this;
+            //         var dateArr=selectedDates.map(function(date){return _this.formatDate(date,'Y-m-d');});
+            //         $('#from').val(dateArr[0]);
+            //         $('#to').val(dateArr[1]);
+            //     },
+            // });
+
+            flatpickrRange('#timestamp', '#from', '#to');
         });
     </script>
 @endsection

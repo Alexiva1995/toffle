@@ -2,17 +2,16 @@
 
 @section('title', 'Flujo de caja')
 
-@include('panels.datatable.styles')
-
 @section('vendor-style')
-<!-- vendor css files -->
+    <!-- vendor css files -->
+    @include('panels.datatable.styles')
 @endsection
 
 @section('page-style')
 @endsection
+
 @section('content')
 <!-- Basic table -->
-
 <div class="row">
     <div class="col-6">
         <div class="card">

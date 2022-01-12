@@ -68,6 +68,7 @@
 @section('page-script')
   {{-- Page js files --}}
   <script src="{{ asset(mix('js/scripts/forms/pickers/form-pickers.js')) }}"></script>
+  <script src="{{ asset(mix('js/scripts/moment/moment.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/extensions/dist/plugins/weekSelect/weekSelect.js')) }}"></script>
 @endsection
 

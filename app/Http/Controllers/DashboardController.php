@@ -75,16 +75,26 @@ class DashboardController extends Controller
   }
 
   public function dataChartAmountVsGain() {
-      $orders = Order::selectRaw('DATE(orders.updated_at) as date')
-        ->selectRaw('sum(orders.total_amount) as total_amount')
-        ->selectRaw('sum((c.designated_price - c.cost_price) * b.unit) as gain')
+      // $orders = Order::selectRaw('DATE(orders.created_at) as date')
+      //   ->selectRaw('sum(orders.total_amount) as total_amount')
+      //   ->selectRaw('sum((c.designated_price - c.cost_price) * b.unit) as gain')
+      //   ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+      //   ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+      //   ->where('orders.status', '2')
+      //   ->orderBy('date', 'ASC')
+      //   ->groupBy('date')
+      //   ->get();
+      
+      $orders = Order::
+        selectRaw('orders.created_at as date')
+        ->selectRaw('ROUND(orders.total_amount, 2) as total_amount')
+        ->selectRaw('ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) as gain')
         ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
         ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
         ->where('orders.status', '2')
         ->orderBy('date', 'ASC')
-        ->groupBy('date')
+        // ->groupBy('date')
         ->get();
-
       // dd($orders);
 
       $esJson = file_get_contents(base_path('resources/data/apexcharts/locale/es.json'));
@@ -113,10 +123,10 @@ class DashboardController extends Controller
       $week_start = date('Y-m-d', strtotime('this week sunday', $custom_date));
       $week_end = date('Y-m-d', strtotime('this week next saturday', $custom_date));
 
-      $orders = Order::selectRaw('DATE(updated_at) as date')
+      $orders = Order::selectRaw('DATE(created_at) as date')
       ->selectRaw('sum(total_amount) as total_amount')
       ->where('status', '2')
-      ->whereBetween('updated_at', [$week_start. " 00:00:00", $week_end. " 23:59:59"])
+      ->whereBetween('created_at', [$week_start. " 00:00:00", $week_end. " 23:59:59"])
       ->orderBy('date', 'DESC')
       ->groupBy('date')
       ->get();

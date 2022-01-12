@@ -2,7 +2,10 @@
 
 @section('title', 'Crear plato')
 
-@include('panels.datatable.styles')
+@section('vendor-style')
+    <!-- vendor css files -->
+    @include('panels.datatable.styles')
+@endsection
 
 @section('content')
 <!-- Basic table -->
