@@ -1,41 +1,28 @@
-@extends('layouts/contentLayoutMaster')
-
-@section('title', 'Gastos')
-
-@include('panels.datatable.styles')
-
-@section('content')
-    <div class="row">
+<section id="basic-datatable">
+    <div class="row match-height">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
+                            <div class="card p-2">
+                                <h2>Ingresos <i data-feather="trending-up"
+                                    class="text-success font-medium-1"></i></h2>
                                 <div class="table-responsive">
                                     <table class="table rounded border-table border-primary" id="table">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">Id</th>
-                                                <th class="text-center">Descripcion</th>
-                                                <th class="text-center">Monto</th>
-                                                <th class="text-center">Estado</th>
-                                                <th class="text-center">Categoria</th>
-                                            </tr>
+                                                <th class="text-center">ingresos</th>
+                                                <th class="text-center">Fecha</th>
                                         </thead>
                                         <tbody>
-                                            @foreach ($expenses as $item)
-                                                <tr>
-                                                    <td class="text-center">{{ $item->id }}</td>
-                                                    <td class="text-center">{{ $item->description }}</td>
-                                                    <td class="text-center fw-bolder text-danger">{{ $item->amount }}$</td>
-                                                    @if ($item->status == 0)
-                                                        <td class="text-center">Por Pagar</td>
-                                                    @else
-                                                        <td class="text-center">Pagado</td>
-                                                    @endif
-                                                    <td class="text-center">{{ $item->category->name }}</td>
-                                                </tr>
+                                            @foreach ($income as $item)
+                                            <tr>
+                                                <td class="text-center">{{ $loop->iteration }}</td>
+                                                <td class="fw-bolder text-success text-center">+{{ $item->gain }}$</td>
+                                                <td class="text-center">{{ date('d-m-Y', strtotime($item->date)) }}</td>
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -47,18 +34,16 @@
             </div>
         </div>
     </div>
-@endsection
+</section>
 
 @section('custom-js')
 
 @include('panels.datatable.scripts')
 
 <script>
-    // $('#table').dataTable();
-
     $(document).ready(function () {
-    // Setup - add a text input to each footer cell
-    $('#table thead tr')
+
+        $('#table thead tr')
         .clone(true)
         .addClass('filters')
         .appendTo('#table thead');
@@ -115,6 +100,7 @@
                 });
         },
     });
+
 });
 </script>
 
