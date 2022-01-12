@@ -36,41 +36,36 @@
       "icon": "clipboard",
       "slug": "reports",
       "submenu": [
+
         {
-          "url": "admin/reports/module",
-          "name": "r_module",
-          "icon": "circle",
-          "slug": ""
-        },
-        {
-          "url": "admin/reports/cash_flow",
+          "url": "admin/reports/cashflow",
           "name": "r_cash_flow",
           "icon": "circle",
-          "slug": ""
+          "slug": "reports.cashflow"
         },
         {
           "url": "admin/reports/sales",
           "name": "r_sales",
           "icon": "circle",
-          "slug": ""
+          "slug": "reports.sales"
         },
         {
           "url": "admin/reports/expenses",
           "name": "r_expenses",
           "icon": "circle",
-          "slug": ""
+          "slug": "reports.expenses"
         },
         {
-          "url": "admin/reports/more_sold",
+          "url": "admin/reports/gain",
           "name": "r_gain",
           "icon": "circle",
-          "slug": ""
+          "slug": "reports.gain"
         },
         {
-          "url": "admin/reports/all_reports",
-          "name": "all_reports",
+          "url": "admin/reports/BestSeller",
+          "name": "r_more_sold",
           "icon": "circle",
-          "slug": ""
+          "slug": "reports.BestSeller"
         }
       ]
     },
@@ -86,7 +81,7 @@
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "trending-down",
       "slug": "expenses",
-      "submenu": [ 
+      "submenu": [
         {
           "url": "admin/expenses/list-historical",
           "name": "historical",

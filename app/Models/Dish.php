@@ -23,7 +23,7 @@ class Dish extends Model
     public function ingredients()
     {
         return $this->belongsToMany('App\Models\Inventory', 'dish_ingredient')
-                ->withPivot('id', 'dish_id', 'inventory_id', 'portion', 'created_at', 'updated_at');
+                ->withPivot('id', 'dish_id', 'inventory_id', 'portion', 'designated_cost', 'created_at', 'updated_at');
     }
 
     public function category()
@@ -35,5 +35,47 @@ class Dish extends Model
     {
         $dishes = Dish::where('category_id', $category_id)->get();
         return $dishes;
+    }
+
+    public function countDish($dish_id)
+    {
+        $dish = Dish::
+            selectRaw('COUNT(b.dish_id) * SUM(b.unit) as count')
+            ->leftJoin('order_dish as b', 'dishes.id', '=', 'b.dish_id')
+            ->leftJoin('orders as c', 'b.order_id', '=', 'c.id')
+            ->where('dishes.id', $dish_id)
+            ->groupBy('dishes.name')
+            ->first();
+
+        return $dish->count;
+    }
+
+    public function dishProfit($dish_id)
+    {
+        $dish = Dish::
+            selectRaw('SUM((dishes.designated_price - dishes.cost_price) * b.unit) as gain')
+            ->leftJoin('order_dish as b', 'dishes.id', '=', 'b.dish_id')
+            ->leftJoin('orders as c', 'b.order_id', '=', 'c.id')
+            ->where('dishes.id', $dish_id)
+            ->groupBy('dishes.name')
+            ->first();
+
+        return $dish->gain;
+    }
+
+    public function dishDate()
+    {
+        $orders = Order::selectRaw('DATE(orders.updated_at) as date')
+        ->selectRaw('sum(orders.total_amount) as total_amount')
+        ->selectRaw('sum((c.designated_price - c.cost_price) * b.unit) as gain')
+        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+        ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+        ->where('orders.status', '2')
+        ->orderBy('date', 'ASC')
+        ->groupBy('date')
+        ->get();
+
+        return $orders->date;
+
     }
 }

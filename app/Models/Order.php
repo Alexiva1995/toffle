@@ -34,11 +34,18 @@ class Order extends Model
             return "Cancelado";
         }
     }
-    
+
     public function getOrderIds($table)
     {
         $order_ids = Order::where('table', $table)->orderBy('id','ASC')->get();
 
         return $order_ids;
+    }
+
+    public function getcategory($category)
+    {
+        $category = Category::where('id', $category)->first();
+
+        return $category;
     }
 }

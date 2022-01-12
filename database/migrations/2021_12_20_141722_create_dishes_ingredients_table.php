@@ -18,6 +18,7 @@ class CreateDishesIngredientsTable extends Migration
             $table->string('dish_id');
             $table->string('inventory_id');
             $table->string('portion');
+            $table->double('designated_cost');
             $table->timestamps();
         });
     }
