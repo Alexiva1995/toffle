@@ -93,16 +93,10 @@ class DashboardController extends Controller
         ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
         ->where('orders.status', '2')
         ->orderBy('date', 'ASC')
-        // ->groupBy('date')
         ->get();
-      // dd($orders);
-
-      $esJson = file_get_contents(base_path('resources/data/apexcharts/locale/es.json'));
-      $esData = json_decode($esJson);
 
       return response()->json([
           'data' => $orders,
-          'es' => $esData
       ]);
  }
 
