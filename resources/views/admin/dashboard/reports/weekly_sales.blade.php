@@ -19,7 +19,8 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="column-chart"></div>
+            <input type="hidden" id="weekly_sales_route" value="{{ route('data.chart.weekly.sales') }}">
+            <div id="column-chart-ws"></div>
         </div>
     </div>
 </div>

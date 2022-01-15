@@ -59,19 +59,17 @@
   {{-- vendor files --}}
   <script src="{{ asset(mix('vendors/js/charts/apexcharts.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/charts/chart.min.js')) }}"></script>
 @endsection
 @section('page-script')
   {{-- Page js files --}}
   <script src="{{ asset(mix('js/scripts/moment/moment.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/extensions/dist/plugins/weekSelect/weekSelect.js')) }}"></script>
+  <script src="{{ asset('js/scripts/charts/dashboard/weekly_sales.js') }}"></script>
+  <script src="{{ asset('js/scripts/charts/dashboard/amount-vs-gain.js') }}"></script>
 @endsection
 
 @section('custom-js')
   @include('panels.datatable.scripts')
-  @include('panels.custom.script_charts.weekly_sales')
-  @include('panels.custom.script_charts.sales_vs_gain')
-  {{-- @include('panels.custom.script_charts.chartsJs') --}}
   <script>
       dataTable('#money_flow_table');
       dataTable('#inventory_reposition_table');
@@ -82,14 +80,21 @@
           // --------------------------------------------------------------------
           dateFilter('1day');
           dataChartAmountVsGain();
+          flatpickrDateCalendar(initial_date, final_date)
 
           $('.datetime').click(function() {
-            $('#line-chart').addClass('d-none');
-            $('#line-chart-2').addClass('d-none');
+
+            $('#label-date-calendar').css("background-color", "transparent");
             $('#spiner-chart').removeClass('d-none');
+
             value = $(this).val();
             dateFilter(value);
             dataChartAmountVsGain();
+            flatpickrDateCalendar(initial_date, final_date)
+
+            setTimeout(() => {
+                $('#spiner-chart').addClass('d-none');                     
+            },1500)
           });
 
           // Weekly Sales

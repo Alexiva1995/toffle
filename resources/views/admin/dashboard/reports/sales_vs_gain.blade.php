@@ -7,7 +7,11 @@
         <div class="row justify-content-end">
           <div class="col-auto">
             <div class="d-flex flex-sm-row flex-column justify-content-md-between align-items-start justify-content-start">
-              <div class="mt-md-0 mt-1" role="group" aria-label="Basic radio toggle button group">
+              <div class="mt-md-0 mt-1 btn-group-checked" role="group" aria-label="Basic radio toggle button group">
+
+                <input type="radio" class="btn-check" name="datetime" id="date_calendar" value="" autocomplete="off"/>
+                <label class="btn btn-outline-primary" id="label-date-calendar" for="date_calendar"> <i data-feather="calendar"></i> </label>
+
                 <input type="radio" class="btn-check datetime" name="datetime" id="1d" value="1day" autocomplete="off" checked />
                 <label class="btn btn-outline-primary" for="1d">1D</label>
   
@@ -24,19 +28,21 @@
                 <label class="btn btn-outline-primary" for="1y">1 Año</label>
       
                 <input type="radio" class="btn-check datetime" name="datetime" id="ytd" value="ytd" autocomplete="off" />
-                <label class="btn btn-outline-primary" for="ytd">Año hasta Fecha Actual (YTD)</label>
+                <label class="btn btn-outline-primary" for="ytd">Año hasta la Fecha (YTD)</label>
   
                 <input type="radio" class="btn-check datetime" name="datetime" id="all" value="all" autocomplete="off" />
                 <label class="btn btn-outline-primary" for="all">Todo</label>
-  
-                <input type="radio" class="btn-check datetime" name="datetime" id="date_calendar" value="date_calendar" autocomplete="off" />
-                <label class="btn btn-outline-primary" for="date_calendar"> <i data-feather="calendar"></i> </label>
               </div>
           </div>
           </div>
         </div>
       </div>
-      <div class="card-body" id="translate" data-es = "{{ file_get_contents(base_path('resources/data/apexcharts/locale/es.json')) }}">
+
+      <input type="hidden" id="amount_vs_gain_route" value="{{ route('data.chart.amount.vs.gain') }}">
+      <input type="hidden" id="translate" data-es = "{{ file_get_contents(base_path('resources/data/apexcharts/locale/es.json')) }}">
+      <input type="hidden" id="flatpickr_translate" data-es = "{{ file_get_contents(base_path('resources/data/flatpickr/locale/es.json')) }}">
+
+      <div class="card-body">
 
             <div class="spinner2 d-none" id="spiner-chart">
               <div class="rect1"></div>
@@ -45,11 +51,9 @@
               <div class="rect4"></div>
               <div class="rect5"></div>
             </div>
-            <div id="show-chart-tolbar">
-              <div id="line-chart"></div>
-              <div id="line-chart-2"></div>
-            </div>
-            {{-- <canvas class="line-chart-ex chartjs" data-height="450"></canvas> --}}
+
+            <div id="line-top-chart"></div>
+            <div id="line-bottom-chart"></div>
       </div>
     </div>
 </div>
