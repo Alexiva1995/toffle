@@ -188,10 +188,10 @@ class ExpensesController extends Controller
 
     public function data(Request $request)
     {
-        $expenses = Expense::where("status", '1')->selectRaw('DATE(updated_at) as date,
+        $expenses = Expense::where('status', '1')->selectRaw('DATE(updated_at) as updated_at,
         sum(amount) as amount')
-        ->orderBy('date', 'DESC')
-        ->groupBy('date');
+        ->orderBy('updated_at', 'DESC')
+        ->groupBy('updated_at');
             
         return Datatables::of($expenses)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
@@ -201,7 +201,7 @@ class ExpensesController extends Controller
             }
         }, true)
         ->addColumn('day_at_timezone', function (Expense $expenses) {
-            return $expenses->getDay($expenses->date);
+            return $expenses->getDay($expenses->updated_at);
         })
         ->addColumn('updated_at_timezone', function (Expense $expenses) {
             return $expenses->updated_at_timezone;

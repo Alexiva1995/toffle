@@ -9,5 +9,4 @@ class Report extends Model
 {
     use HasFactory;
 
-
 }

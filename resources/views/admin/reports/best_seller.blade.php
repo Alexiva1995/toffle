@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Ganancia')
+@section('title', 'Mas vendido')
 
 @section('vendor-style')
     <!-- vendor css files -->
@@ -13,11 +13,12 @@
 @endsection
 
 @section('content')
+<!-- Basic table -->
 <section id="basic-datatable">
     <div class="row">
         <div class="col-12">
             <div class="card p-2">
-                <h3>Ganancias por Día</h3>
+                {{-- <h3>Más Vendidos</h3> --}}
                 <div class="row mb-2">
                     <div class="col-12 col-md-6">
                         <div class="row justify-content-init mt-1">
@@ -27,20 +28,27 @@
                                   <input type="hidden" id="from">
                                   <input type="hidden" id="to">
                             </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="category_id">Categorías</label>
+                                <select class="select2 form-control" name="category_id" id="category_id" data-toggle="select"
+                                    class="form-control" id="category">
+                                    <option value="" selected>Seleccionar Todas</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table" id="gain_table"> </table>
+                    <table class="table" id="best_seller_table"> </table>
                 </div>
             </div>
         </div>
     </div>
 </section>
-@endsection
-
-@section('vendor-script')
-    <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
 @endsection
 
 @section('custom-js')
@@ -49,7 +57,7 @@
 
 <script>
     $(document).ready(function () {
-        table = $('#gain_table').DataTable({
+        table = $('#best_seller_table').DataTable({
             processing: true,
             serverSide: true,
             ordering: true,
@@ -58,47 +66,37 @@
                 url: '{!! asset('data/datatable/Spanish.json') !!}'
             },
             ajax: {
-                url: '{!! route('reports.gain.data') !!}',
+                url: '{!! route('reports.best.seller.data') !!}',
                 data: function (d) {
-                    d.from    = $('#from').val();
-                    d.to      = $('#to').val();
+                    d.from  = $('#from').val();
+                    d.to    = $('#to').val();
+                    d.category_id  = $('#category_id').val();
                 }
             },
             columns: [
-            { 
-                data: null,
-                sortable: false, 
-                title: "N°",
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }  
-            },
             {
-                data: "updated_at_timezone",
-                name: "updated_at_timezone",
-                title: "Fecha de Pago",
-                "class": "text-center",
-                visible: true,
-                searchable: true
-            },
-            {
-                data: "day_at_timezone",
-                name: "day_at_timezone",
-                title: "Día",
+                data: "name_dish",
+                name: "name_dish",
+                title: "Plato",
                 "class": "text-center",
                 visible: true,
                 searchable: true,
             },
             {
-                data: "total_amount",
-                name: "total_amount",
-                title: "Monto de Venta",
+                data: "category_name",
+                name: "category_name",
+                title: "Categoría",
                 "class": "text-center",
                 visible: true,
                 searchable: true,
-                render: function (data, type, row, meta) {
-                    return (row.total_amount).toFixed(2);
-                }  
+            },
+            {
+                data: "units",
+                name: "units",
+                title: "# de Ventas",
+                "class": "text-center",
+                visible: true,
+                searchable: true,
             },
             {
                 data: "gain",
@@ -111,26 +109,16 @@
                     return (row.gain).toFixed(2);
                 }  
             },
-            {
-                data: "updated_at",
-                name: "updated_at",
-                title: "Detalles",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-                render: function (data, type, row) {
-                    var url = '{{ route('gain.show','replace_this')}}'.replace('replace_this', row.updated_at_timezone);
-                    var html = '<a href="' + url + '" class="btn btn-sm btn-info"><i data-feather="eye"></i> </a>';
-                    feather.replace();
-                    return html;
-                }
-            },
 
         ],
         fnCreatedRow: function (elemt, data, iDataIndex) {},
 
         }).on('processing.dt', function (e, settings, processing) {
             feather.replace();
+        });
+
+        $('#category_id').change(function() {
+            table.search('').draw();
         });
 
         $('#timestamp').change(function() {

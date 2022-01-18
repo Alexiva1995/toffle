@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -35,6 +36,19 @@ class Order extends Model
         }
     }
 
+    public function colorStatus()
+    {
+        if($this->status == '0'){
+            return "warning";
+        }else if($this->status == '1'){
+            return "info";
+        }else if($this->status == '2'){
+            return "success";
+        }else if($this->status == '3'){
+            return "danger";
+        }
+    }
+
     public function getOrderIds($table)
     {
         $order_ids = Order::where('table', $table)->orderBy('id','ASC')->get();
@@ -47,5 +61,20 @@ class Order extends Model
         $category = Category::where('id', $category)->first();
 
         return $category;
+    }
+
+    public function getUpdatedAtTimezoneAttribute()
+    {
+        if ($this->updated_at != null) {
+            return (new Carbon( $this->updated_at ))->format('Y-m-d');
+        }
+    
+        return null;
+    }
+
+    public function getDay($date)
+    {
+        $days = array("Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo");
+        return $days[date('N', strtotime($date)) - 1 ];
     }
 }

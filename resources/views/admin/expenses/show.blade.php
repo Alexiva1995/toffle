@@ -24,7 +24,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                Detalles {{  Session::has('paid_out')  }}
+                                Detalles 
                             </li>
                         </ol>
                   </div>

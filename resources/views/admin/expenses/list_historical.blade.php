@@ -58,7 +58,6 @@
     <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
 @endsection
 
-
 @section('page-script')
     <!-- Page js files -->
 @endsection
@@ -119,14 +118,14 @@
                     }  
                 },
                 {
-                    data: "date",
-                    name: "date",
+                    data: "updated_at",
+                    name: "updated_at",
                     title: "Detalles",
                     "class": "text-center",
                     visible: true,
                     searchable: true,
                     render: function (data, type, row) {
-                        var url = '{{ route('expenses.show','replace_this')}}'.replace('replace_this', row.date);
+                        var url = '{{ route('expenses.show','replace_this')}}'.replace('replace_this', row.updated_at_timezone);
                         var html = '<a href="' + url + '" class="btn btn-sm btn-info"><i data-feather="eye"></i> </a>';
                         feather.replace();
                         return html;
@@ -143,18 +142,6 @@
             $('#timestamp').change(function() {
                 table.search('').draw();
             });
-
-            // $('#timestamp').flatpickr({
-            //     mode:'range',
-            //     ariaDateFormat:'Y-m-d',
-            //     dateFormat:'Y-m-d',
-            //     onChange:function(selectedDates){
-            //         var _this=this;
-            //         var dateArr=selectedDates.map(function(date){return _this.formatDate(date,'Y-m-d');});
-            //         $('#from').val(dateArr[0]);
-            //         $('#to').val(dateArr[1]);
-            //     },
-            // });
 
             flatpickrRange('#timestamp', '#from', '#to');
         });
