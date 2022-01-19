@@ -215,7 +215,7 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    return '<strong class="text-success">'+row.total_amount.toFixed(2)+'</strong>';
+                    return '<strong class="text-success">+'+row.total_amount.toFixed(2)+'</strong>';
                 }  
             },
             {
@@ -253,7 +253,7 @@
                 url: '{!! asset('data/datatable/Spanish.json') !!}'
             },
             ajax: {
-                url: '{!! route('reports.income.data') !!}',
+                url: '{!! route('reports.expenses.data') !!}',
                 data: function (d) {
                     d.from  = $('#expenses_from').val();
                     d.to    = $('#expenses_to').val();
@@ -261,46 +261,33 @@
                 }
             },
             columns: [
-            { 
-                data: "dish_id",
-                name: "dish_id",
+            {
+                data: "id",
+                name: "id",
                 title: "#",
                 "class": "text-center",
                 visible: true,
                 searchable: true,
             },
-            { 
-                data: "order_id",
-                name: "order_id",
-                title: "Órden Id",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-            },
-            { 
-                data: "name_dish",
-                name: "name_dish",
-                title: "Plato",
+            {
+                data: "description",
+                name: "description",
+                title: "Descripción",
                 "class": "text-center",
                 visible: true,
                 searchable: true,
             },
             {
-                data: "category_name",
-                name: "category_name",
-                title: "Categoría",
+                data: "amount",
+                name: "amount",
+                title: "Monto",
                 "class": "text-center",
                 visible: true,
                 searchable: true,
+                render: function (data, type, row, meta) {
+                    return '<strong class="text-danger">-'+row.amount.toFixed(2)+'</strong>';
+                }  
             },
-            { 
-                data: "units",
-                name: "units",
-                title: "Unidades",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-            },            
             // {
             //     data: "status",
             //     name: "status",
@@ -309,35 +296,21 @@
             //     visible: true,
             //     searchable: true,
             //     render: function (data, type, row, meta) {
-            //         switch (row.status) {
-            //             case '0':
-            //                 return '<span class="badge badge-light-warning">Pendiente</span>';
-            //                 break;
-            //             case '1':
-            //                 return '<span class="badge badge-light-info">En Espera</span>';
-            //                 break;
-            //             case '2':
-            //                 return '<span class="badge badge-light-success">Finalizado</span>';
-            //                 break;
-            //             case '3':
-            //                 return '<span class="badge badge-light-danger">Cancelado</span>';
-            //                 break;
-            //             default:
-            //                 break;
+            //         if (row.status == '0') {
+            //             return '<span class="badge badge-light-warning">Por Pagar</span>';
+            //         }else{
+            //             return '<span class="badge badge-light-success">Pagado</span>';
             //         }
                     
             //     }  
             // },
             {
-                data: "total_amount",
-                name: "total_amount",
-                title: "Monto",
+                data: "category_name",
+                name: "category_name",
+                title: "Categoría",
                 "class": "text-center",
                 visible: true,
                 searchable: true,
-                render: function (data, type, row, meta) {
-                    return '<strong class="text-success">'+row.total_amount.toFixed(2)+'</strong>';
-                }  
             },
             {
                 data: "updated_at_timezone",

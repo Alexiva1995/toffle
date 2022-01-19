@@ -146,16 +146,25 @@ class ReportController extends Controller
             ->with('categories', $categories);
     }
 
-    public function expensesData(Request $request)
+    public function expensesData(Request $request, $status = null)
     {
-        $expenses = Expense::with('category')
-        ->orderBy('updated_at', 'DESC');
+        switch ($status) {
+            case '1':
+                $expenses = Expense::with('category')
+                    ->where('status', $status)
+                    ->orderBy('updated_at', 'DESC');
+                break; 
+            default:
+                $expenses = Expense::with('category')
+                ->orderBy('updated_at', 'DESC');
+                break;
+        }
             
         return Datatables::of($expenses)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
                 $start = date("Y-m-d",strtotime(request('from')));
                 $end = date("Y-m-d",strtotime(request('to')));
-                $query->whereBetween('updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
+                $query->whereBetween('updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);    
             }
 
             if(request()->has('category_id') && request('category_id')!= ''){
@@ -264,4 +273,5 @@ class ReportController extends Controller
         })
         ->toJson();
     }
+
 }
