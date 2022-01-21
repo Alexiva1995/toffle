@@ -2,10 +2,9 @@
 
 @section('title', 'Inventario')
 
-@include('panels.datatable.styles')
-
 @section('vendor-style')
     <!-- vendor css files -->
+    @include('panels.datatable.styles')
 @endsection
 
 @section('page-style')

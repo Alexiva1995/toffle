@@ -17,10 +17,19 @@ class Expense extends Model
         'description',
     ];
 
+    public function getCreatedAtTimezoneAttribute()
+    {
+        if ($this->created_at != null) {
+            return (new Carbon( $this->created_at ))->format('Y-m-d');
+        }
+    
+        return null;
+    }
+
     public function getUpdatedAtTimezoneAttribute()
     {
-        if ($this->date != null) {
-            return (new Carbon( $this->date ))->format('Y-m-d');
+        if ($this->updated_at != null) {
+            return (new Carbon( $this->updated_at ))->format('Y-m-d');
         }
     
         return null;

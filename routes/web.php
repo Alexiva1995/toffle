@@ -92,11 +92,23 @@ Route::middleware('auth')->group(function () {
 
             //Reports
             Route::group(['prefix' => 'reports'], function () {
-                Route::get('BestSeller', [ReportController::class, 'BestSeller'])->name('reports.BestSeller');
+                Route::get('best-seller', [ReportController::class, 'bestSeller'])->name('reports.best.seller');
+                Route::get('best-seller-data', [ReportController::class, 'bestSellerData'])->name('reports.best.seller.data');
+
                 Route::get('gain', [ReportController::class, 'gain'])->name('reports.gain');
-                Route::get('cashflow', [ReportController::class, 'cashflow'])->name('reports.cashflow');
+                Route::get('gain-data', [ReportController::class, 'gainData'])->name('reports.gain.data');
+                Route::get('gain-show/{date}', [ReportController::class, 'gainShow'])->name('gain.show');
+                Route::get('gain-data-show/{date}', [ReportController::class, 'gainDataShow'])->name('gain.data.show');
+
+                Route::get('cash-flow', [ReportController::class, 'cashFlow'])->name('reports.cash.flow');
+                Route::get('income-data', [ReportController::class, 'incomeData'])->name('reports.income.data');
+                Route::get('paid-expenses-data', [ReportController::class, 'paidExpensesData'])->name('reports.paid.expenses.data');
+
                 Route::get('expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
+                Route::get('expenses-data/{status?}', [ReportController::class, 'expensesData'])->name('reports.expenses.data');
+
                 Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
+                Route::get('sales-data', [ReportController::class, 'salesData'])->name('reports.sales.data');
             });
 
             Route::resource('categories', CategoriesController::class);

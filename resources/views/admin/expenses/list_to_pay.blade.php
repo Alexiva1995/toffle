@@ -2,10 +2,9 @@
 
 @section('title', 'Gastos Por Pagar')
 
-@include('panels.datatable.styles')
-
 @section('vendor-style')
     <!-- vendor css files -->
+    @include('panels.datatable.styles')
 @endsection
 
 @section('page-style')

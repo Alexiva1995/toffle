@@ -91,6 +91,37 @@
 </script>
 
 <script>
+
+    function flatpickrRange(id, from, to) {
+        $(id).flatpickr({
+            mode:'range',
+            ariaDateFormat:'Y-m-d',
+            dateFormat:'Y-m-d',
+            locale: {
+                weekdays: {
+                  shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                  longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
+                }, 
+                months: {
+                  shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
+                  longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                },
+                weekAbbreviation: "Sem",
+                rangeSeparator: " a ",
+                yearAriaLabel: "Año",
+                monthAriaLabel: "Mes",
+                hourAriaLabel: "Hora",
+                minuteAriaLabel: "Minuto",
+            },
+            onChange:function(selectedDates){
+                var _this=this;
+                var dateArr=selectedDates.map(function(date){return _this.formatDate(date,'Y-m-d');});
+                $(from).val(dateArr[0]);
+                $(to).val(dateArr[1]);
+            },
+        });
+    }
+
     function flatpickrWeek(id) {
         $(id).flatpickr({
             mode: "range",
@@ -106,6 +137,7 @@
                   longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 },
                 weekAbbreviation: "Sem",
+                rangeSeparator: " a ",
                 yearAriaLabel: "Año",
                 monthAriaLabel: "Mes",
                 hourAriaLabel: "Hora",
@@ -131,7 +163,7 @@
                     dataWeek = year+'-W0'+weekNumber;
                 }
                 $('#week').data('week', dataWeek)
-                console.log($('#range_week').val());
+                // console.log($('#range_week').val());
             }]
         });
     }
