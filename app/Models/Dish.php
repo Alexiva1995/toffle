@@ -33,7 +33,7 @@ class Dish extends Model
 
     public function collectionDishes($category_id)
     {
-        $dishes = Dish::where('category_id', $category_id)->get();
+        $dishes = Dish::where('category_id', $category_id)->where('status', '1')->get();
         return $dishes;
     }
 
@@ -77,5 +77,27 @@ class Dish extends Model
 
         return $orders->date;
 
+    }
+
+    public function status()
+    {
+        if($this->status == '0'){
+            return "Inactivo";
+        }else if($this->status == '1'){
+            return "Activo";
+        }else if($this->status == '2'){
+            return "En Revisión";
+        }
+    }
+
+    public function statusColor()
+    {
+        if($this->status == '0'){
+            return "danger";
+        }else if($this->status == '1'){
+            return "success";
+        }else if($this->status == '2'){
+            return "info";
+        }
     }
 }

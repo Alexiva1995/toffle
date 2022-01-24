@@ -21,7 +21,7 @@ class CreateDishesTable extends Migration
             $table->double('designated_price');
             $table->string('percentage_profit');
             $table->string('category_id');
-            $table->string('status')->nullable();
+            $table->enum('status', [0, 1, 2])->default(1)->comment('0 - Inactivo, 1 - Activo, 2 - En Revisión');
             $table->timestamps();
         });
     }

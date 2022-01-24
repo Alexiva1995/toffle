@@ -12,10 +12,10 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table" id="inventory_reposition_table">
+            <table class="table rounded border-table" id="inventory_reposition_table">
                 <thead>
                     <tr>
-                        <th class="text-center px-0">Id del Inventario</th>
+                        <th class="text-center px-0">Id del Inv</th>
                         <th class="text-center px-0">Producto</th>
                         <th class="text-center px-0">Acción</th>
                     </tr>

@@ -54,7 +54,8 @@
                                 <button class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $product->id }}, 
                                     '#delete_product_', 
-                                    'este Producto' )"> 
+                                    'este Producto',
+                                    'IMPORTANTE: Si esté Producto está añadido en el inventario, no podrá ser removido' )"> 
                                     <i data-feather="trash-2"></i> 
                                 </button>
                                 <form id="delete_product_{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="POST">

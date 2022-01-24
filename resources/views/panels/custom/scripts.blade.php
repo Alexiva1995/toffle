@@ -69,10 +69,18 @@
         });
     }
 
-    function deleteElement(id,  form_id, text_element) {
+    function deleteElement(id,  form_id, text_element, optional_text = null) {
+        var text = '';
+
+        if (optional_text != null) {
+            text = '<strong class="text-danger">'+optional_text+'...</strong> <br/> <br/>'+'Estas seguro que quieres eliminar '+text_element+'?';
+        }else{
+            text = 'Estas seguro que quieres eliminar '+text_element+'?';
+        }
+
         $.confirm({
             title: 'Confirmar!',
-            content: 'Estas seguro que quieres eliminar '+text_element+'?',
+            content: text,
             buttons: {
                 confirm: {
                     text: 'Eliminar',

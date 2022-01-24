@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Dish;
-use Illuminate\Support\Facades\DB;
-use App\Models\Inventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Category;
+use App\Models\Inventory;
+use App\Models\Dish;
+use App\Models\Order;
 
 class DishController extends Controller
 {
@@ -61,18 +62,20 @@ class DishController extends Controller
             'designated_price' => ['required'],
             'ingredient' => ['required'],
             'price' => ['required'],
+            'status' => ['required'],
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
-            'category_id.required' => 'La categoria es requerido.',
-            'portion.required' => 'La porcion es requerido.',
+            'category_id.required' => 'La categoria es requerida.',
+            'portion.required' => 'La porcion es requerida.',
             'percentage_profit.required' => 'El porcentage es requerido.',
             'cost_price.required' => 'El costo es requerido.',
             'suggested_price.required' => 'El sugerido es requerido.',
             'designated_price.required' => 'El designado es requerido.',
             'ingredient.required' => 'El ingrediente es requerido.',
             'price.required' => 'El precio es requerido.',
+            'status.required' => 'El estado del plato es requerido.',
         ];
 
         $this->validate($request, $fields, $msj);
@@ -155,18 +158,20 @@ class DishController extends Controller
             'designated_price' => ['required'],
             'ingredient' => ['required'],
             'price' => ['required'],
+            'status' => ['required'],
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
-            'category_id.required' => 'La categoria es requerido.',
-            'portion.required' => 'La porcion es requerido.',
+            'category_id.required' => 'La categoria es requerida.',
+            'portion.required' => 'La porcion es requerida.',
             'percentage_profit.required' => 'El porcentage es requerido.',
             'cost_price.required' => 'El costo es requerido.',
             'suggested_price.required' => 'El sugerido es requerido.',
             'designated_price.required' => 'El designado es requerido.',
             'ingredient.required' => 'El ingrediente es requerido.',
             'price.required' => 'El precio es requerido.',
+            'status.required' => 'El estado del plato es requerido.',
         ];
 
         $this->validate($request, $fields, $msj);
@@ -179,6 +184,7 @@ class DishController extends Controller
             'designated_price' => $request->designated_price,
             'percentage_profit' => $request->percentage_profit,
             'category_id' => $request->category_id,
+            'status' => $request->status,
         ]);
 
         $portions = array_combine($request->ingredient_ids, $request->portion); 
@@ -225,6 +231,14 @@ class DishController extends Controller
     {
         $dish = Dish::find($id);
 
+        $orders = Order::whereHas('dishes', function($q) use($dish) {
+            $q->where('dish_id', $dish->id);
+        })->get();
+
+        if ($orders != '[]') {
+            return redirect()->route('dishes.index')->with('danger', 'Este Plato no puede ser eliminado, porque está añadido en '.count($orders).' órdenes.');
+        }
+
         $dish->ingredients()->detach();
 
         $dish->delete();
@@ -245,4 +259,6 @@ class DishController extends Controller
 
         return 'Ingrediente Eliminado del Plato';
     }
+
+
 }

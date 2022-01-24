@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Inventory;
 use App\Models\Product;
+use App\Models\Dish;
 
 class InventoryController extends Controller
 {
@@ -71,8 +72,8 @@ class InventoryController extends Controller
     {
         $deposit = ($request->qty_package * $request->unit_package);
         $inventory = Inventory::create($request->all());
-        $inventory->deposit = (int) $deposit;
-        $inventory->total = (int) ($deposit + $inventory->local + $inventory->public);
+        $inventory->deposit = $deposit;
+        $inventory->total = $deposit + $inventory->local + $inventory->public;
         $inventory->cost = number_format($request->price / $request->unit_package, 2, '.', '');
         $inventory->save();
     }
@@ -112,11 +113,58 @@ class InventoryController extends Controller
             'unit_package' => $request->unit_package,
             'price' => $request->price,
             'cost' => number_format($request->price / $request->unit_package, 2, '.', ''),
-            'total' => (int) ($deposit + $inventory->local + $inventory->public),
-            'deposit' => (int) ($deposit),
-            'local' => (int) ($inventory->local),
-            'public' => (int) ($inventory->public),
+            'total' => $deposit + $inventory->local + $inventory->public,
+            'deposit' => $deposit,
+            'local' => $inventory->local,
+            'public' => $inventory->public,
         ]);
+
+        $cost_product = $inventory->cost;
+        $gr_product = $inventory->product->gr;
+
+        $dishes = Dish::whereHas('ingredients', function($q) use($inventory) {
+            $q->where('inventory_id', $inventory->id);
+        })->get();
+
+        if ($dishes != '[]') {
+            foreach ($dishes as $key => $dish) {
+
+                $profit = $dish->percentage_profit;
+                $designated_cost = 0;
+                $suggested_price = 0;
+                $cost_price = 0;
+
+                foreach ($dish->ingredients()->get() as $key => $item) {
+                    $portion = $item->pivot->portion;
+
+                    if ($item->pivot->inventory_id == $inventory->id) {
+                        $designated_cost = ($portion * $cost_product) / $gr_product;
+    
+                        $dish->ingredients()->wherePivot('inventory_id', $inventory->id)->update([
+                            'designated_cost' => $designated_cost,
+                        ]);
+        
+                    }else{
+                        $designated_cost = $item->pivot->designated_cost;
+                    }
+
+                    $cost_price = $cost_price + $designated_cost;
+                }
+                
+                $suggested_price = $cost_price * $profit;
+
+                if ($suggested_price > $dish->designated_price) {
+                    $dish->update([
+                        'status' => '2',
+                    ]);
+                }
+
+                $dish->update([
+                    'cost_price' => $cost_price,
+                    'suggested_price' => $cost_price * $profit,
+                ]);
+            }
+        }
     }
 
     /**
@@ -128,6 +176,28 @@ class InventoryController extends Controller
     public function destroy($id)
     {
         $inventory = Inventory::find($id);
+
+        $dishes = Dish::whereHas('ingredients', function($q) use($inventory) {
+            $q->where('inventory_id', $inventory->id);
+        })->get();
+
+        if ($dishes != '[]') {
+            $selected_dishes = '';
+            $count = 0;
+
+            foreach ($dishes as $key => $dish) {
+                if ($count == 0) {
+                    $selected_dishes = $dish->name;
+                }else{
+                    $selected_dishes = $selected_dishes.', '.$dish->name.'.';
+                }
+
+                $count = $count + 1;
+
+            }
+
+            return redirect()->route('inventory.index')->with('danger', 'Este Producto del Inventario no puede ser eliminado, porque está añadido en los siguientes platos: '.$selected_dishes);
+        }
 
         $inventory->delete();
 
