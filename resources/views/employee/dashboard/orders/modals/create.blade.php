@@ -62,11 +62,13 @@
                                                         <select class="select2 form-control" data-toggle="select" class="form-control" id="selected_dish">
                                                             <option disabled selected value=''>Selecciona un Plato</option>
                                                             @foreach ($dish_category as $item)
-                                                                <optgroup label="{{ $item->category->name }}"> 
-                                                                    @foreach ($item->collectionDishes($item->category_id) as $dish)
-                                                                        <option data-price = {{ $dish->designated_price }} value="dish_{{ $dish->id }}">{{ $dish->name }}</option>
-                                                                    @endforeach
-                                                                </optgroup>
+                                                                @if ( count( $item->collectionDishes($item->category_id) ) > 0 )
+                                                                    <optgroup label="{{ $item->category->name }}"> 
+                                                                        @foreach ($item->collectionDishes($item->category_id) as $dish)
+                                                                            <option data-price = {{ $dish->designated_price }} value="dish_{{ $dish->id }}">{{ $dish->name }}</option>
+                                                                        @endforeach
+                                                                    </optgroup>
+                                                                @endif
                                                             @endforeach
                                                         </select>
                                                     </div>
