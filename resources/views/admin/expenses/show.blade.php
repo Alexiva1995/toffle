@@ -29,7 +29,7 @@
                         </ol>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12">
                         <div class="row my-3">
                             <div class="col-auto">
                                 <h5>Fecha de Pago: <span class="h6"> {{ $expense_details->date }} </span> </h5> 

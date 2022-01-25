@@ -116,8 +116,14 @@ Route::middleware('auth')->group(function () {
             // Expenses
             Route::group(['prefix' => 'expenses'], function () {
                 Route::get('list-historical', [ExpensesController::class, 'listHistorical'])->name('expenses.list.historical');
+                
+                Route::get('list-historical-data', [ExpensesController::class, 'listHistoricalData'])->name('expenses.list.historical.data');
+
                 Route::get('list-to-pay', [ExpensesController::class, 'listToPay'])->name('expenses.list.to.pay');
-                Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
+
+                Route::get('list-to-pay-data', [ExpensesController::class, 'listToPayData'])->name('expenses.list.to.pay.data');
+
+                Route::post('mark-as-paid/{id}', [ExpensesController::class, 'markAsPaid'])->name('expenses.mark.as.paid');
             });
 
             Route::resource('expenses', ExpensesController::class);
