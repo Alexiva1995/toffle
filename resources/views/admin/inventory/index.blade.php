@@ -89,11 +89,11 @@
       function editProduct(id, name, mark, gr, alert) {
         var route = '{{route('products.update', 'replace_this')}}'.replace('replace_this', id);
         $('#form_edit_product').attr('action', route);
-        $('#edit_name').val(name);
         $('#edit_mark').val(mark);
+        $('#edit_name').val(name);
         $('#edit_gr').val(gr);
         $("#edit_units_reposition_alert").val(alert);
-
+        
         $('#modal_edit_product').modal('show');
       }
 

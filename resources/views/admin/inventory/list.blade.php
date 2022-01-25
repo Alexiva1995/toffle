@@ -95,7 +95,8 @@
                                 <span class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $inventory->id }}, 
                                     '#delete_inventory_', 
-                                    'este Inventario' )"> 
+                                    'este Inventario',
+                                    'IMPORTANTE: Si esté Producto del Inventario está añadido en uno de los platos, no podrá ser removido' )"> 
                                     <i data-feather="trash-2"></i> 
                                 </span> 
                         

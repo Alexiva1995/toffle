@@ -47,11 +47,16 @@ class DashboardController extends Controller
 
     $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
 
+    $dishes_under_review = Dish::where('status', '2')
+      ->whereColumn('suggested_price', '>','designated_price')
+      ->get();
+
     $inventories = Inventory::all();
 
     return view('admin.dashboard.index', ['pageConfigs' => $pageConfigs])
       ->with('tables', $tables)
       ->with('inventories', $inventories)
+      ->with('dishes_under_review', $dishes_under_review)
       ->with('orders', $orders);
   }
 
@@ -75,18 +80,7 @@ class DashboardController extends Controller
   }
 
   public function dataChartAmountVsGain() {
-      // $orders = Order::selectRaw('DATE(orders.created_at) as date')
-      //   ->selectRaw('sum(orders.total_amount) as total_amount')
-      //   ->selectRaw('sum((c.designated_price - c.cost_price) * b.unit) as gain')
-      //   ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
-      //   ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
-      //   ->where('orders.status', '2')
-      //   ->orderBy('date', 'ASC')
-      //   ->groupBy('date')
-      //   ->get();
-      
-      $orders = Order::
-        selectRaw('orders.created_at as date')
+      $orders = Order::selectRaw('orders.created_at as date')
         ->selectRaw('ROUND(orders.total_amount, 2) as total_amount')
         ->selectRaw('ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) as gain')
         ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
@@ -138,7 +132,7 @@ class DashboardController extends Controller
              $array_dates = array($order->date);
              $array_dates_found = array_merge($array_dates_found, $array_dates);
           }
-       }
+        }
       }
 
       foreach ($weekdays as $key => $weekday) {

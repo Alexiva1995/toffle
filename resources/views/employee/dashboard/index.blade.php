@@ -5,6 +5,7 @@
 
 @section('vendor-style')
   {{-- vendor css files --}}
+  @include('panels.datatable.styles')
 @endsection
 @section('page-style')
   {{-- Page css files --}}

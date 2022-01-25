@@ -79,7 +79,7 @@ lineTopChartConfig = {
   colors: [window.colors.solid.warning, window.colors.solid.success],
   chart: {
     id: 'chart1',
-    height: 400,
+    height: 325,
     type: 'line',
     dropShadow: {
       enabled: true,

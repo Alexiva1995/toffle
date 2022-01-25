@@ -19,7 +19,7 @@
                         @method('PATCH')
                         @csrf
                         <div class="row justify-content-center align-items-center">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <label class="form-label" for="name">Nombre del plato</label>
                                 <div class="input-group input-group-merge ">
                                     <input type="text" id="name"
@@ -33,16 +33,37 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <label class="form-label" for="ingredients">Categoria</label>
-                                <select class="select2 form-control" name="category_id" data-toggle="select"
+                                <select class="select2 form-control @error('category_id') is-invalid @enderror" name="category_id" data-toggle="select"
                                     class="form-control" id="category">
                                     @foreach ($category as $item)
                                     <option value="{{ $item->id }}" {{ $dish->category_id == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                     @endforeach
                                 </select>
+
+                                @error('category_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
 
+                            <div class="col-12 col-md-4">
+                                <label class="form-label" for="status">Estado</label>
+                                <select class="select2 form-control @error('status') is-invalid @enderror" name="status" data-toggle="select"
+                                    class="form-control" id="status">
+                                    <option value="1" {{ $dish->status == 1 ? 'selected' : '' }} >Activo</option>
+                                    <option value="2" {{ $dish->status == 2 ? 'selected' : '' }} >En Revisión</option>
+                                    <option value="0" {{ $dish->status == 0 ? 'selected' : '' }} >Inactivo</option>
+                                </select>
+
+                                @error('status')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
 
                             <div class="card-header">
                                 <h4 class="">Ingredientes del plato</h4>

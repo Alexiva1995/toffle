@@ -7,7 +7,7 @@
   {{-- vendor css files --}}
   <link rel="stylesheet" href="{{ asset(mix('vendors/css/charts/apexcharts.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
-  
+  @include('panels.datatable.styles')
 @endsection
 @section('page-style')
   {{-- Page css files --}}
@@ -47,6 +47,10 @@
     </div>
 
     <div class="col-12">
+      @include('admin.dashboard.dishes_under_review.list')
+    </div>
+
+    <div class="col-12">
       @include('admin.dashboard.reports.weekly_sales')
     </div>
 
@@ -73,6 +77,9 @@
   <script>
       dataTable('#money_flow_table');
       dataTable('#inventory_reposition_table');
+      dataTable('#dishes_under_review_table');
+      dataTable('#table');
+
 
       $(document).ready(function () {
         
