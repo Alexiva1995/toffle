@@ -24,7 +24,7 @@ class ReportController extends Controller
         $best_sellers = Order::selectRaw('c.name as name_dish')
         ->selectRaw('c.category_id as category_id')
         ->selectRaw('SUM(b.unit) as units')
-        ->selectRaw('SUM( ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) ) as gain')
+        ->selectRaw('SUM( ROUND( (b.price - b.cost) * b.unit, 2 ) ) as gain')
         ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
         ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
         ->where('orders.status', '2')
@@ -59,7 +59,7 @@ class ReportController extends Controller
     {
         $gains = Order::selectRaw('DATE(orders.updated_at) as updated_at')
         ->selectRaw('SUM(ROUND(orders.total_amount, 2)) as total_amount')
-        ->selectRaw('SUM(ROUND( (c.designated_price - c.cost_price) * b.unit, 2 )) as gain')
+        ->selectRaw('SUM(ROUND( (b.price - b.cost) * b.unit, 2 )) as gain')
         ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
         ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
         ->where('orders.status', '2')
@@ -86,7 +86,7 @@ class ReportController extends Controller
     {
         $gain_details = Order::selectRaw('DATE(orders.updated_at) as updated_at')
             ->selectRaw('SUM( ROUND(orders.total_amount, 2) ) as total_amount')
-            ->selectRaw('SUM( ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) ) as gain')
+            ->selectRaw('SUM( ROUND( (b.price - b.cost) * b.unit, 2 ) ) as gain')
             ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
             ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
             ->where('orders.status', '2')
@@ -112,7 +112,7 @@ class ReportController extends Controller
         ->selectRaw('b.unit as units')
         ->selectRaw('c.category_id as category_id')
         ->selectRaw('ROUND(total_amount, 2) as total_amount')
-        ->selectRaw('ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) as gain')
+        ->selectRaw('ROUND( (b.price - b.cost) * b.unit, 2 ) as gain')
         ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
         ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
         ->whereDate('orders.updated_at', $date)
@@ -246,7 +246,7 @@ class ReportController extends Controller
                 'orders.status as status',
                 'orders.updated_at as updated_at'
             )
-            ->selectRaw('ROUND(c.designated_price, 2) * b.unit as total_amount')
+            ->selectRaw('ROUND(b.price, 2) * b.unit as total_amount')
             ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
             ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
             ->where('orders.status', '2')

@@ -21,18 +21,18 @@ class OrdersController extends Controller
     public function index(Request $request)
     {
         if(isset($request->fecha_ini) && !isset($request->fecha_fin)){
-            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', '>=' ,$request->fecha_ini)->get();
+            $orders = Order::orderBy('id', 'desc')->whereDate('created_at', '>=' ,$request->fecha_ini)->get();
         }elseif(!isset($request->fecha_ini) && isset($request->fecha_fin)){
-            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', '<=' ,$request->fecha_fin)->get();
+            $orders = Order::orderBy('id', 'desc')->whereDate('created_at', '<=' ,$request->fecha_fin)->get();
         }elseif(isset($request->fecha_ini) && isset($request->fecha_fin)){
-            $pedidos = Order::orderBy('id', 'desc')->whereBetween('created_at', [$request->fecha_ini, $request->fecha_fin])->get();
+            $orders = Order::orderBy('id', 'desc')->whereBetween('created_at', [$request->fecha_ini. " 00:00:00", $request->fecha_fin. " 23:59:59"])->get();
         }else{
-            $hoy = Carbon::now();
-            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', $hoy)->get();
+            $today = Carbon::now();
+            $orders = Order::orderBy('id', 'desc')->whereDate('created_at', $today)->get();
         }
         
     
-        return view('/orders/index', ['pedidos' => $pedidos]);
+        return view('/orders/index', ['orders' => $orders]);
     }
 
     /**
@@ -76,7 +76,6 @@ class OrdersController extends Controller
         $dishes = array_merge_recursive($units, $prices); 
         $array_dish = [];
 
-
         foreach ($dishes as $key => $dish) {
 
             $plate = array([
@@ -110,6 +109,7 @@ class OrdersController extends Controller
                     'dish_id' => $item['dish_id'],
                     'unit' => $item['unit'],            
                     'price' => number_format($item['price'], 2, '.', ''),
+                    'cost' => number_format($dish->cost_price, 2, '.', ''),
                 ]
             ]);
         }

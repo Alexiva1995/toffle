@@ -19,6 +19,7 @@ class CreateOrderDishTable extends Migration
             $table->integer('dish_id');
             $table->integer('unit');
             $table->double('price');
+            $table->double('cost');
             $table->timestamps();
         });
     }

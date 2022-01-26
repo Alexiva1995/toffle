@@ -82,9 +82,9 @@ class DashboardController extends Controller
   public function dataChartAmountVsGain() {
       $orders = Order::selectRaw('orders.created_at as date')
         ->selectRaw('ROUND(orders.total_amount, 2) as total_amount')
-        ->selectRaw('ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) as gain')
+        ->selectRaw('ROUND( (b.price - b.cost) * b.unit, 2 ) as gain')
         ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
-        ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+        // ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
         ->where('orders.status', '2')
         ->orderBy('date', 'ASC')
         ->get();

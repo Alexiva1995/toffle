@@ -20,7 +20,7 @@ class Order extends Model
     public function dishes()
     {
         return $this->belongsToMany('App\Models\Dish', 'order_dish')
-                ->withPivot('id', 'order_id', 'dish_id', 'unit', 'price', 'created_at', 'updated_at');
+                ->withPivot('id', 'order_id', 'dish_id', 'unit', 'price', 'cost', 'created_at', 'updated_at');
     }
 
     public function estado()
@@ -76,5 +76,18 @@ class Order extends Model
     {
         $days = array("Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo");
         return $days[date('N', strtotime($date)) - 1 ];
+    }
+
+    public function getProfitPerOrder($order_id)
+    {
+        $order = Order::selectRaw(
+                'SUM( ROUND( (b.price - b.cost) * b.unit, 2 ) ) as profit'
+            )
+            ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+            ->where('orders.id', $order_id)
+            ->groupBy('b.order_id')
+            ->first();
+
+        return $order->profit;
     }
 }
