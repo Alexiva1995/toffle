@@ -109,6 +109,9 @@ Route::middleware('auth')->group(function () {
 
                 Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
                 Route::get('sales-data', [ReportController::class, 'salesData'])->name('reports.sales.data');
+
+                Route::get('show-order-details', [ReportController::class, 'showOrderDetails'])->name('reports.show.order.details');
+                
             });
 
             Route::resource('categories', CategoriesController::class);

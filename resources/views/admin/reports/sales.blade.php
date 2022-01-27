@@ -60,6 +60,20 @@
         </div>
     </div>
 </section>
+
+<div
+  class="modal fade text-start"
+  id="modal_show_order_details"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content order_details">
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('custom-js')
@@ -67,6 +81,15 @@
 @include('panels.datatable.scripts')
 
 <script>
+    function showOrderDetails(id) {
+        $.get("{{ route('reports.show.order.details') }}", { id: id },
+            function (data, textStatus, jqXHR) {
+                $('.order_details').html(data);
+                $("#modal_show_order_details").modal("show");
+            }
+        );
+    }
+
     $(document).ready(function () {
         table = $('#sales_table').DataTable({
             processing: true,
@@ -140,8 +163,25 @@
                 visible: true,
                 searchable: true,
             },
+            {
+                data: "id",
+                name: "id",
+                title: "Detalles",
+                "class": "text-center",
+                visible: true,
+                searchable: true,
+            },
         ],
-        fnCreatedRow: function (elemt, data, iDataIndex) {},
+        fnCreatedRow: function (elemt, data, iDataIndex) {
+            var index = iDataIndex + 1;
+            column=$('td:eq(4)', elemt);
+            buttons='';
+
+            button="<button type='button' class='btn btn-sm btn-primary' onclick='showOrderDetails("+data.id+")'> <i data-feather='eye'></i> </button>";
+
+            buttons+=button;
+            column=column.html(buttons);
+        },
 
         }).on('processing.dt', function (e, settings, processing) {
             feather.replace();
@@ -161,6 +201,8 @@
 
         flatpickrRange('#timestamp', '#from', '#to');
     });
+
+    dataTable('#table');
 </script>
 
 @endsection
