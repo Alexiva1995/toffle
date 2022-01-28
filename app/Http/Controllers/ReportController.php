@@ -215,15 +215,6 @@ class ReportController extends Controller
         ->with('categories', $categories);
     }
 
-    public function showOrderDetails(Request $request)
-    {
-        $order = Order::where('id', $request->id)->first();
-
-        return view('admin.reports.show_orders_details')
-            ->with('order', $order)
-            ->render();
-    }
-
     public function salesData(Request $request)
     {
         $sales = Order::orderBy('id', 'DESC');

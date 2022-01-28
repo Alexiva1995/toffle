@@ -8,7 +8,7 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-12 col-md-4 mb-2">
             <label class="form-label" for="customer_name">Nombre del Cliente</label>
-            <input type="text" id="customer_name" class="form-control requerid" name="customer_name" value="{{ $order->customer_name }}" readonly/>
+            <input type="text" id="customer_name" class="form-control requerid" name="customer_name" value="{{ $order->customer_name }}" required/>
         </div>
         <div class="col-12 col-md-4 mb-2">
             <label class="form-label" for="table">Mesa</label>
@@ -19,7 +19,7 @@
             <label class="form-label" for="status">Estado</label>
             <input type="text" id="table" class="form-control requerid" name="table" value="{{ $order->estado() }}" readonly/>
         </div>
-        <div class="table-responsive mt-3">
+        <div class="table-responsive">
             <table class="table" id="table" >
                 <thead>
                     <th class="text-center">Plato</th>
@@ -48,8 +48,8 @@
             </table>  
         </div>  
             
-        <div class="col-auto mt-3">
-            <span class="text-dark"><strong class="pe-1" >TOTAL:</strong>  {{ number_format($order->total_amount, 2, '.','') }}</span> 
+        <div class="col-auto">
+            <strong class="pe-1" >TOTAL:</strong>  {{ number_format($order->total_amount, 2, '.','') }}
         </div>
     </div>
 </div>

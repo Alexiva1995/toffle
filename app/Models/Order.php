@@ -51,7 +51,7 @@ class Order extends Model
 
     public function getOrderIds($table)
     {
-        $order_ids = Order::where('table', $table)->orderBy('id','ASC')->get();
+        $order_ids = Order::where('table', $table)->whereIn('status', ['0', '1'])->orderBy('id','ASC')->get();
 
         return $order_ids;
     }

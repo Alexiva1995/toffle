@@ -10,6 +10,7 @@ use App\Models\Inventory;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use DataTables;
 
 class OrdersController extends Controller
 {
@@ -334,5 +335,29 @@ class OrdersController extends Controller
         $order->increment('total_amount', number_format($request->unit * $request->price, 2, '.', '') );
 
         return redirect()->route('orders.edit', $order->id)->with('success', 'Plato Añadido a la Órden');
+    }
+
+    public function orderTableData(Request $request, $type)
+    {
+        if ($type == 'pending') {
+            $orders = Order::whereIn('status', ['0', '1'])
+            ->orderBy('id', 'DESC');
+        }else{
+            $orders = Order::orderBy('id', 'DESC');
+        }
+
+            
+        return Datatables::of($orders)->filter(function ($query) use($request) {
+        }, true)
+        ->toJson();
+    }
+
+    public function showOrderDetails(Request $request)
+    {
+        $order = Order::where('id', $request->id)->first();
+
+        return view('admin.reports.show_orders_details')
+            ->with('order', $order)
+            ->render();
     }
 }

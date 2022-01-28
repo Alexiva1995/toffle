@@ -45,8 +45,9 @@
                                     {{ $product->id }}, 
                                     '{{ $product->name }}',
                                     '{{ $product->mark }}', 
-                                    {{ $product->gr }}, 
-                                    {{ $product->units_reposition_alert }})"> 
+                                    {{ $product->gr }},
+                                    {{ $product->units_reposition_alert }},
+                                    {{ $product->flavors }})"> 
 
                                     <i data-feather="edit"></i> 
                                 </button> 

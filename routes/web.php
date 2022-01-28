@@ -109,9 +109,6 @@ Route::middleware('auth')->group(function () {
 
                 Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
                 Route::get('sales-data', [ReportController::class, 'salesData'])->name('reports.sales.data');
-
-                Route::get('show-order-details', [ReportController::class, 'showOrderDetails'])->name('reports.show.order.details');
-                
             });
 
             Route::resource('categories', CategoriesController::class);
@@ -147,6 +144,8 @@ Route::middleware('auth')->group(function () {
             Route::group(['prefix' => 'orders'], function () {
                 Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
                 Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
+
+                Route::get('order-table-data/{type}', [OrdersController::class, 'orderTableData'])->name('order.table.data');
             });
             Route::resource('orders', OrdersController::class)->except(['index']);
 
@@ -161,6 +160,8 @@ Route::middleware('auth')->group(function () {
         });
 
     });
+
+    Route::get('show-order-details', [OrdersController::class, 'showOrderDetails'])->name('reports.show.order.details');
 });
 
 // Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');

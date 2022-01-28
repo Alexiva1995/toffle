@@ -1,11 +1,5 @@
 <!-- Modal Add Order -->
-<div
-  class="modal fade text-start"
-  id="modal_add_order"
-  tabindex="-1"
-  aria-labelledby="myModalLabel1"
-  aria-hidden="true"
->
+<div class="modal fade text-start" id="modal_add_order" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

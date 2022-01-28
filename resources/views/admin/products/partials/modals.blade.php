@@ -28,11 +28,11 @@
 
 <!-- Modal Edit Product -->
 <div
-  class="modal fade text-start"
-  id="modal_edit_product"
-  tabindex="-1"
-  aria-labelledby="myModalLabel1"
-  aria-hidden="true"
+class="modal fade text-start"
+id="modal_edit_product"
+tabindex="-1"
+aria-labelledby="myModalLabel1"
+aria-hidden="true"
 >
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
