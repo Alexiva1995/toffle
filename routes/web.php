@@ -143,12 +143,14 @@ Route::middleware('auth')->group(function () {
             // Orders
             Route::group(['prefix' => 'orders'], function () {
                 Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
+
                 Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
 
                 Route::get('order-table-data/{type}', [OrdersController::class, 'orderTableData'])->name('order.table.data');
-            });
-            Route::resource('orders', OrdersController::class)->except(['index']);
 
+            });
+
+            Route::resource('orders', OrdersController::class)->except(['index']);
 
             Route::group(['prefix' => 'ingredients'], function () {
                 Route::get('create', [IngredientController::class, 'create'])->name('create.ingredients');

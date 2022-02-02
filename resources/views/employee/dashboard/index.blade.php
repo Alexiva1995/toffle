@@ -25,16 +25,14 @@
                       <i data-feather="edit"></i>
                     </span> Pedidos
                 </h3>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_order">Agregar Pedido</button>
+
+                <a href="{{ route('orders.create') }}" class="btn btn-primary">Agregar Pedido</a>
               </div>
           </div>
         </div>
       </div>
     </div>
     <!-- Add Order Card -->
-
-    {{-- Modals --}}
-    @include('employee.dashboard.orders.modals.create')
 
     {{-- Order-Statistics --}}
     <div class="col-xl-9 col-md-6 col-12">
@@ -104,87 +102,9 @@
   @include('panels.datatable.scripts')
   <script>
       dataTable('#order_history_table');
-      // dataTable('#pending_order_table');
       dataTable('#table_list');
       dataTable('#money_flow_table');
       dataTable('#inventory_reposition_table');
-
-      submitForms('#add_order', '.loading_add_order', '#form_add_order');
-
-      numRows = 0;
-      
-      var ids = [];
-
-      function addRow(){
-
-        var repeated = false;
-
-        if ($("#selected_dish option:selected").val() == null || $("#selected_dish option:selected").val() == '') {
-            toastr['error']('', 'Debes seleccionar primero un plato, para luego añadirlo', {
-                  closeButton: true,
-                  tapToDismiss: false,
-            });
-        }else{
-
-            for(var i = 0; i < ids.length; i++){
-                if(ids[i] == $("#selected_dish option:selected").val() ){ 
-                  repeated = true;
-                }           
-            }
-
-            if (!repeated) {
-                ids.push( $("#selected_dish option:selected").val() );
-                numRows++;
-                let content = '<tr id="row_'+numRows+'">\
-                <td><input type="text" name="dish[]" class="form-control dish" id="dish_'+numRows+'" value="'+$("#selected_dish option:selected").text()+'" required disabled></td>\
-                <input type="hidden" name="dish_ids[]" class="form-control dish_ids" id="dish_ids_'+numRows+'" value="'+$("#selected_dish option:selected").val()+'" required>\
-                <td><input type="number" name="unit[]" class="form-control units" id="unit_'+numRows+'" value="1" oninput="calculate('+numRows+')" required></td>\
-                <td><input type="text" name="price[]" class="form-control price" id="price_'+numRows+'" value="'+$("#selected_dish option:selected").data("price").toFixed(2)+'" readonly required></td>\
-                <td><input type="text" name="total[]" class="form-control total" id="total_'+numRows+'" value="'+$("#selected_dish option:selected").data("price")+'" readonly></td>\
-                <td><a href="javascript:;" onclick="deleteRow('+numRows+')"> <i class="text-danger" data-feather="x-circle"></i> </a></td>\
-                </tr>';
-                $("#items_table>tbody").append(content);
-                feather.replace();
-                $("#selected_dish").val("").trigger('change');
-
-                calculate(numRows);
-
-            }else{
-              toastr['error']('', 'Este Plato ya fue añadido', {
-                  closeButton: true,
-                  tapToDismiss: false,
-              });
-            }
-        }
-      }
-
-      function deleteRow(row){
-
-          for( var i = 0; i < ids.length; i++){ 
-            if ( ids[i] === $("#dish_ids_"+row).val()) { 
-              ids.splice(i, 1); 
-            }
-          }
-          
-          $("#row_"+row).remove();
-          numRows--;
-
-          calculate(numRows);
-      }
-
-      function calculate(row){
-          let unit = $("#unit_"+row).val();
-          let price = $("#price_"+row).val();
-
-          $("#total_"+row).val( (parseInt(unit) * parseFloat(price)).toFixed(2) );
-          var total = 0;
-
-          for (var i = 1; i <= numRows; i++){
-              total += parseFloat($("#total_"+i).val());
-          }
-
-          $("#total_amount").val(total.toFixed(2));
-      }
 
       $(document).on('change', '.update_status', function () {
         let item = {}

@@ -43,7 +43,10 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        //
+        $dish_category = Dish::select('category_id')->distinct()->get();
+
+        return view('employee.dashboard.orders.create')
+            ->with('dish_category', $dish_category);
     }
 
     /**
