@@ -28,8 +28,19 @@ class Expense extends Model
 
     public function getUpdatedAtTimezoneAttribute()
     {
+        return $this->updated_at;
         if ($this->updated_at != null) {
             return (new Carbon( $this->updated_at ))->format('Y-m-d');
+        }
+    
+        return null;
+    }
+
+    public function updatedAt()
+    {
+        return $this->updated_date;
+        if ($this->updated_date != null) {
+            return (new Carbon( $this->updated_date ))->format('Y-m-d');
         }
     
         return null;

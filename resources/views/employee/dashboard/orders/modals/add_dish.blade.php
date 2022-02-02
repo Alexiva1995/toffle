@@ -1,11 +1,5 @@
 <!-- Modal Add Dish -->
-<div
-  class="modal fade text-start"
-  id="modal_add_dish"
-  tabindex="-1"
-  aria-labelledby="myModalLabel1"
-  aria-hidden="true"
->
+<div class="modal fade text-start" id="modal_add_dish" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -29,11 +23,13 @@
                                             <select class="select2 form-control" data-toggle="select" name="dish_id" id="dish_id">
                                                 <option disabled selected value="">Selecciona un Plato</option>
                                                 @foreach ($dish_category as $item)
-                                                    <optgroup label="{{ $item->category->name }}"> 
-                                                        @foreach ($item->collectionDishes($item->category_id) as $dish)
-                                                            <option data-price = {{ $dish->designated_price }} value="{{ $dish->id }}">{{ $dish->name }}</option>
-                                                        @endforeach
-                                                    </optgroup>
+                                                    @if ( count( $item->collectionDishes($item->category_id) ) > 0 )
+                                                        <optgroup label="{{ $item->category->name }}"> 
+                                                            @foreach ($item->collectionDishes($item->category_id) as $dish)
+                                                                <option data-price = {{ $dish->designated_price }} value="{{ $dish->id }}">{{ $dish->name }}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    @endif
                                                 @endforeach
                                             </select>
                                         </div>

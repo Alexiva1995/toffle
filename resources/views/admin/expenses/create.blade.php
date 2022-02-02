@@ -29,7 +29,7 @@
                                             <div class="input-group input-group-merge ">
                                                 <span class="input-group-text"><i data-feather="briefcase"></i></span>
                                                 <input type="number" id="amount" class="form-control @error('amount') is-invalid @enderror"
-                                                    name="amount" placeholder="Monto" step="0.01"/>
+                                                    name="amount" placeholder="Monto" step="0.001"/>
                                                 @error('amount')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

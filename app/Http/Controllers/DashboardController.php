@@ -66,8 +66,6 @@ class DashboardController extends Controller
 
     $orders = Order::all();
 
-    $dish_category = Dish::select('category_id')->distinct()->get();
-
     $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
 
     $inventories = Inventory::all();
@@ -75,16 +73,15 @@ class DashboardController extends Controller
     return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
       ->with('tables', $tables)
       ->with('inventories', $inventories)
-      ->with('dish_category', $dish_category)
       ->with('orders', $orders);
   }
 
   public function dataChartAmountVsGain() {
       $orders = Order::selectRaw('orders.created_at as date')
         ->selectRaw('ROUND(orders.total_amount, 2) as total_amount')
-        ->selectRaw('ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) as gain')
+        ->selectRaw('ROUND( (b.price - b.cost) * b.unit, 2 ) as gain')
         ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
-        ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+        // ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
         ->where('orders.status', '2')
         ->orderBy('date', 'ASC')
         ->get();

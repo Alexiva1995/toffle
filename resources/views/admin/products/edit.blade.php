@@ -69,7 +69,23 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>                     
+                        </div>      
+                        <div class="col-12 mb-2">
+                            <div class="d-flex justify-content-center @error('flavors') is-invalid @enderror">
+                                <div class="form-check form-check-inline">
+                                    
+                                    <input type="hidden" name="flavors" value="0"/>
+                                    <input class="form-check-input border border-primary @error('flavors') is-invalid @enderror" type="checkbox" name="flavors" id="edit_flavors" value="1"/>
+
+                                    <label class="form-check-label" for="flavors">Sabores</label>
+                                </div>
+                            </div>
+                            @error('flavors')
+                                <span class="invalid-feedback text-center" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror   
+                        </div>                   
                     </div>
                 </form>
             </div>

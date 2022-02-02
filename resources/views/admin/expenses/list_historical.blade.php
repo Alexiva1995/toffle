@@ -75,7 +75,7 @@
                     url: '{!! asset('data/datatable/Spanish.json') !!}'
                 },
                 ajax: {
-                    url: '{!! route('expenses.data') !!}',
+                    url: '{!! route('expenses.list.historical.data') !!}',
                     data: function (d) {
                         d.from    = $('#from').val();
                         d.to      = $('#to').val();
@@ -99,8 +99,8 @@
                     searchable: true,
                 },
                 {
-                    data: "updated_at_timezone",
-                    name: "updated_at_timezone",
+                    data: "updated_date",
+                    name: "updated_date",
                     title: "Fecha de Pago",
                     "class": "text-center",
                     visible: true,
@@ -118,14 +118,14 @@
                     }  
                 },
                 {
-                    data: "updated_at",
-                    name: "updated_at",
+                    data: "updated_date",
+                    name: "updated_date",
                     title: "Detalles",
                     "class": "text-center",
                     visible: true,
                     searchable: true,
                     render: function (data, type, row) {
-                        var url = '{{ route('expenses.show','replace_this')}}'.replace('replace_this', row.updated_at_timezone);
+                        var url = '{{ route('expenses.show','replace_this')}}'.replace('replace_this', row.updated_date);
                         var html = '<a href="' + url + '" class="btn btn-sm btn-info"><i data-feather="eye"></i> </a>';
                         feather.replace();
                         return html;

@@ -116,8 +116,14 @@ Route::middleware('auth')->group(function () {
             // Expenses
             Route::group(['prefix' => 'expenses'], function () {
                 Route::get('list-historical', [ExpensesController::class, 'listHistorical'])->name('expenses.list.historical');
+                
+                Route::get('list-historical-data', [ExpensesController::class, 'listHistoricalData'])->name('expenses.list.historical.data');
+
                 Route::get('list-to-pay', [ExpensesController::class, 'listToPay'])->name('expenses.list.to.pay');
-                Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
+
+                Route::get('list-to-pay-data', [ExpensesController::class, 'listToPayData'])->name('expenses.list.to.pay.data');
+
+                Route::post('mark-as-paid/{id}', [ExpensesController::class, 'markAsPaid'])->name('expenses.mark.as.paid');
             });
 
             Route::resource('expenses', ExpensesController::class);
@@ -137,10 +143,14 @@ Route::middleware('auth')->group(function () {
             // Orders
             Route::group(['prefix' => 'orders'], function () {
                 Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
-                Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
-            });
-            Route::resource('orders', OrdersController::class)->except(['index']);
 
+                Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
+
+                Route::get('order-table-data/{type}', [OrdersController::class, 'orderTableData'])->name('order.table.data');
+
+            });
+
+            Route::resource('orders', OrdersController::class)->except(['index']);
 
             Route::group(['prefix' => 'ingredients'], function () {
                 Route::get('create', [IngredientController::class, 'create'])->name('create.ingredients');
@@ -152,6 +162,8 @@ Route::middleware('auth')->group(function () {
         });
 
     });
+
+    Route::get('show-order-details', [OrdersController::class, 'showOrderDetails'])->name('reports.show.order.details');
 });
 
 // Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');

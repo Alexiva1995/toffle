@@ -159,7 +159,8 @@ class ExpensesController extends Controller
         $expense->delete();
 
         if ($request->status == 'to_pay') {
-            return redirect()->route('expenses.list.to.pay')->with('success', 'Gasto Eliminado');
+            // return redirect()->route('expenses.list.to.pay')->with('success', 'Gasto Eliminado');
+            return true;
         }
 
         if ($request->status == 'paid_out') {   
@@ -173,25 +174,13 @@ class ExpensesController extends Controller
         return view('admin.expenses.list_historical');
     }
 
-    public function listToPay()
+    public function listHistoricalData(Request $request)
     {
-        $expenses = Expense::where("status", '0')
-        ->orderBy('created_at', 'ASC')
-        ->get();
-
-        $categories = Category::all();
-
-        return view('admin.expenses.list_to_pay')
-            ->with('categories', $categories)
-            ->with('expenses', $expenses);
-    }
-
-    public function data(Request $request)
-    {
-        $expenses = Expense::where('status', '1')->selectRaw('DATE(updated_at) as updated_at,
-        sum(amount) as amount')
-        ->orderBy('updated_at', 'DESC')
-        ->groupBy('updated_at');
+        $expenses = Expense::where('status', '1')
+            ->selectRaw('DATE(updated_at) as updated_date')
+            ->selectRaw('sum(amount) as amount')
+            ->orderBy('updated_date', 'DESC')
+            ->groupBy('updated_date');
             
         return Datatables::of($expenses)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
@@ -201,11 +190,52 @@ class ExpensesController extends Controller
             }
         }, true)
         ->addColumn('day_at_timezone', function (Expense $expenses) {
-            return $expenses->getDay($expenses->updated_at);
+            return $expenses->getDay($expenses->updated_date);
         })
-        ->addColumn('updated_at_timezone', function (Expense $expenses) {
-            return $expenses->updated_at_timezone;
+        ->addColumn('updated_date', function (Expense $expenses) {
+            return $expenses->updated_date;
         })
         ->toJson();
+    }
+
+    public function listToPay()
+    {
+        $categories = Category::all();
+
+        return view('admin.expenses.list_to_pay')
+            ->with('categories', $categories);
+    }
+
+    public function listToPayData(Request $request)
+    {
+        $expenses = Expense::with('category')
+            ->where('status', '0')
+            ->orderBy('created_at', 'ASC');
+            
+        return Datatables::of($expenses)->filter(function ($query) use($request) {
+            if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
+                $start = date("Y-m-d",strtotime(request('from')));
+                $end = date("Y-m-d",strtotime(request('to')));
+                $query->whereBetween('updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
+            }
+        }, true)
+        ->addColumn('category_name', function (Expense $expenses) {
+            return $expenses->category->name;
+        })
+        ->addColumn('created_at_timezone', function (Expense $expenses) {
+            return $expenses->created_at_timezone;
+        })
+        ->toJson();
+    }
+
+    public function markAsPaid($id)
+    {
+        $expenses = Expense::where('id', $id)->first();
+
+        $expenses->update([
+            'status' => '1',
+        ]);
+
+        return $expenses;
     }
 }

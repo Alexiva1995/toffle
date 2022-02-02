@@ -59,20 +59,20 @@
                                 <div class="row justify-content-center @error('status') is-invalid @enderror">
                                     <div class="col-auto">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="to_pay" value="0" {{ $order->status == 0 ? 'checked' : '' }} oninput="editOrder(this)" />
-                                            <label class="form-check-label" for="to_pay">Pendiente</label>
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="pending" value="0" {{ $order->status == 0 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="pending">Pendiente</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="paid_out" value="1" {{ $order->status == 1 ? 'checked' : '' }} oninput="editOrder(this)" />
-                                            <label class="form-check-label" for="paid_out">En Espera</label>
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="on_hold" value="1" {{ $order->status == 1 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="on_hold">En Espera</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="paid_out" value="2" {{ $order->status == 2 ? 'checked' : '' }} oninput="editOrder(this)" />
-                                            <label class="form-check-label" for="paid_out">Finalizado</label>
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="finalized" value="2" {{ $order->status == 2 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="finalized">Finalizado</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="paid_out" value="3" {{ $order->status == 3 ? 'checked' : '' }} oninput="editOrder(this)" />
-                                            <label class="form-check-label" for="paid_out">Cancelado</label>
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="cancelled" value="3" {{ $order->status == 3 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="cancelled">Cancelado</label>
                                         </div>  
                                     </div>                                   
                                 </div>

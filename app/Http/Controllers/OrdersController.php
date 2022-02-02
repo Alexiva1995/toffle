@@ -10,6 +10,7 @@ use App\Models\Inventory;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use DataTables;
 
 class OrdersController extends Controller
 {
@@ -21,18 +22,18 @@ class OrdersController extends Controller
     public function index(Request $request)
     {
         if(isset($request->fecha_ini) && !isset($request->fecha_fin)){
-            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', '>=' ,$request->fecha_ini)->get();
+            $orders = Order::orderBy('id', 'desc')->whereDate('created_at', '>=' ,$request->fecha_ini)->get();
         }elseif(!isset($request->fecha_ini) && isset($request->fecha_fin)){
-            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', '<=' ,$request->fecha_fin)->get();
+            $orders = Order::orderBy('id', 'desc')->whereDate('created_at', '<=' ,$request->fecha_fin)->get();
         }elseif(isset($request->fecha_ini) && isset($request->fecha_fin)){
-            $pedidos = Order::orderBy('id', 'desc')->whereBetween('created_at', [$request->fecha_ini, $request->fecha_fin])->get();
+            $orders = Order::orderBy('id', 'desc')->whereBetween('created_at', [$request->fecha_ini. " 00:00:00", $request->fecha_fin. " 23:59:59"])->get();
         }else{
-            $hoy = Carbon::now();
-            $pedidos = Order::orderBy('id', 'desc')->whereDate('created_at', $hoy)->get();
+            $today = Carbon::now();
+            $orders = Order::orderBy('id', 'desc')->whereDate('created_at', $today)->get();
         }
         
     
-        return view('/orders/index', ['pedidos' => $pedidos]);
+        return view('/orders/index', ['orders' => $orders]);
     }
 
     /**
@@ -42,7 +43,10 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        //
+        $dish_category = Dish::select('category_id')->distinct()->get();
+
+        return view('employee.dashboard.orders.create')
+            ->with('dish_category', $dish_category);
     }
 
     /**
@@ -75,7 +79,6 @@ class OrdersController extends Controller
         $prices = array_combine($request->dish_ids, $request->price); 
         $dishes = array_merge_recursive($units, $prices); 
         $array_dish = [];
-
 
         foreach ($dishes as $key => $dish) {
 
@@ -110,6 +113,7 @@ class OrdersController extends Controller
                     'dish_id' => $item['dish_id'],
                     'unit' => $item['unit'],            
                     'price' => number_format($item['price'], 2, '.', ''),
+                    'cost' => number_format($dish->cost_price, 2, '.', ''),
                 ]
             ]);
         }
@@ -334,5 +338,29 @@ class OrdersController extends Controller
         $order->increment('total_amount', number_format($request->unit * $request->price, 2, '.', '') );
 
         return redirect()->route('orders.edit', $order->id)->with('success', 'Plato Añadido a la Órden');
+    }
+
+    public function orderTableData(Request $request, $type)
+    {
+        if ($type == 'pending') {
+            $orders = Order::whereIn('status', ['0', '1'])
+            ->orderBy('id', 'DESC');
+        }else{
+            $orders = Order::orderBy('id', 'DESC');
+        }
+
+            
+        return Datatables::of($orders)->filter(function ($query) use($request) {
+        }, true)
+        ->toJson();
+    }
+
+    public function showOrderDetails(Request $request)
+    {
+        $order = Order::where('id', $request->id)->first();
+
+        return view('admin.reports.show_orders_details')
+            ->with('order', $order)
+            ->render();
     }
 }

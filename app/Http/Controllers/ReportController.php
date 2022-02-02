@@ -24,7 +24,7 @@ class ReportController extends Controller
         $best_sellers = Order::selectRaw('c.name as name_dish')
         ->selectRaw('c.category_id as category_id')
         ->selectRaw('SUM(b.unit) as units')
-        ->selectRaw('SUM( ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) ) as gain')
+        ->selectRaw('SUM( ROUND( (b.price - b.cost) * b.unit, 2 ) ) as gain')
         ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
         ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
         ->where('orders.status', '2')
@@ -52,20 +52,35 @@ class ReportController extends Controller
     //permite obtener el listado de informes de ganancias
     public function gain()
     {
-        return view('admin.reports.gain');
+        $gains = Order::selectRaw('ROUND( (b.price - b.cost) * b.unit, 2 ) as gain')
+        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+        ->where('orders.status', '2')
+        ->get();
+
+        $profit_total = $gains->sum('gain');
+
+        return view('admin.reports.gain')
+            ->with('profit_total', $profit_total);
     }
 
     public function gainData(Request $request)
     {
+        $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+        $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+
         $gains = Order::selectRaw('DATE(orders.updated_at) as updated_at')
-        ->selectRaw('SUM(ROUND(orders.total_amount, 2)) as total_amount')
-        ->selectRaw('SUM(ROUND( (c.designated_price - c.cost_price) * b.unit, 2 )) as gain')
-        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
-        ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
-        ->where('orders.status', '2')
-        ->orderBy('updated_at', 'DESC')
-        ->groupBy('updated_at');
+            ->selectRaw('SUM(ROUND(orders.total_amount, 2)) as total_amount')
+            ->selectRaw('SUM(ROUND( (b.price - b.cost) * b.unit, 2 )) as gain')
+            ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+            ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+            ->where('orders.status', '2')
+            ->orderBy('updated_at', 'DESC')
+            ->groupBy('updated_at');
             
+        if ( ( request()->has('from') && request('from') == '' ) || ( request('to') == '' && request()->has('to') ) ) {
+            $gains->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
+        }
+
         return Datatables::of($gains)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
                 $start = date("Y-m-d",strtotime(request('from')));
@@ -86,7 +101,7 @@ class ReportController extends Controller
     {
         $gain_details = Order::selectRaw('DATE(orders.updated_at) as updated_at')
             ->selectRaw('SUM( ROUND(orders.total_amount, 2) ) as total_amount')
-            ->selectRaw('SUM( ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) ) as gain')
+            ->selectRaw('SUM( ROUND( (b.price - b.cost) * b.unit, 2 ) ) as gain')
             ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
             ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
             ->where('orders.status', '2')
@@ -108,16 +123,16 @@ class ReportController extends Controller
     public function gainDataShow(Request $request, $date)
     {
         $gain_dishes = Order::selectRaw('orders.id as order_id')
-        ->selectRaw('c.name as name_dish')
-        ->selectRaw('b.unit as units')
-        ->selectRaw('c.category_id as category_id')
-        ->selectRaw('ROUND(total_amount, 2) as total_amount')
-        ->selectRaw('ROUND( (c.designated_price - c.cost_price) * b.unit, 2 ) as gain')
-        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
-        ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
-        ->whereDate('orders.updated_at', $date)
-        ->where('orders.status', '2')
-        ->orderBy('orders.id', 'DESC');
+            ->selectRaw('c.name as name_dish')
+            ->selectRaw('b.unit as units')
+            ->selectRaw('c.category_id as category_id')
+            ->selectRaw('ROUND(b.price * b.unit, 2) as total_amount')
+            ->selectRaw('ROUND( (b.price - b.cost) * b.unit, 2 ) as gain')
+            ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+            ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+            ->whereDate('orders.updated_at', $date)
+            ->where('orders.status', '2')
+            ->orderBy('orders.id', 'DESC');
             
         return Datatables::of($gain_dishes)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
@@ -148,6 +163,9 @@ class ReportController extends Controller
 
     public function expensesData(Request $request, $status = null)
     {
+        $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+        $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+        
         switch ($status) {
             case '1':
                 $expenses = Expense::with('category')
@@ -158,6 +176,10 @@ class ReportController extends Controller
                 $expenses = Expense::with('category')
                 ->orderBy('updated_at', 'DESC');
                 break;
+        }
+
+        if ( ( request()->has('from') && request('from') == '' ) || ( request('to') == '' && request()->has('to') ) ) {
+            $expenses->whereBetween('updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
             
         return Datatables::of($expenses)->filter(function ($query) use($request) {
@@ -193,7 +215,6 @@ class ReportController extends Controller
         ->with('categories', $categories);
     }
 
-    
     public function salesData(Request $request)
     {
         $sales = Order::orderBy('id', 'DESC');
@@ -226,32 +247,43 @@ class ReportController extends Controller
     //premite obtener el listado de informes del flujo de caja
     public function cashFlow()
     {
-        $capital_available = Order::where('status', '2')->sum('total_amount');
+        $income = Order::where('status', '2')->sum('total_amount');
+        $expenses = Expense::where('status', '1')->sum('amount');
+        $capital_available = $income - $expenses;
 
         $categories = Category::all();
 
-        return view('admin.reports.cash_flow')
+        return view('admin.reports.cash_flow.index')
             ->with('categories', $categories)
+            ->with('income', $income)
+            ->with('expenses', $expenses)
             ->with('capital_available', $capital_available);
     }
 
     public function incomeData(Request $request)
     {
+        $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+        $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+
         $income = Order::select(
-                'orders.id as order_id',
-                'b.id as dish_id',
-                'c.name as name_dish',
-                'b.unit as units',
-                'c.category_id as category_id',
-                'orders.status as status',
-                'orders.updated_at as updated_at'
+            'orders.id as order_id',
+            'b.id as dish_id',
+            'c.name as name_dish',
+            'b.unit as units',
+            'c.category_id as category_id',
+            'orders.status as status',
+            'orders.updated_at as updated_at'
             )
-            ->selectRaw('ROUND(c.designated_price, 2) * b.unit as total_amount')
+            ->selectRaw('ROUND(b.price, 2) * b.unit as total_amount')
             ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
             ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
             ->where('orders.status', '2')
             ->orderBy('b.id', 'DESC');
-            
+
+        if ( ( request()->has('from') && request('from') == '' ) || ( request('to') == '' && request()->has('to') ) ) {
+            $income->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
+        }
+
         return Datatables::of($income)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
                 $start = date("Y-m-d",strtotime(request('from')));

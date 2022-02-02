@@ -257,6 +257,8 @@
             $.confirm({
             title: 'Confirmar!',
             content: 'Estas seguro que quieres eliminar este Ingrediente ?',
+            columnClass: 'col-12 col-md-4 col-xs-4',
+            containerFluid: true,
             buttons: {
                 confirm: {
                     text: 'Eliminar',

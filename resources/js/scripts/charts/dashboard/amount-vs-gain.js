@@ -64,11 +64,14 @@ function flatpickrDateCalendar(initial_date, final_date) {
             var dateArr=selectedDates.map(function(date){return _this.formatDate(date,'Y-m-d');});
             $('input[type=radio]').prop('checked',false);
             $('#label-date-calendar').css("background-color", "rgba(255, 89, 51, 0.2)");
-            $('#line-top-chart').addClass('d-none');
-            $('#line-bottom-chart').addClass('d-none');
             $('#spiner-chart').removeClass('d-none');
-            dateFilter('date_calendar', dateArr[0], dateArr[1]);
-            dataChartAmountVsGain();
+            if (dateArr[0] != null && dateArr[1] != null) {
+              dateFilter('date_calendar', dateArr[0], dateArr[1]);
+              dataChartAmountVsGain();
+            }
+            setTimeout(() => {
+                $('#spiner-chart').addClass('d-none');                     
+            },1500)
         },
     });
 }
@@ -210,6 +213,7 @@ lineBottomChart.render();
 var amount_vs_gain_route = $('#amount_vs_gain_route').val();
 
 function dataChartAmountVsGain() {
+
     $.ajax({
         type: "POST",
         url: amount_vs_gain_route,
