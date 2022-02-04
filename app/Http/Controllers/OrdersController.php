@@ -75,17 +75,19 @@ class OrdersController extends Controller
 
         $order = Order::create($request->all());
 
-        $units = array_combine($request->dish_ids, $request->unit); 
-        $prices = array_combine($request->dish_ids, $request->price); 
-        $dishes = array_merge_recursive($units, $prices); 
+        $units = array_combine($request->num_rows, $request->unit); 
+        $prices = array_combine($request->num_rows, $request->price); 
+        $dish_ids = array_combine($request->num_rows, $request->dish_ids);
+        $dishes = array_merge_recursive($dish_ids, $units, $prices); 
+
         $array_dish = [];
 
         foreach ($dishes as $key => $dish) {
 
             $plate = array([
-                'dish_id' => str_replace("dish_", "", $key),
-                'unit' => $dish[0],
-                'price' => $dish[1],
+                'dish_id' => $dish[0],
+                'unit' => $dish[1],
+                'price' => $dish[2],
             ]);
 
             $array_dish = array_merge($array_dish, $plate);
@@ -96,6 +98,17 @@ class OrdersController extends Controller
             $dish = Dish::find($item['dish_id']);
 
             foreach ($dish->ingredients()->get() as $key => $value) {
+
+                $order->ingredients()->attach( [ $order->id => 
+                    [
+                        'order_id' => $order->id,
+                        'dish_id' => $item['dish_id'],
+                        'inventory_id' => $value->pivot->inventory_id,
+                        'portion' => $value->pivot->portion,            
+                        'designated_cost' => $value->pivot->designated_cost,
+                        'it_has_flavors' => $value->product->it_has_flavors,
+                    ]
+                ]);
                 $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
                 $grams = $value->pivot->portion;
                 $grams_used = $value->pivot->portion * $item['unit'];
@@ -118,7 +131,7 @@ class OrdersController extends Controller
             ]);
         }
 
-        return redirect()->route('dashboard-employee')->with('success', 'Pedido Agregado');
+        return redirect()->route('order.edit.ingredients', $order->id)->with('success', 'Pedido Agregado');
     }
 
     /**
@@ -130,6 +143,22 @@ class OrdersController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function editIngredients($id)
+    {
+        $order = Order::find($id);
+
+        $dish_category = Dish::select('category_id')->distinct()->get();
+
+        return view('employee.dashboard.orders.partials.additional_modifications')
+            ->with('dish_category', $dish_category)
+            ->with('order', $order);
+    }
+
+    public function updateIngredients(Request $request, $id)
+    {
+        return view('employee.dashboard.orders.partials.additional_modifications');
     }
 
     /**

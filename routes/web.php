@@ -142,11 +142,15 @@ Route::middleware('auth')->group(function () {
 
             // Orders
             Route::group(['prefix' => 'orders'], function () {
-                Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
+                Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('order.dish.remove');
 
-                Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
+                Route::post('dish-add/{order_id}', [OrdersController::class, 'dishAdd'])->name('order.dish.add');
 
                 Route::get('order-table-data/{type}', [OrdersController::class, 'orderTableData'])->name('order.table.data');
+
+                Route::get('edit-ingredients/{id}', [OrdersController::class, 'editIngredients'])->name('order.edit.ingredients');
+
+                Route::get('update-ingredients/{id}', [OrdersController::class, 'updateIngredients'])->name('order.update.ingredients');
 
             });
 

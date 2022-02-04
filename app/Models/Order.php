@@ -23,6 +23,12 @@ class Order extends Model
                 ->withPivot('id', 'order_id', 'dish_id', 'unit', 'price', 'cost', 'created_at', 'updated_at');
     }
 
+    public function ingredients()
+    {
+        return $this->belongsToMany('App\Models\Inventory', 'order_ingredient')
+                ->withPivot('id', 'order_id', 'dish_id', 'inventory_id', 'portion', 'designated_cost', 'it_has_flavors', 'flavor_name', 'created_at', 'updated_at');
+    }
+
     public function estado()
     {
         if($this->status == '0'){
@@ -89,5 +95,10 @@ class Order extends Model
             ->first();
 
         return $order->profit;
+    }
+
+    public function productRequiresFlavor($dish_id)
+    {
+        
     }
 }

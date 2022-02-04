@@ -68,14 +68,14 @@
                             </div>
                         </div>       
                         <div class="col-12 mb-2">
-                            <div class="d-flex justify-content-center @error('flavors') is-invalid @enderror">
+                            <div class="d-flex justify-content-center @error('it_has_flavors') is-invalid @enderror">
                                 <div class="form-check form-check-inline">
-                                    <input type="hidden" name="flavors" value="0"/>
-                                    <input class="form-check-input border border-primary @error('flavors') is-invalid @enderror" type="checkbox" name="flavors" id="flavors" value="1" />
-                                    <label class="form-check-label" for="flavors">Sabores</label>
+                                    <input type="hidden" name="it_has_flavors" value="0"/>
+                                    <input class="form-check-input border border-primary @error('it_has_flavors') is-invalid @enderror" type="checkbox" name="it_has_flavors" id="flavors" value="1" />
+                                    <label class="form-check-label" for="it_has_flavors">Sabores</label>
                                 </div>
                             </div>
-                            @error('flavors')
+                            @error('it_has_flavors')
                                 <span class="invalid-feedback text-center" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
