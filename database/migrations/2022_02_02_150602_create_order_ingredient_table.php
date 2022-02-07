@@ -16,6 +16,7 @@ class CreateOrderIngredientTable extends Migration
         Schema::create('order_ingredient', function (Blueprint $table) {
             $table->id();
             $table->integer('order_id');
+            $table->integer('order_dish_id');
             $table->integer('dish_id');
             $table->integer('inventory_id');
             $table->integer('portion');

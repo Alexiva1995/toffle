@@ -150,7 +150,7 @@
                                                 <i data-feather="trash-2"></i> 
                                             </button>
         
-                                            <form id="delete_dish_{{ $item->pivot->id }}" action="{{ route('dish.remove', $item->pivot->id) }}" method="POST">
+                                            <form id="delete_dish_{{ $item->pivot->id }}" action="{{ route('order.dish.remove', $item->pivot->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="order_id" value="{{ $order->id }}">                                      

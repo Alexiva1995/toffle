@@ -74,6 +74,12 @@
                                 </div>
 
                                 <h4 class="text-center mb-2">Platos del Pedido </h4>
+
+                                <div class="row justify-content-center my-2">
+                                  <div class="col-auto">
+                                      <span><strong>TOTAL =</strong> {{ $order->total_amount }} </span>
+                                  </div>
+                                </div>
                                 
                                 <div class="table-responsive">
                                     <table class="table" id="items_table">
@@ -82,7 +88,7 @@
                                             <th class="text-center">Cantidad</th>
                                             <th class="text-center">Precio Unitario</th>
                                             <th class="text-center">Total</th>
-                                            <th class="text-center">Detalle</th>
+                                            <th class="text-center">Detalles</th>
                                             <th class="text-center">Ingredientes</th>
                                         </thead>
                                         <tbody>
@@ -101,10 +107,15 @@
                                                         {{ number_format( $item->pivot->unit *  $item->pivot->price, 2, '.', '' ) }}
                                                     </td>
                                                     <td class="text-center"> 
-                                                       {{ $order->productRequiresFlavor($order->id, $item->pivot->dish_id) }} 
+                                                        @if ($order->productRequiresFlavor($order->id, $item->pivot->dish_id) == true)
+                                                            <span class="text-danger"><i data-feather="edit"></i> </span>
+                                                            Se debe agregar el sabor a uno de los ingredientes de este plato.
+                                                        @else
+                                                            <span class="text-center text-primary"> ---- </span>
+                                                        @endif
                                                     </td>
                                                     <td class="text-center"> 
-                                                        <button class="btn btn-sm btn-info"> 
+                                                        <button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, {{ $item->pivot->id }}, {{ $item->pivot->dish_id }})"> 
                                                             <i data-feather="edit"></i> 
                                                         </button>
                                                     </td>
@@ -113,12 +124,6 @@
                                         </tbody>
                                     </table>           
                                 </div> 
-
-                                <div class="row justify-content-center mt-2">
-                                    <div class="col-auto">
-                                        <span><strong>TOTAL =</strong> {{ $order->total_amount }} </span>
-                                    </div>
-                                </div>
 
                                 <div class="row justify-content-center mt-2">
                                     <div class="col-auto">
@@ -136,6 +141,19 @@
         </div>
     </div>
 </section>
+
+<div
+  class="modal fade text-start"
+  id="modal_show_ingredients"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content ingredients_details">
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('vendor-script')
@@ -234,6 +252,31 @@
           }
 
           $("#total_amount").val(total.toFixed(2));
+      }
+
+      function modifyIngredients(order_id, pivot_id, dish_id) {
+        $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
+            function (data, textStatus, jqXHR) {
+                $('.ingredients_details').html(data);
+                $("#modal_show_ingredients").modal("show");
+                feather.replace();
+            }
+        );
+      }
+
+      function addIngredient(order_id, pivot_id, dish_id) {
+        $.post("{{ route('orders.add.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
+            function (data, textStatus, jqXHR) {
+              $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
+                function (data, textStatus, jqXHR) {
+                    $('.ingredients_details').html(data);
+                    // $("#modal_show_ingredients").modal("show");
+                    feather.replace();
+                }
+              );
+            }
+        );
+
       }
   </script>
 @endsection

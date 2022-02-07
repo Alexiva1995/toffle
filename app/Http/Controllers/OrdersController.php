@@ -97,12 +97,28 @@ class OrdersController extends Controller
 
             $dish = Dish::find($item['dish_id']);
 
+            $order->dishes()->attach( [ $order->id => 
+                [
+                    'order_id' => $order->id,
+                    'dish_id' => $item['dish_id'],
+                    'unit' => $item['unit'],            
+                    'price' => number_format($item['price'], 2, '.', ''),
+                    'cost' => number_format($dish->cost_price, 2, '.', ''),
+                ]
+            ]);
+        }
+
+        foreach ($order->dishes as $key => $item) {
+
+            $dish = Dish::find($item->pivot->dish_id);
+
             foreach ($dish->ingredients()->get() as $key => $value) {
 
                 $order->ingredients()->attach( [ $order->id => 
                     [
                         'order_id' => $order->id,
-                        'dish_id' => $item['dish_id'],
+                        'order_dish_id' => $item->pivot->id,
+                        'dish_id' => $item->pivot->dish_id,
                         'inventory_id' => $value->pivot->inventory_id,
                         'portion' => $value->pivot->portion,            
                         'designated_cost' => $value->pivot->designated_cost,
@@ -119,19 +135,9 @@ class OrdersController extends Controller
                     'total' => $inventory->deposit + $inventory->local + $inventory->public
                 ]);
             }
-
-            $order->dishes()->attach( [ $order->id => 
-                [
-                    'order_id' => $order->id,
-                    'dish_id' => $item['dish_id'],
-                    'unit' => $item['unit'],            
-                    'price' => number_format($item['price'], 2, '.', ''),
-                    'cost' => number_format($dish->cost_price, 2, '.', ''),
-                ]
-            ]);
         }
 
-        return redirect()->route('order.edit.ingredients', $order->id)->with('success', 'Pedido Agregado');
+        return redirect()->route('order.additional.modifications', $order->id)->with('success', 'Pedido Agregado');
     }
 
     /**
@@ -145,7 +151,7 @@ class OrdersController extends Controller
         //
     }
 
-    public function editIngredients($id)
+    public function additionalModifications($id)
     {
         $order = Order::find($id);
 
@@ -156,7 +162,7 @@ class OrdersController extends Controller
             ->with('order', $order);
     }
 
-    public function updateIngredients(Request $request, $id)
+    public function updateAdditionalModifications(Request $request, $id)
     {
         return view('employee.dashboard.orders.partials.additional_modifications');
     }
@@ -391,5 +397,37 @@ class OrdersController extends Controller
         return view('admin.reports.show_orders_details')
             ->with('order', $order)
             ->render();
+    }
+
+    public function modalModifyIngredients(Request $request)
+    {
+        $order = Order::where('id', $request->order_id)->first();
+
+        $order_ingredients = $order->ingredients()->wherePivot('order_dish_id', $request->pivot_id)->get();
+
+        $ingredients = Inventory::orderBy('id', 'DESC')->get();
+
+        $dish = Dish::where('id', $request->dish_id)->first();
+
+        $pivot_id = $request->pivot_id;
+
+        return view('employee.dashboard.orders.modals.modify_ingredients')
+            ->with('dish', $dish)
+            ->with('order_ingredients', $order_ingredients)
+            ->with('ingredients', $ingredients)
+            ->with('order', $order)
+            ->with('pivot_id', $pivot_id)
+            ->render();
+    }
+
+    public function addIngredientsToOrder(Request $request)
+    {
+        $inventory = Inventory::
+        $order = Order::where('id', $request->order_id)->first();
+
+        $ingredients = Inventory::orderBy('id', 'DESC')->get();
+
+        $dish = Dish::where('id', $request->dish_id)->first();
+
     }
 }
