@@ -2,51 +2,78 @@
 
 @section('title', 'Ventas')
 
-@include('panels.datatable.styles')
+@section('vendor-style')
+    <!-- vendor css files -->
+    @include('panels.datatable.styles')
+@endsection
+
+@section('page-style')
+  {{-- Page css files --}}
+  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
+@endsection
 
 @section('content')
+<section id="basic-datatable">
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="table-responsive">
-                                    <table class="table rounded border-table border-primary" id="table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center">N°</th>
-                                                <th class="text-center">Monto</th>
-                                                <th class="text-center">Estado</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($orders as $item)
-                                                <tr>
-                                                    <td class="text-center">{{ $item->id }}</td>
-                                                    <td class="text-center fw-bolder text-success">{{ $item->total_amount }}$</td>
-                                                    @if ($item->status == 0)
-                                                        <td class="text-center">Pendiente</td>
-                                                    @elseif ($item->status == 1)
-                                                        <td class="text-center">En espera</td>
-                                                    @elseif ($item->status == 2)
-                                                        <td class="text-center">Finalizado</td>
-                                                    @elseif ($item->status == 3)
-                                                        <td class="text-center">Cancelado</td>
-                                                    @endif
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+            <div class="card p-2">
+                {{-- <h3>Más Vendidos</h3> --}}
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <div class="row justify-content-init mt-1">
+                            <div class="col-12 col-md-4">
+                                <label for="timestamp">Rango de Fecha</label>
+                                  <input type="text" class="form-control" placeholder="Rango de Fecha" id="timestamp">
+                                  <input type="hidden" id="from">
+                                  <input type="hidden" id="to">
+                            </div>
+
+                            {{-- <div class="col-12 col-md-4">
+                                <label for="category_id">Categorías</label>
+                                <select class="select2 form-control" name="category_id" id="category_id" data-toggle="select"
+                                    class="form-control" id="category">
+                                    <option value="" selected>Seleccionar Todas</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+
+                            <div class="col-12 col-md-4">
+                                <label for="status">Estados</label>
+                                <select class="select2 form-control" name="status" id="status" data-toggle="select"
+                                    class="form-control" id="status">
+                                    <option value="" selected>Seleccionar Todas</option>
+                                    <option value="0"> Pendientes </option>
+                                    <option value="1"> En Espera </option>
+                                    <option value="2"> Finalizados </option>
+                                    <option value="3"> Cancelados </option>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="table-responsive">
+                    <table class="table" id="sales_table"> </table>
+                </div>
             </div>
         </div>
     </div>
+</section>
+
+<div
+  class="modal fade text-start"
+  id="modal_show_order_details"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content order_details">
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('custom-js')
@@ -54,69 +81,128 @@
 @include('panels.datatable.scripts')
 
 <script>
-    // $('#table').dataTable();
+    function showOrderDetails(id) {
+        $.get("{{ route('reports.show.order.details') }}", { id: id },
+            function (data, textStatus, jqXHR) {
+                $('.order_details').html(data);
+                $("#modal_show_order_details").modal("show");
+            }
+        );
+    }
 
     $(document).ready(function () {
-    // Setup - add a text input to each footer cell
-    $('#table thead tr')
-        .clone(true)
-        .addClass('filters')
-        .appendTo('#table thead');
- 
-    var table = $('#table').DataTable({
-        orderCellsTop: true,
-        fixedHeader: true,
-        initComplete: function () {
-            var api = this.api();
- 
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-                    $(cell).html('<input type="text" class="form-control" placeholder="' + title + '" />');
+        table = $('#sales_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ordering: true,
+            pageLength: 50,
+            language: {
+                url: '{!! asset('data/datatable/Spanish.json') !!}'
+            },
+            ajax: {
+                url: '{!! route('reports.sales.data') !!}',
+                data: function (d) {
+                    d.from  = $('#from').val();
+                    d.to    = $('#to').val();
+                    d.category_id  = $('#category_id').val();
+                    d.status  = $('#status').val();
+                }
+            },
+            columns: [
+            { 
+                data: "id",
+                name: "id",
+                title: "# Pedido",
+                "class": "text-center",
+                visible: true,
+                searchable: true,
+            },
+            {
+                data: "total_amount",
+                name: "total_amount",
+                title: "Monto",
+                "class": "text-center",
+                visible: true,
+                searchable: true,
+                render: function (data, type, row, meta) {
+                    return '<strong class="text-success">'+row.total_amount.toFixed(2)+'</strong>';
+                }  
+            },
+            {
+                data: "status",
+                name: "status",
+                title: "Estado",
+                "class": "text-center",
+                visible: true,
+                searchable: true,
+                render: function (data, type, row, meta) {
+                    switch (row.status) {
+                        case '0':
+                            return '<span class="badge badge-light-warning">Pendiente</span>';
+                            break;
+                        case '1':
+                            return '<span class="badge badge-light-info">En Espera</span>';
+                            break;
+                        case '2':
+                            return '<span class="badge badge-light-success">Finalizado</span>';
+                            break;
+                        case '3':
+                            return '<span class="badge badge-light-danger">Cancelado</span>';
+                            break;
+                        default:
+                            break;
+                    }
+                    
+                }  
+            },
+            {
+                data: "updated_at_timezone",
+                name: "updated_at_timezone",
+                title: "Fecha",
+                "class": "text-center",
+                visible: true,
+                searchable: true,
+            },
+            {
+                data: "id",
+                name: "id",
+                title: "Detalles",
+                "class": "text-center",
+                visible: true,
+                searchable: true,
+            },
+        ],
+        fnCreatedRow: function (elemt, data, iDataIndex) {
+            var index = iDataIndex + 1;
+            column=$('td:eq(4)', elemt);
+            buttons='';
 
- 
-                    // On every keypress in this input
-                    $(
-                        'input',
-                        $('.filters th').eq($(api.column(colIdx).header()).index())
-                    )
-                        .off('keyup change')
-                        .on('keyup change', function (e) {
-                            e.stopPropagation();
- 
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
- 
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search(
-                                    this.value != ''
-                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                        : '',
-                                    this.value != '',
-                                    this.value == ''
-                                )
-                                .draw();
- 
-                            $(this)
-                                .focus()[0]
-                                .setSelectionRange(cursorPosition, cursorPosition);
-                        });
-                });
+            button="<button type='button' class='btn btn-sm btn-primary' onclick='showOrderDetails("+data.id+")'> <i data-feather='eye'></i> </button>";
+
+            buttons+=button;
+            column=column.html(buttons);
         },
-    });
-});
 
+        }).on('processing.dt', function (e, settings, processing) {
+            feather.replace();
+        });
+
+        $('#status').change(function() {
+            table.search('').draw();
+        });
+
+        $('#category_id').change(function() {
+            table.search('').draw();
+        });
+
+        $('#timestamp').change(function() {
+            table.search('').draw();
+        });
+
+        flatpickrRange('#timestamp', '#from', '#to');
+    });
+
+    dataTable('#table');
 </script>
 
 @endsection

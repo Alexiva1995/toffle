@@ -33,49 +33,29 @@ class Dish extends Model
 
     public function collectionDishes($category_id)
     {
-        $dishes = Dish::where('category_id', $category_id)->get();
+        $dishes = Dish::where('category_id', $category_id)->where('status', '1')->get();
         return $dishes;
     }
-
-    public function countDish($dish_id)
+    
+    public function status()
     {
-        $dish = Dish::
-            selectRaw('COUNT(b.dish_id) * SUM(b.unit) as count')
-            ->leftJoin('order_dish as b', 'dishes.id', '=', 'b.dish_id')
-            ->leftJoin('orders as c', 'b.order_id', '=', 'c.id')
-            ->where('dishes.id', $dish_id)
-            ->groupBy('dishes.name')
-            ->first();
-
-        return $dish->count;
+        if($this->status == '0'){
+            return "Inactivo";
+        }else if($this->status == '1'){
+            return "Activo";
+        }else if($this->status == '2'){
+            return "En Revisión";
+        }
     }
 
-    public function dishProfit($dish_id)
+    public function statusColor()
     {
-        $dish = Dish::
-            selectRaw('SUM((dishes.designated_price - dishes.cost_price) * b.unit) as gain')
-            ->leftJoin('order_dish as b', 'dishes.id', '=', 'b.dish_id')
-            ->leftJoin('orders as c', 'b.order_id', '=', 'c.id')
-            ->where('dishes.id', $dish_id)
-            ->groupBy('dishes.name')
-            ->first();
-
-        return $dish->gain;
-    }
-
-    public function dishDate()
-    {
-        $orders = Order::selectRaw('DATE(orders.updated_at) as date')
-        ->selectRaw('sum(orders.total_amount) as total_amount')
-        ->selectRaw('sum((c.designated_price - c.cost_price) * b.unit) as gain')
-        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
-        ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
-        ->where('orders.status', '2')
-        ->orderBy('date', 'ASC')
-        ->groupBy('date')
-        ->get();
-
-        return $orders->date;
-
+        if($this->status == '0'){
+            return "danger";
+        }else if($this->status == '1'){
+            return "success";
+        }else if($this->status == '2'){
+            return "info";
+        }
     }
 }

@@ -2,10 +2,9 @@
 
 @section('title', 'Categorías')
 
-@include('panels.datatable.styles')
-
 @section('vendor-style')
     <!-- vendor css files -->
+    @include('panels.datatable.styles')
 @endsection
 
 @section('page-style')
@@ -30,7 +29,7 @@
                                         <div class="row justify-content-end">
                                             <div class="col-auto mb-2">
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_category">
-                                                    <i data-feather="plus"></i> Añadir Nuevo Categoría
+                                                    <i data-feather="plus"></i> Añadir Nueva Categoría
                                                 </button>
                                             </div>
                                         </div>

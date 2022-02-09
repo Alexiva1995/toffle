@@ -92,11 +92,23 @@ Route::middleware('auth')->group(function () {
 
             //Reports
             Route::group(['prefix' => 'reports'], function () {
-                Route::get('BestSeller', [ReportController::class, 'BestSeller'])->name('reports.BestSeller');
+                Route::get('best-seller', [ReportController::class, 'bestSeller'])->name('reports.best.seller');
+                Route::get('best-seller-data', [ReportController::class, 'bestSellerData'])->name('reports.best.seller.data');
+
                 Route::get('gain', [ReportController::class, 'gain'])->name('reports.gain');
-                Route::get('cashflow', [ReportController::class, 'cashflow'])->name('reports.cashflow');
+                Route::get('gain-data', [ReportController::class, 'gainData'])->name('reports.gain.data');
+                Route::get('gain-show/{date}', [ReportController::class, 'gainShow'])->name('gain.show');
+                Route::get('gain-data-show/{date}', [ReportController::class, 'gainDataShow'])->name('gain.data.show');
+
+                Route::get('cash-flow', [ReportController::class, 'cashFlow'])->name('reports.cash.flow');
+                Route::get('income-data', [ReportController::class, 'incomeData'])->name('reports.income.data');
+                Route::get('paid-expenses-data', [ReportController::class, 'paidExpensesData'])->name('reports.paid.expenses.data');
+
                 Route::get('expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
+                Route::get('expenses-data/{status?}', [ReportController::class, 'expensesData'])->name('reports.expenses.data');
+
                 Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
+                Route::get('sales-data', [ReportController::class, 'salesData'])->name('reports.sales.data');
             });
 
             Route::resource('categories', CategoriesController::class);
@@ -104,8 +116,14 @@ Route::middleware('auth')->group(function () {
             // Expenses
             Route::group(['prefix' => 'expenses'], function () {
                 Route::get('list-historical', [ExpensesController::class, 'listHistorical'])->name('expenses.list.historical');
+                
+                Route::get('list-historical-data', [ExpensesController::class, 'listHistoricalData'])->name('expenses.list.historical.data');
+
                 Route::get('list-to-pay', [ExpensesController::class, 'listToPay'])->name('expenses.list.to.pay');
-                Route::get('data', [ExpensesController::class, 'data'])->name('expenses.data');
+
+                Route::get('list-to-pay-data', [ExpensesController::class, 'listToPayData'])->name('expenses.list.to.pay.data');
+
+                Route::post('mark-as-paid/{id}', [ExpensesController::class, 'markAsPaid'])->name('expenses.mark.as.paid');
             });
 
             Route::resource('expenses', ExpensesController::class);
@@ -124,11 +142,19 @@ Route::middleware('auth')->group(function () {
 
             // Orders
             Route::group(['prefix' => 'orders'], function () {
-                Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
-                Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
-            });
-            Route::resource('orders', OrdersController::class)->except(['index']);
+                Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('order.dish.remove');
 
+                Route::post('dish-add/{order_id}', [OrdersController::class, 'dishAdd'])->name('order.dish.add');
+
+                Route::get('order-table-data/{type}', [OrdersController::class, 'orderTableData'])->name('order.table.data');
+
+                Route::get('additional-modifications/{id}', [OrdersController::class, 'additionalModifications'])->name('order.additional.modifications');
+
+                Route::get('update-additional-modifications/{id}', [OrdersController::class, 'updateAdditionalModifications'])->name('order.update.additional.modifications');
+
+            });
+
+            Route::resource('orders', OrdersController::class)->except(['index']);
 
             Route::group(['prefix' => 'ingredients'], function () {
                 Route::get('create', [IngredientController::class, 'create'])->name('create.ingredients');
@@ -140,6 +166,12 @@ Route::middleware('auth')->group(function () {
         });
 
     });
+
+    Route::get('show-order-details', [OrdersController::class, 'showOrderDetails'])->name('reports.show.order.details');
+
+    Route::get('modal-modify-ingredients', [OrdersController::class, 'modalModifyIngredients'])->name('orders.modal.modify.ingredients');
+
+    Route::get('add-ingredient-to-order', [OrdersController::class, 'addIngredientsToOrder'])->name('orders.add.ingredients');
 });
 
 // Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');

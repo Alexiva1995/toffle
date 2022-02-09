@@ -2,10 +2,9 @@
 
 @section('title', 'Detalles de Gasto')
 
-@include('panels.datatable.styles')
-
 @section('vendor-style')
     <!-- vendor css files -->
+    @include('panels.datatable.styles')
 @endsection
 
 @section('page-style')
@@ -25,12 +24,12 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                Detalles {{  Session::has('paid_out')  }}
+                                Detalles 
                             </li>
                         </ol>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12">
                         <div class="row my-3">
                             <div class="col-auto">
                                 <h5>Fecha de Pago: <span class="h6"> {{ $expense_details->date }} </span> </h5> 

@@ -10,22 +10,17 @@
             "
         >
             <h4 class="card-title">Informes de Ventas Semanales</h4>
-            <div class="d-flex align-items-center mt-md-0 mt-1">
-              <input
-                type="week"
-                class="form-control shadow-none"
-                name="week"
-                id="week"
-                value="{{ date("Y") }}-W{{ date("W") }}"
-              />
+
+            <div class="col-auto">
+                <label class="form-label" for="week"> <i data-feather="calendar"></i> N° de Semana</label>
+                <div class="d-flex align-items-center mt-md-0 mt-1"> 
+                    <input type="text" id="week" name="week" data-week = "{{ date("Y") }}-W{{ date("W") }}" class="form-control"/>
+                </div>
             </div>
-            {{-- <div class="col-12 col-md-6 mb-1 position-relative">
-                <label class="form-label" for="range_week">Semana</label>
-                <input type="text" id="range_week" class="form-control" value="{{ date( "Y-m-d", strtotime('this week last sunday')) }}" />
-            </div> --}}
         </div>
         <div class="card-body">
-            <div id="column-chart"></div>
+            <input type="hidden" id="weekly_sales_route" value="{{ route('data.chart.weekly.sales') }}">
+            <div id="column-chart-ws"></div>
         </div>
     </div>
 </div>

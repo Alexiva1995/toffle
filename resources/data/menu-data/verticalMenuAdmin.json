@@ -38,7 +38,7 @@
       "submenu": [
 
         {
-          "url": "admin/reports/cashflow",
+          "url": "admin/reports/cash-flow",
           "name": "r_cash_flow",
           "icon": "circle",
           "slug": "reports.cashflow"
@@ -62,10 +62,10 @@
           "slug": "reports.gain"
         },
         {
-          "url": "admin/reports/BestSeller",
+          "url": "admin/reports/best-seller",
           "name": "r_more_sold",
           "icon": "circle",
-          "slug": "reports.BestSeller"
+          "slug": "reports.best.seller"
         }
       ]
     },

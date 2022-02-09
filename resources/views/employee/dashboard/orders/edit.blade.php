@@ -59,20 +59,20 @@
                                 <div class="row justify-content-center @error('status') is-invalid @enderror">
                                     <div class="col-auto">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="to_pay" value="0" {{ $order->status == 0 ? 'checked' : '' }} oninput="editOrder(this)" />
-                                            <label class="form-check-label" for="to_pay">Pendiente</label>
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="pending" value="0" {{ $order->status == 0 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="pending">Pendiente</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="paid_out" value="1" {{ $order->status == 1 ? 'checked' : '' }} oninput="editOrder(this)" />
-                                            <label class="form-check-label" for="paid_out">En Espera</label>
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="on_hold" value="1" {{ $order->status == 1 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="on_hold">En Espera</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="paid_out" value="2" {{ $order->status == 2 ? 'checked' : '' }} oninput="editOrder(this)" />
-                                            <label class="form-check-label" for="paid_out">Finalizado</label>
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="finalized" value="2" {{ $order->status == 2 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="finalized">Finalizado</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="paid_out" value="3" {{ $order->status == 3 ? 'checked' : '' }} oninput="editOrder(this)" />
-                                            <label class="form-check-label" for="paid_out">Cancelado</label>
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="cancelled" value="3" {{ $order->status == 3 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <label class="form-check-label" for="cancelled">Cancelado</label>
                                         </div>  
                                     </div>                                   
                                 </div>
@@ -81,11 +81,41 @@
                     </form>
 
                     <div class="row justify-content-center mb-3">
-                        <div class="col-auto">
-                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_add_dish">
-                                <i class="" data-feather="plus-circle"></i> Añadir Plato 
-                            </a>
-                        </div>
+                        <form class="form form-vertical" action="{{ route('order.dish.add') }}" id="form_add_order" method="POST">
+                            @csrf
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-12 mb-1">
+                                    <div class="mb-1">
+                                        <h5 class="mb-2 text-center">Añadir Platos</h5>
+                                        <div class="row justify-content-center">
+                                            <div class="col-12 col-md-4">           
+                                                <select class="select2 form-control" data-toggle="select" class="form-control" id="selected_dish">
+                                                    <option disabled selected value=''>Selecciona un Plato</option>
+                                                    @foreach ($dish_category as $item)
+                                                        @if ( count( $item->collectionDishes($item->category_id) ) > 0 )
+                                                            <optgroup label="{{ $item->category->name }}"> 
+                                                                @foreach ($item->collectionDishes($item->category_id) as $dish)
+                                                                    <option data-price = {{ $dish->designated_price }} value="dish_{{ $dish->id }}">{{ $dish->name }}</option>
+                                                                @endforeach
+                                                            </optgroup>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-12 col-md-4">
+                                                <input type="number" id="plate_quantity" class="form-control" placeholder="Cantidad"/>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-info">
+                                                    <i class="" data-feather="plus-circle"></i> Añadir</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                    
+                            </div>
+                        </form> 
                     </div>
 
                     <div class="table-responsive">
@@ -120,7 +150,7 @@
                                                 <i data-feather="trash-2"></i> 
                                             </button>
         
-                                            <form id="delete_dish_{{ $item->pivot->id }}" action="{{ route('dish.remove', $item->pivot->id) }}" method="POST">
+                                            <form id="delete_dish_{{ $item->pivot->id }}" action="{{ route('order.dish.remove', $item->pivot->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="order_id" value="{{ $order->id }}">                                      
@@ -144,7 +174,7 @@
     </div> 
 </section>
 
-@include('employee.dashboard.orders.modals.add_dish')
+{{-- @include('employee.dashboard.orders.modals.add_dish') --}}
 
 @endsection
 

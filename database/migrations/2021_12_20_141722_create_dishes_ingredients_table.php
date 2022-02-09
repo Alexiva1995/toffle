@@ -15,9 +15,9 @@ class CreateDishesIngredientsTable extends Migration
     {
         Schema::create('dish_ingredient', function (Blueprint $table) {
             $table->id();
-            $table->string('dish_id');
-            $table->string('inventory_id');
-            $table->string('portion');
+            $table->integer('dish_id');
+            $table->integer('inventory_id');
+            $table->integer('portion');
             $table->double('designated_cost');
             $table->timestamps();
         });

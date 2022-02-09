@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('mark')->nullable();
             $table->string('gr')->nullable();
+            $table->boolean('it_has_flavors')->default(0)->comment('0 - false, 1 - true');
             $table->double('units_reposition_alert')->default(0);
             $table->timestamps();
         });

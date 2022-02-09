@@ -8,58 +8,47 @@
                 <thead>
                     <tr>
                         <th class="text-center px-0">N°</th>
-                        <th class="text-center px-0">Id</th>
+                        {{-- <th class="text-center px-0">Id</th> --}}
                         <th class="text-center px-0">Cliente</th>
                         <th class="text-center px-0">Mesa</th>
+                        <th class="text-center px-0">Monto</th>
                         <th class="text-center px-0">Estado</th>
+                        <th class="text-center px-0">Ver</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($orders as $order)
                     <tr>
                         <td class="text-center"> {{ $loop->iteration }} </td>
-                        <td class="text-center"> {{ $order->id }} </td>
+                        {{-- <td class="text-center"> {{ $order->id }} </td> --}}
                         <td class="text-center"> {{ $order->customer_name }} </td>
                         <td class="text-center"> {{ $order->table }} </td>
+                        <td class="text-center"> {{ $order->total_amount }} </td>
                         <td class="text-center">  
-                            <div class="d-flex align-items-center justify-content-center">
+                            <span class="badge badge-light-{{ $order->colorStatus() }}"> 
 
                                 @switch($order->status)
                                     @case(0)
-                                        <div class="avatar bg-light-warning me-1">
-                                            <div class="avatar-content">
-                                                <i data-feather="alert-circle" class="font-medium-3"></i>
-                                            </div>
-                                        </div>
+                                        <i data-feather="alert-circle"></i> 
                                         @break
                                     @case(1)
-                                        <div class="avatar bg-light-info me-1">
-                                            <div class="avatar-content">
-                                                <i data-feather="clock" class="font-medium-3"></i>
-                                            </div>
-                                        </div>
+                                        <i data-feather="clock"></i> 
                                         @break
                                     @case(2)
-                                        <div class="avatar bg-light-success me-1">
-                                            <div class="avatar-content">
-                                                <i data-feather="dollar-sign" class="font-medium-3"></i>
-                                            </div>
-                                        </div>
+                                        <i data-feather="check-circle"></i>
                                         @break
                                     @case(3)
-                                        <div class="avatar bg-light-danger me-1">
-                                            <div class="avatar-content">
-                                                <i data-feather="x-circle" class="font-medium-3"></i>
-                                            </div>
-                                        </div>
+                                        <i data-feather="x-circle"></i> 
                                         @break
                                     @default                                           
                                 @endswitch
 
-                                <span>
-                                    {{ $order->estado() }}
-                                </span>
-                            </div>
+                                {{ $order->estado() }}
+                            </span>  
+                        </td>
+                        <td class="text-center"> 
+                            <button type='button' class='btn btn-sm btn-primary' onclick='showOrderDetails({{ $order->id }})'> <i data-feather='eye'></i> 
+                            </button> 
                         </td>
                     </tr>
                     @endforeach

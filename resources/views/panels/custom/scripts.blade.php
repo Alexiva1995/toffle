@@ -69,10 +69,20 @@
         });
     }
 
-    function deleteElement(id,  form_id, text_element) {
+    function deleteElement(id,  form_id, text_element, optional_text = null) {
+        var text = '';
+
+        if (optional_text != null) {
+            text = '<strong class="text-danger">'+optional_text+'...</strong> <br/> <br/>'+'Estas seguro que quieres eliminar '+text_element+'?';
+        }else{
+            text = 'Estas seguro que quieres eliminar '+text_element+'?';
+        }
+
         $.confirm({
             title: 'Confirmar!',
-            content: 'Estas seguro que quieres eliminar '+text_element+'?',
+            content: text,
+            columnClass: 'col-12 col-md-4 col-xs-4',
+            containerFluid: true,
             buttons: {
                 confirm: {
                     text: 'Eliminar',
@@ -90,9 +100,13 @@
     }
 </script>
 
-{{-- <script>
-    function flatpickrWeek(id) {
+<script>
+
+    function flatpickrRange(id, from, to) {
         $(id).flatpickr({
+            mode:'range',
+            ariaDateFormat:'Y-m-d',
+            dateFormat:'Y-m-d',
             locale: {
                 weekdays: {
                   shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
@@ -102,14 +116,66 @@
                   shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
                   longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 },
+                weekAbbreviation: "Sem",
+                rangeSeparator: " a ",
+                yearAriaLabel: "Año",
+                monthAriaLabel: "Mes",
+                hourAriaLabel: "Hora",
+                minuteAriaLabel: "Minuto",
             },
-            weekNumbers: true,
-            enable:[ 
-              function(date) {
-                  return date.getDay() === 0;
-              }
-            ]
+            onChange:function(selectedDates){
+                var _this=this;
+                var dateArr=selectedDates.map(function(date){return _this.formatDate(date,'Y-m-d');});
+                $(from).val(dateArr[0]);
+                $(to).val(dateArr[1]);
+            },
         });
     }
 
-</script> --}}
+    function flatpickrWeek(id) {
+        $(id).flatpickr({
+            mode: "range",
+            dateFormat: "W-Y",
+            defaultDate: ["today"],
+            locale: {
+                weekdays: {
+                  shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                  longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
+                }, 
+                months: {
+                  shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
+                  longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                },
+                weekAbbreviation: "Sem",
+                rangeSeparator: " a ",
+                yearAriaLabel: "Año",
+                monthAriaLabel: "Mes",
+                hourAriaLabel: "Hora",
+                minuteAriaLabel: "Minuto",
+            },
+            // weekNumbers: true,
+            "plugins": [new weekSelect({})],
+            onChange: [function(selectedDates, dateStr, instance){
+
+                const year = this.selectedDates[0]
+                    ? this.currentYear
+                    : null;
+
+                const weekNumber = this.selectedDates[0]
+                    ? this.config.getWeek(this.selectedDates[0])
+                    : null;
+
+                dataWeek = '';
+
+                if (weekNumber > 10) {
+                    dataWeek = year+'-W'+weekNumber;
+                }else{
+                    dataWeek = year+'-W0'+weekNumber;
+                }
+                $('#week').data('week', dataWeek)
+                // console.log($('#range_week').val());
+            }]
+        });
+    }
+
+</script>

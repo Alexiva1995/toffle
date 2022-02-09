@@ -47,11 +47,16 @@ class DashboardController extends Controller
 
     $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
 
+    $dishes_under_review = Dish::where('status', '2')
+      ->whereColumn('suggested_price', '>','designated_price')
+      ->get();
+
     $inventories = Inventory::all();
 
     return view('admin.dashboard.index', ['pageConfigs' => $pageConfigs])
       ->with('tables', $tables)
       ->with('inventories', $inventories)
+      ->with('dishes_under_review', $dishes_under_review)
       ->with('orders', $orders);
   }
 
@@ -61,8 +66,6 @@ class DashboardController extends Controller
 
     $orders = Order::all();
 
-    $dish_category = Dish::select('category_id')->distinct()->get();
-
     $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
 
     $inventories = Inventory::all();
@@ -70,15 +73,21 @@ class DashboardController extends Controller
     return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
       ->with('tables', $tables)
       ->with('inventories', $inventories)
-      ->with('dish_category', $dish_category)
       ->with('orders', $orders);
   }
 
   public function dataChartAmountVsGain() {
-      $orders = Order::where('status', '2')->get();
- 
+      $orders = Order::selectRaw('orders.created_at as date')
+        ->selectRaw('ROUND(orders.total_amount, 2) as total_amount')
+        ->selectRaw('ROUND( (b.price - b.cost) * b.unit, 2 ) as gain')
+        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+        // ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+        ->where('orders.status', '2')
+        ->orderBy('date', 'ASC')
+        ->get();
+
       return response()->json([
-          'data' => $orders
+          'data' => $orders,
       ]);
  }
 
@@ -99,10 +108,10 @@ class DashboardController extends Controller
       $week_start = date('Y-m-d', strtotime('this week sunday', $custom_date));
       $week_end = date('Y-m-d', strtotime('this week next saturday', $custom_date));
 
-      $orders = Order::selectRaw('DATE(updated_at) as date')
+      $orders = Order::selectRaw('DATE(created_at) as date')
       ->selectRaw('sum(total_amount) as total_amount')
       ->where('status', '2')
-      ->whereBetween('updated_at', [$week_start. " 00:00:00", $week_end. " 23:59:59"])
+      ->whereBetween('created_at', [$week_start. " 00:00:00", $week_end. " 23:59:59"])
       ->orderBy('date', 'DESC')
       ->groupBy('date')
       ->get();
@@ -120,7 +129,7 @@ class DashboardController extends Controller
              $array_dates = array($order->date);
              $array_dates_found = array_merge($array_dates_found, $array_dates);
           }
-       }
+        }
       }
 
       foreach ($weekdays as $key => $weekday) {

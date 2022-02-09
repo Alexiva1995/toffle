@@ -4,7 +4,7 @@
             <div class="card-header">
                 <h4 class="card-title">Datos Requeridos</h4>
             </div>
-            <div class="card-body p-0 px-2">
+            <div class="card-body">
                 <form class="form form-vertical" id="form_edit_expense" method="POST">
                     @csrf
                     @method('PATCH')

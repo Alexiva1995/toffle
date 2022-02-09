@@ -2,7 +2,10 @@
 
 @section('title', 'Lista de Platos')
 
-@include('panels.datatable.styles')
+@section('vendor-style')
+    <!-- vendor css files -->
+    @include('panels.datatable.styles')
+@endsection
 
 @section('content')
 <!-- Basic table -->
@@ -38,9 +41,10 @@
                     <table class="table rounded border-table border-primary" id="table" >
                         <thead>
                             <tr>
-                                <th>N°</th>
-                                <th>Nombre</th>
-                                <th class="text-center">Precio costo</th>
+                                <th>Id</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">Estado</th>
+                                <th class="text-center">Costo</th>
                                 <th class="text-center">Precio sugerido</th>
                                 <th class="text-center">Precio designado</th>
                                 <th class="text-center">Categoria</th>
@@ -52,8 +56,9 @@
                         <tbody>
                             @foreach ($dishes as $item)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->id }}</td>
+                                <td class="text-center">{{ $item->name }}</td>
+                                <td class="text-center"> <span class="badge badge-light-{{ $item->statusColor() }}">{{ $item->status() }}</span> </td>
                                 <td class="text-center">{{ $item->cost_price }}</td>
                                 <td class="text-center">{{ $item->suggested_price }}</td>
                                 <td class="text-center">{{ $item->designated_price }}</td>
@@ -66,7 +71,8 @@
                                     <button class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $item->id }}, 
                                     '#delete_dish_', 
-                                    'este Plato' )"> 
+                                    'este Plato',
+                                    'IMPORTANTE: Si esté plato está registrado en un pedido, no podrá ser removido' )"> 
                                         <i data-feather="trash-2"></i> 
                                     </button>
 
