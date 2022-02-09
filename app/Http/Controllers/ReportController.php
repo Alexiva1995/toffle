@@ -210,9 +210,11 @@ class ReportController extends Controller
     public function sales()
     {
         $categories = Category::all();
+        $capital_available = Order::where('status', '2')->sum('total_amount');
 
         return view('admin.reports.sales')
-        ->with('categories', $categories);
+        ->with('categories', $categories)
+        ->with('capital_available', $capital_available);
     }
 
     public function salesData(Request $request)
@@ -255,7 +257,7 @@ class ReportController extends Controller
 
         return view('admin.reports.cash_flow.index')
             ->with('categories', $categories)
-            ->with('income', $income)
+            ->with('income', $income) 
             ->with('expenses', $expenses)
             ->with('capital_available', $capital_available);
     }
