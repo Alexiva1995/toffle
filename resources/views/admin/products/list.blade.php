@@ -47,7 +47,7 @@
                                     '{{ $product->mark }}', 
                                     {{ $product->gr }},
                                     {{ $product->units_reposition_alert }},
-                                    {{ $product->flavors }})"> 
+                                    {{ $product->it_has_flavors }})"> 
 
                                     <i data-feather="edit"></i> 
                                 </button> 

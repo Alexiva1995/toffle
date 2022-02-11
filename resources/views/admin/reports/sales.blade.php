@@ -14,6 +14,32 @@
 
 @section('content')
 <section id="basic-datatable">
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-12">
+                            <h4 class="card-text text-center mb-2">Total de ventas</h3>
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="avatar bg-light-success me-1">
+                                    <div class="avatar-content">
+                                        <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="my-auto">
+                                    <h4 class="fw-bolder mb-0">$
+                                        {{ number_format($capital_available, 2, '.', '') }}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="card p-2">

@@ -20,7 +20,13 @@ class Order extends Model
     public function dishes()
     {
         return $this->belongsToMany('App\Models\Dish', 'order_dish')
-                ->withPivot('id', 'order_id', 'dish_id', 'unit', 'price', 'cost', 'created_at', 'updated_at');
+                ->withPivot('id', 'order_id', 'dish_id', 'unit', 'price', 'cost', 'designated_price', 'created_at', 'updated_at');
+    }
+
+    public function ingredients()
+    {
+        return $this->belongsToMany('App\Models\Inventory', 'order_ingredient')
+                ->withPivot('id', 'order_id', 'order_dish_id', 'dish_id', 'inventory_id', 'portion', 'designated_cost', 'it_has_flavors', 'flavor_name', 'created_at', 'updated_at');
     }
 
     public function estado()
@@ -89,5 +95,20 @@ class Order extends Model
             ->first();
 
         return $order->profit;
+    }
+
+    public function productRequiresFlavor($order_id, $dish_id)
+    {
+        $order = Order::find($order_id);
+        $it_has_flavors = false;
+
+        foreach ($order->ingredients()->wherePivot('dish_id', $dish_id)->get() as $key => $item) {
+            if ($item->pivot->it_has_flavors == true) {
+                $it_has_flavors = true;
+            }
+        }
+
+        return $it_has_flavors;
+        
     }
 }

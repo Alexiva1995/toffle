@@ -142,11 +142,15 @@ Route::middleware('auth')->group(function () {
 
             // Orders
             Route::group(['prefix' => 'orders'], function () {
-                Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('dish.remove');
+                Route::delete('dish-remove/{id}', [OrdersController::class, 'dishRemove'])->name('order.dish.remove');
 
-                Route::post('{order_id}/dish-add', [OrdersController::class, 'dishAdd'])->name('dish.add');
+                Route::post('dish-add/{order_id}', [OrdersController::class, 'dishAdd'])->name('order.dish.add');
 
                 Route::get('order-table-data/{type}', [OrdersController::class, 'orderTableData'])->name('order.table.data');
+
+                Route::get('additional-modifications/{id}', [OrdersController::class, 'additionalModifications'])->name('order.additional.modifications');
+
+                Route::get('update-additional-modifications/{id}', [OrdersController::class, 'updateAdditionalModifications'])->name('order.update.additional.modifications');
 
             });
 
@@ -164,6 +168,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('show-order-details', [OrdersController::class, 'showOrderDetails'])->name('reports.show.order.details');
+
+    Route::get('modal-modify-ingredients', [OrdersController::class, 'modalModifyIngredients'])->name('orders.modal.modify.ingredients');
+
+    Route::get('add-ingredient-to-order', [OrdersController::class, 'addIngredientsToOrder'])->name('orders.add.ingredients');
 });
 
 // Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');

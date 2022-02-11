@@ -14,7 +14,7 @@
                             <h4 class="">Datos Requeridos</h4>
                         </div>
                         <div class="card-body px-2">
-                            <form class="form form-vertical" action="{{ route('dish.add', $order->id) }}" id="form_add_dish" method="POST">
+                            <form class="form form-vertical" action="{{ route('order.dish.add', $order->id) }}" id="form_add_dish" method="POST">
                                 @csrf
                                 <div class="row justify-content-center align-items-center">
                                     <div class="col-12 col-md-4 mb-1">

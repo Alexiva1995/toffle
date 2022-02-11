@@ -13,7 +13,7 @@ class Product extends Model
         'name',
         'mark',
         'gr',
-        'flavors',
+        'it_has_flavors',
         'units_reposition_alert',
     ];
 
