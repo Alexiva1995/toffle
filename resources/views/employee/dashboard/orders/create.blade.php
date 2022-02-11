@@ -260,11 +260,11 @@
 
       function deleteRow(row){
 
-          for( var i = 0; i < ids.length; i++){ 
-            if ( ids[i] === $("#dish_ids_"+row).val()) { 
-              ids.splice(i, 1); 
-            }
-          }
+        //   for( var i = 0; i < ids.length; i++){ 
+        //     if ( ids[i] === $("#dish_ids_"+row).val()) { 
+        //       ids.splice(i, 1); 
+        //     }
+        //   }
           
           $("#row_"+row).remove();
           numRows--;
