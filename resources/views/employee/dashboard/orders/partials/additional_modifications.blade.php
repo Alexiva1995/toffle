@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/wizard/bs-stepper.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
+
+    @include('panels.datatable.styles')
 @endsection
 
 @section('page-style')
@@ -82,7 +84,8 @@
                                 </div>
                                 
                                 <div class="table-responsive">
-                                    <table class="table" id="items_table">
+                                    <table class="table" id="dish_to_order_table"> </table>
+                                    {{-- <table class="table" id="items_table">
                                         <thead class="thead-light text-center">
                                             <th class="text-center">Plato</th>
                                             <th class="text-center">Cantidad</th>
@@ -107,7 +110,7 @@
                                                         {{ number_format( $item->pivot->unit *  $item->pivot->price, 2, '.', '' ) }}
                                                     </td>
                                                     <td class="text-center"> 
-                                                        @if ($order->productRequiresFlavor($order->id, $item->pivot->dish_id) == true)
+                                                        @if ($order->productRequiresFlavor($order->id, $item->pivot->id) == true)
                                                             <span class="text-danger"><i data-feather="edit"></i> </span>
                                                             Se debe agregar el sabor a uno de los ingredientes de este plato.
                                                         @else
@@ -122,14 +125,14 @@
                                                 </tr>
                                             @endforeach
                                         </tbody>
-                                    </table>           
+                                    </table>            --}}
                                 </div> 
 
                                 <div class="row justify-content-center mt-2">
                                     <div class="col-auto">
-                                        <button class="btn btn-primary" id="add_order">
-                                            <span class="loading_add_order mr-2"></span> Finalizar
-                                        </button>
+                                        <a href="{{ route('check.order.ingredients', $order->id) }}" class="btn btn-primary">
+                                            Finalizar
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -171,90 +174,115 @@
 @section('page-script')
   <!-- Page js files -->
   <script src="{{ asset(mix('js/scripts/forms/pickers/form-pickers.js')) }}"></script>
+  <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
 @endsection
 
 @section('custom-js')
+
+    @include('panels.datatable.scripts')
+
   <script>
 
-      submitForms('#add_order', '.loading_add_order', '#form_add_order');
+    submitForms('#add_order', '.loading_add_order', '#form_add_order');
 
-      numRows = 0;
-      
-    //   var ids = [];
+    function dataDetails(td, rowData) {
+        $(td).html(rowData.details);
+    }
 
-      function addRow(){
+    $(document).ready(function () {
+        table = $('#dish_to_order_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ordering: true,
+            searching: false, 
+            paging: false, 
+            info: false,
+            language: {
+                url: '{!! asset('data/datatable/Spanish.json') !!}'
+            },
+            ajax: {
+                url: '{!! route('orders.dishes.table.data', $order->id) !!}',
+                data: function (d) {
+                }
+            },
+            columns: [
+                {
+                    data: "name",
+                    name: "name",
+                    title: "Plato",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                },
+                {
+                    data: "pivot.unit",
+                    name: "pivot.unit",
+                    title: "Cantidad",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true
+                },
+                {
+                    data: "pivot.price",
+                    name: "pivot.price",
+                    title: "Precio Unitario",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                    render: function (data, type, row, meta) {
+                        return row.pivot.price.toFixed(2);
+                    }  
+                },
+                {
+                    data: "pivot.price",
+                    name: "pivot.price",
+                    title: "Total",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                    render: function (data, type, row, meta) {
+                        return ( row.pivot.price * row.pivot.unit ).toFixed(2);
+                    }  
+                },
+                {
+                    data: "details",
+                    name: "details",
+                    title: "Detalles",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true, 
+                    render: function (data, type, row) {
+                        return $("<div/>").html(row.details).text();
+                    }
+                },
+                {
+                    data: "pivot.id",
+                    name: "pivot.id",
+                    title: "Ingredientes",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                },
 
-        var repeated = false;
+            ],
+            fnCreatedRow: function (elemt, data, iDataIndex) {
+                var indice = iDataIndex + 1;
 
-        if ($("#selected_dish option:selected").val() == null || $("#selected_dish option:selected").val() == '') {
-            toastr['error']('', 'Debes seleccionar primero un plato, para luego añadirlo', {
-                  closeButton: true,
-                  tapToDismiss: false,
-            });
-        }else{
+                field=$('td:eq(5)', elemt);
+                buttons='';
 
-            // for(var i = 0; i < ids.length; i++){
-            //     if(ids[i] == $("#selected_dish option:selected").val() ){ 
-            //       repeated = true;
-            //     }           
-            // }
+                button = '<button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="edit"></i></button>'
+                buttons+=button;
+                field=field.html(buttons);
+            },
 
-            if (!repeated) {
-                // ids.push( $("#selected_dish option:selected").val() );
-                numRows++;
-                let content = '<tr id="row_'+numRows+'">\
-                <td><input type="text" name="dish[]" class="form-control dish text-center" id="dish_'+numRows+'" value="'+$("#selected_dish option:selected").text()+'" required disabled></td>\
-                <input type="hidden" name="dish_ids[]" class="form-control dish_ids text-center" id="dish_ids_'+numRows+'" value="'+$("#selected_dish option:selected").val()+'" required>\
-                <td><input type="number" name="unit[]" class="form-control units text-center" id="unit_'+numRows+'" value="'+$("#plate_quantity").val()+'" oninput="calculate('+numRows+')" required></td>\
-                <td><input type="text" name="price[]" class="form-control price text-center" id="price_'+numRows+'" value="'+$("#selected_dish option:selected").data("price").toFixed(2)+'" readonly required></td>\
-                <td><input type="text" name="total[]" class="form-control total text-center" id="total_'+numRows+'" value="'+$("#selected_dish option:selected").data("price")+'" readonly></td>\
-                <td><a href="javascript:;" onclick="deleteRow('+numRows+')"> <i class="text-danger" data-feather="x-circle"></i> </a></td>\
-                </tr>';
-                $("#items_table>tbody").append(content);
-                feather.replace();
-                $("#selected_dish").val("").trigger('change');
-                $("#plate_quantity").val("");
+            }).on('processing.dt', function (e, settings, processing) {
+            feather.replace();
+        });
 
-                calculate(numRows);
+    });
 
-            }else{
-              toastr['error']('', 'Este Plato ya fue añadido', {
-                  closeButton: true,
-                  tapToDismiss: false,
-              });
-            }
-        }
-      }
-
-      function deleteRow(row){
-
-          for( var i = 0; i < ids.length; i++){ 
-            if ( ids[i] === $("#dish_ids_"+row).val()) { 
-              ids.splice(i, 1); 
-            }
-          }
-          
-          $("#row_"+row).remove();
-          numRows--;
-
-          calculate(numRows);
-      }
-
-      function calculate(row){
-          let unit = $("#unit_"+row).val();
-          let price = $("#price_"+row).val();
-
-          $("#total_"+row).val( (parseInt(unit) * parseFloat(price)).toFixed(2) );
-          var total = 0;
-
-          for (var i = 1; i <= numRows; i++){
-              total += parseFloat($("#total_"+i).val());
-          }
-
-          $("#total_amount").val(total.toFixed(2));
-      }
-
-      function modifyIngredients(order_id, pivot_id, dish_id) {
+    function modifyIngredients(order_id, pivot_id, dish_id) {
         $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
             function (data, textStatus, jqXHR) {
                 $('.ingredients_details').html(data);
@@ -262,22 +290,103 @@
                 feather.replace();
             }
         );
-      }
+    }
 
-      function addIngredient(order_id, pivot_id, dish_id) {
-        $.post("{{ route('orders.add.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
+    function modalDataModifyIngredients(order_id, pivot_id, dish_id) {
+        $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
             function (data, textStatus, jqXHR) {
-              $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
-                function (data, textStatus, jqXHR) {
-                    $('.ingredients_details').html(data);
-                    // $("#modal_show_ingredients").modal("show");
-                    feather.replace();
-                }
-              );
+                $('.ingredients_details').html(data);
+                feather.replace();
             }
         );
+    }
 
-      }
+    function addIngredient(order_id, pivot_id, dish_id) {
+
+        if (($("#ingredient option:selected").val() == null || $("#ingredient option:selected").val() == '') || ($("#portion").val() == null || $("#portion").val() == '')) {
+          toastr['error']('', 'Debes seleccionar un ingrediente y la porción del mismo para agregarlo.', {
+              closeButton: true,
+              tapToDismiss: false,
+          });
+
+          $('#ingredient').addClass('is-invalid');
+          $('#portion').addClass('is-invalid');
+
+        }else{
+
+            var this_button = $('#add_ingredient_order');
+            this_button.attr('disabled', 'disabled').addClass('disabled');
+            $('#loading_add_ingredient_order').addClass('spinner-border spinner-border-sm');
+
+            $.post("{{ route('orders.add.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id, inventory_id: $("#ingredient option:selected").val(), portion: $("#portion").val()},
+                function (data, textStatus, jqXHR) {
+                    toastr['success']('', 'Ingrediente añadido exitosamente', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                    });
+
+                    modalDataModifyIngredients(order_id, pivot_id, dish_id);
+
+                    table.search('').draw();
+
+                    setTimeout(() => {
+                        this_button.removeAttr('disabled').removeClass('disabled');
+                        $('#loading_add_ingredient_order').removeClass('spinner-border spinner-border-sm');
+                    },1000)
+                }
+            );
+        }
+    }
+
+    function updateFlavorName(element, order_id, id) {
+        let input = element;
+
+        $.post("{{ route('orders.update.ingredients') }}", { order_id: order_id, id: id, flavor_name: $('#flavor_name_'+id).val()})
+        .done(function(data){
+            $(input).removeClass('is-invalid')
+            $(input).addClass('is-valid')
+            setTimeout(() => {
+                $(input).removeClass('is-valid')
+            },1000)
+
+            table.search('').draw();
+        })
+        .fail(function(xhr, status, error) {
+            $(input).addClass('is-invalid')
+        });
+    }
+
+    function deleteIngredient(order_id, pivot_id, dish_id, id) {
+
+        $.confirm({
+            title: 'Confirmar!',
+            content: 'Estas seguro que quieres eliminar este Ingrediente ?',
+            columnClass: 'col-12 col-md-4 col-xs-4',
+            containerFluid: true,
+            buttons: {
+                confirm: {
+                    text: 'Eliminar',
+                    btnClass: 'btn-danger',
+                    action: function () {
+                        $.post("{{ route('orders.remove.ingredients') }}", { order_id: order_id, id: id, pivot_id:pivot_id, dish_id: dish_id },
+                            function (data, textStatus, jqXHR) {
+                                toastr['success']('', 'El Ingrediente fue Removido exitosamente', {
+                                    closeButton: true,
+                                    tapToDismiss: false,
+                                });
+
+                                modalDataModifyIngredients(order_id, pivot_id, dish_id);
+
+                                table.search('').draw();
+                            }
+                        );
+                    }
+                },
+                cancelar: function () {
+                },
+            }
+        });
+    }
   </script>
 @endsection
 

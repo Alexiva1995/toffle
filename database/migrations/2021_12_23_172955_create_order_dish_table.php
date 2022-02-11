@@ -20,7 +20,6 @@ class CreateOrderDishTable extends Migration
             $table->integer('unit');
             $table->double('price');
             $table->double('cost');
-            $table->double('designated_price');
             $table->timestamps();
         });
     }

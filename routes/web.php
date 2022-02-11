@@ -171,7 +171,16 @@ Route::middleware('auth')->group(function () {
 
     Route::get('modal-modify-ingredients', [OrdersController::class, 'modalModifyIngredients'])->name('orders.modal.modify.ingredients');
 
-    Route::get('add-ingredient-to-order', [OrdersController::class, 'addIngredientsToOrder'])->name('orders.add.ingredients');
+    Route::post('add-ingredient-to-order', [OrdersController::class, 'addIngredientsOrder'])->name('orders.add.ingredients');
+
+    Route::post('update-ingredient-to-order', [OrdersController::class, 'updateIngredientsOrder'])->name('orders.update.ingredients');
+
+    Route::post('remove-ingredient-to-order', [OrdersController::class, 'removeIngredientsOrder'])->name('orders.remove.ingredients');
+
+    Route::get('order-dishes-table-data/{id}', [OrdersController::class, 'orderDishesTableData'])->name('orders.dishes.table.data');
+
+    Route::get('check-order-ingredients/{id}', [OrdersController::class, 'checkOrderIngredients'])->name('check.order.ingredients');
+
 });
 
 // Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
