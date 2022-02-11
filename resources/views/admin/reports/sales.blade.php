@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <div class="row justify-content-center">
                         <div class="col-md-6 col-12">
-                            <h4 class="card-text text-center mb-2">Total de ventas</h3>
+                            <h4 class="card-text text-center mb-2">Total de Ventas</h3>
                             <div class="d-flex flex-row justify-content-center">
                                 <div class="avatar bg-light-success me-1">
                                     <div class="avatar-content">

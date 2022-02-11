@@ -7,22 +7,22 @@
 <div class="modal-body p-3">
 
     <div class="row justify-content-center">
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-4 col-sm-6">
             <label class="form-label" for="ingredient">Ingrediente</label>
             <select class="select2 form-control" data-toggle="select"
                 class="form-control" name="ingredient" id="ingredient">
                 <option disabled selected value="">Selecciona un Ingrediente</option>
                 @foreach ($ingredients as $item)
-                    <option data-gr="{{ $item->product->gr }}" data-cost="{{ $item->cost }}" value="ingredient_{{ $item->id }}">{{ $item->product->name }}</option>
+                    <option data-gr="{{ $item->product->gr }}" data-cost="{{ $item->cost }}" value="{{ $item->id }}">{{ $item->product->name }}</option>
                 @endforeach
             </select>
         </div>
 
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-4 col-sm-6">
             <div class="mb-1">
                 <label class="form-label" for="portion">Porcion en Gramos</label>
                 <div class="input-group input-group-merge ">
-                    <input type="number" id="portion_dish"
+                    <input type="number" id="portion"
                         class="form-control requerid @error('portion') is-invalid @enderror"
                         name="portion" required />
                     @error('portion')
@@ -34,22 +34,23 @@
             </div>
         </div>
 
-        <div class="col-12 col-md-4 mt-2">
+        <div class="col-12 col-md-4 col-sm-6 mt-2">
             <button class="btn btn-primary" id="btn_add_ingredient"
-                onclick="addIngredient({{ $order->id }}, {{ $pivot_id }}, {{ $dish->id }});">Añadir ingrediente</button>
+                onclick="addIngredient({{ $order->id }}, {{ $pivot_id }}, {{ $dish->id }});" id="add_ingredient_order">
+                <span class="loading_add_ingredient_order mr-2"></span>
+                Añadir ingrediente
+            </button>
         </div>
+
 
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-4">
-            <label for="">Precio del Plato</label>
-            <input type="text" name="flavor_name" class="form-control text-center" id="total_amount" value="{{ $dish->designated_price }}" required>
+    <div class="row justify-content-center mt-2">
+        <div class="col-auto">
+            <h5 class="text-center">Precio del Plato: {{ $order_dish->pivot->price }} </h5>
         </div>
-
-        <div class="col-12 col-md-4">
-            <label for="">Porcentaje de Ganancia</label>
-            <input type="text" name="flavor_name" class="form-control text-center" id="total_amount" value="{{ $dish->percentage_profit }}" required>
+        <div class="col-auto">
+            <h5 class="text-center">Porcentaje de Ganancia: {{ $dish->percentage_profit }} %</h5>
         </div>
     </div>
     <div class="row justify-content-center align-items-center">
@@ -58,8 +59,8 @@
                 <thead>
                     <th class="text-center">Ingrediente</th>
                     <th class="text-center">Porción</th>
-                    <th class="text-center">Costo Designado</th>
-                    <th class="text-center">Sabor</th>
+                    <th class="text-center">Costo</th>
+                    <th class="text-center" colspan="2">Nombre del Sabor</th>
                     <th class="text-center">Acción</th>
                 </thead>
                 <tbody>
@@ -74,18 +75,16 @@
                             <td class="text-center">
                                 {{ number_format( $order_ingredient->pivot->designated_cost, 2, '.', '' ) }}
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" colspan="2">
                                 @if ($order_ingredient->pivot->it_has_flavors == true)
-                                    <input type="text" name="flavor_name" class="form-control text-center" id="flavor_name_{{ $order_ingredient->pivot->id }}" value="" required placeholder="Nombre">
+                                    <input type="text" name="flavor_name" class="form-control text-center" id="flavor_name_{{ $order_ingredient->pivot->id }}" value="{{ $order_ingredient->pivot->flavor_name }}" onchange="updateFlavorName( this, {{ $order->id }}, {{ $order_ingredient->pivot->id }})" required>
                                 @else
                                     <span class="text-info"> ----- </span> 
                                 @endif
                             </td>
                             <td class="text-center"> 
                                 <button class="btn btn-sm btn-danger"
-                                onclick="deleteElement( {{ $order_ingredient->pivot->id }}, 
-                                '#delete_ingredient_', 
-                                'este Ingrediente de este Plato' )"> 
+                                onclick="deleteIngredient( {{ $order->id }}, {{ $pivot_id }}, {{ $dish->id }}, {{ $order_ingredient->pivot->id }} )"> 
                                     <i data-feather="trash-2"></i> 
                                 </button>
                             </td>

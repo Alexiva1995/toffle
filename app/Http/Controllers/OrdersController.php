@@ -333,8 +333,6 @@ class OrdersController extends Controller
         }
 
         return redirect()->route('orders.edit', $request->order_id)->with('success', 'Plato Removido de la Órden');
-
-
     }
 
     public function dishAdd(Request $request, $order_id)
@@ -405,6 +403,9 @@ class OrdersController extends Controller
 
         $order_ingredients = $order->ingredients()->wherePivot('order_dish_id', $request->pivot_id)->get();
 
+        $order_dish= $order->dishes()->
+        wherePivot('id', $request->pivot_id)->first();
+
         $ingredients = Inventory::orderBy('id', 'DESC')->get();
 
         $dish = Dish::where('id', $request->dish_id)->first();
@@ -414,20 +415,109 @@ class OrdersController extends Controller
         return view('employee.dashboard.orders.modals.modify_ingredients')
             ->with('dish', $dish)
             ->with('order_ingredients', $order_ingredients)
+            ->with('order_dish', $order_dish)
             ->with('ingredients', $ingredients)
             ->with('order', $order)
             ->with('pivot_id', $pivot_id)
             ->render();
     }
 
-    public function addIngredientsToOrder(Request $request)
+    public function addIngredientsOrder(Request $request)
     {
-        $inventory = Inventory::
         $order = Order::where('id', $request->order_id)->first();
-
-        $ingredients = Inventory::orderBy('id', 'DESC')->get();
-
+        $inventory = Inventory::where('id', $request->inventory_id)->first();
         $dish = Dish::where('id', $request->dish_id)->first();
 
+        $cost = $inventory->cost;
+        $gr = $inventory->product->gr;
+        $cost_ingredient = number_format( ($request->portion * $cost) / $gr, 2, '.', '');
+
+        $order->ingredients()->attach( [ $order->id => 
+            [
+                'order_id' => $order->id,
+                'order_dish_id' => $request->pivot_id,
+                'dish_id' => $request->dish_id,
+                'inventory_id' => $request->inventory_id,
+                'portion' => $request->portion,            
+                'designated_cost' => $cost_ingredient,
+                'it_has_flavors' => $inventory->product->it_has_flavors,
+            ]
+        ]);
+
+        $order->calculatePriceDish($order, $request->pivot_id, $dish);
+
+        return $order;
+    }
+
+    public function updateIngredientsOrder(Request $request)
+    {
+        $fields = [
+            'flavor_name' => ['required'],
+        ];
+
+        $msj = [
+            'flavor_name.required' => 'El nombre del cliente es requerido.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $order = Order::where('id', $request->order_id)->first();
+
+        $order->ingredients()->wherePivot('id', $request->id)->update([
+            'flavor_name' => $request->flavor_name,
+        ]);
+    }
+
+    public function removeIngredientsOrder(Request $request)
+    {
+        $order = Order::where('id', $request->order_id)->first();
+
+        $order->ingredients()->wherePivot('id', $request->id)->detach();
+        $dish = Dish::where('id', $request->dish_id)->first();
+
+        $order->calculatePriceDish($order, $request->pivot_id, $dish);
+    }
+
+    public function orderDishesTableData(Request $request, $id)
+    {
+        $order = Order::where('id', $id)->first();
+
+        $ingredients = $order->dishes;
+
+        // dd($ingredients);
+            
+        return Datatables::of($ingredients)->filter(function ($query) use($request) {
+        }, true)
+        ->addColumn('details', function ($ingredients) use($order) {
+            if ($order->productRequiresFlavor($order->id, $ingredients->pivot->id) == true) {
+                return '<span class="text-danger"><i data-feather="edit"></i> </span>
+                Se debe agregar el sabor a uno de los ingredientes de este plato.';
+            }else{
+                return '<span class="text-center text-primary"> ---- </span>';
+            }
+        })
+        ->toJson();
+    }
+
+    public function checkOrderIngredients($id)
+    {
+        $order = Order::where('id', $id)->first();
+
+        $ingredients = $order->ingredients()->get();
+
+        $validate = true;
+
+        foreach ($ingredients as $key => $item) {
+            if ($item->pivot->it_has_flavors == true && $item->pivot->flavor_name == null) {
+                $validate = false;
+            }
+        }
+
+        if ($validate == false) {
+            return redirect()->route('order.additional.modifications', $order->id)->with('danger', 'Hay Platos aún con Detalles (Debe agregarle los sabores correspondientes en los ingredientes a los platos con Detalles Pendientes)');
+        }else{
+            return redirect()->route('dashboard-employee');
+        }
+        
     }
 }

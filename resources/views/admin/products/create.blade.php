@@ -71,7 +71,7 @@
                             <div class="d-flex justify-content-center @error('it_has_flavors') is-invalid @enderror">
                                 <div class="form-check form-check-inline">
                                     <input type="hidden" name="it_has_flavors" value="0"/>
-                                    <input class="form-check-input border border-primary @error('it_has_flavors') is-invalid @enderror" type="checkbox" name="it_has_flavors" id="flavors" value="1" />
+                                    <input class="form-check-input border border-primary @error('it_has_flavors') is-invalid @enderror" type="checkbox" name="it_has_flavors" id="it_has_flavors" value="1" />
                                     <label class="form-check-label" for="it_has_flavors">Sabores</label>
                                 </div>
                             </div>
