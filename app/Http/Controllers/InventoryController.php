@@ -37,23 +37,44 @@ class InventoryController extends Controller
 
     public function addProductToInventory(Request $request)
     {
-        $fields = [
-            'product_id' => ['required'],
-            'qty_package' => ['required'],
-            'unit_package' => ['required'],
-            'price' => ['required'],
-        ];
+
+        if ($request->it_has_flavors == true) {
+            $fields = [
+                'product_id' => ['required'],
+                'qty_package' => ['required'],
+                'unit_package' => ['required'],
+                'price' => ['required'],
+                'flavor_name' => ['required'],
+            ];
+        }else{
+            $fields = [
+                'product_id' => ['required'],
+                'qty_package' => ['required'],
+                'unit_package' => ['required'],
+                'price' => ['required'],
+            ];
+        }
 
         $msj = [
             'product_id.required' => 'El producto es requerido.',
             'qty_package.required' => 'La cantidad de bultos es requerida.',
             'unit_package.required' => 'La unidad del bulto es requerida.',
             'price.required' => 'El precio es requerido.',
+            'flavor_name.required' => 'El nombre del sabor es requerido.', 
         ];
 
         $this->validate($request, $fields, $msj);
+        
+        if ($request->it_has_flavors == true) {
+            $flavor_name = strtolower($request->flavor_name);
 
-        $inventory = Inventory::where('product_id', $request->product_id)->first();
+            $inventory = Inventory::where('product_id', $request->product_id)
+                ->where('flavor_name', $flavor_name)
+                ->first(); 
+        }else{
+            $inventory = Inventory::where('product_id', $request->product_id)->first(); 
+        }
+
         if ($inventory == null) {
             $this->store($request);
         }else{
@@ -72,6 +93,7 @@ class InventoryController extends Controller
     {
         $deposit = ($request->qty_package * $request->unit_package);
         $inventory = Inventory::create($request->all());
+        $inventory->flavor_name = $request->it_has_flavors == true ? strtolower($request->flavor_name) : null;
         $inventory->deposit = $deposit;
         $inventory->total = $deposit + $inventory->local + $inventory->public;
         $inventory->cost = number_format($request->price / $request->unit_package, 2, '.', '');
@@ -118,7 +140,7 @@ class InventoryController extends Controller
             'local' => $inventory->local,
             'public' => $inventory->public,
         ]);
-
+ 
         $cost_product = $inventory->cost;
         $gr_product = $inventory->product->gr;
 

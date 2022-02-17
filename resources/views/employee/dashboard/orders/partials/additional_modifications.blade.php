@@ -6,7 +6,6 @@
     <!-- vendor css files -->
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/wizard/bs-stepper.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
 
     @include('panels.datatable.styles')
@@ -15,7 +14,6 @@
 @section('page-style')
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
 @endsection
 
@@ -85,47 +83,6 @@
                                 
                                 <div class="table-responsive">
                                     <table class="table" id="dish_to_order_table"> </table>
-                                    {{-- <table class="table" id="items_table">
-                                        <thead class="thead-light text-center">
-                                            <th class="text-center">Plato</th>
-                                            <th class="text-center">Cantidad</th>
-                                            <th class="text-center">Precio Unitario</th>
-                                            <th class="text-center">Total</th>
-                                            <th class="text-center">Detalles</th>
-                                            <th class="text-center">Ingredientes</th>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($order->dishes()->get() as $item)
-                                                <tr>
-                                                    <td class="text-center">
-                                                        {{ $item->name }}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        {{ $item->pivot->unit }}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        {{ number_format( $item->pivot->price, 2, '.', '' ) }}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        {{ number_format( $item->pivot->unit *  $item->pivot->price, 2, '.', '' ) }}
-                                                    </td>
-                                                    <td class="text-center"> 
-                                                        @if ($order->productRequiresFlavor($order->id, $item->pivot->id) == true)
-                                                            <span class="text-danger"><i data-feather="edit"></i> </span>
-                                                            Se debe agregar el sabor a uno de los ingredientes de este plato.
-                                                        @else
-                                                            <span class="text-center text-primary"> ---- </span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-center"> 
-                                                        <button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, {{ $item->pivot->id }}, {{ $item->pivot->dish_id }})"> 
-                                                            <i data-feather="edit"></i> 
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>            --}}
                                 </div> 
 
                                 <div class="row justify-content-center mt-2">
@@ -166,7 +123,6 @@
   <script src="{{ asset(mix('vendors/js/pickers/pickadate/picker.time.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/pickadate/legacy.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/forms/wizard/bs-stepper.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
 @endsection

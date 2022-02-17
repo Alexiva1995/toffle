@@ -167,6 +167,17 @@
                   tapToDismiss: false,
               });
           });
+
+          $('#create_product_id').change( function() {
+              var flavor = $("option:selected", this).data('flavor');
+              $("#it_has_flavors").val(flavor);
+
+              if (flavor == true) {
+                $('.flavor-name').removeClass('d-none');
+              }else{
+                $('.flavor-name').addClass('d-none');
+              }
+          });
       });
     </script>
 @endsection

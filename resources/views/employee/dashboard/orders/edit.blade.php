@@ -3,10 +3,16 @@
 @section('title', 'Editar Pedido')
 
 @section('vendor-style')
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
+@include('panels.datatable.styles')
 @endsection
 
 @section('page-style')
-
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
 @endsection
 
 @section('content')
@@ -81,14 +87,14 @@
                     </form>
 
                     <div class="row justify-content-center mb-3">
-                        <form class="form form-vertical" action="{{ route('order.dish.add') }}" id="form_add_order" method="POST">
+                        <form class="form form-vertical" action="{{ route('order.dish.add', $order->id) }}" id="form_add_order" method="POST">
                             @csrf
                             <div class="row justify-content-center align-items-center">
-                                <div class="col-12 mb-1">
+                                <div class="col-12">
                                     <div class="mb-1">
                                         <h5 class="mb-2 text-center">Añadir Platos</h5>
                                         <div class="row justify-content-center">
-                                            <div class="col-12 col-md-4">           
+                                            <div class="col-12 col-md-4 mb-1">           
                                                 <select class="select2 form-control" data-toggle="select" class="form-control" id="selected_dish">
                                                     <option disabled selected value=''>Selecciona un Plato</option>
                                                     @foreach ($dish_category as $item)
@@ -103,12 +109,12 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-12 col-md-4">
+                                            <div class="col-12 col-md-4 mb-1">
                                                 <input type="number" id="plate_quantity" class="form-control" placeholder="Cantidad"/>
                                             </div>
 
                                             <div class="col-auto">
-                                                <button type="button" class="btn btn-info">
+                                                <button type="submit" class="btn btn-info">
                                                     <i class="" data-feather="plus-circle"></i> Añadir</button>
                                             </div>
                                         </div>
@@ -118,54 +124,20 @@
                         </form> 
                     </div>
 
-                    <div class="table-responsive">
-                        <table class="table" id="items_table">
-                            <thead class="thead-light text-center">
-                                <th class="col-5">Plato</th>
-                                <th class="col-2">N°</th>
-                                <th class="col-2">Precio Unitario</th>
-                                <th class="col-2">Total</th>
-                                <th class="col-2"></th>
-                            </thead>
-                            <tbody>
-                                @foreach ($order->dishes()->get() as $item)
-                                    <tr id="edit_dish_to_order_{{ $item->pivot->id  }}">
-                                        <td>
-                                            <input type="text" name="dish" class="form-control dish" id="dish_{{ $item->pivot->id }}" value="{{ $item->name }}" required disabled>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="unit" class="form-control units" id="unit_{{ $item->pivot->id }}" value="{{ $item->pivot->unit }}" oninput="updateDish( {{ $item->pivot->id }}, this )" required>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="price" class="form-control price" id="price_{{ $item->pivot->id }}" value="{{ number_format( $item->pivot->price, 2, '.', '' ) }}" oninput="updateDish( {{ $item->pivot->id }}, this )" required>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="total" class="form-control total" id="total_{{ $item->pivot->id }}" value="{{ number_format( $item->pivot->unit *  $item->pivot->price, 2, '.', '' ) }}" readonly>
-                                        </td>
-                                        <td class="text-center"> 
-                                            <button class="btn btn-sm btn-danger"
-                                            onclick="deleteElement( {{ $item->pivot->id }}, 
-                                            '#delete_dish_', 
-                                            'este Plato' )"> 
-                                                <i data-feather="trash-2"></i> 
-                                            </button>
-        
-                                            <form id="delete_dish_{{ $item->pivot->id }}" action="{{ route('order.dish.remove', $item->pivot->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="hidden" name="order_id" value="{{ $order->id }}">                                      
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr style="font-weight: bold; font-size: 14px;">
-                                    <td style="border-top: none !important;"></td>
-                                    <td colspan="2" class="text-right">TOTAL</td>
-                                    <td colspan="2" class="text-right" style="padding-right: 20px;"><input type="text" class="form-control" name="total_amount" id="total_amount" value="{{ number_format($order->total_amount, 2, '.','') }}" style="border: none !important; font-size: 14px !important;" readonly></td>
-                                </tr>
-                            </tfoot>
+                    <div class="row justify-content-center my-2">
+                        <div class="col-auto">
+
+                            <div class="mb-1 row justify-content-center align-items-center">
+                                <label for="total_amount" class="col-auto" style="font-size:15px">Monto Total:</label>
+                                <div class="col-auto">
+                                  <input type="number" id="total_amount" class="form-control requerid" name="total_amount" value="{{ $order->total_amount }}" readonly/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mb-3 mx-2">
+                        <table class="table" id="dish_to_order_table">
                         </table>           
                     </div> 
                 </div>
@@ -174,7 +146,18 @@
     </div> 
 </section>
 
-{{-- @include('employee.dashboard.orders.modals.add_dish') --}}
+<div
+  class="modal fade text-start"
+  id="modal_show_ingredients"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content ingredients_details">
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -184,59 +167,62 @@
 
 @section('page-script')
 
+<script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
 @endsection
 
 @section('custom-js')
+
+    @include('panels.datatable.scripts')
     <script>
 
         submitForms('#add_dish', '.loading_add_dish', '#form_add_dish');
 
         var array_dish = {{ $array_dish }}; 
 
-        function updateDish(id, element){
-            let item = {}
-            let input = element
+        // function updateDish(id, element){
+        //     let item = {}
+        //     let input = element
 
-            let unit = $("#unit_"+id).val();
-            let price = $("#price_"+id).val();
+        //     let unit = $("#unit_"+id).val();
+        //     let price = $("#price_"+id).val();
 
-            $("#total_"+id).val(parseInt(unit) * parseFloat(price));
-            var total = 0;
+        //     $("#total_"+id).val(parseInt(unit) * parseFloat(price));
+        //     var total = 0;
 
-            for (var i = 0; i < array_dish.length; i++){
-                total += parseFloat($("#total_"+array_dish[i]).val());
-            }
+        //     for (var i = 0; i < array_dish.length; i++){
+        //         total += parseFloat($("#total_"+array_dish[i]).val());
+        //     }
 
-            $("#total_amount").val(total);
+        //     $("#total_amount").val(total);
 
-            item ['form'] = 'edit_order_dish';
-            item ['id'] = id;
-            item [element.attributes.name.value] = element.value;
-            item ['total_amount'] = $('#total_amount').val();
+        //     item ['form'] = 'edit_order_dish';
+        //     item ['id'] = id;
+        //     item [element.attributes.name.value] = element.value;
+        //     item ['total_amount'] = $('#total_amount').val();
 
-            item ['_method'] = 'PATCH';
-            $.post('{{ route('orders.update', $order->id) }}', item)
-            .done(function(data){
-                $(input).removeClass('is-invalid')
-                $(input).addClass('is-valid')
-                setTimeout(() => {
-                    $(input).removeClass('is-valid')
-                },1000)
-            })
-            .fail(function(data) {
-                data_errors = data.responseJSON.errors;
+        //     item ['_method'] = 'PATCH';
+        //     $.post('{{ route('orders.update', $order->id) }}', item)
+        //     .done(function(data){
+        //         $(input).removeClass('is-invalid')
+        //         $(input).addClass('is-valid')
+        //         setTimeout(() => {
+        //             $(input).removeClass('is-valid')
+        //         },1000)
+        //     })
+        //     .fail(function(data) {
+        //         data_errors = data.responseJSON.errors;
 
-                errors = Object.values(data_errors);
+        //         errors = Object.values(data_errors);
 
-                for (var i = 0; i < errors.length; i++){
-                    toastr['error']('', errors[i][0], {
-                        closeButton: true,
-                        tapToDismiss: false,
-                    });
-                }
-                $(input).addClass('is-invalid')
-            });
-        }
+        //         for (var i = 0; i < errors.length; i++){
+        //             toastr['error']('', errors[i][0], {
+        //                 closeButton: true,
+        //                 tapToDismiss: false,
+        //             });
+        //         }
+        //         $(input).addClass('is-invalid')
+        //     });
+        // }
 
         function editOrder(element) {
             // console.log('probando');
@@ -273,10 +259,209 @@
             });
         }
 
+        function dataDetails(td, rowData) {
+            $(td).html(rowData.details);
+        }
+
+
+        function modifyIngredients(order_id, pivot_id, dish_id) {
+            $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
+                function (data, textStatus, jqXHR) {
+                    $('.ingredients_details').html(data);
+                    $("#modal_show_ingredients").modal("show");
+                    feather.replace();
+                }
+            );
+        }
+
+        function modalDataModifyIngredients(order_id, pivot_id, dish_id) {
+            $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
+                function (data, textStatus, jqXHR) {
+                    $('.ingredients_details').html(data);
+                    feather.replace();
+                }
+            );
+        }
+
+        function addIngredient(order_id, pivot_id, dish_id) {
+
+            if (($("#ingredient option:selected").val() == null || $("#ingredient option:selected").val() == '') || ($("#portion").val() == null || $("#portion").val() == '')) {
+                toastr['error']('', 'Debes seleccionar un ingrediente y la porción del mismo para agregarlo.', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                });
+
+                $('#ingredient').addClass('is-invalid');
+                $('#portion').addClass('is-invalid');
+
+            }else{
+
+                var this_button = $('#add_ingredient_order');
+                this_button.attr('disabled', 'disabled').addClass('disabled');
+                $('#loading_add_ingredient_order').addClass('spinner-border spinner-border-sm');
+
+                $.post("{{ route('orders.add.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id, inventory_id: $("#ingredient option:selected").val(), portion: $("#portion").val()},
+                    function (data, textStatus, jqXHR) {
+                        toastr['success']('', 'Ingrediente añadido exitosamente', {
+                            closeButton: true,
+                            tapToDismiss: false,
+                        });
+
+                        modalDataModifyIngredients(order_id, pivot_id, dish_id);
+
+                        table.search('').draw();
+
+                        setTimeout(() => {
+                            this_button.removeAttr('disabled').removeClass('disabled');
+                            $('#loading_add_ingredient_order').removeClass('spinner-border spinner-border-sm');
+                        },1000)
+                    }
+                );
+            }
+        }
+
+        function updateFlavorName(element, order_id, id) {
+            let input = element;
+
+            $.post("{{ route('orders.update.ingredients') }}", { order_id: order_id, id: id, flavor_name: $('#flavor_name_'+id).val()})
+            .done(function(data){
+                $(input).removeClass('is-invalid')
+                $(input).addClass('is-valid')
+                setTimeout(() => {
+                    $(input).removeClass('is-valid')
+                },1000)
+
+                table.search('').draw();
+            })
+            .fail(function(xhr, status, error) {
+                $(input).addClass('is-invalid')
+            });
+        }
+
+        function deleteIngredient(order_id, pivot_id, dish_id, id) {
+
+            $.confirm({
+                title: 'Confirmar!',
+                content: 'Estas seguro que quieres eliminar este Ingrediente ?',
+                columnClass: 'col-12 col-md-4 col-xs-4',
+                containerFluid: true,
+                buttons: {
+                    confirm: {
+                        text: 'Eliminar',
+                        btnClass: 'btn-danger',
+                        action: function () {
+                            $.post("{{ route('orders.remove.ingredients') }}", { order_id: order_id, id: id, pivot_id:pivot_id, dish_id: dish_id },
+                                function (data, textStatus, jqXHR) {
+                                    toastr['success']('', 'El Ingrediente fue Removido exitosamente', {
+                                        closeButton: true,
+                                        tapToDismiss: false,
+                                    });
+
+                                    modalDataModifyIngredients(order_id, pivot_id, dish_id);
+                                    table.search('').draw();
+                                }
+                            );
+                        }
+                    },
+                    cancelar: function () {
+                    },
+                }
+            });
+        }
+
         $(document).ready(function() {
             $('#dish_id').change( function() {
                 var price = $('option:selected',this).data("price");
                 $('#price').val(price);
+            });
+
+            table = $('#dish_to_order_table').DataTable({
+                processing: true,
+                serverSide: true,
+                ordering: true,
+                searching: false, 
+                paging: false, 
+                info: false,
+                language: {
+                    url: '{!! asset('data/datatable/Spanish.json') !!}'
+                },
+                ajax: {
+                    url: '{!! route('orders.dishes.table.data', $order->id) !!}',
+                    data: function (d) {
+                    }
+                },
+                columns: [
+                    {
+                        data: "name",
+                        name: "name",
+                        title: "Plato",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true,
+                    },
+                    {
+                        data: "pivot.unit",
+                        name: "pivot.unit",
+                        title: "Cantidad",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true
+                    },
+                    {
+                        data: "pivot.price",
+                        name: "pivot.price",
+                        title: "Precio Unitario",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true,
+                        render: function (data, type, row, meta) {
+                            return row.pivot.price.toFixed(2);
+                        }  
+                    },
+                    {
+                        data: "pivot.price",
+                        name: "pivot.price",
+                        title: "Total",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true,
+                        render: function (data, type, row, meta) {
+                            return ( row.pivot.price * row.pivot.unit ).toFixed(2);
+                        }  
+                    },
+                    {
+                        data: "details",
+                        name: "details",
+                        title: "Detalles",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true, 
+                        render: function (data, type, row) {
+                            return $("<div/>").html(row.details).text();
+                        }
+                    },
+                    {
+                        data: "pivot.id",
+                        name: "pivot.id",
+                        title: "Ingredientes",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true,
+                    },
+                ],
+                fnCreatedRow: function (elemt, data, iDataIndex) {
+                    var indice = iDataIndex + 1;
+
+                    field=$('td:eq(5)', elemt);
+                    buttons='';
+
+                    button = '<button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="edit"></i></button>'
+                    buttons+=button;
+                    field=field.html(buttons);
+                },
+
+                }).on('processing.dt', function (e, settings, processing) {
+                feather.replace();
             });
         });
     </script>
