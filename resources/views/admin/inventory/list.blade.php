@@ -36,7 +36,7 @@
                         <tr>
                             {{-- <td>{{ $loop->iteration }}</td> --}}
                             <td>{{ $inventory->id }}</td>
-                            <td class="text-center">{{ $inventory->product->name }}</td>
+                            <td class="text-center">{{ $inventory->product->name }} {{ $inventory->flavor_name != null ? '('.ucwords($inventory->flavor_name).')' : '' }}</td>
                             <td class="text-center">{{ $inventory->total }}</td>
                             <td class="text-center px-3"> 
                                 <div class="d-flex">

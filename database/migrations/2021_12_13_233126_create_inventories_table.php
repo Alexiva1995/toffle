@@ -16,6 +16,7 @@ class CreateInventoriesTable extends Migration
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id');
+            $table->string('flavor_name')->nullable();
             $table->integer('qty_package');
             $table->integer('unit_package');
             $table->double('price');
