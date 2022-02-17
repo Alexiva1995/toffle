@@ -13,7 +13,7 @@
                 class="form-control" name="ingredient" id="ingredient">
                 <option disabled selected value="">Selecciona un Ingrediente</option>
                 @foreach ($ingredients as $item)
-                    <option data-gr="{{ $item->product->gr }}" data-cost="{{ $item->cost }}" value="{{ $item->id }}">{{ $item->product->name }}</option>
+                    <option data-gr="{{ $item->product->gr }}" data-cost="{{ $item->cost }}" value="{{ $item->id }}">{{ $item->product->name }} {{ $item->flavor_name != null ? '('.ucwords($item->flavor_name).')' : '' }}</option>
                 @endforeach
             </select>
         </div>

@@ -515,7 +515,7 @@ class OrdersController extends Controller
         $order = Order::where('id', $request->order_id)->first();
 
         $order->ingredients()->wherePivot('id', $request->id)->update([
-            'flavor_name' => $request->flavor_name,
+            'order_ingredient.flavor_name' => $request->flavor_name,
         ]);
     }
 

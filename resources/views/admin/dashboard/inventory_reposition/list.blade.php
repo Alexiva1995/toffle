@@ -28,7 +28,7 @@
                                     {{ $inventory->id }}
                                 </td>  
                                 <td class="text-center text-dark"> 
-                                    {{ $inventory->product->name }}
+                                    {{ $inventory->product->name }} {{ $inventory->flavor_name != null ? '('.ucwords($inventory->flavor_name).')' : '' }}
                                 </td>  
                                 <td class="text-center"> 
                                     <span class="badge badge-light-info text white"> 
