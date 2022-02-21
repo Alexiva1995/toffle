@@ -23,11 +23,11 @@
       @include('admin.dashboard.reports.sales_vs_gain')
     </div>
 
-    <div class="col-lg-6 col-12">
+    <div class="col-12">
       @include('admin.dashboard.money_flow.list')
     </div>
 
-    <div class="col-lg-6 col-12">
+    <div class="col-12">
       @include('admin.dashboard.inventory_reposition.list')
     </div>
 

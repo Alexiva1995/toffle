@@ -45,6 +45,8 @@ class DashboardController extends Controller
 
     $orders = Order::all();
 
+    $orders_today = Order::where('status', '2')->whereDate('created_at', '=', Carbon::now()->format('Y-m-d'))->get();
+
     $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
 
     $dishes_under_review = Dish::where('status', '2')
@@ -57,6 +59,7 @@ class DashboardController extends Controller
       ->with('tables', $tables)
       ->with('inventories', $inventories)
       ->with('dishes_under_review', $dishes_under_review)
+      ->with('orders_today', $orders_today)
       ->with('orders', $orders);
   }
 
