@@ -87,7 +87,7 @@
                     </form>
 
                     <div class="row justify-content-center mb-3">
-                        <form class="form form-vertical" action="{{ route('order.dish.add', $order->id) }}" id="form_add_order" method="POST">
+                        <form class="form form-vertical" action="{{ route('order.add.dish', $order->id) }}" id="form_add_order" method="POST">
                             @csrf
                             <div class="row justify-content-center align-items-center">
                                 <div class="col-12">
@@ -146,18 +146,6 @@
     </div> 
 </section>
 
-<div
-  class="modal fade text-start"
-  id="modal_show_ingredients"
-  tabindex="-1"
-  aria-labelledby="myModalLabel1"
-  aria-hidden="true"
->
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content ingredients_details">
-        </div>
-    </div>
-</div>
 
 @endsection
 

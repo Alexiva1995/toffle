@@ -5,10 +5,13 @@
 
 @section('vendor-style')
   {{-- vendor css files --}}
+  <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/wizard/bs-stepper.min.css')) }}">
+  <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
   @include('panels.datatable.styles')
 @endsection
 @section('page-style')
   {{-- Page css files --}}
+  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
 @endsection
 
 @section('content')
@@ -26,7 +29,11 @@
                     </span> Pedidos
                 </h3>
 
-                <a href="{{ route('orders.create') }}" class="btn btn-primary">Agregar Pedido</a>
+                {{-- <a href="{{ route('orders.create') }}" class="btn btn-primary">Agregar Pedido</a> --}}
+
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_order">
+                  Agregar Pedido
+                </button>
               </div>
           </div>
         </div>
@@ -72,6 +79,13 @@
 
   </div>
 
+<div class="modal fade text-start" id="modal_add_order" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content" id="modal_content_order">
+        @include('employee.dashboard.orders.modals.add_order')
+      </div>
+    </div>
+</div>
 </section>
 
 <div
@@ -86,10 +100,25 @@
         </div>
     </div>
 </div>
+
+<div
+  class="modal fade text-start"
+  id="modal_show_ingredients"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content ingredients_details">
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('vendor-script')
   {{-- vendor files --}}
+  <script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
+  <script src="{{ asset(mix('vendors/js/forms/wizard/bs-stepper.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/charts/apexcharts.min.js')) }}"></script>
   <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
 @endsection
@@ -105,6 +134,17 @@
       dataTable('#table_list');
       dataTable('#money_flow_table');
       dataTable('#inventory_reposition_table');
+
+      function viewModifyDishes(order_id) {
+          $.get("{{ route('order.modify.dishes') }}", { order_id: order_id })
+          .done(function(data){
+              console.log(data);
+              $('#modal_content_order').html(data);
+          })
+          .fail(function(data) {
+              // console.log(data);
+          });
+      }
 
       $(document).on('change', '.update_status', function () {
         let item = {}
@@ -129,6 +169,49 @@
         .fail(function(data) {
             $(input).addClass('is-invalid')
         });
+      });
+
+      $(document).on('click', '#add_order', function () {
+          console.log('HOLA');
+          button = $(this);
+
+          if (($('#customer_name').val() == null || $('#customer_name').val() == '') && ($('#table').val() == null || $('#table').val() == '')) {
+
+            $('#customer_name').addClass('is-invalid');
+            $('#table').addClass('is-invalid');
+            toastr['error']('', 'El nombre del cliente es requerido', {
+                closeButton: true,
+                tapToDismiss: false,
+            });
+            toastr['error']('', 'La mesa es requerida', {
+                closeButton: true,
+                tapToDismiss: false,
+            });
+
+          }else if ($('#customer_name').val() == null || $('#customer_name').val() == ''){
+            $('#customer_name').addClass('is-invalid');
+            toastr['error']('', 'El nombre del cliente es requerido', {
+                closeButton: true,
+                tapToDismiss: false,
+            });
+          }else if ($('#table').val() == null || $('#table').val() == ''){
+            $('#table').addClass('is-invalid');
+            toastr['error']('', 'La mesa es requerida', {
+                closeButton: true,
+                tapToDismiss: false,
+            });
+          }else{
+            button.attr('disabled', 'disabled').addClass('disabled');
+            $('#loading_add_order').addClass('spinner-border spinner-border-sm');
+
+            $.post("{{ route('orders.store') }}", { customer_name: $('#customer_name').val(), table: $('#table').val() })
+            .done(function(data){
+              var order_id = data;
+              viewModifyDishes(order_id);
+            })
+            .fail(function(data) {
+            });
+          }
       });
 
       function showOrderDetails(id) {
@@ -247,7 +330,8 @@
         }).on('processing.dt', function (e, settings, processing) {
             feather.replace();
         });
-    });
+      });
+      
   </script>
 
 @endsection
