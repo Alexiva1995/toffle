@@ -20,13 +20,13 @@ class Order extends Model
     public function dishes()
     {
         return $this->belongsToMany('App\Models\Dish', 'order_dish')
-                ->withPivot('id', 'order_id', 'dish_id', 'unit', 'price', 'cost', 'created_at', 'updated_at');
+                ->withPivot('id', 'order_id', 'dish_id', 'code_operation', 'unit', 'price', 'cost', 'created_at', 'updated_at');
     }
 
     public function ingredients()
     {
         return $this->belongsToMany('App\Models\Inventory', 'order_ingredient')
-                ->withPivot('id', 'order_id', 'order_dish_id', 'dish_id', 'inventory_id', 'portion', 'designated_cost', 'it_has_flavors', 'flavor_name', 'created_at', 'updated_at');
+                ->withPivot('id', 'order_id', 'inventory_id', 'code_operation', 'dish_id', 'portion', 'designated_cost', 'it_has_flavors', 'flavor_name', 'created_at', 'updated_at');
     }
 
     public function estado()
@@ -97,12 +97,12 @@ class Order extends Model
         return $order->profit;
     }
 
-    public function productRequiresFlavor($order_id, $pivot_id)
+    public function productRequiresFlavor($order_id, $code_operation)
     {
         $order = Order::find($order_id);
         $it_has_flavors = false;
 
-        foreach ($order->ingredients()->wherePivot('order_dish_id', $pivot_id)->get() as $key => $item) {
+        foreach ($order->ingredients()->wherePivot('code_operation', $code_operation)->get() as $key => $item) {
             if ($item->pivot->it_has_flavors == true && $item->pivot->flavor_name == null) {
                 $it_has_flavors = true;
             }
@@ -111,9 +111,9 @@ class Order extends Model
         return $it_has_flavors;
     }
 
-    public function calculatePriceDish($order, $pivot_id, $dish)
+    public function calculatePriceDish($order, $code_operation, $dish)
     {
-        $ingredients = $order->ingredients()->wherePivot('order_dish_id', $pivot_id)->get();
+        $ingredients = $order->ingredients()->wherePivot('code_operation', $code_operation)->get();
 
         $total_cost = 0;
 
@@ -123,7 +123,7 @@ class Order extends Model
 
         $total_amount = $total_cost * $dish->percentage_profit;
 
-        $order->dishes()->wherePivot('id', $pivot_id)->update(
+        $order->dishes()->wherePivot('code_operation', $code_operation)->update(
             [
                 'price' => $total_amount,
                 'cost' => $total_cost

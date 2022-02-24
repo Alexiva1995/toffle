@@ -17,6 +17,7 @@ class CreateOrderDishTable extends Migration
             $table->id();
             $table->integer('order_id');
             $table->integer('dish_id');
+            $table->integer('code_operation');
             $table->integer('unit');
             $table->double('price');
             $table->double('cost');

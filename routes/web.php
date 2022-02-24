@@ -137,8 +137,11 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'dashboard'], function () {
             Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
+
             Route::post('data-chart-amount-vs-gain', [DashboardController::class, 'dataChartAmountVsGain'])->name('data.chart.amount.vs.gain');
             Route::post('data-chart-weekly-sales', [DashboardController::class, 'dataChartWeeklySales'])->name('data.chart.weekly.sales');
+
+            Route::get('load-data/{type}', [DashboardController::class, 'loadData'])->name('load.data');
 
             // Orders
             Route::group(['prefix' => 'orders'], function () {
@@ -146,14 +149,9 @@ Route::middleware('auth')->group(function () {
 
                 Route::post('add-dish/{order_id}', [OrdersController::class, 'addDish'])->name('order.add.dish');
 
-                Route::get('modify-dishes', [OrdersController::class, 'modifyDishes'])->name('order.modify.dishes');
+                Route::get('modify-dishes/{order_id}', [OrdersController::class, 'modifyDishes'])->name('order.modify.dishes');
 
                 Route::get('order-table-data/{type}', [OrdersController::class, 'orderTableData'])->name('order.table.data');
-
-                Route::get('additional-modifications/{id}', [OrdersController::class, 'additionalModifications'])->name('order.additional.modifications');
-
-                Route::get('update-additional-modifications/{id}', [OrdersController::class, 'updateAdditionalModifications'])->name('order.update.additional.modifications');
-
             });
 
             Route::resource('orders', OrdersController::class)->except(['index']);

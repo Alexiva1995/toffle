@@ -44,3 +44,8 @@
     </div>
 </div>
 <!--/ Company Table Card -->
+
+<script>
+    dataTable('#inventory_reposition_table');
+</script>
+

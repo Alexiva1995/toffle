@@ -67,16 +67,16 @@ class DashboardController extends Controller
   {
     $pageConfigs = ['pageHeader' => false];
 
-    $orders = Order::all();
+    // $orders = Order::all();
 
-    $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
+    // $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
 
-    $inventories = Inventory::all();
+    // $inventories = Inventory::all();
 
-    return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
-      ->with('tables', $tables)
-      ->with('inventories', $inventories)
-      ->with('orders', $orders);
+    return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs]);
+      // ->with('tables', $tables)
+      // ->with('inventories', $inventories)
+      // ->with('orders', $orders);
   }
 
   public function dataChartAmountVsGain() {
@@ -177,5 +177,44 @@ class DashboardController extends Controller
  {
      $days = array("Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo");
      return $days[date('N', strtotime($date)) - 1 ];
+ }
+
+ public function loadData(Request $request, $type)
+ {
+     switch ($type) {
+         case 'statistics':
+             $orders = Order::all();
+             return view('employee.dashboard.orders.statistics')
+                 ->with('orders', $orders)
+                 ->render();
+             break;
+         case 'order_history':
+             $orders = Order::all();
+             return view('employee.dashboard.orders.history')
+                 ->with('orders', $orders)
+                 ->render();
+             break;
+         case 'tables':
+             $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
+             return view('employee.dashboard.table.list')
+                 ->with('tables', $tables)
+                 ->render();
+             break;
+         case 'cash_flow':
+             $orders_today = Order::where('status', '2')->whereDate('created_at', '=', Carbon::now()->format('Y-m-d'))->get();
+             return view('employee.dashboard.money_flow.list')
+                 ->with('orders_today', $orders_today)
+                 ->render();
+             break;
+         case 'inventory_replenishment':
+             $inventories = Inventory::all();
+             return view('employee.dashboard.inventory_reposition.list')
+                 ->with('inventories', $inventories)
+                 ->render();
+             break;
+         default:
+             # code...
+             break;
+     }
  }
 }

@@ -55,112 +55,39 @@ class OrdersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     $fields = [
-    //         'customer_name' => ['required'],
-    //         'table' => ['required'],
-    //         'total_amount' => ['required'],
-    //         'dish_ids' => ['required'],
-    //     ];
-
-    //     $msj = [
-    //         'customer_name.required' => 'El nombre del cliente es requerido.',
-    //         'table.required' => 'La mesa es requerida.',
-    //         'total_amount.required' => 'El monto total es requerido',
-    //         'dish_ids.required' => 'Los Platos son requeridos',
-    //     ];
-
-    //     $this->validate($request, $fields, $msj);
-
-    //     $order = Order::create($request->all());
-
-    //     $units = array_combine($request->num_rows, $request->unit); 
-    //     $prices = array_combine($request->num_rows, $request->price); 
-    //     $dish_ids = array_combine($request->num_rows, $request->dish_ids);
-    //     $dishes = array_merge_recursive($dish_ids, $units, $prices); 
-
-    //     $array_dish = [];
-
-    //     foreach ($dishes as $key => $dish) {
-
-    //         $plate = array([
-    //             'dish_id' => $dish[0],
-    //             'unit' => $dish[1],
-    //             'price' => $dish[2],
-    //         ]);
-
-    //         $array_dish = array_merge($array_dish, $plate);
-    //     }
-
-    //     foreach ($array_dish as $key => $item) {
-
-    //         $dish = Dish::find($item['dish_id']);
-
-    //         $order->dishes()->attach( [ $order->id => 
-    //             [
-    //                 'order_id' => $order->id,
-    //                 'dish_id' => $item['dish_id'],
-    //                 'unit' => $item['unit'],            
-    //                 'price' => number_format($item['price'], 2, '.', ''),
-    //                 'cost' => number_format($dish->cost_price, 2, '.', ''),
-    //             ]
-    //         ]);
-    //     }
-
-    //     foreach ($order->dishes as $key => $item) {
-
-    //         $dish = Dish::find($item->pivot->dish_id);
-
-    //         foreach ($dish->ingredients()->get() as $key => $value) {
-
-    //             $order->ingredients()->attach( [ $order->id => 
-    //                 [
-    //                     'order_id' => $order->id,
-    //                     'order_dish_id' => $item->pivot->id,
-    //                     'dish_id' => $item->pivot->dish_id,
-    //                     'inventory_id' => $value->pivot->inventory_id,
-    //                     'portion' => $value->pivot->portion,            
-    //                     'designated_cost' => $value->pivot->designated_cost,
-    //                     'it_has_flavors' => $value->product->it_has_flavors,
-    //                 ]
-    //             ]);
-    //             $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
-    //             $grams = $value->pivot->portion;
-    //             $grams_used = $value->pivot->portion * $item['unit'];
-    //             $units = $grams_used / 1000;
-
-    //             $inventory->decrement('local', $units);
-    //             $inventory->update([
-    //                 'total' => $inventory->deposit + $inventory->local + $inventory->public
-    //             ]);
-    //         }
-    //     }
-
-    //     return redirect()->route('order.additional.modifications', $order->id)->with('success', 'Pedido Agregado');
-    // }
 
     public function store(Request $request)
     {
+        $fields = [
+            "customer_name" => ['required'],
+            "table" => ['required'],
+        ];
+
+        $msj = [
+            'customer_name.required' => 'El nombre del cliente es requerido',
+            'table.required' => 'La mesa es requerida',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
         $order = Order::create([
             'customer_name'=> $request->customer_name,
             'table'=> $request->table,
             'total_amount' => 0,
         ]);
 
-        return $order->id;
+        return redirect()->route('order.modify.dishes', $order->id);
     }
 
-    public function modifyDishes(Request $request)
+    public function modifyDishes(Request $request, $order_id)
     {
-        $order = Order::find($request->order_id);
+        $order = Order::find($order_id);
 
         $dish_category = Dish::select('category_id')->distinct()->get();
 
-        return view('employee.dashboard.orders.modals.add_dish')
+        return view('employee.dashboard.orders.partials.modify_dishes')
             ->with('dish_category', $dish_category)
-            ->with('order', $order)
-            ->render();
+            ->with('order', $order);
     }
 
     /**
@@ -172,22 +99,6 @@ class OrdersController extends Controller
     public function show($id)
     {
         //
-    }
-
-    public function additionalModifications($id)
-    {
-        $order = Order::find($id);
-
-        $dish_category = Dish::select('category_id')->distinct()->get();
-
-        return view('employee.dashboard.orders.partials.additional_modifications')
-            ->with('dish_category', $dish_category)
-            ->with('order', $order);
-    }
-
-    public function updateAdditionalModifications(Request $request, $id)
-    {
-        return view('employee.dashboard.orders.partials.additional_modifications');
     }
 
     /**
@@ -232,11 +143,6 @@ class OrdersController extends Controller
             if ($request->form == 'edit_order') {
                 $this->editOrder($request, $order);
             }
-
-            // if ($request->form == 'edit_order_dish') {
-            //     $this->editOrderDish($request, $order);
-            // }
-
         }
 
         return $order;
@@ -283,55 +189,6 @@ class OrdersController extends Controller
         $order->update($request->all());
     }
 
-    // public function editOrderDish($request, $order)
-    // {
-    //     foreach ($request->all() as $key => $value) {
-    //         switch ($key) {
-    //             case 'unit':
-
-    //                 $fields = [
-    //                     "unit" => ['required'],
-    //                 ];
-
-    //                 break;
-    //             case 'price':
-
-    //                 $fields = [
-    //                     "price" => ['required'],
-    //                 ];
-
-    //                 break;
-
-    //             default:
-
-    //                 break;
-    //         }
-    //     }
-
-    //     $msj = [
-    //         'unit.required' => 'El n° de unidades del plato es requerido',
-    //         'price.required' => 'El precio por unidad del plato es requerido',
-    //     ];
-
-    //     $this->validate($request, $fields, $msj);
-
-    //     if ($request->unit != null) {
-    //         $order->dishes()->wherePivot('id', $request->id)->update([
-    //             'unit' => $request->unit,
-    //         ]);
-    //     }
-
-    //     if ($request->price != null) {
-    //         $order->dishes()->wherePivot('id', $request->id)->update([
-    //             'price' => number_format($request->price, 2, '.', ''),
-    //         ]);
-    //     }
-
-    //     $order->update([
-    //         'total_amount' => $request->total_amount,
-    //     ]);
-    // }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -347,7 +204,7 @@ class OrdersController extends Controller
     {
         $order = Order::find($order_id);
 
-        $order_dish = $order->dishes()->wherePivot('id', $request->pivot_id)->first();
+        $order_dish = $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
 
         if ($order_dish != null) {
             $order->decrement('total_amount', number_format($order_dish->pivot->unit * $order_dish->pivot->price, 2, '.', '') );
@@ -367,9 +224,9 @@ class OrdersController extends Controller
                 ]);
             }
 
-            $order->ingredients()->wherePivot('order_dish_id', $id)->detach();
+            $order->ingredients()->wherePivot('code_operation', $order_dish->pivot->code_operation)->detach();
 
-            $order->dishes()->wherePivot('id', $request->pivot_id)->detach();
+            $order->dishes()->wherePivot('code_operation', $request->code_operation)->detach();
         }
 
         return $order->total_amount;
@@ -380,25 +237,35 @@ class OrdersController extends Controller
         $order = Order::find($order_id);
         $dish = Dish::find($request->dish_id);
 
-        // for ($i=1; $i <= $request->unit; $i++) { 
+        for ($i=1; $i <= $request->unit; $i++) { 
+
+            do {
+                $code_operation = mt_rand(100000000, 999999999);
+                $validator = \Validator::make(
+                  ['code_operation' => $code_operation],
+                  ['code_operation' => 'unique:order_dish,code_operation']
+                );
+            } while ($validator->fails());
+
             $order_dish = $order->dishes()->attach( [ $order->id => 
                 [
+                    'code_operation'=> $code_operation,
                     'order_id' => $order->id,
-                    'dish_id' => $dish->id,
+                    'dish_id' => $request->dish_id,
                     'unit' => 1,          
                     'price' => number_format($dish->designated_price, 2, '.', ''),
                     'cost' => number_format($dish->cost_price, 2, '.', ''),
                 ]
             ]);
 
-            // dd($order->dishes);
+            $dish = Dish::find($request->dish_id);
 
             foreach ($dish->ingredients()->get() as $key => $value) {
     
                 $order->ingredients()->attach( [ $order->id => 
                     [
                         'order_id' => $order->id,
-                        'order_dish_id' => $order_dish->pivot->id,
+                        'code_operation'=> $code_operation,
                         'dish_id' => $dish->id,
                         'inventory_id' => $value->pivot->inventory_id,
                         'portion' => $value->pivot->portion,            
@@ -408,7 +275,7 @@ class OrdersController extends Controller
                 ]);
                 $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
                 $grams = $value->pivot->portion;
-                $grams_used = $value->pivot->portion * $order_dish->pivot->unit;
+                $grams_used = $value->pivot->portion * 1;
                 $units = $grams_used / 1000;
     
                 $inventory->decrement('local', $units);
@@ -417,14 +284,10 @@ class OrdersController extends Controller
                 ]);
             }
     
-            $total_amount = $request->unit * $dish->designated_price;
+            $total_amount = $dish->designated_price;
     
             $order->increment('total_amount', number_format($total_amount, 2, '.', '') );
-        // }
-
-        // foreach ($request->unit as $key => $item) {
-
-        // }
+        }
 
         return $order->total_amount;
     }
@@ -457,16 +320,15 @@ class OrdersController extends Controller
     {
         $order = Order::where('id', $request->order_id)->first();
 
-        $order_ingredients = $order->ingredients()->wherePivot('order_dish_id', $request->pivot_id)->get();
+        $order_ingredients = $order->ingredients()->wherePivot('code_operation', $request->code_operation)->get();
 
-        $order_dish= $order->dishes()->
-        wherePivot('id', $request->pivot_id)->first();
+        $order_dish= $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
 
         $ingredients = Inventory::orderBy('id', 'DESC')->get();
 
         $dish = Dish::where('id', $request->dish_id)->first();
 
-        $pivot_id = $request->pivot_id;
+        $code_operation = $request->code_operation;
 
         return view('employee.dashboard.orders.modals.modify_ingredients')
             ->with('dish', $dish)
@@ -474,7 +336,7 @@ class OrdersController extends Controller
             ->with('order_dish', $order_dish)
             ->with('ingredients', $ingredients)
             ->with('order', $order)
-            ->with('pivot_id', $pivot_id)
+            ->with('code_operation', $code_operation)
             ->render();
     }
 
@@ -491,16 +353,17 @@ class OrdersController extends Controller
         $order_ingredient = $order->ingredients()->attach( [ $order->id => 
             [
                 'order_id' => $order->id,
-                'order_dish_id' => $request->pivot_id,
+                'code_operation' => $request->code_operation,
                 'dish_id' => $request->dish_id,
                 'inventory_id' => $request->inventory_id,
                 'portion' => $request->portion,            
                 'designated_cost' => $cost_ingredient,
+                'flavor_name' => $inventory->flavor_name,
                 'it_has_flavors' => $inventory->product->it_has_flavors,
             ]
         ]);
 
-        $order_dish = $order->dishes()->wherePivot('id', $order_ingredient->pivot->order_dish_id)->first();
+        $order_dish = $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
 
         $inventory = Inventory::where('id', $request->inventory_id)->first();
         $grams = $request->portion;
@@ -512,7 +375,7 @@ class OrdersController extends Controller
             'total' => $inventory->deposit + $inventory->local + $inventory->public
         ]);
 
-        $order->calculatePriceDish($order, $request->pivot_id, $dish);
+        $order->calculatePriceDish($order, $request->code_operation, $dish);
 
         return $order;
     }
@@ -540,9 +403,11 @@ class OrdersController extends Controller
     {
         $order = Order::where('id', $request->order_id)->first();
 
-        $order_ingredient = $order->ingredients()->wherePivot('id', $request->id)->first();
+        $order_ingredient = $order->ingredients()->wherePivot('id', $request->pivot_id)->first();
 
-        $order_dish = $order->dishes()->wherePivot('id', $order_ingredient->pivot->order_dish_id)->first();
+        $code_operation = $order_ingredient->pivot->code_operation;
+
+        $order_dish = $order->dishes()->wherePivot('code_operation', $code_operation)->first();
 
         $inventory = Inventory::where('id', $order_ingredient->pivot->inventory_id)->first();
         $grams = $order_ingredient->pivot->portion;
@@ -554,10 +419,10 @@ class OrdersController extends Controller
             'total' => $inventory->deposit + $inventory->local + $inventory->public
         ]);
 
-        $order->ingredients()->wherePivot('id', $request->id)->detach();
+        $order->ingredients()->wherePivot('id', $request->pivot_id)->detach();
         $dish = Dish::where('id', $request->dish_id)->first();
 
-        $order->calculatePriceDish($order, $request->pivot_id, $dish);
+        $order->calculatePriceDish($order, $code_operation, $dish);
     }
 
     public function orderDishesTableData(Request $request, $id)

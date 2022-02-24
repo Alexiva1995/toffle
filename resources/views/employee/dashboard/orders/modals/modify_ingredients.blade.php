@@ -36,7 +36,7 @@
 
         <div class="col-12 col-md-4 col-sm-6 mt-2">
             <button class="btn btn-primary" id="btn_add_ingredient"
-                onclick="addIngredient({{ $order->id }}, {{ $pivot_id }}, {{ $dish->id }});" id="add_ingredient_order">
+                onclick="addIngredient({{ $order->id }}, {{ $code_operation }}, {{ $dish->id }});" id="add_ingredient_order">
                 <span class="loading_add_ingredient_order mr-2"></span>
                 Añadir ingrediente
             </button>
@@ -46,6 +46,9 @@
     </div>
 
     <div class="row justify-content-center mt-2">
+        <div class="col-auto">
+            <h5 class="text-center">Costo del Plato: {{ $order_dish->pivot->cost }} </h5>
+        </div>
         <div class="col-auto">
             <h5 class="text-center">Precio del Plato: {{ $order_dish->pivot->price }} </h5>
         </div>
@@ -75,16 +78,22 @@
                             <td class="text-center">
                                 {{ number_format( $order_ingredient->pivot->designated_cost, 2, '.', '' ) }}
                             </td>
+
                             <td class="text-center" colspan="2">
                                 @if ($order_ingredient->pivot->it_has_flavors == true)
-                                    <input type="text" name="flavor_name" class="form-control text-center" id="flavor_name_{{ $order_ingredient->pivot->id }}" value="{{ $order_ingredient->pivot->flavor_name }}" onchange="updateFlavorName( this, {{ $order->id }}, {{ $order_ingredient->pivot->id }})" required>
+
+                                    <select class="select2 form-control" data-toggle="select" class="form-control" id="flavor_name_{{ $order_ingredient->pivot->id }}" onchange="updateFlavorName( this, {{ $order->id }}, {{ $order_ingredient->pivot->id }})">                                     
+                                        @foreach ($ingredients->where('product_id', $order_ingredient->product->id) as $item)
+                                            <option value="{{ $item->flavor_name }}" {{ $item->flavor_name == $order_ingredient->pivot->flavor_name ? 'selected' : ''}}>{{ ucfirst($item->flavor_name) }}</option>
+                                        @endforeach
+                                    </select>
                                 @else
                                     <span class="text-info"> ----- </span> 
                                 @endif
                             </td>
                             <td class="text-center"> 
                                 <button class="btn btn-sm btn-danger"
-                                onclick="deleteIngredient( {{ $order->id }}, {{ $pivot_id }}, {{ $dish->id }}, {{ $order_ingredient->pivot->id }} )"> 
+                                onclick="deleteIngredient( {{ $order->id }}, {{ $code_operation }}, {{ $dish->id }}, {{ $order_ingredient->pivot->id }} )"> 
                                     <i data-feather="trash-2"></i> 
                                 </button>
                             </td>

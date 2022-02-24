@@ -36,7 +36,7 @@
                             <div class="col-12 col-md-4">
                                 <label class="form-label" for="ingredients">Categoria</label>
                                 <select class="select2 form-control @error('category_id') is-invalid @enderror" name="category_id" data-toggle="select"
-                                    class="form-control" id="category">
+                                    id="category">
                                     @foreach ($category as $item)
                                     <option value="{{ $item->id }}" {{ $dish->category_id == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                     @endforeach

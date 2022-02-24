@@ -95,13 +95,13 @@
                                         <h5 class="mb-2 text-center">Añadir Platos</h5>
                                         <div class="row justify-content-center">
                                             <div class="col-12 col-md-4 mb-1">           
-                                                <select class="select2 form-control" data-toggle="select" class="form-control" id="selected_dish">
+                                                <select class="select2 form-control" data-toggle="select" class="form-control" id="dish_id">
                                                     <option disabled selected value=''>Selecciona un Plato</option>
                                                     @foreach ($dish_category as $item)
                                                         @if ( count( $item->collectionDishes($item->category_id) ) > 0 )
                                                             <optgroup label="{{ $item->category->name }}"> 
                                                                 @foreach ($item->collectionDishes($item->category_id) as $dish)
-                                                                    <option data-price = {{ $dish->designated_price }} value="dish_{{ $dish->id }}">{{ $dish->name }}</option>
+                                                                    <option data-price = {{ $dish->designated_price }} value="{{ $dish->id }}">{{ $dish->name }}</option>
                                                                 @endforeach
                                                             </optgroup>
                                                         @endif
@@ -110,12 +110,15 @@
                                             </div>
 
                                             <div class="col-12 col-md-4 mb-1">
-                                                <input type="number" id="plate_quantity" class="form-control" placeholder="Cantidad"/>
+                                                <input type="number" id="units" class="form-control" placeholder="Cantidad"/>
                                             </div>
 
                                             <div class="col-auto">
-                                                <button type="submit" class="btn btn-info">
-                                                    <i class="" data-feather="plus-circle"></i> Añadir</button>
+                                                <a class="btn btn-info" id="add_dish">
+                                                    <i class="icon_dish" data-feather="plus-circle"></i> 
+                                                    <span class="loading_add_dish mr-2"></span>
+                                                    Añadir
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -140,12 +143,32 @@
                         <table class="table" id="dish_to_order_table">
                         </table>           
                     </div> 
+
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-auto">
+                            <a href="{{ route('dashboard-employee') }}" class="btn btn-primary me-1">
+                                Volver al Dashboard
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div> 
 </section>
 
+<div
+  class="modal fade text-start"
+  id="modal_show_ingredients"
+  tabindex="-1"
+  aria-labelledby="myModalLabel1"
+  aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content ingredients_details">
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -163,97 +186,122 @@
     @include('panels.datatable.scripts')
     <script>
 
-        submitForms('#add_dish', '.loading_add_dish', '#form_add_dish');
-
-        var array_dish = {{ $array_dish }}; 
-
-        // function updateDish(id, element){
-        //     let item = {}
-        //     let input = element
-
-        //     let unit = $("#unit_"+id).val();
-        //     let price = $("#price_"+id).val();
-
-        //     $("#total_"+id).val(parseInt(unit) * parseFloat(price));
-        //     var total = 0;
-
-        //     for (var i = 0; i < array_dish.length; i++){
-        //         total += parseFloat($("#total_"+array_dish[i]).val());
-        //     }
-
-        //     $("#total_amount").val(total);
-
-        //     item ['form'] = 'edit_order_dish';
-        //     item ['id'] = id;
-        //     item [element.attributes.name.value] = element.value;
-        //     item ['total_amount'] = $('#total_amount').val();
-
-        //     item ['_method'] = 'PATCH';
-        //     $.post('{{ route('orders.update', $order->id) }}', item)
-        //     .done(function(data){
-        //         $(input).removeClass('is-invalid')
-        //         $(input).addClass('is-valid')
-        //         setTimeout(() => {
-        //             $(input).removeClass('is-valid')
-        //         },1000)
-        //     })
-        //     .fail(function(data) {
-        //         data_errors = data.responseJSON.errors;
-
-        //         errors = Object.values(data_errors);
-
-        //         for (var i = 0; i < errors.length; i++){
-        //             toastr['error']('', errors[i][0], {
-        //                 closeButton: true,
-        //                 tapToDismiss: false,
-        //             });
-        //         }
-        //         $(input).addClass('is-invalid')
-        //     });
-        // }
-
+        $(document).on('click', '#add_dish', function () {
+            this_button = $(this);
+    
+            if (($('#dish_id').val() == null || $('#dish_id').val() == '') && ($('#units').val() == null || $('#units').val() == '')) {
+    
+                $('#dish_id').addClass('is-invalid');
+                $('#units').addClass('is-invalid');
+                toastr['error']('', 'El plato es requerido', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                });
+                toastr['error']('', 'Las unidades por plato son requeridas', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                });
+    
+            }else if ($('#dish_id').val() == null || $('#dish_id').val() == ''){
+                $('#dish_id').addClass('is-invalid');
+                toastr['error']('', 'El plato es requerido', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                });
+            }else if ($('#units').val() == null || $('#units').val() == ''){
+                $('#units').addClass('is-invalid');
+                toastr['error']('', 'Las unidades por plato son requeridas', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                });
+            }else{
+                this_button.attr('disabled', 'disabled').addClass('disabled');
+                $('.icon_dish').addClass('d-none');
+                $('.loading_add_dish').addClass('spinner-border spinner-border-sm');
+    
+                $.post("{{ route('order.add.dish', $order->id) }}", { dish_id: $('#dish_id').val(), unit: $('#units').val() })
+                .done(function(data){
+                    table.search('').draw();
+                    setTimeout(() => {
+                        this_button.removeAttr('disabled').removeClass('disabled');
+                        $('.loading_add_dish').removeClass('spinner-border spinner-border-sm');
+                        $('.icon_dish').removeClass('d-none');
+                    },1000)
+    
+                    $('#total_amount').val(data);
+                })
+                .fail(function(data) {
+                });
+            }
+        });
+    
+        function deleteDish(order_id, code_operation, dish_id) {
+            $.confirm({
+                title: 'Confirmar!',
+                content: 'Estas seguro que quieres eliminar este Plato?',
+                columnClass: 'col-12 col-md-4 col-xs-4',
+                containerFluid: true,
+                buttons: {
+                    confirm: {
+                        text: 'Eliminar',
+                        btnClass: 'btn-danger',
+                        action: function () {
+                            $.post("{{ route('order.remove.dish', $order->id) }}", { order_id: order_id, code_operation:code_operation},
+                                function (data, textStatus, jqXHR) {
+                                    table.search('').draw();
+                                    $('#total_amount').val(data);
+    
+                                    toastr['success']('', 'El Plato fue Removido exitosamente', {
+                                        closeButton: true,
+                                        tapToDismiss: false,
+                                    });
+                                }
+                            );
+                        }
+                    },
+                    cancelar: function () {
+                    },
+                }
+            });
+        }
+    
         function editOrder(element) {
-            // console.log('probando');
             let item = {}
             let input = element
-
+    
             item [element.attributes.name.value] = element.value;
             item ['form'] = 'edit_order';
-
+    
             item ['_method'] = 'PATCH';
+    
             $.post('{{ route('orders.update', $order->id) }}', item)
             .done(function(data){
                 $(input).removeClass('is-invalid')
                 $(input).addClass('is-valid')
-
                 setTimeout(() => {
                     $(input).removeClass('is-valid')
                 },1000)
             })
             .fail(function(data) {
-
                 data_errors = data.responseJSON.errors;
-
                 errors = Object.values(data_errors);
-
                 for (var i = 0; i < errors.length; i++){
                     toastr['error']('', errors[i][0], {
                         closeButton: true,
                         tapToDismiss: false,
                     });
                 }
-
                 $(input).addClass('is-invalid')
             });
         }
-
+    
         function dataDetails(td, rowData) {
             $(td).html(rowData.details);
         }
-
-
-        function modifyIngredients(order_id, pivot_id, dish_id) {
-            $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
+    
+    
+        function modifyIngredients(order_id, code_operation, dish_id) {
+            $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, code_operation: code_operation, dish_id: dish_id},
                 function (data, textStatus, jqXHR) {
                     $('.ingredients_details').html(data);
                     $("#modal_show_ingredients").modal("show");
@@ -261,56 +309,51 @@
                 }
             );
         }
-
-        function modalDataModifyIngredients(order_id, pivot_id, dish_id) {
-            $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
+    
+        function modalDataModifyIngredients(order_id, code_operation, dish_id) {
+            $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, code_operation: code_operation, dish_id: dish_id},
                 function (data, textStatus, jqXHR) {
                     $('.ingredients_details').html(data);
                     feather.replace();
                 }
             );
         }
-
-        function addIngredient(order_id, pivot_id, dish_id) {
-
+    
+        function addIngredient(order_id, code_operation, dish_id) {
             if (($("#ingredient option:selected").val() == null || $("#ingredient option:selected").val() == '') || ($("#portion").val() == null || $("#portion").val() == '')) {
                 toastr['error']('', 'Debes seleccionar un ingrediente y la porción del mismo para agregarlo.', {
                     closeButton: true,
                     tapToDismiss: false,
                 });
-
                 $('#ingredient').addClass('is-invalid');
                 $('#portion').addClass('is-invalid');
-
             }else{
-
-                var this_button = $('#add_ingredient_order');
+                var this_button = $('#btn_add_ingredient');
                 this_button.attr('disabled', 'disabled').addClass('disabled');
-                $('#loading_add_ingredient_order').addClass('spinner-border spinner-border-sm');
-
-                $.post("{{ route('orders.add.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id, inventory_id: $("#ingredient option:selected").val(), portion: $("#portion").val()},
+                $('.loading_add_ingredient_order').addClass('spinner-border spinner-border-sm');
+    
+                $.post("{{ route('orders.add.ingredients') }}", { order_id: order_id, code_operation: code_operation, dish_id: dish_id, inventory_id: $("#ingredient option:selected").val(), portion: $("#portion").val()},
                     function (data, textStatus, jqXHR) {
                         toastr['success']('', 'Ingrediente añadido exitosamente', {
                             closeButton: true,
                             tapToDismiss: false,
                         });
-
-                        modalDataModifyIngredients(order_id, pivot_id, dish_id);
-
+    
+                        modalDataModifyIngredients(order_id, code_operation, dish_id);
                         table.search('').draw();
-
+    
                         setTimeout(() => {
                             this_button.removeAttr('disabled').removeClass('disabled');
-                            $('#loading_add_ingredient_order').removeClass('spinner-border spinner-border-sm');
+                            $('.loading_add_ingredient_order').removeClass('spinner-border spinner-border-sm');
                         },1000)
                     }
                 );
             }
         }
-
+    
         function updateFlavorName(element, order_id, id) {
             let input = element;
-
+    
             $.post("{{ route('orders.update.ingredients') }}", { order_id: order_id, id: id, flavor_name: $('#flavor_name_'+id).val()})
             .done(function(data){
                 $(input).removeClass('is-invalid')
@@ -318,16 +361,15 @@
                 setTimeout(() => {
                     $(input).removeClass('is-valid')
                 },1000)
-
+    
                 table.search('').draw();
             })
             .fail(function(xhr, status, error) {
                 $(input).addClass('is-invalid')
             });
         }
-
-        function deleteIngredient(order_id, pivot_id, dish_id, id) {
-
+    
+        function deleteIngredient(order_id, code_operation, dish_id, pivot_id) {
             $.confirm({
                 title: 'Confirmar!',
                 content: 'Estas seguro que quieres eliminar este Ingrediente ?',
@@ -338,14 +380,14 @@
                         text: 'Eliminar',
                         btnClass: 'btn-danger',
                         action: function () {
-                            $.post("{{ route('orders.remove.ingredients') }}", { order_id: order_id, id: id, pivot_id:pivot_id, dish_id: dish_id },
+                            $.post("{{ route('orders.remove.ingredients') }}", { order_id: order_id, pivot_id: pivot_id, dish_id: dish_id},
                                 function (data, textStatus, jqXHR) {
                                     toastr['success']('', 'El Ingrediente fue Removido exitosamente', {
                                         closeButton: true,
                                         tapToDismiss: false,
                                     });
-
-                                    modalDataModifyIngredients(order_id, pivot_id, dish_id);
+    
+                                    modalDataModifyIngredients(order_id, code_operation, dish_id);
                                     table.search('').draw();
                                 }
                             );
@@ -356,13 +398,14 @@
                 }
             });
         }
-
-        $(document).ready(function() {
+    
+        $(document).ready(function () {
+    
             $('#dish_id').change( function() {
-                var price = $('option:selected',this).data("price");
-                $('#price').val(price);
+              var price = $('option:selected',this).data("price");
+              $('#price').val(price);
             });
-
+    
             table = $('#dish_to_order_table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -379,75 +422,87 @@
                     }
                 },
                 columns: [
-                    {
-                        data: "name",
-                        name: "name",
-                        title: "Plato",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true,
-                    },
-                    {
-                        data: "pivot.unit",
-                        name: "pivot.unit",
-                        title: "Cantidad",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true
-                    },
-                    {
-                        data: "pivot.price",
-                        name: "pivot.price",
-                        title: "Precio Unitario",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true,
-                        render: function (data, type, row, meta) {
-                            return row.pivot.price.toFixed(2);
-                        }  
-                    },
-                    {
-                        data: "pivot.price",
-                        name: "pivot.price",
-                        title: "Total",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true,
-                        render: function (data, type, row, meta) {
-                            return ( row.pivot.price * row.pivot.unit ).toFixed(2);
-                        }  
-                    },
-                    {
-                        data: "details",
-                        name: "details",
-                        title: "Detalles",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true, 
-                        render: function (data, type, row) {
-                            return $("<div/>").html(row.details).text();
-                        }
-                    },
-                    {
-                        data: "pivot.id",
-                        name: "pivot.id",
-                        title: "Ingredientes",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true,
-                    },
+                  {
+                      data: "name",
+                      name: "name",
+                      title: "Plato",
+                      "class": "text-center",
+                      visible: true,
+                      searchable: true,
+                  },
+                  {
+                      data: "pivot.unit",
+                      name: "pivot.unit",
+                      title: "Cantidad",
+                      "class": "text-center",
+                      visible: true,
+                      searchable: true
+                  },
+                  {
+                      data: "pivot.price",
+                      name: "pivot.price",
+                      title: "Precio Unitario",
+                      "class": "text-center",
+                      visible: true,
+                      searchable: true,
+                      render: function (data, type, row, meta) {
+                          return row.pivot.price.toFixed(2);
+                      }  
+                  },
+                  {
+                      data: "pivot.price",
+                      name: "pivot.price",
+                      title: "Total",
+                      "class": "text-center",
+                      visible: true,
+                      searchable: true,
+                      render: function (data, type, row, meta) {
+                          return ( row.pivot.price * row.pivot.unit ).toFixed(2);
+                      }  
+                  },
+                //   {
+                //       data: "details",
+                //       name: "details",
+                //       title: "Detalles",
+                //       "class": "text-center",
+                //       visible: true,
+                //       searchable: true, 
+                //       render: function (data, type, row) {
+                //           return $("<div/>").html(row.details).text();
+                //       }
+                //   },
+                  {
+                      data: "pivot.id",
+                      name: "pivot.id",
+                      title: "Ingredientes",
+                      "class": "text-center",
+                      visible: true,
+                      searchable: true,
+                  },
+                  {
+                      data: "pivot.id",
+                      name: "pivot.id",
+                      title: "Eliminar",
+                      "class": "text-center",
+                      visible: true,
+                      searchable: true,
+                  },
                 ],
                 fnCreatedRow: function (elemt, data, iDataIndex) {
                     var indice = iDataIndex + 1;
-
+                    field=$('td:eq(4)', elemt);
+                    buttons='';
+                    button = '<button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"> <i data-feather="edit"></i></button>'
+                    buttons+=button;
+                    field=field.html(buttons);
+    
                     field=$('td:eq(5)', elemt);
                     buttons='';
-
-                    button = '<button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="edit"></i></button>'
+                    button = '<button class="btn btn-sm btn-danger" onclick="deleteDish({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="trash-2"></i></button>'
                     buttons+=button;
                     field=field.html(buttons);
                 },
-
+    
                 }).on('processing.dt', function (e, settings, processing) {
                 feather.replace();
             });

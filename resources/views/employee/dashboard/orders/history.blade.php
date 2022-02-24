@@ -57,3 +57,7 @@
         </div>
     </div>
 </div>
+
+<script>
+    dataTable('#order_history_table');
+</script>

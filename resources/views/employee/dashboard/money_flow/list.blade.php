@@ -4,6 +4,13 @@
         <h3>Flujo de Caja</h3>
         <h5> ( Flujo de Dinero Ingresado al Día ) </h5>
     </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6">
+            <h4 class="card-text text-center">
+                Ingreso Total = <span class="text-success"> $ {{ number_format($orders_today->count('total_amount'), 2, '.', '') }} </span>
+            </h4>   
+        </div>
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table" id="money_flow_table">
@@ -14,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($orders->where('status', '2') as $order)
+                    @foreach ($orders_today as $order)
                     <tr>
                         <td class="text-center"> {{ $order->id }} </td>
                         <td class="text-center"> 
@@ -29,4 +36,7 @@
         </div>
     </div>
 </div>
-<!--/ Company Table Card -->
+
+<script>
+    dataTable('#money_flow_table');
+</script>

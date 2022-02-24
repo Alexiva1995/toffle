@@ -31,3 +31,7 @@
     </div>
 </div>
 <!--/ Company Table Card -->
+
+<script>
+    dataTable('#table_list');
+</script>
