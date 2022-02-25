@@ -1,7 +1,7 @@
 {
   "menu": [
     {
-      "url": "/",
+      "url": "/employee/dashboard",
       "name": "dashboard",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "home",
@@ -12,14 +12,14 @@
       "name": "orders",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "shopping-bag",
-      "slug": "orders"
+      "slug": "orders.index"
     },
     {
-      "url": "flow_day",
+      "url": "employee/flow-days",
       "name": "flow_day",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "sliders",
-      "slug": "flow_day"
+      "slug": "flow.days"
     }
   ]
 }

@@ -135,6 +135,8 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'employee'], function () {
 
+        Route::get('/flow-days', [OrdersController::class, 'flowDays'])->name('flow.days');
+
         Route::group(['prefix' => 'dashboard'], function () {
             Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
 

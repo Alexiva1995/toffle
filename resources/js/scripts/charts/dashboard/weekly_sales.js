@@ -76,7 +76,7 @@ function dataChartWeeklySales() {
             })
 
             var data_amount = dates.map(function (e) {
-                return e.total_amount
+                return e.total_amount.toFixed(2);
             })
 
             columnChart.updateSeries([{

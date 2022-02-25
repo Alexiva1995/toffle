@@ -20,7 +20,7 @@ class Order extends Model
     public function dishes()
     {
         return $this->belongsToMany('App\Models\Dish', 'order_dish')
-                ->withPivot('id', 'order_id', 'dish_id', 'code_operation', 'unit', 'price', 'cost', 'created_at', 'updated_at');
+                ->withPivot('id', 'order_id', 'dish_id', 'code_operation', 'unit', 'price', 'cost', 'is_for_carry', 'created_at', 'updated_at');
     }
 
     public function ingredients()

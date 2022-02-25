@@ -21,6 +21,7 @@ class CreateOrderDishTable extends Migration
             $table->integer('unit');
             $table->double('price');
             $table->double('cost');
+            $table->boolean('is_for_carry')->default(0)->comment('0 - false, 1 - true');
             $table->timestamps();
         });
     }

@@ -107,7 +107,7 @@
         let input = this;
 
         item ['status'] = this.value;
-        item ['form'] = 'edit_order';
+        item ['form'] = 'update_general_data';
 
         var url = "{{ route('orders.update', 'id') }}";
         url = url.replace('id', $(this).data('id'));

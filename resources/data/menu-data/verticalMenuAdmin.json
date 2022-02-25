@@ -1,7 +1,7 @@
 {
   "menu": [
     {
-      "url": "/",
+      "url": "/admin/dashboard",
       "name": "dashboard",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "home",
@@ -101,7 +101,7 @@
       "name": "orders",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "shopping-bag",
-      "slug": ""
+      "slug": "orders.index"
     }
   ]
 }

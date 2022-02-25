@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Pedidos')
+@section('title', $type == 'flow_days' ? 'Flujo del día' : 'Pedidos')
 
 @section('vendor-style')
 <!-- vendor css files -->

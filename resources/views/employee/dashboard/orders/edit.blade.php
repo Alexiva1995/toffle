@@ -46,7 +46,7 @@
                                     <label class="form-label" for="customer_name">Nombre del Cliente</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text"><i data-feather="user"></i></span>
-                                        <input type="text" id="customer_name" class="form-control requerid" name="customer_name" value="{{ $order->customer_name }}" placeholder="Nombre" oninput="editOrder(this)" required/>
+                                        <input type="text" id="customer_name" class="form-control requerid" name="customer_name" value="{{ $order->customer_name }}" placeholder="Nombre" oninput="updateOrder(this)" required/>
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                     <label class="form-label" for="table">Mesa</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text"><i data-feather="tag"></i></span>
-                                        <input type="number" id="table" class="form-control requerid" name="table" value="{{ $order->table }}" placeholder="Mesa" oninput="editOrder(this)" required/>
+                                        <input type="number" id="table" class="form-control requerid" name="table" value="{{ $order->table }}" placeholder="Mesa" oninput="updateOrder(this)" required/>
                                     </div>
                                 </div>
                             </div>
@@ -65,19 +65,19 @@
                                 <div class="row justify-content-center @error('status') is-invalid @enderror">
                                     <div class="col-auto">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="pending" value="0" {{ $order->status == 0 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="pending" value="0" {{ $order->status == 0 ? 'checked' : '' }} oninput="updateOrder(this)" />
                                             <label class="form-check-label" for="pending">Pendiente</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="on_hold" value="1" {{ $order->status == 1 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="on_hold" value="1" {{ $order->status == 1 ? 'checked' : '' }} oninput="updateOrder(this)" />
                                             <label class="form-check-label" for="on_hold">En Espera</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="finalized" value="2" {{ $order->status == 2 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="finalized" value="2" {{ $order->status == 2 ? 'checked' : '' }} oninput="updateOrder(this)" />
                                             <label class="form-check-label" for="finalized">Finalizado</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="cancelled" value="3" {{ $order->status == 3 ? 'checked' : '' }} oninput="editOrder(this)" />
+                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="cancelled" value="3" {{ $order->status == 3 ? 'checked' : '' }} oninput="updateOrder(this)" />
                                             <label class="form-check-label" for="cancelled">Cancelado</label>
                                         </div>  
                                     </div>                                   
@@ -265,15 +265,27 @@
             });
         }
     
-        function editOrder(element) {
+        function updateOrder(element, id = null) {
             let item = {}
             let input = element
-    
-            item [element.attributes.name.value] = element.value;
-            item ['form'] = 'edit_order';
-    
+
+            if (element.attributes.name.value == 'is_for_carry' && $(element).is(':checked')) {
+                item [element.attributes.name.value] = 1;
+                item ['id'] = id;
+                item ['form'] = 'update_order_dish';
+            }else if(element.attributes.name.value == 'is_for_carry'){
+                item [element.attributes.name.value] = 0;
+                item ['id'] = id;
+                item ['form'] = 'update_order_dish';
+            }
+
+            if(element.attributes.name.value != 'is_for_carry'){
+                item [element.attributes.name.value] = element.value;
+                item ['form'] = 'update_general_data';
+            }
+
             item ['_method'] = 'PATCH';
-    
+
             $.post('{{ route('orders.update', $order->id) }}', item)
             .done(function(data){
                 $(input).removeClass('is-invalid')
@@ -294,6 +306,36 @@
                 $(input).addClass('is-invalid')
             });
         }
+
+        // function updateOrder(element) {
+        //     let item = {}
+        //     let input = element
+    
+        //     item [element.attributes.name.value] = element.value;
+        //     item ['form'] = 'update_general_data';
+    
+        //     item ['_method'] = 'PATCH';
+    
+        //     $.post('{{ route('orders.update', $order->id) }}', item)
+        //     .done(function(data){
+        //         $(input).removeClass('is-invalid')
+        //         $(input).addClass('is-valid')
+        //         setTimeout(() => {
+        //             $(input).removeClass('is-valid')
+        //         },1000)
+        //     })
+        //     .fail(function(data) {
+        //         data_errors = data.responseJSON.errors;
+        //         errors = Object.values(data_errors);
+        //         for (var i = 0; i < errors.length; i++){
+        //             toastr['error']('', errors[i][0], {
+        //                 closeButton: true,
+        //                 tapToDismiss: false,
+        //             });
+        //         }
+        //         $(input).addClass('is-invalid')
+        //     });
+        // }
     
         function dataDetails(td, rowData) {
             $(td).html(rowData.details);
@@ -422,81 +464,101 @@
                     }
                 },
                 columns: [
-                  {
-                      data: "name",
-                      name: "name",
-                      title: "Plato",
-                      "class": "text-center",
-                      visible: true,
-                      searchable: true,
-                  },
-                  {
-                      data: "pivot.unit",
-                      name: "pivot.unit",
-                      title: "Cantidad",
-                      "class": "text-center",
-                      visible: true,
-                      searchable: true
-                  },
-                  {
-                      data: "pivot.price",
-                      name: "pivot.price",
-                      title: "Precio Unitario",
-                      "class": "text-center",
-                      visible: true,
-                      searchable: true,
-                      render: function (data, type, row, meta) {
-                          return row.pivot.price.toFixed(2);
-                      }  
-                  },
-                  {
-                      data: "pivot.price",
-                      name: "pivot.price",
-                      title: "Total",
-                      "class": "text-center",
-                      visible: true,
-                      searchable: true,
-                      render: function (data, type, row, meta) {
-                          return ( row.pivot.price * row.pivot.unit ).toFixed(2);
-                      }  
-                  },
-                //   {
-                //       data: "details",
-                //       name: "details",
-                //       title: "Detalles",
-                //       "class": "text-center",
-                //       visible: true,
-                //       searchable: true, 
-                //       render: function (data, type, row) {
-                //           return $("<div/>").html(row.details).text();
-                //       }
-                //   },
-                  {
+                    {
+                        data: "name",
+                        name: "name",
+                        title: "Plato",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true,
+                    },
+                    {
+                        data: "pivot.unit",
+                        name: "pivot.unit",
+                        title: "Cantidad",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true
+                    },
+                    {
+                        data: "pivot.price",
+                        name: "pivot.price",
+                        title: "Precio Unitario",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true,
+                        render: function (data, type, row, meta) {
+                            return row.pivot.price.toFixed(2);
+                        }  
+                    },
+                    {
+                        data: "pivot.price",
+                        name: "pivot.price",
+                        title: "Total",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true,
+                        render: function (data, type, row, meta) {
+                            return ( row.pivot.price * row.pivot.unit ).toFixed(2);
+                        }  
+                    },
+                    //   {
+                    //       data: "details",
+                    //       name: "details",
+                    //       title: "Detalles",
+                    //       "class": "text-center",
+                    //       visible: true,
+                    //       searchable: true, 
+                    //       render: function (data, type, row) {
+                    //           return $("<div/>").html(row.details).text();
+                    //       }
+                    //   },
+                    {
                       data: "pivot.id",
                       name: "pivot.id",
-                      title: "Ingredientes",
+                      title: "Para Llevar",
                       "class": "text-center",
                       visible: true,
                       searchable: true,
-                  },
-                  {
-                      data: "pivot.id",
-                      name: "pivot.id",
-                      title: "Eliminar",
-                      "class": "text-center",
-                      visible: true,
-                      searchable: true,
-                  },
+                    },
+                    {
+                        data: "pivot.id",
+                        name: "pivot.id",
+                        title: "Ingredientes",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true,
+                    },
+                    {
+                        data: "pivot.id",
+                        name: "pivot.id",
+                        title: "Eliminar",
+                        "class": "text-center",
+                        visible: true,
+                        searchable: true,
+                    },
                 ],
                 fnCreatedRow: function (elemt, data, iDataIndex) {
                     var indice = iDataIndex + 1;
+
                     field=$('td:eq(4)', elemt);
+                    buttons='';
+                    var checked = "";
+                    if (data.pivot.is_for_carry == 1) {
+                        checked = "checked";
+                    }
+
+                    button = '<input type="hidden" name="is_for_carry" value="0"/><input class="form-check-input border border-primary" type="checkbox" name="is_for_carry" id="is_for_carry" value="1" '+checked+'  oninput="updateOrder(this, '+data.pivot.id+')"/>'
+                    buttons+=button;
+                    field=field.html(buttons);
+
+                    field=$('td:eq(5)', elemt);
                     buttons='';
                     button = '<button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"> <i data-feather="edit"></i></button>'
                     buttons+=button;
                     field=field.html(buttons);
     
-                    field=$('td:eq(5)', elemt);
+                    field=$('td:eq(6)', elemt);
                     buttons='';
                     button = '<button class="btn btn-sm btn-danger" onclick="deleteDish({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="trash-2"></i></button>'
                     buttons+=button;

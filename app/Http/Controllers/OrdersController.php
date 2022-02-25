@@ -19,7 +19,8 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+
+    public function index(Request $request, $type = null)
     {
         if(isset($request->fecha_ini) && !isset($request->fecha_fin)){
             $orders = Order::orderBy('id', 'desc')->whereDate('created_at', '>=' ,$request->fecha_ini)->get();
@@ -32,8 +33,14 @@ class OrdersController extends Controller
             $orders = Order::orderBy('id', 'desc')->whereDate('created_at', $today)->get();
         }
         
-    
-        return view('/orders/index', ['orders' => $orders]);
+        $type == 'flow_days' ? 'flow_days' : '';
+        return view('orders.index', ['orders' => $orders, 'type' =>$type ]);
+    }
+
+    public function flowDays(Request $request)
+    {
+        return $this->index($request, 'flow_days');
+
     }
 
     /**
@@ -140,15 +147,19 @@ class OrdersController extends Controller
 
             $order = Order::find($id);
 
-            if ($request->form == 'edit_order') {
-                $this->editOrder($request, $order);
+            if ($request->form == 'update_general_data') {
+                $this->updateGeneralData($request, $order);
+            }
+
+            if ($request->form == 'update_order_dish') {
+                $this->updateDishOrder($request, $order);
             }
         }
 
         return $order;
     }
 
-    public function editOrder($request, $order)
+    public function updateGeneralData($request, $order)
     {
         foreach ($request->all() as $key => $value) {
             switch ($key) {
@@ -187,6 +198,15 @@ class OrdersController extends Controller
         $this->validate($request, $fields, $msj);
 
         $order->update($request->all());
+    }
+
+    public function updateDishOrder($request, $order)
+    {
+        if ($request->is_for_carry != null) {
+            $order->dishes()->wherePivot('id', $request->id)->update([
+                'is_for_carry' => $request->is_for_carry,
+            ]);
+        }
     }
 
     /**
