@@ -47,7 +47,7 @@
 
     <div class="col-lg-6 col-12" id="cash_flow"></div>
 
-    <div class="col-lg-12" id="inventory_replenishment"></div>
+    <div class="col-12" id="inventory_replenishment"></div>
 
   </div>
 

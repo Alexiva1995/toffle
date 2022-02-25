@@ -87,7 +87,6 @@ class DishController extends Controller
         $dish_ingredient = array_merge_recursive($portions, $costs); 
         $array_dish = [];
 
-
         foreach ($dish_ingredient as $key => $dishe) {
 
             $ingredient_ = array([
