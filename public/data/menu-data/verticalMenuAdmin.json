@@ -1,0 +1,107 @@
+{
+  "menu": [
+    {
+      "url": "/admin/dashboard",
+      "name": "dashboard",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "home",
+      "slug": "dashboard"
+    },
+    {
+      "url": "admin/employees/list",
+      "name": "employees",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "users",
+      "slug": "employees.list"
+    },
+    {
+      "url": "admin/inventory",
+      "name": "inventory",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "database",
+      "slug": "inventory.index"
+    },
+
+    {
+      "url": "admin/dishes",
+      "name": "dishes",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "layers",
+      "slug": "index.dishes"
+    },
+
+    {
+      "name": "reports",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "clipboard",
+      "slug": "reports",
+      "submenu": [
+
+        {
+          "url": "admin/reports/cash-flow",
+          "name": "r_cash_flow",
+          "icon": "circle",
+          "slug": "reports.cashflow"
+        },
+        {
+          "url": "admin/reports/sales",
+          "name": "r_sales",
+          "icon": "circle",
+          "slug": "reports.sales"
+        },
+        {
+          "url": "admin/reports/expenses",
+          "name": "r_expenses",
+          "icon": "circle",
+          "slug": "reports.expenses"
+        },
+        {
+          "url": "admin/reports/gain",
+          "name": "r_gain",
+          "icon": "circle",
+          "slug": "reports.gain"
+        },
+        {
+          "url": "admin/reports/best-seller",
+          "name": "r_more_sold",
+          "icon": "circle",
+          "slug": "reports.best.seller"
+        }
+      ]
+    },
+    {
+      "url": "admin/categories/list",
+      "name": "categories",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "bookmark",
+      "slug": "categories.list"
+    },
+    {
+      "name": "expenses",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "trending-down",
+      "slug": "expenses",
+      "submenu": [
+        {
+          "url": "admin/expenses/list-historical",
+          "name": "historical",
+          "icon": "circle",
+          "slug": "expenses.list.historical"
+        },
+        {
+          "url": "admin/expenses/list-to-pay",
+          "name": "to_pay",
+          "icon": "circle",
+          "slug": "expenses.list.to.pay"
+        }
+      ]
+    },
+    {
+      "url": "orders",
+      "name": "orders",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "shopping-bag",
+      "slug": "orders.index"
+    }
+  ]
+}
