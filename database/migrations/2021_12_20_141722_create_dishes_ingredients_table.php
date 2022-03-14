@@ -17,7 +17,7 @@ class CreateDishesIngredientsTable extends Migration
             $table->id();
             $table->integer('dish_id');
             $table->integer('inventory_id');
-            $table->integer('portion');
+            $table->double('portion');
             $table->double('designated_cost');
             $table->timestamps();
         });

@@ -14,7 +14,7 @@
                                 <select class="select2 form-select" data-toggle="select" name="product_id" id="create_product_id">
                                     <option value selected disabled>Seleccionar un Producto</option>
                                     @foreach ($products as $product)
-                                        <option value="{{ $product->id }}" data-flavor="{{ $product->it_has_flavors }}"> {{ $product->name }} - Marca: {{ $product->mark }} </option>
+                                        <option value="{{ $product->id }}" data-flavor="{{ $product->it_has_flavors }}"> {{ $product->name }} - Marca: {{ $product->mark }} - Gramos: {{ $product->gr }} </option>
                                     @endforeach
                                 </select>
                                 @error('product_id')
