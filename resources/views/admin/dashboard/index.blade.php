@@ -19,9 +19,9 @@
 <section id="dashboard-ecommerce">
   <div class="row match-height">
 
-    <div class="col-12">
+    {{-- <div class="col-12">
       @include('admin.dashboard.reports.sales_vs_gain')
-    </div>
+    </div> --}}
 
     <div class="col-12">
       @include('admin.dashboard.money_flow.list')
@@ -69,7 +69,7 @@
   <script src="{{ asset(mix('js/scripts/moment/moment.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/extensions/dist/plugins/weekSelect/weekSelect.js')) }}"></script>
   <script src="{{ asset('js/scripts/charts/dashboard/weekly_sales.js') }}"></script>
-  <script src="{{ asset('js/scripts/charts/dashboard/amount-vs-gain.js') }}"></script>
+  {{-- <script src="{{ asset('js/scripts/charts/dashboard/amount-vs-gain.js') }}"></script> --}}
 @endsection
 
 @section('custom-js')
