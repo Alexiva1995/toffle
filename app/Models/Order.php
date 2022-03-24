@@ -129,5 +129,15 @@ class Order extends Model
                 'cost' => $total_cost
             ]
         );
+
+        $order_total_amount = 0;
+
+        foreach ($order->dishes()->get() as $key => $item) {
+            $order_total_amount += $item->pivot->price;
+        }
+
+        $order->update([
+            'total_amount' => number_format($order_total_amount, 2, '.', '')
+        ]);
     }
 }

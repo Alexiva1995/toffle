@@ -203,12 +203,11 @@ class OrdersController extends Controller
             if ($order_dishes != '[]') {
                 foreach ($order_dishes as $key => $order_dish) {
             
-                    $dish = Dish::find($order_dish->pivot->dish_id);
+                    $order_ingredients = $order->ingredients()->wherePivot('code_operation', $order_dish->pivot->code_operation)->get();
                 
-                    foreach ($dish->ingredients()->get() as $key => $value) {
+                    foreach ($order_ingredients as $key => $value) {
             
                         $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
-                        $grams = $value->pivot->portion;
                         $grams_used = $value->pivot->portion * $order_dish->pivot->unit;
                         $units = $grams_used / $inventory->product->gr;
             
@@ -252,14 +251,22 @@ class OrdersController extends Controller
         $order_dish = $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
 
         if ($order_dish != null) {
-            $order->decrement('total_amount', number_format($order_dish->pivot->unit * $order_dish->pivot->price, 2, '.', '') );
 
-            $dish = Dish::find($order_dish->pivot->dish_id);
+            $order->update([
+                'total_amount' => $order->total_amount - $order_dish->pivot->price
+            ]);
+
+            if ($order->total_amount < 0) {
+                $order->update([
+                    'total_amount' => 0
+                ]);
+            }
+
+            $order_ingredients = $order->ingredients()->wherePivot('code_operation', $order_dish->pivot->code_operation)->get();
         
-            foreach ($dish->ingredients()->get() as $key => $value) {
+            foreach ($order_ingredients as $key => $value) {
     
                 $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
-                $grams = $value->pivot->portion;
                 $grams_used = $value->pivot->portion * $order_dish->pivot->unit;
                 $units = $grams_used / $inventory->product->gr;
     
@@ -303,8 +310,6 @@ class OrdersController extends Controller
                 ]
             ]);
 
-            $dish = Dish::find($request->dish_id);
-
             foreach ($dish->ingredients()->get() as $key => $value) {
     
                 $order->ingredients()->attach( [ $order->id => 
@@ -319,7 +324,6 @@ class OrdersController extends Controller
                     ]
                 ]);
                 $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
-                $grams = $value->pivot->portion;
                 $grams_used = $value->pivot->portion * 1;
                 $units = $grams_used / $inventory->product->gr;
     
@@ -411,7 +415,6 @@ class OrdersController extends Controller
         $order_dish = $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
 
         $inventory = Inventory::where('id', $request->inventory_id)->first();
-        $grams = $request->portion;
         $grams_used = $request->portion * $order_dish->pivot->unit;
         $units = $grams_used / $inventory->product->gr;
 
@@ -455,7 +458,6 @@ class OrdersController extends Controller
         $order_dish = $order->dishes()->wherePivot('code_operation', $code_operation)->first();
 
         $inventory = Inventory::where('id', $order_ingredient->pivot->inventory_id)->first();
-        $grams = $order_ingredient->pivot->portion;
         $grams_used = $order_ingredient->pivot->portion * $order_dish->pivot->unit;
         $units = $grams_used / $inventory->product->gr;
 
@@ -468,6 +470,8 @@ class OrdersController extends Controller
         $dish = Dish::where('id', $request->dish_id)->first();
 
         $order->calculatePriceDish($order, $code_operation, $dish);
+
+        return $order;
     }
 
     public function orderDishesTableData(Request $request, $id)
