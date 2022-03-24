@@ -80,12 +80,12 @@ class DishController extends Controller
 
             $dish = Dish::create($request->all());
 
-            foreach ($dish_ingredient as $key => $dishe) {
+            $portions = array_combine($request->ingredient_ids, $request->portion); 
+            $costs = array_combine($request->ingredient_ids, $request->price); 
+            $dish_ingredient = array_merge_recursive($portions, $costs); 
+            $array_dish = [];
 
-                $portions = array_combine($request->ingredient_ids, $request->portion); 
-                $costs = array_combine($request->ingredient_ids, $request->price); 
-                $dish_ingredient = array_merge_recursive($portions, $costs); 
-                $array_dish = [];
+            foreach ($dish_ingredient as $key => $dishe) {
 
                 $ingredient_ = array([
                     'ingredient_id' => str_replace("ingredient_", "", $key),
