@@ -342,6 +342,8 @@
                         tapToDismiss: false,
                     });
 
+                    $('#total_amount').val(data.total_amount);
+
                     modalDataModifyIngredients(order_id, code_operation, dish_id);
                     table.search('').draw();
 
@@ -389,6 +391,10 @@
                                     closeButton: true,
                                     tapToDismiss: false,
                                 });
+
+                                console.log(data.total_amount);
+
+                                $('#total_amount').val(data.total_amount);
 
                                 modalDataModifyIngredients(order_id, code_operation, dish_id);
                                 table.search('').draw();

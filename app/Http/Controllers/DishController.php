@@ -55,61 +55,61 @@ class DishController extends Controller
         $fields = [
             'name' => ['required', 'min:2'],
             'category_id' => ['required'],
-            'portion' => ['required'],
             'percentage_profit' => ['required'],
             'cost_price' => ['required'],
             'suggested_price' => ['required'],
             'designated_price' => ['required'],
-            'ingredient' => ['required'],
-            'price' => ['required'],
             'status' => ['required'],
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
             'category_id.required' => 'La categoria es requerida.',
-            'portion.required' => 'La porcion es requerida.',
             'percentage_profit.required' => 'El porcentage es requerido.',
             'cost_price.required' => 'El costo es requerido.',
-            'suggested_price.required' => 'El sugerido es requerido.',
-            'designated_price.required' => 'El designado es requerido.',
-            'ingredient.required' => 'El ingrediente es requerido.',
-            'price.required' => 'El precio es requerido.',
+            'suggested_price.required' => 'El precio sugerido es requerido.',
+            'designated_price.required' => 'El precio designado es requerido.',
             'status.required' => 'El estado del plato es requerido.',
         ];
 
         $this->validate($request, $fields, $msj);
 
-        $dish = Dish::create($request->all());
+        if ($request->ingredient_ids == null || $request->portion == null || $request->price == null) {
+            return redirect()->back()->withInput()->with('danger', 'Debes Agregar Ingredientes en el Plato');
+        }else{
 
-        $portions = array_combine($request->ingredient_ids, $request->portion); 
-        $costs = array_combine($request->ingredient_ids, $request->price); 
-        $dish_ingredient = array_merge_recursive($portions, $costs); 
-        $array_dish = [];
+            $dish = Dish::create($request->all());
 
-        foreach ($dish_ingredient as $key => $dishe) {
+            foreach ($dish_ingredient as $key => $dishe) {
 
-            $ingredient_ = array([
-                'ingredient_id' => str_replace("ingredient_", "", $key),
-                'portion' => $dishe[0],
-                'designated_cost' => $dishe[1],
-            ]);
+                $portions = array_combine($request->ingredient_ids, $request->portion); 
+                $costs = array_combine($request->ingredient_ids, $request->price); 
+                $dish_ingredient = array_merge_recursive($portions, $costs); 
+                $array_dish = [];
 
-            $array_dish = array_merge($array_dish, $ingredient_);
+                $ingredient_ = array([
+                    'ingredient_id' => str_replace("ingredient_", "", $key),
+                    'portion' => $dishe[0],
+                    'designated_cost' => $dishe[1],
+                ]);
+    
+                $array_dish = array_merge($array_dish, $ingredient_);
+            }
+    
+            foreach ($array_dish as $key => $item) {
+                $dish->ingredients()->attach([ $dish->id => 
+                    [
+                        'dish_id' => $dish->id,
+                        'inventory_id' => $item['ingredient_id'],
+                        'portion' => $item['portion'],
+                        'designated_cost' => $item['designated_cost'],            
+                    ]
+                ]);
+            }
+    
+            return redirect()->route('dishes.index')->with('success', 'Plato Añadido');
         }
 
-        foreach ($array_dish as $key => $item) {
-            $dish->ingredients()->attach([ $dish->id => 
-                [
-                    'dish_id' => $dish->id,
-                    'inventory_id' => $item['ingredient_id'],
-                    'portion' => $item['portion'],
-                    'designated_cost' => $item['designated_cost'],            
-                ]
-            ]);
-        }
-
-        return redirect()->route('dishes.index')->with('success', 'Plato Añadido');
     }
 
     /**
@@ -150,26 +150,20 @@ class DishController extends Controller
         $fields = [
             'name' => ['required', 'min:2'],
             'category_id' => ['required'],
-            'portion' => ['required'],
             'percentage_profit' => ['required'],
             'cost_price' => ['required'],
             'suggested_price' => ['required'],
             'designated_price' => ['required'],
-            'ingredient' => ['required'],
-            'price' => ['required'],
             'status' => ['required'],
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
             'category_id.required' => 'La categoria es requerida.',
-            'portion.required' => 'La porcion es requerida.',
             'percentage_profit.required' => 'El porcentage es requerido.',
             'cost_price.required' => 'El costo es requerido.',
-            'suggested_price.required' => 'El sugerido es requerido.',
-            'designated_price.required' => 'El designado es requerido.',
-            'ingredient.required' => 'El ingrediente es requerido.',
-            'price.required' => 'El precio es requerido.',
+            'suggested_price.required' => 'El precio sugerido es requerido.',
+            'designated_price.required' => 'El precio designado es requerido.',
             'status.required' => 'El estado del plato es requerido.',
         ];
 
