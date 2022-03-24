@@ -207,7 +207,7 @@
                                                     <input type="text" name="portion[]" class="form-control text-center price" id="portion_{{ $item->pivot->id }}" value="{{ $item->pivot->portion }}" readonly required>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="price[]" class="form-control text-center total data_pivot_cost" id="price_{{ $item->pivot->id }}" value="{{ $item->pivot->designated_cost }}" readonly>
+                                                    <input type="text" name="price[]" class="form-control text-center total data_pivot_price" id="price_{{ $item->pivot->id }}" value="{{ $item->pivot->designated_cost }}" readonly>
                                                 </td>
                                                 <td class="text-center"> 
                                                     <a class="btn btn-sm btn-danger" id="delete_ingredient"
@@ -278,7 +278,7 @@
                                 },
                                 function (data, textStatus, jqXHR) {
                                     $('#selected_ingredient_'+id).removeClass('data_pivot_id');
-                                    $('#price_'+id).removeClass('data_pivot_cost');
+                                    $('#price_'+id).removeClass('data_pivot_price');
                                     $('#edit_dish_to_order_'+id).addClass('d-none');
                                     toastr['success']('', data, {
                                         closeButton: true,
