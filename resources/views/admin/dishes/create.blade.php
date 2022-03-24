@@ -22,7 +22,7 @@
                                 <label class="form-label" for="name">Nombre del plato</label>
                                 <div class="input-group input-group-merge ">
                                     <input type="text" id="name"
-                                        class="form-control requerid @error('name') is-invalid @enderror" name="name"
+                                        class="form-control requerid @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"
                                         required />
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -35,10 +35,10 @@
                             <div class="col-12 col-md-4">
                                 <label class="form-label" for="category_id">Categoria</label>
                                 <select class="select2 form-control @error('category_id') is-invalid @enderror" name="category_id" data-toggle="select"
-                                    class="form-control" id="category">
+                                    class="form-control" id="category" value="{{ old('category_id') }}">
                                     <option disabled selected value="">Selecciona una categoria</option>
                                     @foreach ($category as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}" {{ old('category_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                     @endforeach
                                 </select>
 
@@ -54,9 +54,9 @@
                                 <select class="select2 form-control @error('status') is-invalid @enderror" name="status" data-toggle="select"
                                     class="form-control" id="status">
                                     <option disabled selected value="">Selecciona un Estado</option>
-                                    <option value="1">Activo</option>
-                                    <option value="2">En Revisión</option>
-                                    <option value="0">Inactivo</option>
+                                    <option value="1" {{ old('status') == "1" ? 'selected' : '' }}>Activo</option>
+                                    <option value="2" {{ old('status') == "2" ? 'selected' : '' }}>En Revisión</option>
+                                    <option value="0" {{ old('status') == "0" ? 'selected' : '' }}>Inactivo</option>
                                 </select>
 
                                 @error('status')
@@ -122,7 +122,7 @@
                                         <span class="input-group-text"> % </span>
                                         <input type="number" id="percentage_profit"
                                             class="form-control requerid @error('percentage_profit') is-invalid @enderror"
-                                            name="percentage_profit" id="percentage_profit" oninput="calculate()"
+                                            name="percentage_profit" id="percentage_profit" oninput="calculate()" value="{{ old('percentage_profit') }}"
                                             required />
                                         @error('percentage_profit')
                                         <span class="invalid-feedback" role="alert">
@@ -174,7 +174,7 @@
 
                                         <input type="number" id="designated_price"
                                             class="form-control requerid @error('designated_price') is-invalid @enderror"
-                                            name="designated_price" required step="0.0001" />
+                                            name="designated_price" value="{{ old('designated_price') }}" required step="0.0001" />
                                         @error('designated_price')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

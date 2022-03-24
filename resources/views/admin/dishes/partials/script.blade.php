@@ -35,7 +35,7 @@
                 <input type="hidden" name="ingredient_ids[]" class="form-control text-center dish_ids" id="dish_ids_'+numRows+'" value="'+$("#selected_ingredient option:selected").val()+'" required>\
                 <td><input type="text" name="ingredient[]" class="form-control text-center dish" id="selected_ingredient_'+numRows+'" value="'+$("#selected_ingredient option:selected").text()+'" required readonly></td>\
                 <td><input type="text" name="portion[]" class="form-control text-center price" id="portion_'+numRows+'" value="'+$("#portion_dish").val()+'" readonly required></td>\
-                <td><input type="text" name="price[]" class="form-control text-center price" id="price_'+numRows+'" value="'+$('#calculate_cost').val()+'" readonly required></td>\
+                <td><input type="text" name="price[]" class="form-control text-center price data_pivot_price" id="price_'+numRows+'" value="'+$('#calculate_cost').val()+'" readonly required></td>\
                 <td class="text-center"><a href="javascript:;" onclick="deleteRow('+numRows+')" style="color: #512F26;"><i style="color: #512F26;" data-feather="x-circle"></i> </a></td>\
                 </tr>';
             }else{
@@ -44,7 +44,7 @@
                 <input type="hidden" name="ingredient_ids[]" class="form-control text-center dish_ids" id="dish_ids_'+numRows+'" value="'+$("#selected_ingredient option:selected").val()+'" required>\
                 <td><input type="text" name="ingredient[]" class="form-control text-center dish" id="selected_ingredient_'+numRows+'" value="'+$("#selected_ingredient option:selected").text()+'" required readonly></td>\
                 <td><input type="text" name="portion[]" class="form-control text-center" id="portion_'+numRows+'" value="'+$("#portion_dish").val()+'" readonly required></td>\
-                <td><input type="text" name="price[]" class="form-control text-center price" id="price_'+numRows+'" value="'+$('#calculate_cost').val()+'" readonly required></td>\
+                <td><input type="text" name="price[]" class="form-control text-center price data_pivot_price" id="price_'+numRows+'" value="'+$('#calculate_cost').val()+'" readonly required></td>\
                 <td class="text-center"><a class="btn btn-sm btn-danger" onclick="deleteIngredient('+numRows+')"> <i data-feather="trash-2"></i> </a></td>\
                 </tr>';
             }
@@ -65,13 +65,23 @@
   function calculate(row = null){
       var total = 0;
       var cost = 0;
-      $( ".data_pivot_cost" ).each(function() {
-        cost += parseFloat($(this).val());
+      // $( ".data_pivot_cost" ).each(function() {
+      //   cost += parseFloat($(this).val());
+      // });
+
+      $( ".data_pivot_price" ).each(function() {
+        total += parseFloat($(this).val());
+        console.log($(this).val());
       });
 
-      for (var i = 1; i <= numRows; i++){
-        total += parseFloat($("#price_"+i).val());         
-      }
+      // for (var i = 1; i <= numRows; i++){
+      //   if ($("#price_"+i).val() != null ) {
+      //     total += parseFloat($("#price_"+i).val());               
+      //   }
+      //   console.log($("#price_"+i).val());   
+      // }
+
+      console.log(total);
 
       total = cost + total;
 
@@ -91,7 +101,7 @@
       $("#row_"+row).remove();
       numRows--;
 
-      calculate(numRows);
+      calculate();
   }
 
   function caculateCost() {
