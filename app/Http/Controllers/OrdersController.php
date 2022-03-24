@@ -251,7 +251,16 @@ class OrdersController extends Controller
         $order_dish = $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
 
         if ($order_dish != null) {
-            $order->decrement('total_amount', number_format($order_dish->pivot->unit * $order_dish->pivot->price, 2, '.', '') );
+
+            $order->update([
+                'total_amount' => $order->total_amount - $order_dish->pivot->price
+            ]);
+
+            if ($order->total_amount < 0) {
+                $order->update([
+                    'total_amount' => 0
+                ]);
+            }
 
             $order_ingredients = $order->ingredients()->wherePivot('code_operation', $order_dish->pivot->code_operation)->get();
         
@@ -461,6 +470,8 @@ class OrdersController extends Controller
         $dish = Dish::where('id', $request->dish_id)->first();
 
         $order->calculatePriceDish($order, $code_operation, $dish);
+
+        return $order;
     }
 
     public function orderDishesTableData(Request $request, $id)
