@@ -85,24 +85,24 @@
         
           // Amount Vs Gain
           // --------------------------------------------------------------------
-          dateFilter('1day');
-          dataChartAmountVsGain();
-          flatpickrDateCalendar(initial_date, final_date)
+          // dateFilter('1day');
+          // dataChartAmountVsGain();
+          // flatpickrDateCalendar(initial_date, final_date)
 
-          $('.datetime').click(function() {
+          // $('.datetime').click(function() {
 
-            $('#label-date-calendar').css("background-color", "transparent");
-            $('#spiner-chart').removeClass('d-none');
+          //   $('#label-date-calendar').css("background-color", "transparent");
+          //   $('#spiner-chart').removeClass('d-none');
 
-            value = $(this).val();
-            dateFilter(value);
-            dataChartAmountVsGain();
-            flatpickrDateCalendar(initial_date, final_date)
+          //   value = $(this).val();
+          //   dateFilter(value);
+          //   dataChartAmountVsGain();
+          //   flatpickrDateCalendar(initial_date, final_date)
 
-            setTimeout(() => {
-                $('#spiner-chart').addClass('d-none');                     
-            },1500)
-          });
+          //   setTimeout(() => {
+          //       $('#spiner-chart').addClass('d-none');                     
+          //   },1500)
+          // });
 
           // Weekly Sales
           // --------------------------------------------------------------------
