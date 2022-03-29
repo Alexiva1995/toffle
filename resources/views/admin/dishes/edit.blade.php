@@ -225,7 +225,7 @@
                         </div>
                         <div class="card-footer d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary me-2" id="edit_dish">
-                                <span class="loading_edit_dish mr-2"></span> Editar plato
+                                <span class="loading_edit_dish mr-2"></span> Actualizar
                             </button>
                             <a href="{{ route('dishes.index') }}" class="btn btn-outline-secondary ml-4">Cancelar</a>
                         </div>

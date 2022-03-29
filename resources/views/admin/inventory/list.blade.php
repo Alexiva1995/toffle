@@ -26,7 +26,7 @@
                             <th class="text-center">Depósito</th>
                             <th class="text-center">Local</th>
                             <th class="text-center">Público</th>
-                            <th class="text-center">Costo</th>
+                            <th class="text-right">Costo</th>
                             <th class="text-center">Fecha de Creación</th>
                             <th class="text-center px-3">Acción</th>
                         </tr>
@@ -71,7 +71,7 @@
                                     onclick="operation('public', 'sum', {{ $inventory->id }}, {{ $inventory->local }})"> + </span> 
                                 </div>
                             </td>
-                            <td class="text-center">{{ $inventory->cost }}</td>
+                            <td class="text-right">{{ number_format($inventory->cost, 2, ',', '.') }}</td>
                             <td class="text-center">{{ date('d-m-Y', strtotime($inventory->created_at)) }}</td>
                             <td class="text-center px-3"> 
                                 {{-- <div class="d-flex">
