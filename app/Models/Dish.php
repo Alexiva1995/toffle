@@ -33,7 +33,7 @@ class Dish extends Model
 
     public function collectionDishes($category_id)
     {
-        $dishes = Dish::where('category_id', $category_id)->where('status', '1')->get();
+        $dishes = Dish::where('category_id', $category_id)->whereIn('status', ['1', '2'])->get();
         return $dishes;
     }
     
