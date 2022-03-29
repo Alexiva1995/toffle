@@ -65,9 +65,13 @@
   function calculate(row = null){
       var total = 0;
       var cost = 0;
+      // $( ".data_pivot_cost" ).each(function() {
+      //   cost += parseFloat($(this).val());
+      // });
 
       $( ".data_pivot_price" ).each(function() {
         total += parseFloat($(this).val());
+        console.log($(this).val());
       });
 
       // for (var i = 1; i <= numRows; i++){
@@ -77,12 +81,13 @@
       //   console.log($("#price_"+i).val());   
       // }
 
+      console.log(total);
+
       total = cost + total;
 
       profit = $("#percentage_profit").val();
       cost = $("#cost_price").val( total.toFixed(2) );
       sugg = $("#suggested_price").val( (total * profit).toFixed(2) );
-      $("#designated_price").val( (total * profit).toFixed(2) );
 
   }
 

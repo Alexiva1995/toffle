@@ -250,22 +250,6 @@ class DishController extends Controller
             $dish->ingredients()->wherePivot('id', $id)->detach();
         }
 
-        $cost_price = 0;
-
-        if ($dish->ingredients()->get() != '[]') {
-            foreach ($dish->ingredients()->get() as $key => $item) {
-                $cost_price += number_format($item->pivot->designated_cost, 2, '.', '');
-            }
-        }
-
-        $price_dish = number_format($cost_price * $dish->percentage_profit, 2, '.', '');
-
-        $dish->update([
-            'cost_price' => $cost_price,
-            'suggested_price' => $price_dish,
-            'designated_price' => $price_dish,
-        ]);
-
         return 'Ingrediente Eliminado del Plato';
     }
 

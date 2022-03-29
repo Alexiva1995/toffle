@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
             <h4 class="card-text text-center">
-                Ingreso Total = <span class="text-success"> $ {{ number_format($orders_today->sum('total_amount'), 2, '.', '') }} </span>
+                Ingreso Total = <span class="text-success"> $ {{ number_format($orders_today->count('total_amount'), 2, '.', '') }} </span>
             </h4>   
         </div>
     </div>
