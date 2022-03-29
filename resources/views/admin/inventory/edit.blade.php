@@ -6,7 +6,7 @@
                 <h4 class="card-title">Datos Requeridos</h4>
             </div>
             <div class="card-body p-0 px-2">
-                <form class="form form-vertical" action="{{ route('inventory.update') }}" id="form_edit_inventory" method="POST">
+                <form class="form form-vertical" id="form_edit_inventory" method="POST">
                     @csrf
                     @method('PATCH')
 
