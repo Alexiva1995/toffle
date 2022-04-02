@@ -44,7 +44,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="edit_inventory">
-                <span class="loading_edit_inv mr-2"></span> Editar
+                <span class="loading_edit_inv mr-2"></span> Actualizar
             </button>
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>

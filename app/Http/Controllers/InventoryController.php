@@ -127,19 +127,36 @@ class InventoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $inventory = Inventory::find($id);
         
-        $deposit = $inventory->deposit + ($request->qty_package * $request->unit_package);
-        $inventory->update([
-            'qty_package' => $request->qty_package,
-            'unit_package' => $request->unit_package,
-            'price' => $request->price,
-            'cost' => number_format($request->price / $request->unit_package, 2, '.', ''),
-            'total' => $deposit + $inventory->local + $inventory->public,
-            'deposit' => $deposit,
-            'local' => $inventory->local,
-            'public' => $inventory->public,
-        ]);
+        if ($request->update_type == "1") {
+
+            $inventory->update([
+                'qty_package' => $request->qty_package,
+                'unit_package' => $request->unit_package,
+                'price' => $request->price,
+                'cost' => $request->cost,
+                'total' => $request->total,
+                'deposit' => $request->deposit,
+                'local' => $request->local,
+                'public' => $request->public,
+            ]);
+
+        }else{
+            $deposit = $inventory->deposit + ($request->qty_package * $request->unit_package);
+
+            $inventory->update([
+                'qty_package' => $request->qty_package,
+                'unit_package' => $request->unit_package,
+                'price' => $request->price,
+                'cost' => number_format($request->price / $request->unit_package, 2, '.', ''),
+                'total' => $deposit + $inventory->local + $inventory->public,
+                'deposit' => $deposit,
+                'local' => $inventory->local,
+                'public' => $inventory->public,
+            ]);
+        }
  
         $cost_product = $inventory->cost;
         $gr_product = $inventory->product->gr;
@@ -186,6 +203,10 @@ class InventoryController extends Controller
                     'suggested_price' => $cost_price * $profit,
                 ]);
             }
+        }
+
+        if ($request->update_type == "1") {
+            return redirect()->route('inventory.index')->with('success', 'Inventario Actualizado');
         }
     }
 
