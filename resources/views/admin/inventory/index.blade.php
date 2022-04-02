@@ -25,7 +25,7 @@
                       class="nav-link {{ Session::has('products') == true ? '' : 'active' }}"
                       id="inventories-tab-center"
                       data-bs-toggle="tab"
-                      href="#inventories-center"
+                        href="#inventories-center"
                       aria-controls="inventories-center"
                       role="tab"
                       aria-selected="false"
@@ -103,7 +103,7 @@
         $('#modal_edit_product').modal('show');
       }
 
-      function editInventory(id, product_id, qty_package, unit_package, price) {
+      function editInventory(id, product_id, qty_package, unit_package, price, cost, deposit, local, public, total) {
 
           var route = '{{route('inventory.update', 'replace_this')}}'.replace('replace_this', id);
           $('#form_edit_inventory').attr('action', route);
@@ -111,6 +111,11 @@
           $('#edit_qty_package').val(qty_package);
           $('#edit_unit_package').val(unit_package);
           $('#edit_price').val(price);
+          $('#edit_cost').val(cost);
+          $('#edit_deposit').val(deposit);
+          $('#edit_local').val(local);
+          $('#edit_public').val(public);
+          $('#edit_total').val(total);
           $('#modal_edit_inventory').modal('show');
 
       }
@@ -153,6 +158,24 @@
           $('#qty').val('');
           $('#max_value').val(max_value);   
           $("#modal_operation").modal("show");
+      }
+
+      function calculateCost() {
+          var unit_package = $('#edit_unit_package').val();
+          var price = $('#edit_price').val();
+
+          var cost = price / unit_package;
+          cost = roundDecimal(cost, 2);
+          $('#edit_cost').val(cost);
+      }
+
+      function calculateTotal() {
+          var deposit = $('#edit_deposit').val();
+          var local = $('#edit_local').val();
+          var public = $('#edit_public').val();
+
+          var total = parseFloat(deposit = null ? 0 : deposit) + parseFloat(local = null ? 0 : local) + parseFloat(public = null ? 0 : public);
+          $('#edit_total').val(total);
       }
 
       $(document).ready(function() {

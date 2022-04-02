@@ -178,4 +178,9 @@
         });
     }
 
+    function roundDecimal(num, dec) {
+        var exp = Math.pow(10, dec || 2); // 2 decimales por defecto
+        return parseInt(num * exp, 10) / exp;
+    }
+
 </script>
