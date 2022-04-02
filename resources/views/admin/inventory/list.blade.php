@@ -74,36 +74,35 @@
                             <td class="text-right">{{ number_format($inventory->cost, 2, ',', '.') }}</td>
                             <td class="text-center">{{ date('d-m-Y', strtotime($inventory->created_at)) }}</td>
                             <td class="text-center px-3"> 
-                                {{-- <div class="d-flex">
+                                <div class="d-flex">
                                     <button class="btn btn-sm btn-info me-1" 
                                         onclick="editInventory(
                                         {{ $inventory->id }}, 
                                         '{{ $inventory->product_id }}',
                                         {{ $inventory->qty_package }},
                                         {{ $inventory->unit_package }},
-                                        {{ $inventory->price }} )"> 
+                                        {{ $inventory->price }},
+                                        {{ $inventory->cost }},
+                                        {{ $inventory->deposit }},
+                                        {{ $inventory->local }},
+                                        {{ $inventory->public }},
+                                        {{ $inventory->total }} )"> 
                                         <i data-feather="edit"></i>                                   
-                                    </button> 
-    
+                                    </button>    
+                                    
                                     <span class="btn btn-sm btn-danger"
-                                            onclick="deleteElement( {{ $inventory->id }}, 
-                                            '#delete_inventory_', 
-                                            'este Inventario' )"> 
-                                            <i data-feather="trash-2"></i> 
-                                    </span>                                   
-                                </div> --}}
-                                <span class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $inventory->id }}, 
                                     '#delete_inventory_', 
                                     'este Inventario',
                                     'IMPORTANTE: Si esté Producto del Inventario está añadido en uno de los platos, no podrá ser removido' )"> 
-                                    <i data-feather="trash-2"></i> 
-                                </span> 
+                                        <i data-feather="trash-2"></i> 
+                                    </span> 
                         
-                                <form id="delete_inventory_{{ $inventory->id }}" action="{{ route('inventory.destroy', $inventory->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')                                      
-                                </form>
+                                    <form id="delete_inventory_{{ $inventory->id }}" action="{{ route('inventory.destroy', $inventory->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')                                      
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
