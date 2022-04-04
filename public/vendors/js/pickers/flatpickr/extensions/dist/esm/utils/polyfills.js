@@ -1,1 +1,14 @@
-"use strict";"function"!=typeof Object.assign&&(Object.assign=function(t,...n){if(!t)throw TypeError("Cannot convert undefined or null to object");for(const o of n)o&&Object.keys(o).forEach((n=>t[n]=o[n]));return t});
+"use strict";
+if (typeof Object.assign !== "function") {
+    Object.assign = function (target, ...args) {
+        if (!target) {
+            throw TypeError("Cannot convert undefined or null to object");
+        }
+        for (const source of args) {
+            if (source) {
+                Object.keys(source).forEach((key) => (target[key] = source[key]));
+            }
+        }
+        return target;
+    };
+}

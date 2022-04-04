@@ -1,1 +1,100 @@
-$((function(){"use strict";var e=$("#change-picture"),r=$(".user-avatar"),t=$("#users-language-select2"),i=$(".form-validate"),a=$(".birthdate-picker");e.length&&$(e).on("change",(function(e){var t=new FileReader,i=e.target.files;t.onload=function(){r.length&&r.attr("src",t.result)},t.readAsDataURL(i[0])})),t.length&&t.wrap('<div class="position-relative"></div>').select2({dropdownParent:t.parent(),dropdownAutoWidth:!0,width:"100%"}),a.length&&a.flatpickr(),i.length&&($(i).each((function(){$(this).validate({submitHandler:function(e,r){r.preventDefault()},rules:{username:{required:!0},name:{required:!0},email:{required:!0,email:!0},dob:{required:!0,step:!1},phone:{required:!0},website:{required:!0,url:!0},address:{required:!0},zip:{required:!0,maxlength:6},city:{required:!0},state:{required:!0},country:{required:!0}}})})),$(this).on("submit",(function(e){e.preventDefault()})))}));
+/*=========================================================================================
+    File Name: app-user-edit.js
+    Description: User Edit page
+    --------------------------------------------------------------------------------------
+    Item Name: Vuexy  - Vuejs, HTML & Laravel Admin Dashboard Template
+    Author: PIXINVENT
+    Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
+$(function () {
+  'use strict';
+
+  var changePicture = $('#change-picture'),
+    userAvatar = $('.user-avatar'),
+    languageSelect = $('#users-language-select2'),
+    form = $('.form-validate'),
+    birthdayPickr = $('.birthdate-picker');
+
+  // Change user profile picture
+  if (changePicture.length) {
+    $(changePicture).on('change', function (e) {
+      var reader = new FileReader(),
+        files = e.target.files;
+      reader.onload = function () {
+        if (userAvatar.length) {
+          userAvatar.attr('src', reader.result);
+        }
+      };
+      reader.readAsDataURL(files[0]);
+    });
+  }
+
+  // users language select
+  if (languageSelect.length) {
+    languageSelect.wrap('<div class="position-relative"></div>').select2({
+      dropdownParent: languageSelect.parent(),
+      dropdownAutoWidth: true,
+      width: '100%'
+    });
+  }
+
+  // Users birthdate picker
+  if (birthdayPickr.length) {
+    birthdayPickr.flatpickr();
+  }
+
+  // Validation
+  if (form.length) {
+    $(form).each(function () {
+      var $this = $(this);
+      $this.validate({
+        submitHandler: function (form, event) {
+          event.preventDefault();
+        },
+        rules: {
+          username: {
+            required: true
+          },
+          name: {
+            required: true
+          },
+          email: {
+            required: true,
+            email: true
+          },
+          dob: {
+            required: true,
+            step: false
+          },
+          phone: {
+            required: true
+          },
+          website: {
+            required: true,
+            url: true
+          },
+          address: {
+            required: true
+          },
+          zip: {
+            required: true,
+            maxlength: 6
+          },
+          city: {
+            required: true
+          },
+          state: {
+            required: true
+          },
+          country: {
+            required: true
+          }
+        }
+      });
+    });
+
+    $(this).on('submit', function (event) {
+      event.preventDefault();
+    });
+  }
+});

@@ -15,21 +15,25 @@
             <table class="table rounded border-table" id="inventory_reposition_table">
                 <thead>
                     <tr>
-                        <th class="text-center px-0">Id del Inv</th>
-                        <th class="text-center px-0">Producto</th>
-                        <th class="text-center px-0">Acción</th>
+                        <th class="px-2">Producto</th>
+                        <th class="px-2 text-center">Cantidad</th>
+                        <th class="px-2 text-center">Necesario</th>
+                        <th class="text-center px-2">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($inventories as $inventory)
                         @if ($inventory->local <= $inventory->product->units_reposition_alert )
                             <tr>
-                                <td class="text-center text-dark"> 
-                                    {{ $inventory->id }}
-                                </td>  
-                                <td class="text-center text-dark"> 
+                                <td class="text-dark"> 
                                     {{ $inventory->product->name }} {{ $inventory->flavor_name != null ? '('.ucwords($inventory->flavor_name).')' : '' }}
                                 </td>  
+                                <td class="text-center text-dark"> 
+                                    {{ $inventory->local }} 
+                                </td>  
+                                <td class="text-center text-dark"> 
+                                    {{ $inventory->qtyProductsNeeded($inventory->id) }} 
+                                </td> 
                                 <td class="text-center"> 
                                     <span class="badge badge-light-info text white"> 
                                         <i data-feather="alert-circle"></i> Reponer Producto

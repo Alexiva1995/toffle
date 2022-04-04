@@ -23,37 +23,25 @@
       @include('admin.dashboard.reports.sales_vs_gain')
     </div> --}}
 
-    <div class="col-12">
+    <div class="col-12 col-md-6">
       @include('admin.dashboard.money_flow.list')
     </div>
 
-    <div class="col-12">
+    <div class="col-12 col-md-6">
       @include('admin.dashboard.inventory_reposition.list')
-    </div>
-
-    <div class="col-12">
-      <div class="card card-congratulation-medal">
-        <div class="card-body">
-          <div class="row justify-content-center">
-              <div class="col-auto">
-                <a href="{{ route('inventory.index') }}" class="btn btn-info mx-1">
-                  <i data-feather="archive"></i> Añadir al Inventario 
-                </a>
-                <a href="{{ route('expenses.create') }}" class="btn btn-primary mx-1"> <i data-feather="trending-down"></i> Añadir Gasto</a>
-              </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="col-12">
       @include('admin.dashboard.dishes_under_review.list')
     </div>
 
-    <div class="col-12">
-      @include('admin.dashboard.reports.weekly_sales')
+    <div class="col-12 col-md-4">
+      @include('admin.dashboard.reports.profit_by_category')
     </div>
 
+    <div class="col-12 col-md-8">
+      @include('admin.dashboard.reports.weekly_sales')
+    </div>
   </div>
 
 </section>
@@ -69,6 +57,7 @@
   <script src="{{ asset(mix('js/scripts/moment/moment.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/extensions/dist/plugins/weekSelect/weekSelect.js')) }}"></script>
   <script src="{{ asset('js/scripts/charts/dashboard/weekly_sales.js') }}"></script>
+  <script src="{{ asset('js/scripts/charts/dashboard/profit_by_category.js') }}"></script>
   {{-- <script src="{{ asset('js/scripts/charts/dashboard/amount-vs-gain.js') }}"></script> --}}
 @endsection
 
