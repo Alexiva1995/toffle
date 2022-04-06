@@ -12,7 +12,7 @@
             <h4 class="card-title">Informes de Ganancia por Categoría</h4>
         </div>
         <div class="card-body">
-            <input type="hidden" id="weekly_sales_route" value="{{ route('data.chart.weekly.sales') }}">
+            <input type="hidden" id="profit_by_category_route" value="{{ route('data.chart.profit.by.category') }}">
             <div id="donut-chart-profit-by-category"></div>
         </div>
     </div>

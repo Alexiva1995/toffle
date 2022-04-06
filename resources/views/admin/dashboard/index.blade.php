@@ -56,8 +56,8 @@
   {{-- Page js files --}}
   <script src="{{ asset(mix('js/scripts/moment/moment.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/pickers/flatpickr/extensions/dist/plugins/weekSelect/weekSelect.js')) }}"></script>
-  <script src="{{ asset('js/scripts/charts/dashboard/weekly_sales.js') }}"></script>
   <script src="{{ asset('js/scripts/charts/dashboard/profit_by_category.js') }}"></script>
+  <script src="{{ asset('js/scripts/charts/dashboard/weekly_sales.js') }}"></script>
   {{-- <script src="{{ asset('js/scripts/charts/dashboard/amount-vs-gain.js') }}"></script> --}}
 @endsection
 
