@@ -1,7 +1,7 @@
 var columnChartWs = document.querySelector('#column-chart-ws'),
 columnChartWsConfig = {
   chart: {
-    height: 320,
+    height: 400,
     type: 'bar',
     stacked: true,
     parentHeightOffset: 0,

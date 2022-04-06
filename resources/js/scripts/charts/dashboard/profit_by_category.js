@@ -8,24 +8,32 @@ $.ajax({
   url: profit_by_category_route,
   success: function (response) {
 
-      var orders = response.orders
+      var orders = response.orders;
 
       var labels = orders.map(function (e) {
-          return e.category_name
+          if (e.category_name != null) {
+            return e.category_name;
+          }
       })
 
       var data_gain = orders.map(function (e) {
           if (e.gain != null) {
             return Number(e.gain.toFixed(2));
-          }else{
-            return 0;
           }
-      })
+      });
+
+      var labels = labels.filter(element => {
+        return element !== undefined;
+      });
+
+      var data_gain = data_gain.filter(element => {
+        return element !== undefined;
+      });
 
       var donutChartEl = document.querySelector('#donut-chart-profit-by-category'),
       donutChartConfig = {
         chart: {
-          height: 350,
+          height: 450,
           type: 'donut'
         },
         legend: {
@@ -47,13 +55,14 @@ $.ajax({
                 show: true,
                 name: {
                   fontSize: '2rem',
-                  fontFamily: 'Montserrat'
+                  fontFamily: 'Montserrat',
                 },
                 value: {
                   fontSize: '1rem',
                   fontFamily: 'Montserrat',
                   formatter: function (val) {
-                    return 'Monto: ' +  parseInt(val);
+                    var gain = parseFloat(val).toFixed(2);
+                    return new Intl.NumberFormat().format(gain);
                   }
                 },
                 total: {
