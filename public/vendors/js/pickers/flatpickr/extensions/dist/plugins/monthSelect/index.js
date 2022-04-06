@@ -1,1 +1,227 @@
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):(e="undefined"!=typeof globalThis?globalThis:e||self).monthSelectPlugin=t()}(this,(function(){"use strict";var e=function(){return e=Object.assign||function(e){for(var t,n=1,a=arguments.length;n<a;n++)for(var o in t=arguments[n])Object.prototype.hasOwnProperty.call(t,o)&&(e[o]=t[o]);return e},e.apply(this,arguments)};var t={shorthand:!1,dateFormat:"F Y",altFormat:"F Y",theme:"light"};return function(n){var a=e(e({},t),n);return function(e){e.config.dateFormat=a.dateFormat,e.config.altFormat=a.altFormat;var t={monthsContainer:null};function n(){if(e.rContainer){for(var t=e.rContainer.querySelectorAll(".flatpickr-monthSelect-month.selected"),n=0;n<t.length;n++)t[n].classList.remove("selected");var a=(e.selectedDates[0]||new Date).getMonth(),o=e.rContainer.querySelector(".flatpickr-monthSelect-month:nth-child("+(a+1)+")");o&&o.classList.add("selected")}}function o(){var t=e.selectedDates[0];(t&&((t=new Date(t)).setFullYear(e.currentYear),e.config.minDate&&t<e.config.minDate&&(t=e.config.minDate),e.config.maxDate&&t>e.config.maxDate&&(t=e.config.maxDate),e.currentYear=t.getFullYear()),e.currentYearElement.value=String(e.currentYear),e.rContainer)&&e.rContainer.querySelectorAll(".flatpickr-monthSelect-month").forEach((function(t){t.dateObj.setFullYear(e.currentYear),e.config.minDate&&t.dateObj<e.config.minDate||e.config.maxDate&&t.dateObj>e.config.maxDate?t.classList.add("disabled"):t.classList.remove("disabled")}));n()}function r(t){t.preventDefault(),t.stopPropagation();var n=function(e){try{return"function"==typeof e.composedPath?e.composedPath()[0]:e.target}catch(t){return e.target}}(t);n instanceof Element&&!n.classList.contains("disabled")&&(i(n.dateObj),e.close())}function i(t){var a=new Date(t);a.setFullYear(e.currentYear),e.setDate(a,!0),n()}var c={37:-1,39:1,40:3,38:-3};return{onParseConfig:function(){e.config.mode="single",e.config.enableTime=!1},onValueUpdate:n,onKeyDown:function(n,a,o,r){var l=void 0!==c[r.keyCode];if((l||13===r.keyCode)&&e.rContainer&&t.monthsContainer){var s=e.rContainer.querySelector(".flatpickr-monthSelect-month.selected"),d=Array.prototype.indexOf.call(t.monthsContainer.children,document.activeElement);if(-1===d){var f=s||t.monthsContainer.firstElementChild;f.focus(),d=f.$i}l?t.monthsContainer.children[(12+d+c[r.keyCode])%12].focus():13===r.keyCode&&t.monthsContainer.contains(document.activeElement)&&i(document.activeElement.dateObj)}},onReady:[function(){e.currentMonth=0},function(){if(e.rContainer&&e.daysContainer&&e.weekdayContainer){e.rContainer.removeChild(e.daysContainer),e.rContainer.removeChild(e.weekdayContainer);for(var t=0;t<e.monthElements.length;t++){var n=e.monthElements[t];n.parentNode&&n.parentNode.removeChild(n)}}},function(){e._bind(e.prevMonthNav,"click",(function(t){t.preventDefault(),t.stopPropagation(),e.changeYear(e.currentYear-1),o()})),e._bind(e.nextMonthNav,"click",(function(t){t.preventDefault(),t.stopPropagation(),e.changeYear(e.currentYear+1),o()}))},function(){if(e.rContainer){t.monthsContainer=e._createElement("div","flatpickr-monthSelect-months"),t.monthsContainer.tabIndex=-1,e.calendarContainer.classList.add("flatpickr-monthSelect-theme-"+a.theme);for(var n=0;n<12;n++){var o=e._createElement("span","flatpickr-monthSelect-month");o.dateObj=new Date(e.currentYear,n),o.$i=n,o.textContent=(i=n,c=a.shorthand,e.l10n.months[c?"shorthand":"longhand"][i]),o.tabIndex=-1,o.addEventListener("click",r),t.monthsContainer.appendChild(o),(e.config.minDate&&o.dateObj<e.config.minDate||e.config.maxDate&&o.dateObj>e.config.maxDate)&&o.classList.add("disabled")}var i,c;e.rContainer.appendChild(t.monthsContainer)}},n,function(){e.loadedPlugins.push("monthSelect")}],onDestroy:function(){if(null!==t.monthsContainer)for(var e=t.monthsContainer.querySelectorAll(".flatpickr-monthSelect-month"),n=0;n<e.length;n++)e[n].removeEventListener("click",r)}}}}}));
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.monthSelectPlugin = factory());
+}(this, (function () { 'use strict';
+
+    /*! *****************************************************************************
+    Copyright (c) Microsoft Corporation.
+
+    Permission to use, copy, modify, and/or distribute this software for any
+    purpose with or without fee is hereby granted.
+
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+    REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+    INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+    LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+    OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+    PERFORMANCE OF THIS SOFTWARE.
+    ***************************************************************************** */
+
+    var __assign = function() {
+        __assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign.apply(this, arguments);
+    };
+
+    var monthToStr = function (monthNumber, shorthand, locale) { return locale.months[shorthand ? "shorthand" : "longhand"][monthNumber]; };
+
+    function getEventTarget(event) {
+        try {
+            if (typeof event.composedPath === "function") {
+                var path = event.composedPath();
+                return path[0];
+            }
+            return event.target;
+        }
+        catch (error) {
+            return event.target;
+        }
+    }
+
+    var defaultConfig = {
+        shorthand: false,
+        dateFormat: "F Y",
+        altFormat: "F Y",
+        theme: "light",
+    };
+    function monthSelectPlugin(pluginConfig) {
+        var config = __assign(__assign({}, defaultConfig), pluginConfig);
+        return function (fp) {
+            fp.config.dateFormat = config.dateFormat;
+            fp.config.altFormat = config.altFormat;
+            var self = { monthsContainer: null };
+            function clearUnnecessaryDOMElements() {
+                if (!fp.rContainer || !fp.daysContainer || !fp.weekdayContainer)
+                    return;
+                fp.rContainer.removeChild(fp.daysContainer);
+                fp.rContainer.removeChild(fp.weekdayContainer);
+                for (var index = 0; index < fp.monthElements.length; index++) {
+                    var element = fp.monthElements[index];
+                    if (!element.parentNode)
+                        continue;
+                    element.parentNode.removeChild(element);
+                }
+            }
+            function addListeners() {
+                fp._bind(fp.prevMonthNav, "click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    fp.changeYear(fp.currentYear - 1);
+                    selectYear();
+                });
+                fp._bind(fp.nextMonthNav, "click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    fp.changeYear(fp.currentYear + 1);
+                    selectYear();
+                });
+            }
+            function addMonths() {
+                if (!fp.rContainer)
+                    return;
+                self.monthsContainer = fp._createElement("div", "flatpickr-monthSelect-months");
+                self.monthsContainer.tabIndex = -1;
+                fp.calendarContainer.classList.add("flatpickr-monthSelect-theme-" + config.theme);
+                for (var i = 0; i < 12; i++) {
+                    var month = fp._createElement("span", "flatpickr-monthSelect-month");
+                    month.dateObj = new Date(fp.currentYear, i);
+                    month.$i = i;
+                    month.textContent = monthToStr(i, config.shorthand, fp.l10n);
+                    month.tabIndex = -1;
+                    month.addEventListener("click", selectMonth);
+                    self.monthsContainer.appendChild(month);
+                    if ((fp.config.minDate && month.dateObj < fp.config.minDate) ||
+                        (fp.config.maxDate && month.dateObj > fp.config.maxDate)) {
+                        month.classList.add("disabled");
+                    }
+                }
+                fp.rContainer.appendChild(self.monthsContainer);
+            }
+            function setCurrentlySelected() {
+                if (!fp.rContainer)
+                    return;
+                var currentlySelected = fp.rContainer.querySelectorAll(".flatpickr-monthSelect-month.selected");
+                for (var index = 0; index < currentlySelected.length; index++) {
+                    currentlySelected[index].classList.remove("selected");
+                }
+                var targetMonth = (fp.selectedDates[0] || new Date()).getMonth();
+                var month = fp.rContainer.querySelector(".flatpickr-monthSelect-month:nth-child(" + (targetMonth + 1) + ")");
+                if (month) {
+                    month.classList.add("selected");
+                }
+            }
+            function selectYear() {
+                var selectedDate = fp.selectedDates[0];
+                if (selectedDate) {
+                    selectedDate = new Date(selectedDate);
+                    selectedDate.setFullYear(fp.currentYear);
+                    if (fp.config.minDate && selectedDate < fp.config.minDate) {
+                        selectedDate = fp.config.minDate;
+                    }
+                    if (fp.config.maxDate && selectedDate > fp.config.maxDate) {
+                        selectedDate = fp.config.maxDate;
+                    }
+                    fp.currentYear = selectedDate.getFullYear();
+                }
+                fp.currentYearElement.value = String(fp.currentYear);
+                if (fp.rContainer) {
+                    var months = fp.rContainer.querySelectorAll(".flatpickr-monthSelect-month");
+                    months.forEach(function (month) {
+                        month.dateObj.setFullYear(fp.currentYear);
+                        if ((fp.config.minDate && month.dateObj < fp.config.minDate) ||
+                            (fp.config.maxDate && month.dateObj > fp.config.maxDate)) {
+                            month.classList.add("disabled");
+                        }
+                        else {
+                            month.classList.remove("disabled");
+                        }
+                    });
+                }
+                setCurrentlySelected();
+            }
+            function selectMonth(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var eventTarget = getEventTarget(e);
+                if (eventTarget instanceof Element &&
+                    !eventTarget.classList.contains("disabled")) {
+                    setMonth(eventTarget.dateObj);
+                    fp.close();
+                }
+            }
+            function setMonth(date) {
+                var selectedDate = new Date(date);
+                selectedDate.setFullYear(fp.currentYear);
+                fp.setDate(selectedDate, true);
+                setCurrentlySelected();
+            }
+            var shifts = {
+                37: -1,
+                39: 1,
+                40: 3,
+                38: -3,
+            };
+            function onKeyDown(_, __, ___, e) {
+                var shouldMove = shifts[e.keyCode] !== undefined;
+                if (!shouldMove && e.keyCode !== 13) {
+                    return;
+                }
+                if (!fp.rContainer || !self.monthsContainer)
+                    return;
+                var currentlySelected = fp.rContainer.querySelector(".flatpickr-monthSelect-month.selected");
+                var index = Array.prototype.indexOf.call(self.monthsContainer.children, document.activeElement);
+                if (index === -1) {
+                    var target = currentlySelected || self.monthsContainer.firstElementChild;
+                    target.focus();
+                    index = target.$i;
+                }
+                if (shouldMove) {
+                    self.monthsContainer.children[(12 + index + shifts[e.keyCode]) % 12].focus();
+                }
+                else if (e.keyCode === 13 &&
+                    self.monthsContainer.contains(document.activeElement)) {
+                    setMonth(document.activeElement.dateObj);
+                }
+            }
+            function destroyPluginInstance() {
+                if (self.monthsContainer !== null) {
+                    var months = self.monthsContainer.querySelectorAll(".flatpickr-monthSelect-month");
+                    for (var index = 0; index < months.length; index++) {
+                        months[index].removeEventListener("click", selectMonth);
+                    }
+                }
+            }
+            return {
+                onParseConfig: function () {
+                    fp.config.mode = "single";
+                    fp.config.enableTime = false;
+                },
+                onValueUpdate: setCurrentlySelected,
+                onKeyDown: onKeyDown,
+                onReady: [
+                    function () {
+                        fp.currentMonth = 0;
+                    },
+                    clearUnnecessaryDOMElements,
+                    addListeners,
+                    addMonths,
+                    setCurrentlySelected,
+                    function () {
+                        fp.loadedPlugins.push("monthSelect");
+                    },
+                ],
+                onDestroy: destroyPluginInstance,
+            };
+        };
+    }
+
+    return monthSelectPlugin;
+
+})));

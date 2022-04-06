@@ -66,6 +66,7 @@
     "/js/scripts/charts/chart-apex.js": "/js/scripts/charts/chart-apex.js",
     "/js/scripts/charts/chart-chartjs.js": "/js/scripts/charts/chart-chartjs.js",
     "/js/scripts/charts/dashboard/amount-vs-gain.js": "/js/scripts/charts/dashboard/amount-vs-gain.js",
+    "/js/scripts/charts/dashboard/profit_by_category.js": "/js/scripts/charts/dashboard/profit_by_category.js",
     "/js/scripts/charts/dashboard/weekly_sales.js": "/js/scripts/charts/dashboard/weekly_sales.js",
     "/js/scripts/components/components-accordion.js": "/js/scripts/components/components-accordion.js",
     "/js/scripts/components/components-alerts.js": "/js/scripts/components/components-alerts.js",

@@ -1,1 +1,122 @@
-import{tokenRegex,revFormat,formats}from"./formatting";import{defaults}from"../types/options";import{english}from"../l10n/default";export const createDateFormatter=({config:e=defaults,l10n:t=english,isMobile:n=!1})=>(o,a,r)=>{const s=r||t;return void 0===e.formatDate||n?a.split("").map(((t,n,a)=>formats[t]&&"\\"!==a[n-1]?formats[t](o,s,e):"\\"!==t?t:"")).join(""):e.formatDate(o,a,s)};export const createDateParser=({config:e=defaults,l10n:t=english})=>(n,o,a,r)=>{if(0!==n&&!n)return;const s=r||t;let i;const f=n;if(n instanceof Date)i=new Date(n.getTime());else if("string"!=typeof n&&void 0!==n.toFixed)i=new Date(n);else if("string"==typeof n){const t=o||(e||defaults).dateFormat,r=String(n).trim();if("today"===r)i=new Date,a=!0;else if(/Z$/.test(r)||/GMT$/.test(r))i=new Date(n);else if(e&&e.parseDate)i=e.parseDate(n,t);else{i=e&&e.noCalendar?new Date((new Date).setHours(0,0,0,0)):new Date((new Date).getFullYear(),0,1,0,0,0,0);let o,a=[];for(let e=0,r=0,f="";e<t.length;e++){const m=t[e],u="\\"===m,g="\\"===t[e-1]||u;if(tokenRegex[m]&&!g){f+=tokenRegex[m];const e=new RegExp(f).exec(n);e&&(o=!0)&&a["Y"!==m?"push":"unshift"]({fn:revFormat[m],val:e[++r]})}else u||(f+=".");a.forEach((({fn:e,val:t})=>i=e(i,t,s)||i))}i=o?i:void 0}}if(i instanceof Date&&!isNaN(i.getTime()))return!0===a&&i.setHours(0,0,0,0),i;e.errorHandler(new Error(`Invalid date provided: ${f}`))};export function compareDates(e,t,n=!0){return!1!==n?new Date(e.getTime()).setHours(0,0,0,0)-new Date(t.getTime()).setHours(0,0,0,0):e.getTime()-t.getTime()}export function compareTimes(e,t){return 3600*(e.getHours()-t.getHours())+60*(e.getMinutes()-t.getMinutes())+e.getSeconds()-t.getSeconds()}export const isBetween=(e,t,n)=>e>Math.min(t,n)&&e<Math.max(t,n);export const duration={DAY:864e5};export function getDefaultHours(e){let t=e.defaultHour,n=e.defaultMinute,o=e.defaultSeconds;if(void 0!==e.minDate){const a=e.minDate.getHours(),r=e.minDate.getMinutes(),s=e.minDate.getSeconds();t<a&&(t=a),t===a&&n<r&&(n=r),t===a&&n===r&&o<s&&(o=e.minDate.getSeconds())}if(void 0!==e.maxDate){const a=e.maxDate.getHours(),r=e.maxDate.getMinutes();t=Math.min(t,a),t===a&&(n=Math.min(r,n)),t===a&&n===r&&(o=e.maxDate.getSeconds())}return{hours:t,minutes:n,seconds:o}}
+import { tokenRegex, revFormat, formats, } from "./formatting";
+import { defaults } from "../types/options";
+import { english } from "../l10n/default";
+export const createDateFormatter = ({ config = defaults, l10n = english, isMobile = false, }) => (dateObj, frmt, overrideLocale) => {
+    const locale = overrideLocale || l10n;
+    if (config.formatDate !== undefined && !isMobile) {
+        return config.formatDate(dateObj, frmt, locale);
+    }
+    return frmt
+        .split("")
+        .map((c, i, arr) => formats[c] && arr[i - 1] !== "\\"
+        ? formats[c](dateObj, locale, config)
+        : c !== "\\"
+            ? c
+            : "")
+        .join("");
+};
+export const createDateParser = ({ config = defaults, l10n = english }) => (date, givenFormat, timeless, customLocale) => {
+    if (date !== 0 && !date)
+        return undefined;
+    const locale = customLocale || l10n;
+    let parsedDate;
+    const dateOrig = date;
+    if (date instanceof Date)
+        parsedDate = new Date(date.getTime());
+    else if (typeof date !== "string" &&
+        date.toFixed !== undefined)
+        parsedDate = new Date(date);
+    else if (typeof date === "string") {
+        const format = givenFormat || (config || defaults).dateFormat;
+        const datestr = String(date).trim();
+        if (datestr === "today") {
+            parsedDate = new Date();
+            timeless = true;
+        }
+        else if (/Z$/.test(datestr) ||
+            /GMT$/.test(datestr))
+            parsedDate = new Date(date);
+        else if (config && config.parseDate)
+            parsedDate = config.parseDate(date, format);
+        else {
+            parsedDate =
+                !config || !config.noCalendar
+                    ? new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0)
+                    : new Date(new Date().setHours(0, 0, 0, 0));
+            let matched, ops = [];
+            for (let i = 0, matchIndex = 0, regexStr = ""; i < format.length; i++) {
+                const token = format[i];
+                const isBackSlash = token === "\\";
+                const escaped = format[i - 1] === "\\" || isBackSlash;
+                if (tokenRegex[token] && !escaped) {
+                    regexStr += tokenRegex[token];
+                    const match = new RegExp(regexStr).exec(date);
+                    if (match && (matched = true)) {
+                        ops[token !== "Y" ? "push" : "unshift"]({
+                            fn: revFormat[token],
+                            val: match[++matchIndex],
+                        });
+                    }
+                }
+                else if (!isBackSlash)
+                    regexStr += ".";
+                ops.forEach(({ fn, val }) => (parsedDate = fn(parsedDate, val, locale) || parsedDate));
+            }
+            parsedDate = matched ? parsedDate : undefined;
+        }
+    }
+    if (!(parsedDate instanceof Date && !isNaN(parsedDate.getTime()))) {
+        config.errorHandler(new Error(`Invalid date provided: ${dateOrig}`));
+        return undefined;
+    }
+    if (timeless === true)
+        parsedDate.setHours(0, 0, 0, 0);
+    return parsedDate;
+};
+export function compareDates(date1, date2, timeless = true) {
+    if (timeless !== false) {
+        return (new Date(date1.getTime()).setHours(0, 0, 0, 0) -
+            new Date(date2.getTime()).setHours(0, 0, 0, 0));
+    }
+    return date1.getTime() - date2.getTime();
+}
+export function compareTimes(date1, date2) {
+    return (3600 * (date1.getHours() - date2.getHours()) +
+        60 * (date1.getMinutes() - date2.getMinutes()) +
+        date1.getSeconds() -
+        date2.getSeconds());
+}
+export const isBetween = (ts, ts1, ts2) => {
+    return ts > Math.min(ts1, ts2) && ts < Math.max(ts1, ts2);
+};
+export const duration = {
+    DAY: 86400000,
+};
+export function getDefaultHours(config) {
+    let hours = config.defaultHour;
+    let minutes = config.defaultMinute;
+    let seconds = config.defaultSeconds;
+    if (config.minDate !== undefined) {
+        const minHour = config.minDate.getHours();
+        const minMinutes = config.minDate.getMinutes();
+        const minSeconds = config.minDate.getSeconds();
+        if (hours < minHour) {
+            hours = minHour;
+        }
+        if (hours === minHour && minutes < minMinutes) {
+            minutes = minMinutes;
+        }
+        if (hours === minHour && minutes === minMinutes && seconds < minSeconds)
+            seconds = config.minDate.getSeconds();
+    }
+    if (config.maxDate !== undefined) {
+        const maxHr = config.maxDate.getHours();
+        const maxMinutes = config.maxDate.getMinutes();
+        hours = Math.min(hours, maxHr);
+        if (hours === maxHr)
+            minutes = Math.min(maxMinutes, minutes);
+        if (hours === maxHr && minutes === maxMinutes)
+            seconds = config.maxDate.getSeconds();
+    }
+    return { hours, minutes, seconds };
+}

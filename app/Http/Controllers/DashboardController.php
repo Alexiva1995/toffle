@@ -94,6 +94,22 @@ class DashboardController extends Controller
       ]);
  }
 
+   public function dataProfitByCategory(Request $request) {
+
+      $orders = Order::selectRaw('d.name as category_name')
+        ->selectRaw('SUM( ROUND((b.price - b.cost) * b.unit , 2 ) ) as gain')
+        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+        ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+        ->leftJoin('categories as d', 'c.category_id', '=', 'd.id')
+        ->where('orders.status', '2')
+        ->orderBy('category_name', 'ASC')
+        ->groupBy('d.id', 'd.name')
+        ->get();
+
+      return response()->json([
+          'orders' => $orders,
+      ]);
+  }
  
   public function dataChartWeeklySales(Request $request) {
 

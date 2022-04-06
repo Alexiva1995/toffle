@@ -1,1 +1,132 @@
-import{int,pad}from"../utils";const doNothing=()=>{};export const monthToStr=(t,e,o)=>o.months[e?"shorthand":"longhand"][t];export const revFormat={D:doNothing,F:function(t,e,o){t.setMonth(o.months.longhand.indexOf(e))},G:(t,e)=>{t.setHours(parseFloat(e))},H:(t,e)=>{t.setHours(parseFloat(e))},J:(t,e)=>{t.setDate(parseFloat(e))},K:(t,e,o)=>{t.setHours(t.getHours()%12+12*int(new RegExp(o.amPM[1],"i").test(e)))},M:function(t,e,o){t.setMonth(o.months.shorthand.indexOf(e))},S:(t,e)=>{t.setSeconds(parseFloat(e))},U:(t,e)=>new Date(1e3*parseFloat(e)),W:function(t,e,o){const n=parseInt(e),a=new Date(t.getFullYear(),0,2+7*(n-1),0,0,0,0);return a.setDate(a.getDate()-a.getDay()+o.firstDayOfWeek),a},Y:(t,e)=>{t.setFullYear(parseFloat(e))},Z:(t,e)=>new Date(e),d:(t,e)=>{t.setDate(parseFloat(e))},h:(t,e)=>{t.setHours(parseFloat(e))},i:(t,e)=>{t.setMinutes(parseFloat(e))},j:(t,e)=>{t.setDate(parseFloat(e))},l:doNothing,m:(t,e)=>{t.setMonth(parseFloat(e)-1)},n:(t,e)=>{t.setMonth(parseFloat(e)-1)},s:(t,e)=>{t.setSeconds(parseFloat(e))},u:(t,e)=>new Date(parseFloat(e)),w:doNothing,y:(t,e)=>{t.setFullYear(2e3+parseFloat(e))}};export const tokenRegex={D:"(\\w+)",F:"(\\w+)",G:"(\\d\\d|\\d)",H:"(\\d\\d|\\d)",J:"(\\d\\d|\\d)\\w+",K:"",M:"(\\w+)",S:"(\\d\\d|\\d)",U:"(.+)",W:"(\\d\\d|\\d)",Y:"(\\d{4})",Z:"(.+)",d:"(\\d\\d|\\d)",h:"(\\d\\d|\\d)",i:"(\\d\\d|\\d)",j:"(\\d\\d|\\d)",l:"(\\w+)",m:"(\\d\\d|\\d)",n:"(\\d\\d|\\d)",s:"(\\d\\d|\\d)",u:"(.+)",w:"(\\d\\d|\\d)",y:"(\\d{2})"};export const formats={Z:t=>t.toISOString(),D:function(t,e,o){return e.weekdays.shorthand[formats.w(t,e,o)]},F:function(t,e,o){return monthToStr(formats.n(t,e,o)-1,!1,e)},G:function(t,e,o){return pad(formats.h(t,e,o))},H:t=>pad(t.getHours()),J:function(t,e){return void 0!==e.ordinal?t.getDate()+e.ordinal(t.getDate()):t.getDate()},K:(t,e)=>e.amPM[int(t.getHours()>11)],M:function(t,e){return monthToStr(t.getMonth(),!0,e)},S:t=>pad(t.getSeconds()),U:t=>t.getTime()/1e3,W:function(t,e,o){return o.getWeek(t)},Y:t=>pad(t.getFullYear(),4),d:t=>pad(t.getDate()),h:t=>t.getHours()%12?t.getHours()%12:12,i:t=>pad(t.getMinutes()),j:t=>t.getDate(),l:function(t,e){return e.weekdays.longhand[t.getDay()]},m:t=>pad(t.getMonth()+1),n:t=>t.getMonth()+1,s:t=>t.getSeconds(),u:t=>t.getTime(),w:t=>t.getDay(),y:t=>String(t.getFullYear()).substring(2)};
+import { int, pad } from "../utils";
+const doNothing = () => undefined;
+export const monthToStr = (monthNumber, shorthand, locale) => locale.months[shorthand ? "shorthand" : "longhand"][monthNumber];
+export const revFormat = {
+    D: doNothing,
+    F: function (dateObj, monthName, locale) {
+        dateObj.setMonth(locale.months.longhand.indexOf(monthName));
+    },
+    G: (dateObj, hour) => {
+        dateObj.setHours(parseFloat(hour));
+    },
+    H: (dateObj, hour) => {
+        dateObj.setHours(parseFloat(hour));
+    },
+    J: (dateObj, day) => {
+        dateObj.setDate(parseFloat(day));
+    },
+    K: (dateObj, amPM, locale) => {
+        dateObj.setHours((dateObj.getHours() % 12) +
+            12 * int(new RegExp(locale.amPM[1], "i").test(amPM)));
+    },
+    M: function (dateObj, shortMonth, locale) {
+        dateObj.setMonth(locale.months.shorthand.indexOf(shortMonth));
+    },
+    S: (dateObj, seconds) => {
+        dateObj.setSeconds(parseFloat(seconds));
+    },
+    U: (_, unixSeconds) => new Date(parseFloat(unixSeconds) * 1000),
+    W: function (dateObj, weekNum, locale) {
+        const weekNumber = parseInt(weekNum);
+        const date = new Date(dateObj.getFullYear(), 0, 2 + (weekNumber - 1) * 7, 0, 0, 0, 0);
+        date.setDate(date.getDate() - date.getDay() + locale.firstDayOfWeek);
+        return date;
+    },
+    Y: (dateObj, year) => {
+        dateObj.setFullYear(parseFloat(year));
+    },
+    Z: (_, ISODate) => new Date(ISODate),
+    d: (dateObj, day) => {
+        dateObj.setDate(parseFloat(day));
+    },
+    h: (dateObj, hour) => {
+        dateObj.setHours(parseFloat(hour));
+    },
+    i: (dateObj, minutes) => {
+        dateObj.setMinutes(parseFloat(minutes));
+    },
+    j: (dateObj, day) => {
+        dateObj.setDate(parseFloat(day));
+    },
+    l: doNothing,
+    m: (dateObj, month) => {
+        dateObj.setMonth(parseFloat(month) - 1);
+    },
+    n: (dateObj, month) => {
+        dateObj.setMonth(parseFloat(month) - 1);
+    },
+    s: (dateObj, seconds) => {
+        dateObj.setSeconds(parseFloat(seconds));
+    },
+    u: (_, unixMillSeconds) => new Date(parseFloat(unixMillSeconds)),
+    w: doNothing,
+    y: (dateObj, year) => {
+        dateObj.setFullYear(2000 + parseFloat(year));
+    },
+};
+export const tokenRegex = {
+    D: "(\\w+)",
+    F: "(\\w+)",
+    G: "(\\d\\d|\\d)",
+    H: "(\\d\\d|\\d)",
+    J: "(\\d\\d|\\d)\\w+",
+    K: "",
+    M: "(\\w+)",
+    S: "(\\d\\d|\\d)",
+    U: "(.+)",
+    W: "(\\d\\d|\\d)",
+    Y: "(\\d{4})",
+    Z: "(.+)",
+    d: "(\\d\\d|\\d)",
+    h: "(\\d\\d|\\d)",
+    i: "(\\d\\d|\\d)",
+    j: "(\\d\\d|\\d)",
+    l: "(\\w+)",
+    m: "(\\d\\d|\\d)",
+    n: "(\\d\\d|\\d)",
+    s: "(\\d\\d|\\d)",
+    u: "(.+)",
+    w: "(\\d\\d|\\d)",
+    y: "(\\d{2})",
+};
+export const formats = {
+    Z: (date) => date.toISOString(),
+    D: function (date, locale, options) {
+        return locale.weekdays.shorthand[formats.w(date, locale, options)];
+    },
+    F: function (date, locale, options) {
+        return monthToStr(formats.n(date, locale, options) - 1, false, locale);
+    },
+    G: function (date, locale, options) {
+        return pad(formats.h(date, locale, options));
+    },
+    H: (date) => pad(date.getHours()),
+    J: function (date, locale) {
+        return locale.ordinal !== undefined
+            ? date.getDate() + locale.ordinal(date.getDate())
+            : date.getDate();
+    },
+    K: (date, locale) => locale.amPM[int(date.getHours() > 11)],
+    M: function (date, locale) {
+        return monthToStr(date.getMonth(), true, locale);
+    },
+    S: (date) => pad(date.getSeconds()),
+    U: (date) => date.getTime() / 1000,
+    W: function (date, _, options) {
+        return options.getWeek(date);
+    },
+    Y: (date) => pad(date.getFullYear(), 4),
+    d: (date) => pad(date.getDate()),
+    h: (date) => (date.getHours() % 12 ? date.getHours() % 12 : 12),
+    i: (date) => pad(date.getMinutes()),
+    j: (date) => date.getDate(),
+    l: function (date, locale) {
+        return locale.weekdays.longhand[date.getDay()];
+    },
+    m: (date) => pad(date.getMonth() + 1),
+    n: (date) => date.getMonth() + 1,
+    s: (date) => date.getSeconds(),
+    u: (date) => date.getTime(),
+    w: (date) => date.getDay(),
+    y: (date) => String(date.getFullYear()).substring(2),
+};

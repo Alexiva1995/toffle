@@ -1,1 +1,141 @@
-function rangePlugin(e={}){return function(t){let n,o,i,a="";const l={onParseConfig(){t.config.mode="range",a=t.config.altInput?t.config.altFormat:t.config.dateFormat},onReady(){(()=>{if(e.input){if(n=e.input instanceof Element?e.input:window.document.querySelector(e.input),!n)return void t.config.errorHandler(new Error("Invalid input element specified"));t.config.wrap&&(n=n.querySelector("[data-input]"))}else n=t._input.cloneNode(),n.removeAttribute("id"),n._flatpickr=void 0;if(n.value){const e=t.parseDate(n.value);e&&t.selectedDates.push(e)}n.setAttribute("data-fp-omit",""),t.config.clickOpens&&(t._bind(n,["focus","click"],(()=>{t.selectedDates[1]&&(t.latestSelectedDateObj=t.selectedDates[1],t._setHoursFromDate(t.selectedDates[1]),t.jumpToDate(t.selectedDates[1])),o=!0,t.isOpen=!1,t.open(void 0,"left"===e.position?t._input:n)})),t._bind(t._input,["focus","click"],(e=>{e.preventDefault(),t.isOpen=!1,t.open()}))),t.config.allowInput&&t._bind(n,"keydown",(e=>{"Enter"===e.key&&(t.setDate([t.selectedDates[0],n.value],!0,a),n.click())})),e.input||t._input.parentNode&&t._input.parentNode.insertBefore(n,t._input.nextSibling)})(),t.config.ignoredFocusElements.push(n),t.config.allowInput?(t._input.removeAttribute("readonly"),n.removeAttribute("readonly")):n.setAttribute("readonly","readonly"),t._bind(t._input,"focus",(()=>{t.latestSelectedDateObj=t.selectedDates[0],t._setHoursFromDate(t.selectedDates[0]),o=!1,t.jumpToDate(t.selectedDates[0])})),t.config.allowInput&&t._bind(t._input,"keydown",(e=>{"Enter"===e.key&&t.setDate([t._input.value,t.selectedDates[1]],!0,a)})),t.setDate(t.selectedDates,!1),l.onValueUpdate(t.selectedDates),t.loadedPlugins.push("range")},onPreCalendarPosition(){o&&(t._positionElement=n,setTimeout((()=>{t._positionElement=t._input}),0))},onChange(){t.selectedDates.length||setTimeout((()=>{t.selectedDates.length||(n.value="",i=[])}),10),o&&setTimeout((()=>{n.focus()}),0)},onDestroy(){e.input||n.parentNode&&n.parentNode.removeChild(n)},onValueUpdate(e){if(n){if(i=!i||e.length>=i.length?[...e]:i,i.length>e.length){const n=e[0],a=o?[i[0],n]:[n,i[1]];t.setDate(a,!1),i=[...a]}[t._input.value="",n.value=""]=t.selectedDates.map((e=>t.formatDate(e,a)))}}};return l}}export default rangePlugin;
+function rangePlugin(config = {}) {
+    return function (fp) {
+        let dateFormat = "", secondInput, _secondInputFocused, _prevDates;
+        const createSecondInput = () => {
+            if (config.input) {
+                secondInput =
+                    config.input instanceof Element
+                        ? config.input
+                        : window.document.querySelector(config.input);
+                if (!secondInput) {
+                    fp.config.errorHandler(new Error("Invalid input element specified"));
+                    return;
+                }
+                if (fp.config.wrap) {
+                    secondInput = secondInput.querySelector("[data-input]");
+                }
+            }
+            else {
+                secondInput = fp._input.cloneNode();
+                secondInput.removeAttribute("id");
+                secondInput._flatpickr = undefined;
+            }
+            if (secondInput.value) {
+                const parsedDate = fp.parseDate(secondInput.value);
+                if (parsedDate)
+                    fp.selectedDates.push(parsedDate);
+            }
+            secondInput.setAttribute("data-fp-omit", "");
+            if (fp.config.clickOpens) {
+                fp._bind(secondInput, ["focus", "click"], () => {
+                    if (fp.selectedDates[1]) {
+                        fp.latestSelectedDateObj = fp.selectedDates[1];
+                        fp._setHoursFromDate(fp.selectedDates[1]);
+                        fp.jumpToDate(fp.selectedDates[1]);
+                    }
+                    _secondInputFocused = true;
+                    fp.isOpen = false;
+                    fp.open(undefined, config.position === "left" ? fp._input : secondInput);
+                });
+                fp._bind(fp._input, ["focus", "click"], (e) => {
+                    e.preventDefault();
+                    fp.isOpen = false;
+                    fp.open();
+                });
+            }
+            if (fp.config.allowInput)
+                fp._bind(secondInput, "keydown", (e) => {
+                    if (e.key === "Enter") {
+                        fp.setDate([fp.selectedDates[0], secondInput.value], true, dateFormat);
+                        secondInput.click();
+                    }
+                });
+            if (!config.input)
+                fp._input.parentNode &&
+                    fp._input.parentNode.insertBefore(secondInput, fp._input.nextSibling);
+        };
+        const plugin = {
+            onParseConfig() {
+                fp.config.mode = "range";
+                dateFormat = fp.config.altInput
+                    ? fp.config.altFormat
+                    : fp.config.dateFormat;
+            },
+            onReady() {
+                createSecondInput();
+                fp.config.ignoredFocusElements.push(secondInput);
+                if (fp.config.allowInput) {
+                    fp._input.removeAttribute("readonly");
+                    secondInput.removeAttribute("readonly");
+                }
+                else {
+                    secondInput.setAttribute("readonly", "readonly");
+                }
+                fp._bind(fp._input, "focus", () => {
+                    fp.latestSelectedDateObj = fp.selectedDates[0];
+                    fp._setHoursFromDate(fp.selectedDates[0]);
+                    _secondInputFocused = false;
+                    fp.jumpToDate(fp.selectedDates[0]);
+                });
+                if (fp.config.allowInput)
+                    fp._bind(fp._input, "keydown", (e) => {
+                        if (e.key === "Enter")
+                            fp.setDate([fp._input.value, fp.selectedDates[1]], true, dateFormat);
+                    });
+                fp.setDate(fp.selectedDates, false);
+                plugin.onValueUpdate(fp.selectedDates);
+                fp.loadedPlugins.push("range");
+            },
+            onPreCalendarPosition() {
+                if (_secondInputFocused) {
+                    fp._positionElement = secondInput;
+                    setTimeout(() => {
+                        fp._positionElement = fp._input;
+                    }, 0);
+                }
+            },
+            onChange() {
+                if (!fp.selectedDates.length) {
+                    setTimeout(() => {
+                        if (fp.selectedDates.length)
+                            return;
+                        secondInput.value = "";
+                        _prevDates = [];
+                    }, 10);
+                }
+                if (_secondInputFocused) {
+                    setTimeout(() => {
+                        secondInput.focus();
+                    }, 0);
+                }
+            },
+            onDestroy() {
+                if (!config.input)
+                    secondInput.parentNode &&
+                        secondInput.parentNode.removeChild(secondInput);
+            },
+            onValueUpdate(selDates) {
+                if (!secondInput)
+                    return;
+                _prevDates =
+                    !_prevDates || selDates.length >= _prevDates.length
+                        ? [...selDates]
+                        : _prevDates;
+                if (_prevDates.length > selDates.length) {
+                    const newSelectedDate = selDates[0];
+                    const newDates = _secondInputFocused
+                        ? [_prevDates[0], newSelectedDate]
+                        : [newSelectedDate, _prevDates[1]];
+                    fp.setDate(newDates, false);
+                    _prevDates = [...newDates];
+                }
+                [
+                    fp._input.value = "",
+                    secondInput.value = "",
+                ] = fp.selectedDates.map((d) => fp.formatDate(d, dateFormat));
+            },
+        };
+        return plugin;
+    };
+}
+export default rangePlugin;

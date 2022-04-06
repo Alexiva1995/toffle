@@ -26,4 +26,32 @@ class Inventory extends Model
     {
         return $this->hasOne('App\Models\Product', 'id', 'product_id');
     }
+
+    public function qtyProductsNeeded($inventory_id)
+    {
+        $start_of_month = date("Y-m-01");
+        $end_of_month = date("Y-m-t");
+
+        $orders = Order::whereHas('ingredients', function($q) use($inventory_id) {
+            $q->where('inventory_id', $inventory_id);
+        })->whereBetween('created_at', [$start_of_month, $end_of_month])->get();
+
+        $units = 0;
+        if ($orders != '[]') {
+            foreach ($orders as $key => $order) {
+        
+                $order_ingredients = $order->ingredients()->wherePivot('inventory_id', $inventory_id)->get();
+            
+                foreach ($order_ingredients as $key => $item) {
+                    $inventory = Inventory::where('id', $inventory_id)->first();
+                    $grams_used = $item->pivot->portion;
+                    $units = $units + ($grams_used / $inventory->product->gr);
+
+                }
+
+            }
+        }
+
+        return number_format($units, 2, '.', '');
+    }
 }
