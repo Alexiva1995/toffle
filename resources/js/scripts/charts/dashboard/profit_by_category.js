@@ -17,6 +17,8 @@ $.ajax({
       var data_gain = orders.map(function (e) {
           if (e.gain != null) {
             return Number(e.gain.toFixed(2));
+          }else{
+            return 0;
           }
       })
 
