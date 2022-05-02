@@ -10,6 +10,13 @@
             "
         >
             <h4 class="card-title">Informes de Ganancia por Categoría</h4>
+
+            <div class="col-auto">
+                <label class="form-label" for="week"> <i data-feather="calendar"></i> N° de Semana</label>
+                <div class="d-flex align-items-center mt-md-0 mt-1"> 
+                    <input type="text" id="weekCategory" name="weekCategory" data-week-category = "{{ date("Y") }}-W{{ date("W") }}" class="form-control"/>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <input type="hidden" id="profit_by_category_route" value="{{ route('data.chart.profit.by.category') }}">

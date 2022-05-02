@@ -1,21 +1,27 @@
 var profit_by_category_route = $('#profit_by_category_route').val();
-
+var parametros = { 
+  "week" : $('#weekCategory').data('week-category')
+}
+//Variable global para el grafico
+ var donutChart;
+ //Llamado a Ajax y renderizado
 $.ajax({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
   },
   type: "POST",
+  data:  parametros,
   url: profit_by_category_route,
   success: function (response) {
-
-      var orders = response.orders;
-
-      var labels = orders.map(function (e) {
-          if (e.category_name != null) {
-            return e.category_name;
-          }
-      })
-
+    
+    var orders = response.orders;
+    
+    var labels = orders.map(function (e) {
+      if (e.category_name != null) {
+        return e.category_name;
+      }
+    })
+  
       var data_gain = orders.map(function (e) {
           if (e.gain != null) {
             return Number(e.gain.toFixed(2));
@@ -29,7 +35,6 @@ $.ajax({
       var data_gain = data_gain.filter(element => {
         return element !== undefined;
       });
-
       var donutChartEl = document.querySelector('#donut-chart-profit-by-category'),
       donutChartConfig = {
         chart: {
@@ -44,7 +49,7 @@ $.ajax({
         series: data_gain,
         dataLabels: {
           enabled: true,
-          formatter: function (val, opt) {
+          formatter: function (val) {
             return parseInt(val) + '%';
           }
         },
@@ -115,12 +120,77 @@ $.ajax({
         ]
       };
       if (typeof donutChartEl !== undefined && donutChartEl !== null) {
-        var donutChart = new ApexCharts(donutChartEl, donutChartConfig);
+        donutChart = new ApexCharts(donutChartEl, donutChartConfig);
         donutChart.render();
       }
   },
   error: function(xhr) {
-      console.log(xhr.responseJSON);
+      // console.log(xhr.responseJSON);
   }
 });
+//Funcion actualizar DonutChart
+function dataChartCategorySales(){
+  parametros = { 
+    "week" : $('#weekCategory').data('week-category')
+  }
+  
+  // console.log(parametros)
+  $.ajax({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
+    type: "POST",
+    data:  parametros,
+    url: profit_by_category_route,
+    success: function (response) {
+        var orders = response.orders;
+        var labels = orders.map(function (e) {
+            if (e.category_name != null) {
+              return e.category_name;
+            }
+            
+        });
+    
+        var data_gain = orders.map(function (e) {
+          if (e.gain != null) {
+            return Number(e.gain.toFixed(2));
+          }
+        });
+        
+        var labels = labels.filter(element => {
+          return element !== undefined;
+        });
+        
+        var data_gain = data_gain.filter(element => {
+          return element !== undefined;
+        });
+
+        donutChart.updateOptions({
+          labels: labels
+        })
+        donutChart.updateSeries(removeData());
+        
+        donutChart.updateSeries(data_gain);
+        //mostrar labels existentens en el donutchart
+        // console.log(donutChart.w.globals.labels)
+  
+    },
+    error: function(xhr) {
+        // console.log(xhr.responseJSON);
+    }
+  });
+
+}
+
+function random() {
+  return Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+}
+
+function removeData() {
+  var arr = donutChart.w.globals.series.map(() => {
+    return random()
+  });
+  arr = [];
+  return arr;
+}
 

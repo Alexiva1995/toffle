@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
 
             Route::group(['prefix' => 'dashboard'], function () {
                 Route::get('/', [DashboardController::class, 'dashboardAdmin'])->name('dashboard-admin');
+                Route::get('sold-products', [DashboardController::class, 'showSoldProducts'])->name('show.sold.products');
             });
 
             // Employees
