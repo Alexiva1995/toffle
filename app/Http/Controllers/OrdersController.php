@@ -345,9 +345,9 @@ class OrdersController extends Controller
     {
         if ($type == 'pending') {
             $orders = Order::whereIn('status', ['0', '1'])
-            ->orderBy('id', 'DESC');
+            ->orderBy('id', 'DESC')->whereDate( 'created_at', now() );
         }else{
-            $orders = Order::orderBy('id', 'DESC');
+            $orders = Order::orderBy('id', 'DESC')->whereDate( 'created_at', now() );
         }
 
             
@@ -373,13 +373,40 @@ class OrdersController extends Controller
 
         $order_dish= $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
 
-        $ingredients = Inventory::orderBy('id', 'DESC')->get();
+        $ingredients = Inventory::orderBy('id', 'DESC')
+                                    ->where('public', '>', 0)
+                                    ->get();
 
         $dish = Dish::where('id', $request->dish_id)->first();
 
         $code_operation = $request->code_operation;
 
         return view('employee.dashboard.orders.modals.modify_ingredients')
+            ->with('dish', $dish)
+            ->with('order_ingredients', $order_ingredients)
+            ->with('order_dish', $order_dish)
+            ->with('ingredients', $ingredients)
+            ->with('order', $order)
+            ->with('code_operation', $code_operation)
+            ->render();
+    }
+    public function modalModifyIngredientsNewOrder(Request $request)
+    {
+        $order = Order::where('id', $request->order_id)->first();
+
+        $order_ingredients = $order->ingredients()->wherePivot('code_operation', $request->code_operation)->get();
+
+        $order_dish= $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
+
+        $ingredients = Inventory::orderBy('id', 'DESC')
+                                    ->where('public', '>', 0)
+                                    ->get();
+
+        $dish = Dish::where('id', $request->dish_id)->first();
+
+        $code_operation = $request->code_operation;
+
+        return view('employee.dashboard.orders.modals.modify_ingredientsNewOrder')
             ->with('dish', $dish)
             ->with('order_ingredients', $order_ingredients)
             ->with('order_dish', $order_dish)
@@ -476,9 +503,32 @@ class OrdersController extends Controller
 
     public function orderDishesTableData(Request $request, $id)
     {
-        $order = Order::where('id', $id)->first();
-
+        $order = Order::where('id', $id)->with('dishes')->with('ingredients')->first();
+        //Obtiene la lista de platos en la orden (Por alguna razon lo llamaron ingredientes)
         $ingredients = $order->dishes;
+
+        //Lista de sabores de helados disponibles
+        $avaliable_flavors = Inventory::where('product_id', '=', 75)
+                                        ->orderBy('id', 'DESC')
+                                        ->where('public', '>', 0)
+                                        ->pluck('flavor_name');
+
+        foreach($ingredients as $dish)
+        {
+            //Verificar si el plato contiene "Helado" o esta en la categoria de Helados
+            if( strpos($dish->name, 'Helado') || $dish->category_id == 4 )
+            {
+            //Obtener el sabor del producto
+            $flavor = $order->ingredients()
+                            ->wherePivot('order_id', '=', $dish->pivot->order_id)
+                            ->where('dish_id', '=', $dish->pivot->dish_id)
+                            ->wherePivot('flavor_name', '!=', null)
+                            ->wherePivot('code_operation', '=', $dish->pivot->code_operation)
+                            ->pluck('order_ingredient.flavor_name');
+            //Crea un campo Sabor que almacena el sabor actual del helado en cuestion.
+            $dish->flavor = $flavor->pop();
+            }
+        }
             
         return Datatables::of($ingredients)->filter(function ($query) use($request) {
         }, true)

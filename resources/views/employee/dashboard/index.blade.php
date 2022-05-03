@@ -43,11 +43,11 @@
 
     <div class="col-12" id="order_history"></div>
 
-    <div class="col-lg-6 col-12" id="tables"></div>
+    {{-- <div class="col-lg-6 col-12" id="tables"></div> --}}
 
-    <div class="col-lg-6 col-12" id="cash_flow"></div>
+    <div class="col-12" id="cash_flow"></div>
 
-    <div class="col-12" id="inventory_replenishment"></div>
+    {{-- <div class="col-12" id="inventory_replenishment"></div> --}}
 
   </div>
 
@@ -79,9 +79,9 @@
   @include('panels.datatable.scripts')
   <script>
       dataTable('#order_history_table');
-      dataTable('#table_list');
+      // dataTable('#table_list');
       dataTable('#money_flow_table');
-      dataTable('#inventory_reposition_table');
+      // dataTable('#inventory_reposition_table');
 
       function loadData(type) {
           var route = "{{ route('load.data', 'parameter') }}";
@@ -98,9 +98,9 @@
 
       loadData('statistics');
       loadData('order_history');
-      loadData('tables');
+      // loadData('tables');
       loadData('cash_flow');
-      loadData('inventory_replenishment');
+      // loadData('inventory_replenishment');
 
       $(document).on('change', '.update_status', function () {
         let item = {}
@@ -126,9 +126,9 @@
 
             loadData('statistics');
             loadData('order_history');
-            loadData('tables');
+            // loadData('tables');
             loadData('cash_flow');
-            loadData('inventory_replenishment');
+            // loadData('inventory_replenishment');
         })
         .fail(function(data) {
             $(input).addClass('is-invalid')
