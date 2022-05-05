@@ -37,11 +37,10 @@ class InventoryController extends Controller
 
     public function addProductToInventory(Request $request)
     {
-
+        return request();
         if ($request->it_has_flavors == true) {
             $fields = [
                 'product_id' => ['required'],
-                'qty_package' => ['required'],
                 'unit_package' => ['required'],
                 'price' => ['required'],
                 'flavor_name' => ['required'],
@@ -49,7 +48,6 @@ class InventoryController extends Controller
         }else{
             $fields = [
                 'product_id' => ['required'],
-                'qty_package' => ['required'],
                 'unit_package' => ['required'],
                 'price' => ['required'],
             ];
@@ -57,11 +55,11 @@ class InventoryController extends Controller
 
         $msj = [
             'product_id.required' => 'El producto es requerido.',
-            'qty_package.required' => 'La cantidad de bultos es requerida.',
-            'unit_package.required' => 'La unidad del bulto es requerida.',
+            'unit_package.required' => 'Las unidades son requerida.',
             'price.required' => 'El precio es requerido.',
             'flavor_name.required' => 'El nombre del sabor es requerido.', 
         ];
+        //Modificar campo qty_package en tabla inventories para que pueda ser nulo
 
         $this->validate($request, $fields, $msj);
         
@@ -91,7 +89,8 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        $deposit = ($request->qty_package * $request->unit_package);
+        // $deposit = ($request->qty_package * $request->unit_package);
+        $deposit = $request->input('unit_package');
         $inventory = Inventory::create($request->all());
         $inventory->flavor_name = $request->it_has_flavors == true ? strtolower($request->flavor_name) : null;
         $inventory->deposit = $deposit;
@@ -128,12 +127,12 @@ class InventoryController extends Controller
     public function update(Request $request, $id)
     {
 
-        $inventory = Inventory::find($id);
+        $inventory = Inventory::with('product')->find($id);
         
         if ($request->update_type == "1") {
 
             $inventory->update([
-                'qty_package' => $request->qty_package,
+                // 'qty_package' => $request->qty_package,
                 'unit_package' => $request->unit_package,
                 'price' => $request->price,
                 'cost' => $request->cost,
@@ -144,10 +143,10 @@ class InventoryController extends Controller
             ]);
 
         }else{
-            $deposit = $inventory->deposit + ($request->qty_package * $request->unit_package);
+            $deposit = $inventory->deposit +  $request->unit_package;
 
             $inventory->update([
-                'qty_package' => $request->qty_package,
+                // 'qty_package' => $request->qty_package,
                 'unit_package' => $request->unit_package,
                 'price' => $request->price,
                 'cost' => number_format($request->price / $request->unit_package, 2, '.', ''),
@@ -159,7 +158,12 @@ class InventoryController extends Controller
         }
  
         $cost_product = $inventory->cost;
-        $gr_product = $inventory->product->gr;
+        if($inventory->product->gr != null)
+        {
+            $unit_product = $inventory->product->gr;
+        }else{
+            $unit_product = $inventory->product->quantity;
+        }
 
         $dishes = Dish::whereHas('ingredients', function($q) use($inventory) {
             $q->where('inventory_id', $inventory->id);
@@ -177,7 +181,7 @@ class InventoryController extends Controller
                     $portion = $item->pivot->portion;
 
                     if ($item->pivot->inventory_id == $inventory->id) {
-                        $designated_cost = ($portion * $cost_product) / $gr_product;
+                        $designated_cost = ($portion * $cost_product) / $unit_product;
     
                         $dish->ingredients()->wherePivot('inventory_id', $inventory->id)->update([
                             'designated_cost' => $designated_cost,

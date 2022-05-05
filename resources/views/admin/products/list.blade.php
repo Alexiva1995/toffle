@@ -22,9 +22,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Marca</th>
-                            <th>Gr.</th>
-                            <th class="text-center">Alerta de Reposición de Unidades</th>
+                            <th>Cantidad</th>
                             <th class="text-center">Fecha de Creación</th>
                             <th class="text-center">Acción</th>
                         </tr>
@@ -35,18 +33,18 @@
                             {{-- <td>{{ $loop->iteration }}</td> --}}
                             <td>{{ $product->id }}</td>
                             <td>{{ $product->name }}</td>
-                            <td>{{ $product->mark }}</td>
-                            <td>{{ $product->gr }}</td>
-                            <td class="text-center">{{ $product->units_reposition_alert }}</td>
+                            @if ($product->gr != null)
+                                <td>{{ $product->gr}}g</td>
+                            @else
+                                <td>{{ $product->quantity }} Unid.</td>
+                            @endif
                             <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
                             <td class="text-center"> 
                                 <button class="btn btn-sm btn-info my-1"
                                     onclick="editProduct(
                                     {{ $product->id }}, 
                                     '{{ $product->name }}',
-                                    '{{ $product->mark }}', 
                                     {{ $product->gr }},
-                                    {{ $product->units_reposition_alert }},
                                     {{ $product->it_has_flavors }})"> 
 
                                     <i data-feather="edit"></i> 
