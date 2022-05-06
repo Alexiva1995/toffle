@@ -76,9 +76,12 @@
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     // Inventory
+    //Se comento la siguiente función para hacer las modificaciones al form (G-2.0 Inventario)
     // submitForms('#add_inventory', '.loading_inv', '#form_add_inventory');
     submitForms('#aggregate_product', '.loading_aggr_p', '#form_aggregate_product');
     submitForms('#edit_inventory', '.loading_edit_inv', '#form_edit_inventory');
+    //Versión adaptada al nuevo formulario
+    submitForms('#edit_inventory_2', '.loading_edit_inv', '#form_edit_inventory_2');
 
     // Sum an Subtract
     submitForms('#btn_operation', '.loading_op', '#form_operation');
@@ -119,6 +122,20 @@
         $('#edit_total').val(total);
         $('#modal_edit_inventory').modal('show');
 
+    }
+
+    function editInventoryWithoutPackage(id, product_id, unit_package, price, cost, deposit, local, public, total) {
+      var route = '{{route('inventory.update', 'replace_this')}}'.replace('replace_this', id);
+      $('#form_edit_inventory_2').attr('action', route);
+      $("#edit_product_id option[value="+ product_id +"]").attr("selected", 'selected').trigger('change');
+      $('#edit_unit_package_2').val(unit_package);
+      $('#edit_price_2').val(price);
+      $('#edit_cost_2').val(cost);
+      $('#edit_deposit_2').val(deposit);
+      $('#edit_local_2').val(local);
+      $('#edit_public_2').val(public);
+      $('#edit_total_2').val(total);
+      $('#modal_edit_inventory_2').modal('show');
     }
 
     function operation(department, operator, id, max_value = 0) {
@@ -170,6 +187,16 @@
         $('#edit_cost').val(cost);
     }
 
+    //Calcular el costo a inventario despues de las modificaciones (G-2.0 Inventario)
+    function calculateCost2() {
+        var unit_package = $('#edit_unit_package_2').val();
+        var price = $('#edit_price_2').val();
+
+        var cost = price / unit_package;
+        cost = roundDecimal(cost, 2);
+        $('#edit_cost_2').val(cost);
+    }
+
     function calculateTotal() {
         var deposit = $('#edit_deposit').val();
         var local = $('#edit_local').val();
@@ -177,6 +204,15 @@
 
         var total = parseFloat(deposit = null ? 0 : deposit) + parseFloat(local = null ? 0 : local) + parseFloat(public = null ? 0 : public);
         $('#edit_total').val(total);
+    }
+    //Calcular el total a inventario despues de las modificaciones (G-2.0 Inventario)
+    function calculateTotal2() {
+        var deposit = $('#edit_deposit_2').val();
+        var local = $('#edit_local_2').val();
+        var public = $('#edit_public_2').val();
+
+        var total = parseFloat(deposit = null ? 0 : deposit) + parseFloat(local = null ? 0 : local) + parseFloat(public = null ? 0 : public);
+        $('#edit_total_2').val(total);
     }
     //Filtro para que el campo "unidades" solo acepte números enteros 
     function filter() {

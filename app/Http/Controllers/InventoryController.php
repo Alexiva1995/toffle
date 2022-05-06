@@ -44,7 +44,6 @@ class InventoryController extends Controller
                 'price' => ['required'],
                 'unit_cost' => ['required'],
                 'flavor_name' => ['required'],
-                'iva' => ['required'],
                 'currency' => ['required'],
             ];
         }else{
@@ -53,7 +52,6 @@ class InventoryController extends Controller
                 'unit_package' => ['required'],
                 'price' => ['required'],
                 'unit_cost' => ['required'],
-                'iva' => ['required'],
                 'currency' => ['required'],
             ];
         }
@@ -78,7 +76,6 @@ class InventoryController extends Controller
         }else{
             $inventory = Inventory::where('product_id', $request->product_id)->first(); 
         }
-
         if ($inventory == null) {
             $this->store($request);
         }else{
@@ -100,7 +97,6 @@ class InventoryController extends Controller
         $inventory->flavor_name = request()->it_has_flavors == true ? strtolower($request->flavor_name) : null;
         $inventory->deposit = $request->input('unit_package');
         $inventory->unit_package = request()->unit_package;
-        $inventory->iva = request()->iva == '1' ? true : false;
         $inventory->total = request()->unit_package;
         $inventory->price = request()->price;
         $inventory->cost = doubleval(request()->unit_cost);
@@ -118,11 +114,11 @@ class InventoryController extends Controller
     {
 
         $inventory = Inventory::with('product')->find($id);
-        
+        //Pregunta si el metodo update viene desde la acción Editar
         if ($request->update_type == "1") {
 
             $inventory->update([
-                // 'qty_package' => $request->qty_package,
+                'qty_package' => $request->qty_package,
                 'unit_package' => $request->unit_package,
                 'price' => $request->price,
                 'cost' => $request->cost,

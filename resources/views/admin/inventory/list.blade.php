@@ -75,20 +75,36 @@
                             <td class="text-center">{{ date('d-m-Y', strtotime($inventory->created_at)) }}</td>
                             <td class="text-center px-3"> 
                                 <div class="d-flex">
-                                    <button class="btn btn-sm btn-info me-1" 
-                                        onclick="editInventory(
-                                        {{ $inventory->id }}, 
-                                        '{{ $inventory->product_id }}',
-                                        {{ $inventory->qty_package }},
-                                        {{ $inventory->unit_package }},
-                                        {{ $inventory->price }},
-                                        {{ $inventory->cost }},
-                                        {{ $inventory->deposit }},
-                                        {{ $inventory->local }},
-                                        {{ $inventory->public }},
-                                        {{ $inventory->total }} )"> 
-                                        <i data-feather="edit"></i>                                   
-                                    </button>    
+                                    @if ( $inventory->qty_package === null)
+                                        <button class="btn btn-sm btn-info me-1" 
+                                            onclick="editInventoryWithoutPackage(
+                                            {{ $inventory->id }}, 
+                                            '{{ $inventory->product_id }}',
+                                            {{ $inventory->unit_package }},
+                                            {{ $inventory->price }},
+                                            {{ $inventory->cost }},
+                                            {{ $inventory->deposit }},
+                                            {{ $inventory->local }},
+                                            {{ $inventory->public }},
+                                            {{ $inventory->total }} )"> 
+                                            <i data-feather="edit"></i>                                   
+                                        </button>  
+                                    @else
+                                        <button class="btn btn-sm btn-info me-1" 
+                                            onclick="editInventory(
+                                            {{ $inventory->id }}, 
+                                            '{{ $inventory->product_id }}',
+                                            {{ $inventory->qty_package }},
+                                            {{ $inventory->unit_package }},
+                                            {{ $inventory->price }},
+                                            {{ $inventory->cost }},
+                                            {{ $inventory->deposit }},
+                                            {{ $inventory->local }},
+                                            {{ $inventory->public }},
+                                            {{ $inventory->total }} )"> 
+                                            <i data-feather="edit"></i>                                   
+                                        </button>    
+                                    @endif
                                     
                                     <span class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $inventory->id }}, 

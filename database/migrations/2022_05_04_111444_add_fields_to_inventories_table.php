@@ -14,7 +14,7 @@ class AddFieldsToInventoriesTable extends Migration
     public function up()
     {
         Schema::table('inventories', function (Blueprint $table) {
-            $table->boolean('iva')->nullable()->after('unit_package');
+            // $table->boolean('iva')->nullable()->after('unit_package');
             // $table->string('currency')->nullable()->after('iva')->comment('Identifica el tipo de moneda: COP, USD, BS');
         });
     }
@@ -27,7 +27,7 @@ class AddFieldsToInventoriesTable extends Migration
     public function down()
     {
         Schema::table('inventories', function (Blueprint $table) {
-            $table->dropColumn('iva');
+            // $table->dropColumn('iva');
             // $table->dropColumn('currency');
         });
     }
