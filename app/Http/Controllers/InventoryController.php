@@ -37,19 +37,24 @@ class InventoryController extends Controller
 
     public function addProductToInventory(Request $request)
     {
-        return request();
         if ($request->it_has_flavors == true) {
             $fields = [
                 'product_id' => ['required'],
                 'unit_package' => ['required'],
                 'price' => ['required'],
+                'unit_cost' => ['required'],
                 'flavor_name' => ['required'],
+                'iva' => ['required'],
+                'currency' => ['required'],
             ];
         }else{
             $fields = [
                 'product_id' => ['required'],
                 'unit_package' => ['required'],
                 'price' => ['required'],
+                'unit_cost' => ['required'],
+                'iva' => ['required'],
+                'currency' => ['required'],
             ];
         }
 
@@ -57,9 +62,10 @@ class InventoryController extends Controller
             'product_id.required' => 'El producto es requerido.',
             'unit_package.required' => 'Las unidades son requerida.',
             'price.required' => 'El precio es requerido.',
+            'unit_cost.required' => 'El precio unitario es requerido.',
             'flavor_name.required' => 'El nombre del sabor es requerido.', 
+            'currency.required' => 'El tipo de moneda es necesario.', 
         ];
-        //Modificar campo qty_package en tabla inventories para que pueda ser nulo
 
         $this->validate($request, $fields, $msj);
         
@@ -89,32 +95,16 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        // $deposit = ($request->qty_package * $request->unit_package);
-        $deposit = $request->input('unit_package');
-        $inventory = Inventory::create($request->all());
-        $inventory->flavor_name = $request->it_has_flavors == true ? strtolower($request->flavor_name) : null;
-        $inventory->deposit = $deposit;
-        $inventory->total = $deposit + $inventory->local + $inventory->public;
-        $inventory->cost = number_format($request->price / $request->unit_package, 2, '.', '');
+        $inventory = new Inventory;
+        $inventory->product_id = request()->product_id;
+        $inventory->flavor_name = request()->it_has_flavors == true ? strtolower($request->flavor_name) : null;
+        $inventory->deposit = $request->input('unit_package');
+        $inventory->unit_package = request()->unit_package;
+        $inventory->iva = request()->iva == '1' ? true : false;
+        $inventory->total = request()->unit_package;
+        $inventory->price = request()->price;
+        $inventory->cost = doubleval(request()->unit_cost);
         $inventory->save();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

@@ -263,9 +263,11 @@
       let bs_radio = $('#radio_BS');
       let iva_check = $('#checkbox_iva');
       let unit_cost = $('#unit_cost');
+      let input_price = $('#create_price');
       let product_select = $('#create_product_id').val();
       var unit_product_price;
       var unit_product_usd_bs_price;
+      var inventory_cop_price;
       let form = $('#form_add_inventory');
 
       let product_units =  $('#create_unit_package').val();
@@ -283,10 +285,9 @@
           html: '<b>Es Necesario que todos los campos esten llenos!</b>',
         });
       }
-      //Obtener valor del producto en USD
+      //Obtener valor del producto unitario en USD
       unit_product_usd_bs_price = product_price / product_units;
       unit_product_usd_bs_price = decimalLimit(unit_product_usd_bs_price);
-
       
       //trabajar en reacción al tipo de moneda seleccionado, por default es COP
       // USD
@@ -306,8 +307,11 @@
         }
 
         product_price = product_price * dolar_cop_price;
-
+        //Obtener el costo del inventario en COP en relacion al dolar
+        inventory_cop_price = decimalLimit(product_price);
       }
+      //Precio original sin modificar
+      var raw_product_price = decimalLimit(product_price);
       //BS
       if( bs_radio.is(':checked') )
       {
@@ -325,46 +329,68 @@
             html: '<b>Debe igresar el valor del Dolar tanto en Pesos como en Bolivares!</b>',
           });
         }
-
+        
+        //Obtener costo unitario en COP en relacion al dolar
         product_price = (product_price / dolar_bs_price);
         product_price = (product_price * dolar_cop_price);
+        //Obtener costo del inventario en COP en relacion al Bs
+        inventory_cop_price = ( raw_product_price / dolar_bs_price);
+        inventory_cop_price = decimalLimit(inventory_cop_price);
+        inventory_cop_price *= dolar_cop_price;
+      }
+      if( cop_radio.is(':checked') )
+      {
+        inventory_cop_price = input_price.val();
+        inventory_cop_price = decimalLimit(inventory_cop_price);
       }
 
       //Verifica si incluye el Iva y actua en consecuencia
       if( iva_check.is(':checked') )
       {
-        var final_product_price = (product_price * 1.19) / product_units;
+        var final_product_price = (raw_product_price * 1.19) / product_units;
         final_product_price = decimalLimit(final_product_price);
+        inventory_cop_price = (inventory_cop_price * 1.19)
+        inventory_cop_price = decimalLimit(inventory_cop_price);
       }else{
-        var final_product_price = product_price / product_units;
+        var final_product_price = inventory_cop_price / product_units;
         final_product_price = decimalLimit(final_product_price);
       }
 
       /* Precio unitario final sin iva */
       unit_product_price = product_price / product_units;
       unit_product_price = decimalLimit(unit_product_price);
-      
       //Alerta para mostrar y confirmar datos segun lo seleccionado
       if( bs_radio.is(':checked') )
       {
+        let input_price_in_bs_dollar = raw_product_price / dolar_bs_price;
+        input_price_in_bs_dollar = decimalLimit(input_price_in_bs_dollar);
         let item_price_dolar_bs = decimalLimit(unit_product_usd_bs_price / dolar_bs_price);
         if( iva_check.is(':checked') )
         {
+          let inventory_semiFinalPrice = decimalLimit(input_price_in_bs_dollar * dolar_cop_price);
+          inventory_cop_price = decimalLimit(inventory_cop_price);
+          final_product_price = decimalLimit(inventory_cop_price / product_units);
           Swal.fire({
             title: '¿Quieres añadir este nuevo inventario?',
-            html: `<b>El costo del producto es Bs. ${unit_product_usd_bs_price}</b>
+            html: `<b>El costo del inventario en COP es: $${inventory_cop_price}</b>
               <br>
               <b>Operación: </b>
               <br>
-              <b> Producto: ${unit_product_usd_bs_price} / Bs dolar: ${dolar_bs_price} = $${item_price_dolar_bs} dolares</b>
+              <b> Precio ingresado: ${input_price.val()} / Bs dolar: ${dolar_bs_price} =</b>
               <br>
-              <b>${item_price_dolar_bs} * COP dolar: ${dolar_cop_price} = ${unit_product_price}</b>
+              <b>USD: $${input_price_in_bs_dollar}</b>
+              <br>
+              <b> USD: ${input_price_in_bs_dollar} * (COP dolar: ${dolar_cop_price}) =</b>
+              <br>
+              <b>COP: $${inventory_semiFinalPrice}</b>
               <br>
               <b>Se aplicará el iva de 19%</b>
               <br>
-              <b>El costo del producto en COP sin iva es: $${unit_product_price}<b>
+              <b>Costo del inventario * 1.19</b>
               <br>
-              <b>El precio del producto con iva seria: COP$ ${final_product_price}</b>
+              <b>${inventory_semiFinalPrice} * 1.19 = ${inventory_cop_price}<b>
+              <br>
+              <b>El precio del producto unitario seria: COP$ ${final_product_price}</b>
             `,
             icon: 'warning',
             showCancelButton: true,
@@ -375,24 +401,29 @@
           }).then((result) => {
             if (result.isConfirmed) {
               unit_cost.val(final_product_price);
+              input_price.val(inventory_cop_price);
               form.submit();
             }
           });
 
         } else {
+          final_product_price = decimalLimit(inventory_cop_price / product_units);
+          inventory_cop_price = decimalLimit(inventory_cop_price);
           Swal.fire({
             title: '¿Quieres añadir este nuevo inventario?',
-            html: `<b>El costo del producto es Bs. ${unit_product_usd_bs_price}</b>
+            html: `<b>El costo del inventario en COP es: $${inventory_cop_price}</b>
               <br>
               <b>Operación: </b>
               <br>
-              <b> Producto: ${unit_product_usd_bs_price} / Bs dolar: ${dolar_bs_price} = $${item_price_dolar_bs} dolares</b>
+              <b> Precio ingresado: ${input_price.val()} / Bs dolar: ${dolar_bs_price} =</b>
               <br>
-              <b>${item_price_dolar_bs} * COP dolar: ${dolar_cop_price} = ${unit_product_price}</b>
+              <b>$${input_price_in_bs_dollar} dolares</b>
               <br>
-              <b>El costo del producto en COP es: $${unit_product_price}<b>
+              <b>${input_price_in_bs_dollar} * (COP dolar: ${dolar_cop_price}) = ${inventory_cop_price}</b>
               <br>
-              <b>El precio del producto seria: COP$ ${final_product_price}</b>
+              <b>El precio del producto unitario seria:</b>
+              <br>
+              <b>COP$ ${final_product_price}</b>
             `,
             icon: 'warning',
             showCancelButton: true,
@@ -403,6 +434,7 @@
           }).then((result) => {
             if (result.isConfirmed) {
               unit_cost.val(final_product_price);
+              input_price.val(inventory_cop_price);
               form.submit();
             }
           });
@@ -413,19 +445,26 @@
       {
         if( iva_check.is(':checked') )
         {
+          let price_val = input_price.val();
+          price_val = decimalLimit(price_val);
+          let inventory_semiFinalPrice = decimalLimit(price_val * dolar_cop_price);
           Swal.fire({
             title: '¿Quieres añadir este nuevo inventario?',
-            html: `<b>El costo del producto en USD es: $${unit_product_usd_bs_price}</b>
+            html: `<b>El costo del inventario en COP es: $${inventory_cop_price}</b>
               <br>
               <b>Operación: </b>
               <br>
-              <b>${unit_product_usd_bs_price} * ${dolar_cop_price} = ${unit_product_price}</b>
+              <b>Precio ingresado * Valor del dolar = Costo del inventario en COP</b>
+              <br>
+              <b>${input_price.val()} * ${dolar_cop_price} = ${inventory_semiFinalPrice}</b>
               <br>
               <b>Se aplicará el iva de 19%</b>
               <br>
-              <b>El costo del producto en COP sin iva es: $${unit_product_price}<b>
+              <b>Costo del inventario * 1.19</b>
               <br>
-              <b>El precio del producto con iva seria: COP$ ${final_product_price}</b>
+              <b>${inventory_semiFinalPrice} * 1.19 = ${inventory_cop_price}<b>
+              <br>
+              <b>El precio del producto unitario seria: COP$ ${final_product_price}</b>
             `,
             icon: 'warning',
             showCancelButton: true,
@@ -436,6 +475,7 @@
           }).then((result) => {
             if (result.isConfirmed) {
               unit_cost.val(final_product_price);
+              input_price.val(inventory_cop_price);
               form.submit();
             }
           });
@@ -443,15 +483,17 @@
         } else {
           Swal.fire({
             title: '¿Quieres añadir este nuevo inventario?',
-            html: `<b>El costo del producto en USD es: $${unit_product_usd_bs_price}</b>
+            html: `<b>El costo del inventario en COP es: $${inventory_cop_price}</b>
               <br>
               <b>Operación: </b>
               <br>
-              <b>${unit_product_usd_bs_price} * ${dolar_cop_price} = ${unit_product_price}</b>
+              <b>Precio ingresado * Valor del dolar = Costo del inventario en COP</b>
               <br>
-              <b>El costo del producto en COP es: $${unit_product_price}<b>
+              <b>${input_price.val()} * ${dolar_cop_price} = ${inventory_cop_price}</b>
               <br>
-              <b>El precio del producto seria: COP$ ${final_product_price}</b>
+              <b>El precio del producto unitario seria:</b>
+              <br>
+              <b>COP$ ${final_product_price}</b>
             `,
             icon: 'warning',
             showCancelButton: true,
@@ -462,6 +504,7 @@
           }).then((result) => {
             if (result.isConfirmed) {
               unit_cost.val(final_product_price);
+              input_price.val(inventory_cop_price);
               form.submit();
             }
           });
@@ -473,29 +516,19 @@
         if( iva_check.is(':checked') )
         {
           Swal.fire({
-          title: '¿Quieres añadir este nuevo inventario?',
-          html: `<b>Se aplicará el iva de 19%</b><br>
-            <b>El precio del producto base es: COP$ ${unit_product_price}</b><br>
-            <b>El precio del producto con iva será: COP$ ${final_product_price}</b>`,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#FF5933',
-          cancelButtonColor: '#3085d6',
-          cancelButtonText: 'Editar',
-          confirmButtonText: '¡Confirmar!',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            unit_cost.val(final_product_price);
-            form.submit();
-          }
-        });
-        } else {
-          Swal.fire({
             title: '¿Quieres añadir este nuevo inventario?',
-            html: `<b>No se hace ninguna operación</b><br>
-              <b>El precio del producto seria: COP$ ${final_product_price}</b>
-            
-            
+            html: `<b>El costo del inventario base es: COP$ ${product_price}</b>
+              <br>
+              <b>Se aplicará el iva de 19%</b>
+              <br>
+              <b>Costo del inventario * 1.19</b>
+              <br>
+              <b>${product_price} * 1.19 = ${inventory_cop_price}<b>
+              <br>
+              <br>
+              <b>El costo del inventario con iva es: COP$ ${inventory_cop_price}</b>
+              <br>
+              <b>El precio del producto unitario seria: COP$ ${final_product_price}</b>
             `,
             icon: 'warning',
             showCancelButton: true,
@@ -506,6 +539,27 @@
           }).then((result) => {
             if (result.isConfirmed) {
               unit_cost.val(final_product_price);
+              input_price.val(inventory_cop_price);
+              form.submit();
+            }
+          });
+        } else {
+          Swal.fire({
+            title: '¿Quieres añadir este nuevo inventario?',
+            html: `<b>El costo del inventario es: COP$ ${inventory_cop_price}</b>
+              <br>
+              <b>El precio del producto unitario seria: COP$ ${final_product_price}</b>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#FF5933',
+            cancelButtonColor: '#3085d6',
+            cancelButtonText: 'Editar',
+            confirmButtonText: '¡Confirmar!',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              unit_cost.val(final_product_price);
+              input_price.val(inventory_cop_price);
               form.submit();
             }
           });
