@@ -103,25 +103,35 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-
+        $product = Product::findOrFail($id);
         $fields = [
             'name' => ['required'],
-            'mark' => ['required'],
-            'gr' => ['required'],
+            'quantity' => ['required'],
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
-            'mark.required' => 'La marca del producto es requerida.',
-            'gr.required' => 'El Gr. es requerido.',
+            'quantity.required' => 'La cantidad es requerida.',
         ];
 
         $this->validate($request, $fields, $msj);
 
         $gr_old_product = $product->gr;
 
-        $product->update($request->all());
+        if( request()->typeOfCant == 'Gramos' )
+        {
+            $product->update([
+                'name' => request()->name,
+                'gr' => request()->quantity,
+                'it_has_flavors' => request()->it_has_flavors
+            ]);
+        }elseif( request()->typeOfCant == 'Unidades' ){
+            $product->update([
+                'name' => request()->name,
+                'quantity' => request()->quantity,
+                'it_has_flavors' => request()->it_has_flavors
+            ]);
+        }
 
         if ($gr_old_product != $product->gr) {
             $inventory = Inventory::where('product_id', $product->id)->first();

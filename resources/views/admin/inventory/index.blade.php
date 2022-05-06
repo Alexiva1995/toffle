@@ -90,13 +90,13 @@
     submitForms('#add_product', '.loading_btn_p', '#form_add_product');
     submitForms('#edit_product', '.loading_edit_p', '#form_edit_product');
 
-    function editProduct(id, name, mark, gr, alert, flavors) {
+    function editProduct(id, name, cant_type, quantity, flavors) {
       var route = '{{route('products.update', 'replace_this')}}'.replace('replace_this', id);
       $('#form_edit_product').attr('action', route);
-      $('#edit_mark').val(mark);
       $('#edit_name').val(name);
-      $('#edit_gr').val(gr);
-      $("#edit_units_reposition_alert").val(alert);
+      $('#edit_quantity').val(quantity);
+      $('#cant_type').text(cant_type);
+      $('#typeOfCant').val(cant_type);
 
       if (flavors == true) {
         $("#edit_flavors").prop("checked", true);

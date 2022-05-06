@@ -25,29 +25,14 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
-                                <label class="form-label" for="mark">Marca</label>
-                                <div class="input-group input-group-merge ">
-                                    <span class="input-group-text"><i data-feather="tag"></i></span>
-                                    <input type="text" id="edit_mark" class="form-control requerid @error('mark') is-invalid @enderror" name="mark"
-                                        placeholder="Marca" />
-                                    @error('mark')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 mb-1">
-                            <div class="mb-1">
-                                <label class="form-label" for="gr">Gr.</label>
+                                <label class="form-label" id="cant_type" for="quantity"></label>
                                 <div class="input-group input-group-merge ">
                                     <span class="input-group-text"><i data-feather="archive"></i></span>
-                                    <input type="number" id="edit_gr" class="form-control requerid @error('gr') is-invalid @enderror" name="gr"
-                                        placeholder="Gr." />
-                                    @error('gr')
+                                    <input type="number" id="edit_quantity" class="form-control requerid @error('quantity') is-invalid @enderror" name="quantity" onkeydown="filter()" placeholder="Cantidad" />
+                                    @error('quantity')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -55,21 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 mb-1">
-                            <div class="mb-1">
-                                <label class="form-label" for="units_reposition_alert">Alerta de Unidades de Reposición</label>
-                                <div class="input-group input-group-merge ">
-                                    <span class="input-group-text"><i data-feather="alert-triangle"></i></span>
-                                    <input type="number" id="edit_units_reposition_alert" class="form-control requerid @error('units_reposition_alert') is-invalid @enderror" name="units_reposition_alert"
-                                        placeholder="Alerta" />
-                                    @error('units_reposition_alert')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>      
+     
                         <div class="col-12 mb-2">
                             <div class="d-flex justify-content-center @error('it_has_flavors') is-invalid @enderror">
                                 <div class="form-check form-check-inline">
@@ -85,7 +56,8 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror   
-                        </div>                   
+                        </div>  
+                        <input type="hidden" name="typeOfCant" id="typeOfCant">                 
                     </div>
                 </form>
             </div>

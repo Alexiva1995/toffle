@@ -44,7 +44,7 @@
                                 <label class="form-label" for="quantity">Cantidad</label>
                                 <div class="input-group input-group-merge ">
                                     <span class="input-group-text"><i data-feather="archive"></i></span>
-                                    <input type="number" id="create_gr_product" class="form-control requerid @error('gr') is-invalid @enderror" name="quantity"
+                                    <input type="number" id="create_gr_product" onkeydown="filter()" class="form-control  requerid @error('gr') is-invalid @enderror" name="quantity"
                                         placeholder="Cantidad" />
                                     @error('quantity')
                                     <span class="invalid-feedback" role="alert">

@@ -40,15 +40,27 @@
                             @endif
                             <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
                             <td class="text-center"> 
-                                <button class="btn btn-sm btn-info my-1"
-                                    onclick="editProduct(
-                                    {{ $product->id }}, 
-                                    '{{ $product->name }}',
-                                    {{ $product->gr }},
-                                    {{ $product->it_has_flavors }})"> 
-
-                                    <i data-feather="edit"></i> 
-                                </button> 
+                                @if ($product->gr != null)
+                                    <button class="btn btn-sm btn-info my-1"
+                                        onclick="editProduct(
+                                        {{ $product->id }}, 
+                                        '{{ $product->name }}',
+                                        'Gramos',
+                                        {{ $product->gr }},
+                                        {{ $product->it_has_flavors }})"> 
+                                        <i data-feather="edit"></i> 
+                                    </button> 
+                                @else
+                                    <button class="btn btn-sm btn-info my-1"
+                                        onclick="editProduct(
+                                        {{ $product->id }}, 
+                                        '{{ $product->name }}',
+                                        'Unidades',
+                                        {{ $product->quantity }},
+                                        {{ $product->it_has_flavors }})"> 
+                                        <i data-feather="edit"></i> 
+                                    </button> 
+                                @endif
 
                                 <button class="btn btn-sm btn-danger"
                                     onclick="deleteElement( {{ $product->id }}, 
