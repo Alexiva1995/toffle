@@ -166,6 +166,8 @@ class ProductController extends Controller
                                 {
                                     $designated_cost = ($portion * $cost_product) / $product->quantity;
                                 }
+                                
+                                $designated_cost = round($designated_cost, 2);
             
                                 $dish->ingredients()->wherePivot('inventory_id', $inventory->id)->update([
                                     'designated_cost' => $designated_cost,
@@ -176,9 +178,11 @@ class ProductController extends Controller
                             }
 
                             $cost_price = $cost_price + $designated_cost;
+                            $cost_price = round($cost_price, 2);
                         }
         
                         $suggested_price = $cost_price * $profit;
+                        $suggested_price = round($suggested_price, 2);
         
                         if ($suggested_price > $dish->designated_price) {
                             $dish->update([
@@ -188,7 +192,7 @@ class ProductController extends Controller
         
                         $dish->update([
                             'cost_price' => $cost_price,
-                            'suggested_price' => $cost_price * $profit,
+                            'suggested_price' => round($cost_price * $profit, 2),
                         ]);
                     }
                 }
