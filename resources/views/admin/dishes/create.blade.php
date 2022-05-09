@@ -35,7 +35,7 @@
                             <div class="col-12 col-md-4">
                                 <label class="form-label" for="category_id">Categoria</label>
                                 <select class="select2 form-control @error('category_id') is-invalid @enderror" name="category_id" data-toggle="select"
-                                    class="form-control" id="category" value="{{ old('category_id') }}">
+                                    class="form-control" id="category" value="{{ old('category_id') }}" required>
                                     <option disabled selected value="">Selecciona una categoria</option>
                                     @foreach ($category as $item)
                                     <option value="{{ $item->id }}" {{ old('category_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
@@ -52,7 +52,7 @@
                             <div class="col-12 col-md-4">
                                 <label class="form-label" for="status">Estado</label>
                                 <select class="select2 form-control @error('status') is-invalid @enderror" name="status" data-toggle="select"
-                                    class="form-control" id="status">
+                                    class="form-control" id="status" required>
                                     <option disabled selected value="">Selecciona un Estado</option>
                                     <option value="1" {{ old('status') == "1" ? 'selected' : '' }}>Activo</option>
                                     <option value="2" {{ old('status') == "2" ? 'selected' : '' }}>En Revisión</option>
@@ -80,7 +80,7 @@
                                                 class="form-control" name="ingredient" id="selected_ingredient">
                                                 <option disabled selected value="">Selecciona un Ingrediente</option>
                                                 @foreach ($ingredients as $item)
-                                                <option data-gr="{{ $item->product->gr }}" data-cost="{{ $item->cost }}" value="ingredient_{{ $item->id }}">{{ $item->product->name }} {{ $item->flavor_name != null ? '('.ucwords($item->flavor_name).')' : '' }}</option>
+                                                <option data-gr="{{ $item->product->gr != null ? $item->product->gr : $item->product->quantity }}" data-cost="{{ $item->cost }}" value="ingredient_{{ $item->id }}">{{ $item->product->name }} {{ $item->flavor_name != null ? '('.ucwords($item->flavor_name).')' : '' }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -108,6 +108,22 @@
                                         </div>
 
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="card-header">
+                                <h4 class="">Base</h4>
+                            </div>
+                            <div class=" @error('base') is-invalid @enderror">
+                                <div class="form-radio">
+                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="waffle_radio" value="1"/>
+                                    <label class="form-radio-label" for="radio_currency">Waffle</label>
+                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="half_waffle_radio" value="1/2"/>
+                                    <label class="form-radio-label" for="radio_base">1/2 Waffle</label>
+                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="quarter_waffle_radio" value="1/4"/>
+                                    <label class="form-radio-label" for="radio_base">1/4 Waffle</label>
+                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="bubble_radio" value="bubble"/>
+                                    <label class="form-radio-label" for="radio_base">Bubble</label>
                                 </div>
                             </div>
 
@@ -238,10 +254,6 @@
 @section('custom-js')
 
     @include('admin.dishes.partials.script');
-
-    <script>
-        submitForms('#create_dish', '.loading_create_dish', '#form_create_dish');
-    </script>
 
 @endsection
 

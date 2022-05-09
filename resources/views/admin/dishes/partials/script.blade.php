@@ -24,7 +24,6 @@
               repeated = true;
             }           
         }
-
         if (!repeated) {
             ids.push( $("#selected_ingredient option:selected").val() );
             numRows++;
@@ -103,6 +102,7 @@
       value = $('#portion_dish').val();
       cost = $('#selected_ingredient option:selected').data("cost");
       gr = $('#selected_ingredient option:selected').data("gr");
+      unit = $('#selected_ingredient option:selected').data('unit');
       cost_ingredient =  parseFloat( (value * cost) / gr ).toFixed(2);
       $('#calculate_cost').val(cost_ingredient);
   }

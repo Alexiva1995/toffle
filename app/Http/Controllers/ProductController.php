@@ -120,6 +120,7 @@ class ProductController extends Controller
         if( request()->typeOfCant == 'Gramos' )
         {
             $gr_old_product = $product->gr;
+            $quantity_old_product = null;
 
             $product->update([
                 'name' => request()->name,
@@ -130,7 +131,7 @@ class ProductController extends Controller
         }else if( request()->typeOfCant == 'Unidades' )
         {
             $quantity_old_product = $product->quantity;
-
+            $gr_old_product = null;
             $product->update([
                 'name' => request()->name,
                 'quantity' => request()->quantity,

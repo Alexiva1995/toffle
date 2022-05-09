@@ -36,8 +36,7 @@ class DishController extends Controller
     {
         $dishes = Dish::orderBy('id', 'DESC')->get();
 
-        $ingredients = Inventory::orderBy('id', 'DESC')->get();
-
+        $ingredients = Inventory::with('product')->orderBy('id', 'DESC')->get();
         $category = Category::orderBy('id', 'DESC')->get();
 
         return view('admin.dishes.create', compact('dishes', 'ingredients', 'category'));
