@@ -174,7 +174,6 @@ Route::middleware('auth')->group(function () {
     Route::get('show-order-details', [OrdersController::class, 'showOrderDetails'])->name('reports.show.order.details');
 
     Route::get('modal-modify-ingredients', [OrdersController::class, 'modalModifyIngredients'])->name('orders.modal.modify.ingredients');
-    Route::get('modal-modify-ingredients-new-order', [OrdersController::class, 'modalModifyIngredientsNewOrder'])->name('orders.modal.modify.ingredientsNewOrder');
 
     Route::post('add-ingredient-to-order', [OrdersController::class, 'addIngredientsOrder'])->name('orders.add.ingredients');
 

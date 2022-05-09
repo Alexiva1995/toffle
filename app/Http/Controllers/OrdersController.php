@@ -390,31 +390,6 @@ class OrdersController extends Controller
             ->with('code_operation', $code_operation)
             ->render();
     }
-    public function modalModifyIngredientsNewOrder(Request $request)
-    {
-        $order = Order::where('id', $request->order_id)->first();
-
-        $order_ingredients = $order->ingredients()->wherePivot('code_operation', $request->code_operation)->get();
-
-        $order_dish= $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
-
-        $ingredients = Inventory::orderBy('id', 'DESC')
-                                    ->where('public', '>', 0)
-                                    ->get();
-
-        $dish = Dish::where('id', $request->dish_id)->first();
-
-        $code_operation = $request->code_operation;
-
-        return view('employee.dashboard.orders.modals.modify_ingredientsNewOrder')
-            ->with('dish', $dish)
-            ->with('order_ingredients', $order_ingredients)
-            ->with('order_dish', $order_dish)
-            ->with('ingredients', $ingredients)
-            ->with('order', $order)
-            ->with('code_operation', $code_operation)
-            ->render();
-    }
 
     public function addIngredientsOrder(Request $request)
     {

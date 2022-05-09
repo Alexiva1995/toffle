@@ -303,15 +303,7 @@
     }
 
 
-    function modifyIngredientsNewOrder(order_id, code_operation, dish_id) {
-        $.get("{{ route('orders.modal.modify.ingredientsNewOrder') }}", { order_id: order_id, code_operation: code_operation, dish_id: dish_id},
-            function (data, textStatus, jqXHR) {
-                $('.ingredients_details').html(data);
-                $("#modal_show_ingredients").modal("show");
-                feather.replace();
-            }
-        );
-    }
+
     function modifyIngredients(order_id, code_operation, dish_id) {
         $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, code_operation: code_operation, dish_id: dish_id},
             function (data, textStatus, jqXHR) {
@@ -542,7 +534,7 @@
                 if(data.name.includes('Helado') || data.category_id == 4){
                     field=$('td:eq(1)', elemt);
                     buttons='';
-                    button = '<span>'+ (data.flavor != null ? data.flavor : 'Seleccione un sabor') +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredientsNewOrder({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
+                    button = '<span>'+ (data.flavor != null ? data.flavor : 'Seleccione un sabor') +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
                     buttons+=button;
                     field=field.html(buttons);
                 }
