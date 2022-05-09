@@ -59,7 +59,7 @@ class ProductController extends Controller
                 'quantity' => request()->quantity,
                 'it_has_flavors' => request()->it_has_flavors
             ]);
-        }elseif(request()->type == 'gr')
+        }else if(request()->type == 'gr')
         {
             Product::create([
                 'name' => request()->name,
@@ -116,24 +116,29 @@ class ProductController extends Controller
 
         $this->validate($request, $fields, $msj);
 
-        $gr_old_product = $product->gr;
-
+        
         if( request()->typeOfCant == 'Gramos' )
         {
+            $gr_old_product = $product->gr;
+
             $product->update([
                 'name' => request()->name,
                 'gr' => request()->quantity,
                 'it_has_flavors' => request()->it_has_flavors
             ]);
-        }elseif( request()->typeOfCant == 'Unidades' ){
+
+        }else if( request()->typeOfCant == 'Unidades' )
+        {
+            $quantity_old_product = $product->quantity;
+
             $product->update([
                 'name' => request()->name,
                 'quantity' => request()->quantity,
                 'it_has_flavors' => request()->it_has_flavors
             ]);
         }
-
-        if ($gr_old_product != $product->gr) {
+        //Calcular costos si la cantidad ingresada es diferente a la anterior.
+        if ($gr_old_product != $product->gr || $quantity_old_product != $product->quantity) {
             $inventory = Inventory::where('product_id', $product->id)->first();
 
             if ($inventory != null) {
@@ -155,7 +160,12 @@ class ProductController extends Controller
                             $portion = $item->pivot->portion;
         
                             if ($item->pivot->inventory_id == $inventory->id) {
-                                $designated_cost = ($portion * $cost_product) / $product->gr;
+                                if($product->gr != null){
+                                    $designated_cost = ($portion * $cost_product) / $product->gr;
+                                }else if($product->quantity != null)
+                                {
+                                    $designated_cost = ($portion * $cost_product) / $product->quantity;
+                                }
             
                                 $dish->ingredients()->wherePivot('inventory_id', $inventory->id)->update([
                                     'designated_cost' => $designated_cost,
