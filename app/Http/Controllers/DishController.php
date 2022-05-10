@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Dish;
 use App\Models\Order;
+use App\Models\Product;
+use App\CustomClass\Ingredient;
 
 class DishController extends Controller
 {
@@ -16,6 +18,7 @@ class DishController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         $dishes = Dish::orderBy('id', 'DESC')->get();
@@ -35,11 +38,11 @@ class DishController extends Controller
     public function create()
     {
         $dishes = Dish::orderBy('id', 'DESC')->get();
-
         $ingredients = Inventory::with('product')->orderBy('id', 'DESC')->get();
         $category = Category::orderBy('id', 'DESC')->get();
-
-        return view('admin.dishes.create', compact('dishes', 'ingredients', 'category'));
+        $dish = new Dish;
+        
+        return view('admin.dishes.create', compact('dishes','ingredients','category','dish'));
     }
 
     /**

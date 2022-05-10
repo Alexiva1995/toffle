@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\CustomClass\Ingredient;
+
 
 class Dish extends Model
 {
@@ -57,5 +59,89 @@ class Dish extends Model
         }else if($this->status == '2'){
             return "info";
         }
+    }
+
+    public function getDishIngredients($baseName)
+    {
+        switch($baseName):
+
+            case 'waffle':
+                $dish = Dish::with('ingredients')->whereName('Sencillo')->first();
+                $ingredients = collect();
+                foreach($dish->ingredients as $key => $item)
+                {
+                    $ingredient = new Ingredient;
+                    //Obtener nombre del producto
+                    $product = Product::whereId($item->product_id)->first();
+                    //Llenar objeto ingredient
+                    $ingredient->id = $item->id;
+                    $ingredient->name = $product->name;
+                    $ingredient->amount = $item->pivot->portion;
+                    $ingredient->quantity = $product->gr != null ? $product->gr : $product->quantity;
+                    $ingredient->cost = $item->cost;
+                    $ingredients->push($ingredient);
+                }
+                return $ingredients;
+                break;
+
+            case 'half_waffle';
+                $dish = Dish::whereName('Sencillo')->first();
+                $ingredients = collect();
+                foreach($dish->ingredients as $item)
+                {
+                    $ingredient = new Ingredient;
+                    //Obtener nombre del producto
+                    $product = Product::whereId($item->product_id)->first();
+                    //Llenar objeto ingredient
+                    $ingredient->id = $item->id;
+                    $ingredient->name = $product->name;
+                    $ingredient->amount = ( floatval($item->pivot->portion) / 2 );
+                    $ingredient->quantity = $product->gr != null ? $product->gr : $product->quantity;
+                    $ingredient->cost = $item->cost;
+                    $ingredients->push($ingredient);
+                }
+                return $ingredients;
+                break;
+
+            case 'quarter_waffle';
+                $dish = Dish::whereName('Sencillo')->first();
+                $ingredients = collect();
+                foreach($dish->ingredients as $item)
+                {
+                    $ingredient = new Ingredient;
+                    //Obtener nombre del producto
+                    $product = Product::whereId($item->product_id)->first();
+                    //Llenar objeto ingredient
+                    $ingredient->id = $item->id;
+                    $ingredient->name = $product->name;
+                    $ingredient->amount = ( floatval($item->pivot->portion) / 4 );
+                    $ingredient->quantity = $product->gr != null ? $product->gr : $product->quantity;
+                    $ingredient->cost = $item->cost;
+                    $ingredients->push($ingredient);
+                }
+                return $ingredients;
+                break;
+
+            case 'bubble';
+                $dish = Dish::whereName('Bubble')->first();
+                $ingredients = collect();
+                foreach($dish->ingredients as $item)
+                {
+                    $ingredient = new Ingredient;
+                    //Obtener nombre del producto
+                    $product = Product::whereId($item->product_id)->first();
+                    //Llenar objeto ingredient
+                    $ingredient->id = $item->id;
+                    $ingredient->name = $product->name;
+                    $ingredient->amount = $item->pivot->portion;
+                    $ingredient->quantity = $product->gr != null ? $product->gr : $product->quantity;
+                    $ingredient->cost = $item->cost;
+                    $ingredients->push($ingredient);
+                }
+                return $ingredients;
+                break;
+
+        endswitch;
+
     }
 }

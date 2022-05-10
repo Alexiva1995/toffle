@@ -116,13 +116,16 @@
                             </div>
                             <div class=" @error('base') is-invalid @enderror">
                                 <div class="form-radio">
-                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="waffle_radio" value="1"/>
+                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="waffle_radio" onclick="dishBase({{ $dish->getDishIngredients('waffle') }})"/>
                                     <label class="form-radio-label" for="radio_currency">Waffle</label>
-                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="half_waffle_radio" value="1/2"/>
+
+                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="half_waffle_radio" onclick="dishBase({{ $dish->getDishIngredients('half_waffle') }})"/>
                                     <label class="form-radio-label" for="radio_base">1/2 Waffle</label>
-                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="quarter_waffle_radio" value="1/4"/>
+
+                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="quarter_waffle_radio" onclick="dishBase({{ $dish->getDishIngredients('quarter_waffle') }})"/>
                                     <label class="form-radio-label" for="radio_base">1/4 Waffle</label>
-                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="bubble_radio" value="bubble"/>
+
+                                    <input class="form-check-input border border-primary @error('base') is-invalid @enderror" type="radio" name="base" id="bubble_radio" onclick="dishBase({{ $dish->getDishIngredients('bubble') }})"/>
                                     <label class="form-radio-label" for="radio_base">Bubble</label>
                                 </div>
                             </div>
@@ -139,7 +142,7 @@
                                         <input type="number" id="percentage_profit"
                                             class="form-control requerid @error('percentage_profit') is-invalid @enderror"
                                             name="percentage_profit" id="percentage_profit" oninput="calculate()" value="{{ old('percentage_profit') }}"
-                                            required />
+                                            required step="0.01" />
                                         @error('percentage_profit')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -254,6 +257,7 @@
 @section('custom-js')
 
     @include('admin.dishes.partials.script');
+
 
 @endsection
 
