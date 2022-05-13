@@ -98,6 +98,7 @@ Route::middleware('auth')->group(function () {
 
                 Route::get('gain', [ReportController::class, 'gain'])->name('reports.gain');
                 Route::get('gain-data', [ReportController::class, 'gainData'])->name('reports.gain.data');
+                Route::get('gain-data/amount', [ReportController::class, 'gainAmount'])->name('reports.gain.amount.data');
                 Route::get('gain-show/{date}', [ReportController::class, 'gainShow'])->name('gain.show');
                 Route::get('gain-data-show/{date}', [ReportController::class, 'gainDataShow'])->name('gain.data.show');
 
@@ -107,9 +108,13 @@ Route::middleware('auth')->group(function () {
 
                 Route::get('expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
                 Route::get('expenses-data/{status?}', [ReportController::class, 'expensesData'])->name('reports.expenses.data');
+                Route::get('expenses/total-amount', [ReportController::class, 'expensesTotalAmount'])->name('reports.expenses.total.data');
 
                 Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
                 Route::get('sales-data', [ReportController::class, 'salesData'])->name('reports.sales.data');
+                Route::get('sales/fixed-cost', [ReportController::class, 'fixedCostAmount'])->name('reports.fixed.cost.data');
+                Route::get('sales/unexpected', [ReportController::class, 'unexpectedAmount'])->name('reports.unexpected.data');
+                Route::get('sales/total-amount', [ReportController::class, 'totalSalesAmount'])->name('reports.total.sales.amount.data');
             });
 
             Route::resource('categories', CategoriesController::class);

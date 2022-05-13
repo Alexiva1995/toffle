@@ -28,8 +28,8 @@
                                     </div>
                                 </div>
                                 <div class="my-auto">
-                                    <h4 class="fw-bolder mb-0">$
-                                        {{ number_format($profit_total, 2, '.', '') }}
+                                    <h4 class="fw-bolder mb-0">
+                                        $ <span id="total"></span>
                                     </h4>
                                 </div>
                             </div>
@@ -71,6 +71,23 @@
 @include('panels.datatable.scripts')
 
 <script>
+    // Calcula y dibuja el Total en Ganancia Netas
+    function getGainAmount(){
+        var request = $.ajax({
+            method: "GET",
+            url: '{!! route('reports.gain.amount.data') !!}',
+            data:{ from : $('#from').val(), to : $('#to').val() }
+        });
+
+        request.done(function(data) {
+            $('#total').html(data);
+        });
+
+        request.fail(function() {
+            $('#total').html(0);
+        });
+    }
+
     $(document).ready(function () {
         table = $('#gain_table').DataTable({
             processing: true,
@@ -120,7 +137,7 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    return (row.total_amount).toFixed(2);
+                    return (data);
                 }  
             },
             {
@@ -131,7 +148,8 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    return (row.gain).toFixed(2);
+                    console.log(data);
+                    return data;
                 }  
             },
             {
@@ -153,6 +171,7 @@
         fnCreatedRow: function (elemt, data, iDataIndex) {},
 
         }).on('processing.dt', function (e, settings, processing) {
+            getGainAmount();
             feather.replace();
         });
 

@@ -52,15 +52,24 @@ class ReportController extends Controller
     //permite obtener el listado de informes de ganancias
     public function gain()
     {
-        $gains = Order::selectRaw('ROUND( (b.price - b.cost) * b.unit, 2 ) as gain')
-        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+        $gains = Order::selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
+        ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
         ->where('orders.status', '2')
         ->get();
 
+        // $gainss = Order::selectRaw('DATE(orders.updated_at) as updated_at')
+        //     ->selectRaw('ROUND(orders.total_amount, 2) as total_amount')
+        //     ->selectRaw('orders.id')
+        //     ->selectRaw('SUM(ROUND( (b.price - b.cost) * b.unit, 2 )) as gain')
+        //     ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+        //     ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+        //     ->where('orders.status', '2')
+        //     ->orderBy('updated_at', 'DESC')
+        //     ->groupBy('updated_at')->get();
+        // return $gainss;
         $profit_total = $gains->sum('gain');
 
-        return view('admin.reports.gain')
-            ->with('profit_total', $profit_total);
+        return view('admin.reports.gain', compact('profit_total'));
     }
 
     public function gainData(Request $request)
@@ -69,13 +78,13 @@ class ReportController extends Controller
         $month_end = date('Y-m-d', strtotime('last day of this month', time()));
 
         $gains = Order::selectRaw('DATE(orders.updated_at) as updated_at')
-            ->selectRaw('SUM(ROUND(orders.total_amount, 2)) as total_amount')
+            ->selectRaw('ROUND(orders.total_amount, 2) as total_amount')
             ->selectRaw('SUM(ROUND( (b.price - b.cost) * b.unit, 2 )) as gain')
             ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
             ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
             ->where('orders.status', '2')
             ->orderBy('updated_at', 'DESC')
-            ->groupBy('updated_at');
+            ->groupBy('updated_at', 'total_amount');
             
         if ( ( request()->has('from') && request('from') == '' ) || ( request('to') == '' && request()->has('to') ) ) {
             $gains->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
@@ -96,6 +105,40 @@ class ReportController extends Controller
         })
         ->toJson();
     }
+
+    //Obtiene la Ganancia neta de la vista reports->gain
+    public function gainAmount(Request $request)
+    {
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        {
+            //Busca entre fechas
+            $start = date("Y-m-d",strtotime(request('from')));
+            $end = date("Y-m-d",strtotime(request('to')));
+
+            $gains = Order::selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
+                ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
+                ->where('orders.status', '2')
+                ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
+                ->get();
+                            
+            $profit_total = $gains->sum('gain');
+            $profit_total = number_format($profit_total, 2, ',', '.');
+            return $profit_total;
+        }
+        else
+        {
+            //Obtiene el general
+            $gains = Order::selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
+                ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
+                ->where('orders.status', '2')
+                ->get();
+                            
+            $profit_total = $gains->sum('gain');
+            $profit_total = number_format($profit_total, 2, ',', '.');
+            return $profit_total;
+        }
+    }
+    
 
     public function gainShow($date)
     {
@@ -206,20 +249,44 @@ class ReportController extends Controller
         ->toJson();
     }
 
+    public function expensesTotalAmount()
+    {
+        $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+        $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        {
+            $start = date("Y-m-d",strtotime(request('from')));
+            $end = date("Y-m-d",strtotime(request('to')));
+
+            //Obtener el costo fijo (product_id 83) acumulado de todas las ventas
+            $expenses_total_amount = Expense::whereBetween( 'expenses.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
+            ->sum('amount');
+            $expenses_total_amount = number_format($expenses_total_amount, 2, ',', '.');
+
+            return $expenses_total_amount;
+        }
+        else
+        {
+            //Obtener el costo fijo (product_id 83) acumulado de todas las ventas
+            $expenses_total_amount = Expense::whereBetween( 'expenses.updated_at',[ $month_start. " 00:00:00", $month_end. " 23:59:59" ] )
+            ->sum('amount');
+            $expenses_total_amount = number_format($expenses_total_amount, 2, ',', '.');
+
+            return $expenses_total_amount;
+        }
+    }
+
     //Permite obtener el listado de informes de Ventas
     public function sales()
     {
         $categories = Category::all();
-        $capital_available = Order::where('status', '2')->sum('total_amount');
-
-        return view('admin.reports.sales')
-        ->with('categories', $categories)
-        ->with('capital_available', $capital_available);
+        
+        return view('admin.reports.sales', compact('categories'));
     }
 
     public function salesData(Request $request)
     {
-        $sales = Order::orderBy('id', 'DESC');
+        $sales = Order::whereStatus('2')->orderBy('id', 'DESC');
             
         return Datatables::of($sales)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
@@ -246,6 +313,118 @@ class ReportController extends Controller
         ->toJson();
     }
 
+    /*
+     * Obtener el costo fijo para Reportes -> ventas.
+     */
+    public function fixedCostAmount(Request $request)
+    {
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        {
+            $start = date("Y-m-d",strtotime(request('from')));
+            $end = date("Y-m-d",strtotime(request('to')));
+
+            //Obtener el costo fijo (product_id 83) acumulado entre fechas
+            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
+            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
+            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
+            ->where('orders.status', '2')
+            ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
+            ->where('products.id', '=', 83)
+            ->groupBy(['products.name'])->first('cost');
+
+            $costo_fijo = $costo_fijo->cost;
+            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
+
+            return $costo_fijo;
+        }
+        else
+        {
+            //Obtener el costo fijo (product_id 83) acumulado de todas las ventas
+            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
+            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
+            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
+            ->where('orders.status', '2')
+            ->where('products.id', '=', 83)
+            ->groupBy(['products.name'])->first('cost');
+
+            $costo_fijo = $costo_fijo->cost;
+            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
+
+            return $costo_fijo;
+        }
+    }
+
+    /*
+     * Obtener el imprevisto para Reportes -> ventas.
+     */
+    public function unexpectedAmount(Request $request)
+    {
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        {
+            $start = date("Y-m-d",strtotime(request('from')));
+            $end = date("Y-m-d",strtotime(request('to')));
+
+            //Obtener el imprevisto (product_id 93) acumulado entre fechas
+            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
+            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
+            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
+            ->where('orders.status', '2')
+            ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
+            ->where('products.id', '=', 93)
+            ->groupBy(['products.name'])->first('cost');
+
+            $costo_fijo = $costo_fijo->cost;
+            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
+
+            return $costo_fijo;
+        }
+        else
+        {
+            //Obtener el imprevisto (product_id 93) acumulado de todas las ventas
+            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
+            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
+            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
+            ->where('orders.status', '2')
+            ->where('products.id', '=', 93)
+            ->groupBy(['products.name'])->first('cost');
+
+            $costo_fijo = $costo_fijo->cost;
+            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
+
+            return $costo_fijo;
+        }
+    }
+
+    /*
+     * Obtener el total de Ventas para Reportes -> ventas.
+     */
+    public function totalSalesAmount(Request $request)
+    {
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        {
+            //Busca entre fechas
+            $start = date("Y-m-d",strtotime(request('from')));
+            $end = date("Y-m-d",strtotime(request('to')));
+            $total_sales_amount = Order::where('status', '2')
+                ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
+                ->sum('total_amount');
+            $total_sales_amount = number_format($total_sales_amount, 2, ',', '.');
+
+            return $total_sales_amount;
+        }
+        else
+        {
+            //Obtiene el general
+            $total_sales_amount = Order::where('status', '2')->sum('total_amount');
+            $total_sales_amount = number_format($total_sales_amount, 2, ',', '.');
+
+            return $total_sales_amount;
+        }
+    }
     //premite obtener el listado de informes del flujo de caja
     public function cashFlow()
     {
