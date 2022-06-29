@@ -20,16 +20,16 @@
             <div class="card p-2">
                 {{-- <h3>Más Vendidos</h3> --}}
                 <div class="row mb-2">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12">
                         <div class="row justify-content-init mt-1">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <label for="timestamp">Rango de Fecha</label>
                                   <input type="text" class="form-control" placeholder="Rango de Fecha" id="timestamp">
                                   <input type="hidden" id="from">
                                   <input type="hidden" id="to">
                             </div>
 
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <label for="category_id">Categorías</label>
                                 <select class="select2 form-control" name="category_id" id="category_id" data-toggle="select"
                                     class="form-control" id="category">
@@ -39,11 +39,20 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="order_by_for">Organizar Por:</label>
+                                <select class="select2 form-control" name="order_by_for" id="order_by_for" data-toggle="select"
+                                    class="form-control" id="category">
+                                    <option value="units">Mas Vendido</option>
+                                    <option value="gain">Ganancia</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table" id="best_seller_table"> </table>
+                    <table class="table rounded border-table" id="best_seller_table"></table>
                 </div>
             </div>
         </div>
@@ -71,54 +80,57 @@
                     d.from  = $('#from').val();
                     d.to    = $('#to').val();
                     d.category_id  = $('#category_id').val();
+                    d.order_by_for  = $('#order_by_for').val();
                 }
             },
             columns: [
-            {
-                data: "name_dish",
-                name: "name_dish",
-                title: "Plato",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-            },
-            {
-                data: "category_name",
-                name: "category_name",
-                title: "Categoría",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-            },
-            {
-                data: "units",
-                name: "units",
-                title: "# de Ventas",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-            },
-            {
-                data: "gain",
-                name: "gain",
-                title: "Ganancia",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-                render: function (data, type, row, meta) {
-                    return (row.gain).toFixed(2);
-                }  
-            },
+                {
+                    data: "name_dish",
+                    name: "name_dish",
+                    title: "Plato",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                },
+                {
+                    data: "category_name",
+                    name: "category_name",
+                    title: "Categoría",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                },
+                {
+                    data: "units",
+                    name: "units",
+                    title: "# de Ventas",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                },
+                {
+                    data: "gain",
+                    name: "gain",
+                    title: "Ganancia",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                    render: function (data, type, row, meta) {
+                        return row.gain.toLocaleString();
+                    }  
+                },
 
-        ],
-        fnCreatedRow: function (elemt, data, iDataIndex) {},
-
+            ],
         }).on('processing.dt', function (e, settings, processing) {
             feather.replace();
         });
 
         $('#category_id').change(function() {
             table.search('').draw();
+        });
+
+        $('#order_by_for').change(function() {
+            table.search('').draw()
         });
 
         $('#timestamp').change(function() {

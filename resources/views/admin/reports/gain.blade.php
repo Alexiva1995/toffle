@@ -3,34 +3,84 @@
 @section('title', 'Ganancia')
 
 @section('vendor-style')
-    <!-- vendor css files -->
-    @include('panels.datatable.styles')
+<!-- vendor css files -->
+@include('panels.datatable.styles')
 @endsection
 
 @section('page-style')
-  {{-- Page css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
+{{-- Page css files --}}
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
 @endsection
 
 @section('content')
 <section id="basic-datatable">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row justify-content-center">
-                        <div class="col-md-6 col-12">
-                            <h4 class="card-text text-center mb-2">Ganancia Neta</h3>
-                            <div class="d-flex flex-row justify-content-center">
-                                <div class="avatar bg-light-success me-1">
-                                    <div class="avatar-content">
-                                        <i data-feather="dollar-sign" class="avatar-icon"></i>
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6 col-12">
+                                <h4 class="card-text text-center mb-2">Ganancia Neta</h3>
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="avatar bg-light-success me-1">
+                                        <div class="avatar-content">
+                                            <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="my-auto">
+                                        <h4 class="fw-bolder mb-0">
+                                            $ <span id="total"></span>
+                                        </h4>
                                     </div>
                                 </div>
-                                <div class="my-auto">
-                                    <h4 class="fw-bolder mb-0">
-                                        $ <span id="total"></span>
-                                    </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6 col-12">
+                                <h4 class="card-text text-center mb-2">Costo Fijo</h3>
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="avatar bg-light-success me-1">
+                                        <div class="avatar-content">
+                                            <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="my-auto">
+                                        <h4 class="fw-bolder mb-0">
+                                            $ <span id="fixed_cost"></span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6 col-12">
+                                <h4 class="card-text text-center mb-2">Imprevisto</h3>
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="avatar bg-light-success me-1">
+                                        <div class="avatar-content">
+                                            <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="my-auto">
+                                        <h4 class="fw-bolder mb-0">
+                                            $ <span id="unexpected"></span>
+                                        </h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -38,6 +88,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-12">
             <div class="card p-2">
                 <h3>Ganancias por Día</h3>
@@ -46,9 +97,9 @@
                         <div class="row justify-content-init mt-1">
                             <div class="col-12 col-md-6">
                                 <label for="timestamp">Rango de Fecha</label>
-                                  <input type="text" class="form-control" placeholder="Rango de Fecha" id="timestamp">
-                                  <input type="hidden" id="from">
-                                  <input type="hidden" id="to">
+                                <input type="text" class="form-control" placeholder="Rango de Fecha" id="timestamp">
+                                <input type="hidden" id="from">
+                                <input type="hidden" id="to">
                             </div>
                         </div>
                     </div>
@@ -63,7 +114,7 @@
 @endsection
 
 @section('vendor-script')
-    <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
 @endsection
 
 @section('custom-js')
@@ -85,6 +136,40 @@
 
         request.fail(function() {
             $('#total').html(0);
+        });
+    }
+
+    // Calcula y dibuja el cuadro de Costos Fijos
+    function getfixedCostAmount(){
+        var request = $.ajax({
+            method: "GET",
+            url: '{!! route('reports.gain.fixed.cost') !!}',
+            data:{ from : $('#from').val(), to : $('#to').val() }
+        });
+        
+        request.done(function(data) {
+            $('#fixed_cost').html(data);
+        });
+
+        request.fail(function() {
+            $('#fixed_cost').html(0);
+        });
+    }
+
+    // Calcula el imprevisto
+    function getUnexpectedAmount(){
+        var request = $.ajax({
+            method: "GET",
+            url: '{!! route('reports.gain.unexpected') !!}',
+            data:{ from : $('#from').val(), to : $('#to').val() }
+        });
+        
+        request.done(function(data) {
+            $('#unexpected').html(data);
+        });
+
+        request.fail(function() {
+            $('#unexpected').html(0);
         });
     }
 
@@ -137,7 +222,7 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    return (data);
+                    return data.toLocaleString();
                 }  
             },
             {
@@ -148,8 +233,29 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    console.log(data);
-                    return data;
+                    return data.toLocaleString();
+                }  
+            },
+            {
+                data: null,
+                sortable: true, 
+                title: "Costo Fijo",
+                "class": "text-center",
+                visible: true,
+                searchable: true,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }  
+            },
+            {
+                data: null,
+                sortable: true, 
+                title: "Imprevisto",
+                "class": "text-center",
+                visible: true,
+                searchable: true,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 }  
             },
             {
@@ -171,6 +277,8 @@
         fnCreatedRow: function (elemt, data, iDataIndex) {},
 
         }).on('processing.dt', function (e, settings, processing) {
+            getfixedCostAmount();
+            getUnexpectedAmount();
             getGainAmount();
             feather.replace();
         });
@@ -183,4 +291,4 @@
     });
 </script>
 
-@endsection 
+@endsection

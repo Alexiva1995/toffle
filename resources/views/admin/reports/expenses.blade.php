@@ -153,7 +153,7 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    return '<strong class="text-danger amount">'+row.amount.toFixed(2)+'</strong>';
+                    return '<strong class="text-danger amount">'+row.amount.toLocaleString()+'</strong>';
                 }  
             },
             {

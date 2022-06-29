@@ -15,22 +15,96 @@
 @section('content')
 <!-- Basic table -->
 <div class="row justify-content-center">
-    <div class="col-12 col-md-6">
-        <div class="card">
-            <div class="card-body">
-                <div class="row justify-content-center">
-                    <div class="col-md-6 col-12">
-                        <h4 class="card-text text-center mb-2">Capital a Favor</h3>
-                        <div class="d-flex flex-row justify-content-center">
-                            <div class="avatar bg-light-success me-1">
-                                <div class="avatar-content">
-                                    <i data-feather="dollar-sign" class="avatar-icon"></i>
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 col-12">
+                            <h4 class="card-text text-center mb-2">Ventas</h3>
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="avatar bg-light-success me-1">
+                                    <div class="avatar-content">
+                                        N°
+                                    </div>
+                                </div>
+                                <div class="my-auto">
+                                    <h4 class="fw-bolder mb-0">
+                                        <span id="ventas"></span>
+                                    </h4>
                                 </div>
                             </div>
-                            <div class="my-auto">
-                                <h4 class="fw-bolder mb-0">$
-                                    {{ number_format($capital_available, 2, '.', '') }}
-                                </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 col-12">
+                            <h4 class="card-text text-center mb-2">Ganancias</h3>
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="avatar bg-light-success me-1">
+                                    <div class="avatar-content">
+                                        <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="my-auto">
+                                    <h4 class="fw-bolder mb-0">
+                                        $ <span id="gain"></span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row 1000011justify-content-center">
+                        <div class="col-md-12 col-12">
+                            <h4 class="card-text text-center mb-2">Salidas</h3>
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="avatar bg-light-success me-1">
+                                    <div class="avatar-content">
+                                        <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="my-auto">
+                                    <h4 class="fw-bolder mb-0">
+                                        $ <span id="expenses"></span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 col-12">
+                            <h4 class="card-text text-center mb-2">Saldo</h3>
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="avatar bg-light-success me-1">
+                                    <div class="avatar-content">
+                                        <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="my-auto">
+                                    <h4 class="fw-bolder mb-0">
+                                        $ <span id="balance"></span>
+                                    </h4>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -38,34 +112,6 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="col-6">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-12">
-                        <div class="d-flex flex-row">
-                            <div class="avatar bg-light-danger me-2">
-                                <div class="avatar-content">
-                                    <i data-feather="dollar-sign" class="avatar-icon"></i>
-                                </div>
-                            </div>
-                            <div class="my-auto">
-                                <h4 class="fw-bolder mb-0">$
-                                    @if(isset($capitalDisponible))
-                                    {{$capitalDisponible}}
-                                    @else
-                                    0
-                                    @endif
-                                </h4>
-                                <p class="card-text font-small-3 mb-0">Capital en contra</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 </div>
 
 <section id="basic-datatable">
@@ -122,6 +168,95 @@
 @include('panels.datatable.scripts')
 
 <script>
+    // Obtiene el num de ventas para el cuadro Ventas
+    function getSalesQuantity(){
+        var request = $.ajax({
+            method: "GET",
+            url: '{!! route('cash.flow.sales.quantity') !!}',
+            data:{ from : $('#income_from').val(), to : $('#income_to').val() }
+        });
+
+        request.done(function(data) {
+            $('#ventas').html(data);
+        });
+
+        request.fail(function() {
+            $('#ventas').html(0);
+        });
+    }
+
+    // Calcula y dibuja el Total en Ganancia Netas
+    function getGainAmount(){
+        var request = $.ajax({
+            method: "GET",
+            url: '{!! route('reports.gain.amount.data') !!}',
+            data:{ from : $('#income_from').val(), to : $('#income_to').val() }
+        });
+
+        request.done(function(data) {
+            $('#gain').html(data);
+        });
+
+        request.fail(function() {
+            $('#gain').html(0);
+        });
+    }
+
+    // Calcula y dibuja el Total en Gastos
+    function getExpensesAmount(){
+        var request = $.ajax({
+            method: "GET",
+            url: '{!! route('reports.expenses.total.data') !!}',
+            data:{ from : $('#income_from').val(), to : $('#income_to').val() }
+        });
+
+        request.done(function(data) {
+            $('#expenses').html(data);
+        });
+
+        request.fail(function() {
+            $('#expenses').html(0);
+        });
+    }
+    //Actualizar para el filtro de expenses
+    function getExpensesAmount(){
+        var request = $.ajax({
+            method: "GET",
+            url: '{!! route('reports.expenses.total.data') !!}',
+            data:{ from : $('#expenses_from').val(), to : $('#expenses_to').val() }
+        });
+
+        request.done(function(data) {
+            $('#expenses').html(data);
+        });
+
+        request.fail(function() {
+            $('#expenses').html(0);
+        });
+    }
+    // Calcula y dibuja el Total en Saldo
+    function calculateBalance(){
+        let gain = $('#gain').html();
+        let gain_no_points = gain.replace('.', '');
+        let gain_final = gain_no_points.replace(',', '.');
+        gain_final = parseFloat(gain_final);
+        
+        let expenses = $('#expenses').html();
+        let expenses_no_points = expenses.replace('.', '');
+        let expenses_final = expenses_no_points.replace(',', '.');
+        expenses_final = parseFloat(expenses_final);
+
+        let balance = gain_final - expenses_final
+        balance = balance.toLocaleString();
+        if(balance >= 0)
+        {
+            $('#balance').html(balance);
+        }else{
+            $('#balance').html(0);
+        }
+    } 
+    
+
     $(document).ready(function () {
         income_table = $('#income_table').DataTable({
             processing: true,
@@ -215,7 +350,7 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    return '<strong class="text-success">+'+row.total_amount.toFixed(2)+'</strong>';
+                    return '<strong class="text-success">+'+row.total_amount.toLocaleString();+'</strong>';
                 }  
             },
             {
@@ -230,6 +365,11 @@
         fnCreatedRow: function (elemt, data, iDataIndex) {},
 
         }).on('processing.dt', function (e, settings, processing) {
+            getSalesQuantity();
+            getGainAmount();
+            getExpensesAmount();
+            calculateBalance();
+
             feather.replace();
         });
 
@@ -285,7 +425,7 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    return '<strong class="text-danger">-'+row.amount.toFixed(2)+'</strong>';
+                    return '<strong class="text-danger">-'+row.amount.toLocaleString();+'</strong>';
                 }  
             },
             // {
@@ -324,6 +464,7 @@
         fnCreatedRow: function (elemt, data, iDataIndex) {},
 
         }).on('processing.dt', function (e, settings, processing) {
+            getExpensesAmount();
             feather.replace();
         });
 

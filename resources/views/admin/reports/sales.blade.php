@@ -243,7 +243,7 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    return '<strong class="text-success amount">'+row.total_amount.toFixed(2)+'</strong>';
+                    return '<strong class="text-success amount">'+row.total_amount.toLocaleString()+'</strong>';
                 }  
             },
             {

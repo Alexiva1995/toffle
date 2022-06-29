@@ -104,9 +104,9 @@
           flatpickrWeek('#week');
 
           //Donuts chart for categories
-          // dataChartCategorySales();
+          dataChartCategorySales();
           
-          $('#weekCategory').change(function() {
+          $('#weekCategory').change( () => {
             dataChartCategorySales();
           });
           flatpickrWeekCategory('#weekCategory');
