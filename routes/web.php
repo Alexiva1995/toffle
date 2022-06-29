@@ -26,7 +26,7 @@ use App\Http\Controllers\PageLayoutController;
 use App\Http\Controllers\MiscellaneousController;
 use App\Http\Controllers\UserInterfaceController;
 use App\Http\Controllers\AuthenticationController;
-
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,8 +43,18 @@ use App\Http\Controllers\AuthenticationController;
 // Main Page Route
 // Route::get('/', [DashboardController::class,'dashboardEcommerce'])->name('dashboard-ecommerce')->middleware('verified');
 
+Route::get('/clear-cache', function() {
+    Artisan::call('optimize:clear');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    return 'DONE'; //Return anything
+});
 /* Route Dashboards */
 Auth::routes(['verify' => true]);
+
 
 Route::middleware('auth')->group(function () {
 
