@@ -124,7 +124,7 @@
 
                                         <div class="row justify-content-center mt-3">
                                             <div class="col-auto">
-                                                <a href="{{ route('dashboard-employee') }}" class="btn btn-primary me-1">
+                                                <a onclick="completeOrder()" id="finalizar_orden" class="btn btn-primary me-1">
                                                      Finalizar Órden
                                                 </a>
                                             </div>
@@ -176,6 +176,21 @@
 
 @include('panels.datatable.scripts')
 <script>
+    function completeOrder(){
+        let marcador = $('.helado span').html();
+        let finish_button = $('#finalizar_orden');
+        let url = "{!! route('dashboard-employee')!!}";
+        if( marcador == 'Seleccione un sabor ')
+        {
+            toastr['error']('', 'El sabor es requerido', {
+                closeButton: true,
+                tapToDismiss: false,
+            });
+            finish_button.prop('disabled', true);
+        }else{
+            window.location.href = url;
+        }
+    }
 
     $(document).on('click', '#add_dish', function () {
         this_button = $(this);
@@ -465,7 +480,7 @@
                     data: "[relleno]",
                     name: "pivot.id",
                     title: "Sabor de Helado",
-                    "class": "text-center",
+                    "class": "text-center helado",
                     visible: true,
                     searchable: true,
                 },
@@ -542,7 +557,7 @@
                 }
 
 
-                field=$('td:eq(4)', elemt);
+                field=$('td:eq(3)', elemt);
                 buttons='';
                 button = '<button class="btn btn-sm btn-danger" onclick="deleteDish({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="trash-2"></i></button>'
                 buttons+=button;

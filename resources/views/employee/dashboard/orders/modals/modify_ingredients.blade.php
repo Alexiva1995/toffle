@@ -30,7 +30,6 @@
 
                             <td class="text-center" colspan="2">
                                 @if ($order_ingredient->pivot->it_has_flavors == true)
-
                                     <select class="select2 form-control" data-toggle="select" class="form-control" id="flavor_name_{{ $order_ingredient->pivot->id }}" onchange="updateFlavorName( this, {{ $order->id }}, {{ $order_ingredient->pivot->id }})">
                                         <option disabled selected>--Selecione un sabor--</option>                                     
                                         @foreach ($ingredients->where('product_id', $order_ingredient->product->id)->where('local') as $item)
