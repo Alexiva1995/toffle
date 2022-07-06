@@ -480,14 +480,14 @@
                         return ( row.pivot.price * row.pivot.unit ).toFixed(2);
                     }  
                 },    
-                {
-                    data: "pivot.id",
-                    name: "pivot.id",
-                    title: "Para Llevar",
-                    "class": "text-center",
-                    visible: true,
-                    searchable: true,
-                },
+                // {
+                //     data: "pivot.id",
+                //     name: "pivot.id",
+                //     title: "Para Llevar",
+                //     "class": "text-center",
+                //     visible: true,
+                //     searchable: true,
+                // },
                 {
                     data: "pivot.id",
                     name: "pivot.id",
@@ -521,16 +521,18 @@
 
                 field=$('td:eq(3)', elemt);
                 buttons='';
-
+                /* Inicio opcion para llevar */
+                /* 
                 var checked = "";
                 if (data.pivot.is_for_carry == 1) {
                     checked = "checked";
                 }
-
                 button = '<input type="hidden" name="is_for_carry" value="0"/><input class="form-check-input border border-primary" type="checkbox" name="is_for_carry" id="is_for_carry" value="1" '+checked+'  oninput="updateOrder(this, '+data.pivot.id+')"/>'
                 buttons+=button;
                 field=field.html(buttons);
-                // console.log(data);
+                */
+                /* Fin opcion para llevar */
+
                 if(data.name.includes('Helado') || data.category_id == 4){
                     field=$('td:eq(1)', elemt);
                     buttons='';
