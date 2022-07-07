@@ -26,7 +26,7 @@ use App\Http\Controllers\PageLayoutController;
 use App\Http\Controllers\MiscellaneousController;
 use App\Http\Controllers\UserInterfaceController;
 use App\Http\Controllers\AuthenticationController;
-
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,8 +43,18 @@ use App\Http\Controllers\AuthenticationController;
 // Main Page Route
 // Route::get('/', [DashboardController::class,'dashboardEcommerce'])->name('dashboard-ecommerce')->middleware('verified');
 
+Route::get('/clear-cache', function() {
+    Artisan::call('optimize:clear');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    return 'DONE'; //Return anything
+});
 /* Route Dashboards */
 Auth::routes(['verify' => true]);
+
 
 Route::middleware('auth')->group(function () {
 
@@ -98,18 +108,26 @@ Route::middleware('auth')->group(function () {
 
                 Route::get('gain', [ReportController::class, 'gain'])->name('reports.gain');
                 Route::get('gain-data', [ReportController::class, 'gainData'])->name('reports.gain.data');
+                Route::get('gain-data/amount', [ReportController::class, 'gainAmount'])->name('reports.gain.amount.data');
+                Route::get('gain-data/fixed-cost', [ReportController::class, 'gainFixedCost'])->name('reports.gain.fixed.cost');
+                Route::get('gain-data/unexpected', [ReportController::class, 'gainUnexpected'])->name('reports.gain.unexpected');
                 Route::get('gain-show/{date}', [ReportController::class, 'gainShow'])->name('gain.show');
                 Route::get('gain-data-show/{date}', [ReportController::class, 'gainDataShow'])->name('gain.data.show');
 
                 Route::get('cash-flow', [ReportController::class, 'cashFlow'])->name('reports.cash.flow');
+                Route::get('cash-flow/sales-quantity', [ReportController::class, 'SalesQuantity'])->name('cash.flow.sales.quantity');
                 Route::get('income-data', [ReportController::class, 'incomeData'])->name('reports.income.data');
                 Route::get('paid-expenses-data', [ReportController::class, 'paidExpensesData'])->name('reports.paid.expenses.data');
 
                 Route::get('expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
                 Route::get('expenses-data/{status?}', [ReportController::class, 'expensesData'])->name('reports.expenses.data');
+                Route::get('expenses/total-amount', [ReportController::class, 'expensesTotalAmount'])->name('reports.expenses.total.data');
 
                 Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
                 Route::get('sales-data', [ReportController::class, 'salesData'])->name('reports.sales.data');
+                Route::get('sales/fixed-cost', [ReportController::class, 'fixedCostAmount'])->name('reports.fixed.cost.data');
+                Route::get('sales/unexpected', [ReportController::class, 'unexpectedAmount'])->name('reports.unexpected.data');
+                Route::get('sales/total-amount', [ReportController::class, 'totalSalesAmount'])->name('reports.total.sales.amount.data');
             });
 
             Route::resource('categories', CategoriesController::class);
@@ -160,12 +178,12 @@ Route::middleware('auth')->group(function () {
 
             Route::resource('orders', OrdersController::class)->except(['index']);
 
-            Route::group(['prefix' => 'ingredients'], function () {
-                Route::get('create', [IngredientController::class, 'create'])->name('create.ingredients');
-                Route::post('store', [IngredientController::class, 'store'])->name('store.ingredients');
-                Route::get('edit/{id}', [IngredientController::class, 'edit'])->name('edit.ingredients');
-                Route::patch('update/{id}', [IngredientController::class, 'update'])->name('update.ingredients');
-            });
+            // Route::group(['prefix' => 'ingredients'], function () {
+            //     Route::get('create', [IngredientController::class, 'create'])->name('create.ingredients');
+            //     Route::post('store', [IngredientController::class, 'store'])->name('store.ingredients');
+            //     Route::get('edit/{id}', [IngredientController::class, 'edit'])->name('edit.ingredients');
+            //     Route::patch('update/{id}', [IngredientController::class, 'update'])->name('update.ingredients');
+            // });
 
         });
 

@@ -39,8 +39,9 @@ $.ajax({
       donutChartConfig = {
         chart: {
           height: 450,
-          type: 'donut'
+          type: 'donut',
         },
+        colors:['#573666', '#CB231A', '#277256', '#1b6c98', '#e1aa05', '#00cfe8', '#f37705', '#27fe56', '#ff978b', '#0832bc', '#7e9ee5', '#ff3708', '#f70094','#7a7672'],
         legend: {
           show: true,
           position: 'bottom'
@@ -56,6 +57,7 @@ $.ajax({
         plotOptions: {
           pie: {
             donut: {
+              colors:['#573666', '#CB231A', '#277256', '#1b6c98', '#e1aa05', '#00cfe8', '#f37705', '#27fe56', '#ff978b', '#0832bc', '#7e9ee5', '#ff3708', '#f70094','#7a7672'],
               labels: {
                 show: true,
                 name: {
@@ -78,7 +80,7 @@ $.ajax({
                     return 'Categorías';
                   }
                 }
-              }
+              },
             }
           }
         },

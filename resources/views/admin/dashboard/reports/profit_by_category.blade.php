@@ -1,14 +1,6 @@
 <div class="col-12">
     <div class="card">
-        <div
-            class="
-                card-header
-                d-flex
-                flex-md-row flex-column
-                justify-content-md-between justify-content-start
-                align-items-md-center align-items-start
-            "
-        >
+        <div class=" card-header d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-md-center align-items-start " >
             <h4 class="card-title">Informes de Ganancia por Categoría</h4>
 
             <div class="col-auto">
