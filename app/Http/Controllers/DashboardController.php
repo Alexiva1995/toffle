@@ -42,26 +42,38 @@ class DashboardController extends Controller
   public function dashboardAdmin()
   {
     $pageConfigs = ['pageHeader' => false];
+    //Consulta innecesaria
+    // $orders = Order::all();
 
-    $orders = Order::all();
-
-    $orders_today = Order::where('status', '2')->whereDate('created_at', '=', Carbon::now()->format('Y-m-d'))->get();
-
-    $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
-
+    $orders_today = Order::where('status', '2')->whereDate('created_at', '=', now()->format('Y-m-d'))->get();
+    //consulta innecesaria
+    // $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
     $dishes_under_review = Dish::where('status', '2')
       ->whereColumn('suggested_price', '>','designated_price')
       ->get();
 
-    $inventories = Inventory::all();
+    return view('admin.dashboard.index', ['pageConfigs' => $pageConfigs], compact([
+      'dishes_under_review',
+      'orders_today',
+    ]));
 
-    return view('admin.dashboard.index', ['pageConfigs' => $pageConfigs])
-      ->with('tables', $tables)
-      ->with('inventories', $inventories)
-      ->with('dishes_under_review', $dishes_under_review)
-      ->with('orders_today', $orders_today)
-      ->with('orders', $orders);
   }
+
+  public function showSoldProducts()
+  {
+    //Productos gastados en los ultimos 30 dias
+    $soldProducts = Order::selectRaw('products.name')
+    ->selectRaw('SUM(order_ingredient.portion) as portions')
+    ->selectRaw('inventories.local')
+    ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+    ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
+    ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
+    ->where('orders.status', '2')
+    ->whereDate('orders.created_at', '>=', now()->subDays(30)->format('Y-m-d'))
+    ->orderBy('portions', 'DESC')
+    ->groupBy(['products.name', 'inventories.local'])->get();
+    return datatables()::of($soldProducts)->toJson();
+}
 
   public function dashboarEmployee()
   {
@@ -94,21 +106,31 @@ class DashboardController extends Controller
       ]);
  }
 
-   public function dataProfitByCategory(Request $request) {
+  public function dataProfitByCategory(Request $request) {
 
-      $orders = Order::selectRaw('d.name as category_name')
-        ->selectRaw('SUM( ROUND((b.price - b.cost) * b.unit , 2 ) ) as gain')
-        ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
-        ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
-        ->leftJoin('categories as d', 'c.category_id', '=', 'd.id')
-        ->where('orders.status', '2')
-        ->orderBy('category_name', 'ASC')
-        ->groupBy('d.id', 'd.name')
-        ->get();
+    $year = substr($request->week, 0, -4);
+    $week_number = substr($request->week, -2);
+    $weekdays = $this->weekdays($year, $week_number);
 
-      return response()->json([
-          'orders' => $orders,
-      ]);
+    $custom_date = strtotime( date('Y-m-d', strtotime($request->week.'0')) );
+
+    $week_start = date('Y-m-d', strtotime('this week sunday', $custom_date));
+    $week_end = date('Y-m-d', strtotime('this week next saturday', $custom_date));
+
+    $orders = Order::selectRaw('d.name as category_name')
+      ->selectRaw('SUM( ROUND((b.price - b.cost) * b.unit , 2 ) ) as gain')
+      ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
+      ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
+      ->leftJoin('categories as d', 'c.category_id', '=', 'd.id')
+      ->where('orders.status', '2')
+      ->whereBetween('orders.created_at', [$week_start. " 00:00:00", $week_end. " 23:59:59"] )
+      ->orderBy('category_name', 'ASC')
+      ->groupBy('d.id', 'd.name')
+      ->get();
+    
+    return response()->json([
+        'orders' => $orders
+    ]);
   }
  
   public function dataChartWeeklySales(Request $request) {
@@ -172,7 +194,9 @@ class DashboardController extends Controller
       $dates = array_combine($keys, $dates); 
 
       return response()->json([
-          'dates' => $dates
+        'dates' => $dates,
+        'week_start' => $week_start,
+        'week_end'  =>  $week_end
       ]);
   }
 
@@ -205,7 +229,7 @@ class DashboardController extends Controller
                  ->render();
              break;
          case 'order_history':
-             $orders = Order::all();
+             $orders = Order::whereDate('created_at', now())->with('dishes')->with('ingredients')->get();
              return view('employee.dashboard.orders.history')
                  ->with('orders', $orders)
                  ->render();

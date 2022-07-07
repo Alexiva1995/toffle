@@ -178,6 +178,52 @@
         });
     }
 
+    function flatpickrWeekCategory(id) {
+        $(id).flatpickr({
+            mode: "range",
+            dateFormat: "W-Y",
+            defaultDate: ["today"],
+            locale: {
+                weekdays: {
+                  shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                  longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
+                }, 
+                months: {
+                  shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
+                  longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                },
+                weekAbbreviation: "Sem",
+                rangeSeparator: " a ",
+                yearAriaLabel: "Año",
+                monthAriaLabel: "Mes",
+                hourAriaLabel: "Hora",
+                minuteAriaLabel: "Minuto",
+            },
+            // weekNumbers: true,
+            "plugins": [new weekSelect({})],
+            onChange: [function(selectedDates, dateStr, instance){
+
+                const year = this.selectedDates[0]
+                    ? this.currentYear
+                    : null;
+
+                const weekNumber = this.selectedDates[0]
+                    ? this.config.getWeek(this.selectedDates[0])
+                    : null;
+
+                dataWeek = '';
+
+                if (weekNumber > 10) {
+                    dataWeek = year+'-W'+weekNumber;
+                }else{
+                    dataWeek = year+'-W0'+weekNumber;
+                }
+                $('#weekCategory').data('week-category', dataWeek)
+                // console.log($('#range_week').val());
+            }]
+        });
+    }
+
     function roundDecimal(num, dec) {
         var exp = Math.pow(10, dec || 2); // 2 decimales por defecto
         return parseInt(num * exp, 10) / exp;

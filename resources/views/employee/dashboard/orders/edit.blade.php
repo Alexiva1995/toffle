@@ -351,6 +351,8 @@
                 }
             );
         }
+
+        
     
         function modalDataModifyIngredients(order_id, code_operation, dish_id) {
             $.get("{{ route('orders.modal.modify.ingredients') }}", { order_id: order_id, code_operation: code_operation, dish_id: dish_id},
@@ -449,125 +451,139 @@
             });
     
             table = $('#dish_to_order_table').DataTable({
-                processing: true,
-                serverSide: true,
-                ordering: true,
-                searching: false, 
-                paging: false, 
-                info: false,
-                language: {
-                    url: '{!! asset('data/datatable/Spanish.json') !!}'
-                },
-                ajax: {
-                    url: '{!! route('orders.dishes.table.data', $order->id) !!}',
-                    data: function (d) {
-                    }
-                },
-                columns: [
-                    {
-                        data: "name",
-                        name: "name",
-                        title: "Plato",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true,
-                    },
-                    {
-                        data: "pivot.unit",
-                        name: "pivot.unit",
-                        title: "Cantidad",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true
-                    },
-                    {
-                        data: "pivot.price",
-                        name: "pivot.price",
-                        title: "Precio Unitario",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true,
-                        render: function (data, type, row, meta) {
-                            return row.pivot.price.toFixed(2);
-                        }  
-                    },
-                    {
-                        data: "pivot.price",
-                        name: "pivot.price",
-                        title: "Total",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true,
-                        render: function (data, type, row, meta) {
-                            return ( row.pivot.price * row.pivot.unit ).toFixed(2);
-                        }  
-                    },
-                    //   {
-                    //       data: "details",
-                    //       name: "details",
-                    //       title: "Detalles",
-                    //       "class": "text-center",
-                    //       visible: true,
-                    //       searchable: true, 
-                    //       render: function (data, type, row) {
-                    //           return $("<div/>").html(row.details).text();
-                    //       }
-                    //   },
-                    {
-                      data: "pivot.id",
-                      name: "pivot.id",
-                      title: "Para Llevar",
-                      "class": "text-center",
-                      visible: true,
-                      searchable: true,
-                    },
-                    {
-                        data: "pivot.id",
-                        name: "pivot.id",
-                        title: "Ingredientes",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true,
-                    },
-                    {
-                        data: "pivot.id",
-                        name: "pivot.id",
-                        title: "Eliminar",
-                        "class": "text-center",
-                        visible: true,
-                        searchable: true,
-                    },
-                ],
-                fnCreatedRow: function (elemt, data, iDataIndex) {
-                    var indice = iDataIndex + 1;
+            processing: true,
+            serverSide: true,
+            ordering: true,
+            searching: false, 
+            paging: false, 
+            info: false,
+            language: {
+                url: '{!! asset('data/datatable/Spanish.json') !!}'
+            },
+            ajax: {
+                url: '{!! route('orders.dishes.table.data', $order->id) !!}',
+                data: function (d) {
 
-                    field=$('td:eq(4)', elemt);
+                }
+            },
+
+            columns: [
+                {
+                  data: "name",
+                  name: "name",
+                  title: "Plato",
+                  "class": "text-center",
+                  visible: true,
+                  searchable: true,
+                },
+                // {
+                //   data: "pivot.unit",
+                //   name: "pivot.unit",
+                //   title: "Cantidad",
+                //   "class": "text-center",
+                //   visible: true,
+                //   searchable: true
+                // },
+                // {
+                //   data: "pivot.price",
+                //   name: "pivot.price",
+                //   title: "Precio Unitario",
+                //   "class": "text-center",
+                //   visible: true,
+                //   searchable: true,
+                //   render: function (data, type, row, meta) {
+                //       return row.pivot.price.toFixed(2);
+                //   }  
+                // },
+                {
+                    data: "[relleno]",
+                    name: "pivot.id",
+                    title: "Sabor de Helado",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                },
+                {
+                    data: "pivot.price",
+                    name: "pivot.price",
+                    title: "Total",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                    render: function (data, type, row, meta) {
+                        return ( row.pivot.price * row.pivot.unit ).toFixed(2);
+                    }  
+                },    
+                {
+                    data: "pivot.id",
+                    name: "pivot.id",
+                    title: "Para Llevar",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                },
+                {
+                    data: "pivot.id",
+                    name: "pivot.id",
+                    title: "Eliminar",
+                    "class": "text-center",
+                    visible: true,
+                    searchable: true,
+                },
+                //   {
+                //       data: "details",
+                //       name: "details",
+                //       title: "Detalles",
+                //       "class": "text-center",
+                //       visible: true,
+                //       searchable: true, 
+                //       render: function (data, type, row) {
+                //           return $("<div/>").html(row.details).text();
+                //       }
+                //   },
+                // {
+                //   data: "pivot.id",
+                //   name: "pivot.id",
+                //   title: "Ingredientes",
+                //   "class": "text-center",
+                //   visible: true,
+                //   searchable: true,
+                //  },
+            ],
+            fnCreatedRow: function (elemt, data, iDataIndex) {
+                var indice = iDataIndex + 1;
+
+                field=$('td:eq(3)', elemt);
+                buttons='';
+
+                var checked = "";
+                if (data.pivot.is_for_carry == 1) {
+                    checked = "checked";
+                }
+
+                button = '<input type="hidden" name="is_for_carry" value="0"/><input class="form-check-input border border-primary" type="checkbox" name="is_for_carry" id="is_for_carry" value="1" '+checked+'  oninput="updateOrder(this, '+data.pivot.id+')"/>'
+                buttons+=button;
+                field=field.html(buttons);
+                // console.log(data);
+                if(data.name.includes('Helado') || data.category_id == 4){
+                    field=$('td:eq(1)', elemt);
                     buttons='';
-                    var checked = "";
-                    if (data.pivot.is_for_carry == 1) {
-                        checked = "checked";
-                    }
-
-                    button = '<input type="hidden" name="is_for_carry" value="0"/><input class="form-check-input border border-primary" type="checkbox" name="is_for_carry" id="is_for_carry" value="1" '+checked+'  oninput="updateOrder(this, '+data.pivot.id+')"/>'
+                    button = '<span>'+ (data.flavor != null ? data.flavor : 'Seleccione un sabor') +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
                     buttons+=button;
                     field=field.html(buttons);
+                }
 
-                    field=$('td:eq(5)', elemt);
-                    buttons='';
-                    button = '<button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"> <i data-feather="edit"></i></button>'
-                    buttons+=button;
-                    field=field.html(buttons);
-    
-                    field=$('td:eq(6)', elemt);
-                    buttons='';
-                    button = '<button class="btn btn-sm btn-danger" onclick="deleteDish({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="trash-2"></i></button>'
-                    buttons+=button;
-                    field=field.html(buttons);
-                },
-    
-                }).on('processing.dt', function (e, settings, processing) {
-                feather.replace();
-            });
+
+                field=$('td:eq(4)', elemt);
+                buttons='';
+                button = '<button class="btn btn-sm btn-danger" onclick="deleteDish({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="trash-2"></i></button>'
+                buttons+=button;
+                field=field.html(buttons);
+            },
+
+            }).on('processing.dt', function (e, settings, processing) {
+            feather.replace();
+        });
         });
     </script>
 @endsection

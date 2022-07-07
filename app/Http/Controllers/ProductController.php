@@ -39,20 +39,34 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $fields = [
-            'name' => ['required'],
-            'mark' => ['required'],
-            'gr' => ['required'],
+            'name' => 'required',
+            'type' => 'required',
+            'quantity' => 'required',
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
-            'mark.required' => 'La marca del producto es requerida.',
-            'gr.required' => 'El Gr. es requerido.',
+            'type.required' => 'El tipo de unidades es requerido.',
+            'quantity.required' => 'La cantidad es requerida.',
         ];
 
         $this->validate($request, $fields, $msj);
-
-        $product = Product::create($request->all());
+        //Verificar el tipo de unidad y guardar en consecuencia.
+        if(request()->type == 'units')
+        {
+            Product::create([
+                'name' => request()->name,
+                'quantity' => request()->quantity,
+                'it_has_flavors' => request()->it_has_flavors
+            ]);
+        }else if(request()->type == 'gr')
+        {
+            Product::create([
+                'name' => request()->name,
+                'gr' => request()->quantity,
+                'it_has_flavors' => request()->it_has_flavors
+            ]);
+        }
 
         Session::flash('products', true); 
         return redirect()->route('inventory.index')->with('success', 'Producto Añadido');
@@ -89,27 +103,43 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-
+        $product = Product::findOrFail($id);
         $fields = [
             'name' => ['required'],
-            'mark' => ['required'],
-            'gr' => ['required'],
+            'quantity' => ['required'],
         ];
 
         $msj = [
             'name.required' => 'El nombre es requerido.',
-            'mark.required' => 'La marca del producto es requerida.',
-            'gr.required' => 'El Gr. es requerido.',
+            'quantity.required' => 'La cantidad es requerida.',
         ];
 
         $this->validate($request, $fields, $msj);
 
-        $gr_old_product = $product->gr;
+        
+        if( request()->typeOfCant == 'Gramos' )
+        {
+            $gr_old_product = $product->gr;
+            $quantity_old_product = null;
 
-        $product->update($request->all());
+            $product->update([
+                'name' => request()->name,
+                'gr' => request()->quantity,
+                'it_has_flavors' => request()->it_has_flavors
+            ]);
 
-        if ($gr_old_product != $product->gr) {
+        }else if( request()->typeOfCant == 'Unidades' )
+        {
+            $quantity_old_product = $product->quantity;
+            $gr_old_product = null;
+            $product->update([
+                'name' => request()->name,
+                'quantity' => request()->quantity,
+                'it_has_flavors' => request()->it_has_flavors
+            ]);
+        }
+        //Calcular costos si la cantidad ingresada es diferente a la anterior.
+        if ($gr_old_product != $product->gr || $quantity_old_product != $product->quantity) {
             $inventory = Inventory::where('product_id', $product->id)->first();
 
             if ($inventory != null) {
@@ -131,7 +161,14 @@ class ProductController extends Controller
                             $portion = $item->pivot->portion;
         
                             if ($item->pivot->inventory_id == $inventory->id) {
-                                $designated_cost = ($portion * $cost_product) / $product->gr;
+                                if($product->gr != null){
+                                    $designated_cost = ($portion * $cost_product) / $product->gr;
+                                }else if($product->quantity != null)
+                                {
+                                    $designated_cost = ($portion * $cost_product) / $product->quantity;
+                                }
+                                
+                                $designated_cost = round($designated_cost, 2);
             
                                 $dish->ingredients()->wherePivot('inventory_id', $inventory->id)->update([
                                     'designated_cost' => $designated_cost,
@@ -142,9 +179,11 @@ class ProductController extends Controller
                             }
 
                             $cost_price = $cost_price + $designated_cost;
+                            $cost_price = round($cost_price, 2);
                         }
         
                         $suggested_price = $cost_price * $profit;
+                        $suggested_price = round($suggested_price, 2);
         
                         if ($suggested_price > $dish->designated_price) {
                             $dish->update([
@@ -154,7 +193,7 @@ class ProductController extends Controller
         
                         $dish->update([
                             'cost_price' => $cost_price,
-                            'suggested_price' => $cost_price * $profit,
+                            'suggested_price' => round($cost_price * $profit, 2),
                         ]);
                     }
                 }

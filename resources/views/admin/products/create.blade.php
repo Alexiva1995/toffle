@@ -23,29 +23,30 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
-                                <label class="form-label" for="mark">Marca</label>
-                                <div class="input-group input-group-merge ">
-                                    <span class="input-group-text"><i data-feather="tag"></i></span>
-                                    <input type="text" id="create_mark_product" class="form-control requerid @error('mark') is-invalid @enderror" name="mark"
-                                        placeholder="Marca" />
-                                    @error('mark')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
+                                <label class="form-label" for="type">Tipo de Cantidad</label>
+                                <select class="form-select rounded border-primary @error('type') is-invalid @enderror" id="type" name="type">
+                                    <option selected disabled>Seleccione el tipo</option>
+                                    <option value="gr">Gramos (g)</option>
+                                    <option value="units">Unidades</option>
+                                </select>
+                                @error('type')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
-                                <label class="form-label" for="gr">Gr.</label>
+                                <label class="form-label" for="quantity">Cantidad</label>
                                 <div class="input-group input-group-merge ">
                                     <span class="input-group-text"><i data-feather="archive"></i></span>
-                                    <input type="number" id="create_gr_product" class="form-control requerid @error('gr') is-invalid @enderror" name="gr"
-                                        placeholder="Gr." />
-                                    @error('gr')
+                                    <input type="number" id="create_gr_product" onkeydown="filter()" class="form-control  requerid @error('gr') is-invalid @enderror" name="quantity"
+                                        placeholder="Cantidad" />
+                                    @error('quantity')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -53,7 +54,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 mb-1">
+                        {{-- <div class="col-12 col-md-6 mb-1">
                             <div class="mb-1">
                                 <label class="form-label" for="units_reposition_alert">Alerta de Unidades de Reposición</label>
                                 <div class="input-group input-group-merge ">
@@ -66,7 +67,7 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>       
+                        </div>        --}}
                         <div class="col-12 mb-2">
                             <div class="d-flex justify-content-center @error('it_has_flavors') is-invalid @enderror">
                                 <div class="form-check">

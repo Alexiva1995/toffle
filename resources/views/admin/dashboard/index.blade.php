@@ -22,19 +22,6 @@
     {{-- <div class="col-12">
       @include('admin.dashboard.reports.sales_vs_gain')
     </div> --}}
-
-    <div class="col-12 col-md-6">
-      @include('admin.dashboard.money_flow.list')
-    </div>
-
-    <div class="col-12 col-md-6">
-      @include('admin.dashboard.inventory_reposition.list')
-    </div>
-
-    <div class="col-12">
-      @include('admin.dashboard.dishes_under_review.list')
-    </div>
-
     <div class="col-12 col-md-4">
       @include('admin.dashboard.reports.profit_by_category')
     </div>
@@ -42,6 +29,19 @@
     <div class="col-12 col-md-8">
       @include('admin.dashboard.reports.weekly_sales')
     </div>
+    <div class="col-12 col-md-6">
+      @include('admin.dashboard.money_flow.list')
+    </div>
+
+    <div class="col-12 col-md-6">
+      @include('admin.dashboard.products_sold.list')
+    </div>
+
+    <div class="col-12">
+      @include('admin.dashboard.dishes_under_review.list')
+    </div>
+
+    
   </div>
 
 </section>
@@ -65,7 +65,7 @@
   @include('panels.datatable.scripts')
   <script>
       dataTable('#money_flow_table');
-      dataTable('#inventory_reposition_table');
+      // dataTable('#products_sold_table');
       dataTable('#dishes_under_review_table');
       dataTable('#table');
 
@@ -103,7 +103,32 @@
 
           flatpickrWeek('#week');
 
+          //Donuts chart for categories
+          dataChartCategorySales();
+          
+          $('#weekCategory').change( () => {
+            dataChartCategorySales();
+          });
+          flatpickrWeekCategory('#weekCategory');
+          
+
       });
 
   </script>  
+
+  <script>
+
+    $('#showSoldProducts').click(function () {
+        $('#products_sold_table').DataTable({
+          "serverSide": true,
+          "ajax": '{!! route('show.sold.products') !!}',
+          "columns": [
+            {data: 'name'},
+            {data: 'portions'},
+            {data: 'local'},
+          ]
+        });
+    });
+  </script>
+
 @endsection

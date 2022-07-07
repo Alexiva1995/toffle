@@ -3,18 +3,43 @@
 @section('title', 'Gastos')
 
 @section('vendor-style')
-    <!-- vendor css files -->
-    @include('panels.datatable.styles')
+<!-- vendor css files -->
+@include('panels.datatable.styles')
 @endsection
 
 @section('page-style')
-  {{-- Page css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
+{{-- Page css files --}}
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
 @endsection
 
 @section('content')
 <!-- Basic table -->
 <section id="basic-datatable">
+    <div class="row justify-content-center">
+        <div class="col-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 col-12">
+                            <h4 class="card-text text-center mb-2">Total de Gastos</h3>
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="avatar bg-light-success me-1">
+                                        <div class="avatar-content">
+                                            <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="my-auto">
+                                        <h4 class="fw-bolder mb-0">
+                                            $ <span id="total"></span>
+                                        </h4>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="card p-2">
@@ -24,18 +49,18 @@
                         <div class="row justify-content-init mt-1">
                             <div class="col-12 col-md-4">
                                 <label for="timestamp">Rango de Fecha</label>
-                                  <input type="text" class="form-control" placeholder="Rango de Fecha" id="timestamp">
-                                  <input type="hidden" id="from">
-                                  <input type="hidden" id="to">
+                                <input type="text" class="form-control" placeholder="Rango de Fecha" id="timestamp">
+                                <input type="hidden" id="from">
+                                <input type="hidden" id="to">
                             </div>
 
                             <div class="col-12 col-md-4">
                                 <label for="category_id">Categorías</label>
-                                <select class="select2 form-control" name="category_id" id="category_id" data-toggle="select"
-                                    class="form-control" id="category">
+                                <select class="select2 form-control" name="category_id" id="category_id"
+                                    data-toggle="select" class="form-control" id="category">
                                     <option value="" selected>Seleccionar Todas</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -66,7 +91,25 @@
 @include('panels.datatable.scripts')
 
 <script>
+    // Calcula y dibuja el Total en ventas
+    function getTotalAmount(){
+        var request = $.ajax({
+            method: "GET",
+            url: '{!! route('reports.expenses.total.data') !!}',
+            data:{ from : $('#from').val(), to : $('#to').val() }
+        });
+
+        request.done(function(data) {
+            $('#total').html(data);
+        });
+
+        request.fail(function() {
+            $('#total').html(0);
+        });
+    }
     $(document).ready(function () {
+
+
         table = $('#expenses_table').DataTable({
             processing: true,
             serverSide: true,
@@ -82,8 +125,9 @@
                     d.to    = $('#to').val();
                     d.category_id  = $('#category_id').val();
                     d.status  = $('#status').val();
-                }
+                },
             },
+            
             columns: [
             {
                 data: "id",
@@ -109,7 +153,7 @@
                 visible: true,
                 searchable: true,
                 render: function (data, type, row, meta) {
-                    return '<strong class="text-danger">'+row.amount.toFixed(2)+'</strong>';
+                    return '<strong class="text-danger amount">'+row.amount.toLocaleString()+'</strong>';
                 }  
             },
             {
@@ -125,7 +169,6 @@
                     }else{
                         return '<span class="badge badge-light-success">Pagado</span>';
                     }
-                    
                 }  
             },
             {
@@ -148,8 +191,10 @@
         fnCreatedRow: function (elemt, data, iDataIndex) {},
 
         }).on('processing.dt', function (e, settings, processing) {
+            getTotalAmount(); 
             feather.replace();
         });
+
 
         $('#status').change(function() {
             table.search('').draw();
@@ -164,7 +209,9 @@
         });
 
         flatpickrRange('#timestamp', '#from', '#to');
+
     });
+
 </script>
 
 @endsection
