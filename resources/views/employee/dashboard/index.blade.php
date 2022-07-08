@@ -90,8 +90,8 @@
 
           $.get(route, {},
             function (data, textStatus, jqXHR) {
-                $(id).html(data);
-                feather.replace();
+              $(id).html(data);
+              feather.replace();
             }
           );
       }
@@ -115,20 +115,20 @@
         item ['_method'] = 'PATCH';
         $.post(url, item)
         .done(function(data){
-            $(input).removeClass('is-invalid')
-            $(input).addClass('is-valid')
+          $(input).removeClass('is-invalid')
+          $(input).addClass('is-valid')
 
-            setTimeout(() => {
-                $(input).removeClass('is-valid')
-            },1000)
+          setTimeout(() => {
+              $(input).removeClass('is-valid')
+          },1000)
 
-            table.search('').draw();
+          table.search('').draw();
 
-            loadData('statistics');
-            loadData('order_history');
-            // loadData('tables');
-            loadData('cash_flow');
-            // loadData('inventory_replenishment');
+          loadData('statistics');
+          loadData('order_history');
+          // loadData('tables');
+          loadData('cash_flow');
+          // loadData('inventory_replenishment');
         })
         .fail(function(data) {
             $(input).addClass('is-invalid')
@@ -138,118 +138,116 @@
       function showOrderDetails(id) {
         $.get("{{ route('reports.show.order.details') }}", { id: id },
             function (data, textStatus, jqXHR) {
-                $('.order_details').html(data);
-                $("#modal_show_order_details").modal("show");
+              $('.order_details').html(data);
+              $("#modal_show_order_details").modal("show");
             }
         );
       }
 
       $(document).ready(function () {
         table = $('#pending_order_table').DataTable({
-            processing: true,
-            serverSide: true,
-            ordering: true,
-            pageLength: 50,
-            language: {
-                url: '{!! asset('data/datatable/Spanish.json') !!}'
-            },
-            ajax: {
-                url: '{!! route('order.table.data', 'pending') !!}',
-                data: function (d) {
-                }
-            },
-            columns: [
+          processing: true,
+          serverSide: true,
+          ordering: true,
+          pageLength: 50,
+          language: {
+              url: '{!! asset('data/datatable/Spanish.json') !!}'
+          },
+          ajax: {
+              url: '{!! route('order.table.data', 'pending') !!}',
+              data: function (d) {
+              }
+          },
+          columns: [
             { 
-                data: null,
-                sortable: false, 
-                title: "N°",
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }  
+              data: null,
+              sortable: false, 
+              title: "N°",
+              render: function (data, type, row, meta) {
+                  return meta.row + meta.settings._iDisplayStart + 1;
+              }  
             },
             {
-                data: "customer_name",
-                name: "customer_name",
-                title: "Cliente",
-                "class": "text-center",
-                visible: true,
-                searchable: true
+              data: "customer_name",
+              name: "customer_name",
+              title: "Cliente",
+              "class": "text-center",
+              visible: true,
+              searchable: true
             },
             {
-                data: "table",
-                name: "table",
-                title: "Mesa",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
+              data: "table",
+              name: "table",
+              title: "Mesa",
+              "class": "text-center",
+              visible: true,
+              searchable: true,
             },
             {
-                data: "total_amount",
-                name: "total_amount",
-                title: "Monto",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-                render: function (data, type, row, meta) {
-                    return (row.total_amount).toFixed(2);
-                }  
+              data: "total_amount",
+              name: "total_amount",
+              title: "Monto",
+              "class": "text-center",
+              visible: true,
+              searchable: true,
+              render: function (data, type, row, meta) {
+                  return (row.total_amount).toFixed(2);
+              }  
             },
             {
-                data: "status",
-                name: "status",
-                title: "Estado",
-                "class": "text-center",
-                visible: true,
-                searchable: true, 
+              data: "status",
+              name: "status",
+              title: "Estado",
+              "class": "text-center",
+              visible: true,
+              searchable: true, 
             },
             {
-                data: "id",
-                name: "id",
-                title: "Acción",
-                "class": "text-center",
-                visible: true,
-                searchable: true
+              data: "id",
+              name: "id",
+              title: "Acción",
+              "class": "text-center",
+              visible: true,
+              searchable: true
             },
+          ],
+          fnCreatedRow: function (elemt, data, iDataIndex) {
+              var indice = iDataIndex + 1;
 
-        ],
-        fnCreatedRow: function (elemt, data, iDataIndex) {
-            var indice = iDataIndex + 1;
+              field = $('td:eq(4)', elemt);
+              buttons = '';
 
-            field = $('td:eq(4)', elemt);
-            buttons = '';
+              if (data.status == '0') {
+                options = '<option value="0">Pendiente</option><option value="1">En Espera</option>';
+              }
 
-            if (data.status == '0') {
-              options = '<option value="0">Pendiente</option><option value="1">En Espera</option>';
-            }
+              if (data.status == '1') {
+                options = '<option value="1">En Espera</option><option value="0">Pendiente</option>';
+              }
 
-            if (data.status == '1') {
-              options = '<option value="1">En Espera</option><option value="0">Pendiente</option>';
-            }
+              button = '<select class="form-control text-center update_status" name="status" data-id="'+data.id+'" >'+options+'<option value="2">Finalizado</option><option value="3">Cancelado</option></select>'
 
-            button = '<select class="form-control text-center update_status" name="status" data-id="'+data.id+'" >'+options+'<option value="2">Finalizado</option><option value="3">Cancelado</option></select>'
-
-            buttons += button;
-            field = field.html(buttons);
+              buttons += button;
+              field = field.html(buttons);
 
 
-            field = $('td:eq(5)', elemt);
-            buttons = '';
+              field = $('td:eq(5)', elemt);
+              buttons = '';
 
-            url = "{{ route('orders.edit', 'id') }}";
-            url = url.replace('id', data.id);
+              url = "{{ route('orders.edit', 'id') }}";
+              url = url.replace('id', data.id);
 
-            buttonShow = "<button type='button' class='btn btn-sm btn-primary me-1' onclick='showOrderDetails("+data.id+")'> <i data-feather='eye'></i> </button>";
-            
-            buttonEdit = '<a href="'+url+'" class="btn btn-sm btn-info my-1 me-1"> <i data-feather="edit"></i> </a>';
+              buttonShow = "<button type='button' class='btn btn-sm btn-primary me-1' onclick='showOrderDetails("+data.id+")'> <i data-feather='eye'></i> </button>";
+              
+              buttonEdit = '<a href="'+url+'" class="btn btn-sm btn-info my-1 me-1"> <i data-feather="edit"></i> </a>';
 
-            button = buttonShow+buttonEdit;
+              button = buttonShow+buttonEdit;
 
-            buttons += button;
-            field = field.html(buttons);
-        },
-
+              buttons += button;
+              field = field.html(buttons);
+          },
         }).on('processing.dt', function (e, settings, processing) {
-            feather.replace();
+          feather.replace();
         });
       });
       

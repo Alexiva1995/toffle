@@ -223,7 +223,7 @@ class DashboardController extends Controller
                  ->render();
              break;
          case 'order_history':
-             $orders = Order::whereDate('created_at', now())->with('dishes')->with('ingredients')->get();
+             $orders = Order::whereDate('created_at', now()->today())->with('dishes')->with('ingredients')->get();
              return view('employee.dashboard.orders.history')
                  ->with('orders', $orders)
                  ->render();
