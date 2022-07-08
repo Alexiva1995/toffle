@@ -6,7 +6,7 @@ use App\Models\Expense;
 use App\Models\Order;
 use App\Models\Dish;
 use App\Models\Category;
-use DataTables;
+use Yajra\DataTables\DataTables;
 
 class ReportController extends Controller
 {
@@ -29,7 +29,7 @@ class ReportController extends Controller
         ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
         ->where('orders.status', '2');
             
-        return Datatables::of($best_sellers)->filter(function ($query) use($request) {
+        return DataTables::of($best_sellers)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
                 $start = date("Y-m-d",strtotime(request('from')));
                 $end = date("Y-m-d",strtotime(request('to')));
@@ -348,32 +348,27 @@ class ReportController extends Controller
         })
         ->toJson();
     }
-
+    //Obtiene el total para el cuadro Ganancias de informes->Flujo de caja
     public function expensesTotalAmount()
     {
+        $dateConditional = request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to');
         $month_start = date('Y-m-d', strtotime('first day of this month', time()));
         $month_end = date('Y-m-d', strtotime('last day of this month', time()));
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
-        {
+        if ( $dateConditional ) {
             $start = date("Y-m-d",strtotime(request('from')));
             $end = date("Y-m-d",strtotime(request('to')));
-
             //Obtener el costo fijo (product_id 83) acumulado de todas las ventas
             $expenses_total_amount = Expense::whereBetween( 'expenses.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
-            ->sum('amount');
-            $expenses_total_amount = number_format($expenses_total_amount, 2, ',', '.');
-
-            return $expenses_total_amount;
+                                            ->sum('amount');
         }
-        else
-        {
+        else{
             //Obtener el costo fijo (product_id 83) acumulado de todas las ventas
             $expenses_total_amount = Expense::whereBetween( 'expenses.updated_at',[ $month_start. " 00:00:00", $month_end. " 23:59:59" ] )
-            ->sum('amount');
-            $expenses_total_amount = number_format($expenses_total_amount, 2, ',', '.');
-
-            return $expenses_total_amount;
+                                            ->sum('amount');
         }
+
+        $expenses_total_amount = number_format($expenses_total_amount, 2, ',', '.');
+        return $expenses_total_amount;
     }
 
     //Permite obtener el listado de informes de Ventas

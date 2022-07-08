@@ -71,6 +71,7 @@
             serverSide: true,
             ordering: true,
             pageLength: 50,
+            searching: false,
             language: {
                 url: '{!! asset('data/datatable/Spanish.json') !!}'
             },
@@ -90,7 +91,7 @@
                     title: "Plato",
                     "class": "text-center",
                     visible: true,
-                    searchable: true,
+                    searchable: false,
                 },
                 {
                     data: "category_name",
