@@ -63,11 +63,11 @@ class Dish extends Model
 
     public function getDishIngredients($baseName)
     {
-        switch($baseName):
+        $ingredients = collect();
+        switch($baseName){
 
             case 'waffle':
                 $dish = Dish::with('ingredients')->whereName('Sencillo')->first();
-                $ingredients = collect();
                 foreach($dish->ingredients as $key => $item)
                 {
                     $ingredient = new Ingredient;
@@ -86,7 +86,6 @@ class Dish extends Model
 
             case 'half_waffle';
                 $dish = Dish::whereName('Sencillo')->first();
-                $ingredients = collect();
                 foreach($dish->ingredients as $item)
                 {
                     $ingredient = new Ingredient;
@@ -105,7 +104,6 @@ class Dish extends Model
 
             case 'quarter_waffle';
                 $dish = Dish::whereName('Sencillo')->first();
-                $ingredients = collect();
                 foreach($dish->ingredients as $item)
                 {
                     $ingredient = new Ingredient;
@@ -124,7 +122,6 @@ class Dish extends Model
 
             case 'bubble';
                 $dish = Dish::whereName('Bubble')->first();
-                $ingredients = collect();
                 foreach($dish->ingredients as $item)
                 {
                     $ingredient = new Ingredient;
@@ -141,7 +138,25 @@ class Dish extends Model
                 return $ingredients;
                 break;
 
-        endswitch;
+            case 'palito';
+                $dish = Dish::whereName('Toffle palito base')->first();
+                foreach($dish->ingredients as $item)
+                {
+                    $ingredient = new Ingredient;
+                    //Obtener nombre del producto
+                    $product = Product::whereId($item->product_id)->first();
+                    //Llenar objeto ingredient
+                    $ingredient->id = $item->id;
+                    $ingredient->name = $product->name;
+                    $ingredient->amount = $item->pivot->portion;
+                    $ingredient->quantity = $product->gr != null ? $product->gr : $product->quantity;
+                    $ingredient->cost = $item->cost;
+                    $ingredients->push($ingredient);
+                }
+                return $ingredients;
+                break;
+
+        }
 
     }
 }
