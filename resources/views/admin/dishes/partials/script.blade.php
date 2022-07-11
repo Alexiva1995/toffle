@@ -12,6 +12,7 @@
   var half_waffle_radio = $('#half_waffle_radio');
   var quarter_waffle_radio = $('#quarter_waffle_radio');
   var bubble_radio = $('#bubble_radio');
+  var toffle_palito_radio = $('#toffle_palito_radio');
   
   function dishBase(data){
     if( ids.length == 0 )
@@ -38,6 +39,7 @@
         half_waffle_radio.prop('disabled', true);
         quarter_waffle_radio.prop('disabled', true);
         bubble_radio.prop('disabled', true);
+        toffle_palito_radio.prop('disabled', true);
         
         $("#items_table>tbody").append(content);
         feather.replace();
@@ -50,6 +52,7 @@
       half_waffle_radio.prop('checked', false);
       quarter_waffle_radio.prop('checked', false);
       bubble_radio.prop('checked', false);
+      toffle_palito_radio.prop('checked', false);
 
       toastr['error']('', 'Para agregar una base no debe de haber ingredientes añadidos', {
         closeButton: true,
@@ -109,6 +112,7 @@
           half_waffle_radio.prop('disabled', true);
           quarter_waffle_radio.prop('disabled', true);
           bubble_radio.prop('disabled', true);
+          toffle_palito_radio.prop('disabled', true);
 
           $("#items_table>tbody").append(content);
           feather.replace();
@@ -168,12 +172,14 @@
         $('#half_waffle_radio').prop('checked', false);
         $('#quarter_waffle_radio').prop('checked', false);
         $('#bubble_radio').prop('checked', false);
+        $('#toffle_palito_radio').prop('checked', false);
 
         //habilitar radio buttons
         $('#waffle_radio').prop('disabled', false);
         $('#half_waffle_radio').prop('disabled', false);
         $('#quarter_waffle_radio').prop('disabled', false);
         $('#bubble_radio').prop('disabled', false);
+        $('#toffle_palito_radio').prop('disabled', false);
       }
       calculate();
   }
