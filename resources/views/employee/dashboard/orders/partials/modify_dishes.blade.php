@@ -176,20 +176,33 @@
 
 @include('panels.datatable.scripts')
 <script>
+    const flavorAlert = () =>{
+        toastr['error']('', 'El sabor es requerido', {
+            closeButton: true,
+            tapToDismiss: false,
+        });
+    }
     function completeOrder(){
         let marcador = $('.helado span').html();
         let finish_button = $('#finalizar_orden');
         let url = "{!! route('dashboard-employee')!!}";
         if( marcador == 'Seleccione un sabor ')
         {
-            toastr['error']('', 'El sabor es requerido', {
-                closeButton: true,
-                tapToDismiss: false,
-            });
-            finish_button.prop('disabled', true);
+            flavorAlert();
         }else{
             window.location.href = url;
         }
+    }
+
+    function closeModal(){
+        let select_array = $('td select');
+        let err = 0;
+        for(let i = 0; i < (select_array.length); i++)
+        {
+            if(select_array[i].value == 'none') err++;
+        }
+        if(err > 0) flavorAlert();
+        else $("#modal_show_ingredients").modal("hide");
     }
 
     $(document).on('click', '#add_dish', function () {

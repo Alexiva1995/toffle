@@ -145,8 +145,8 @@
                     </div> 
 
                     <div class="row justify-content-center mt-3">
-                        <div class="col-auto">
-                            <a href="{{ route('dashboard-employee') }}" class="btn btn-primary me-1">
+                        <div class="col-auto" id="dash-btn">
+                            <a onclick="backToDash()" class="btn btn-primary me-1">
                                 Volver al Dashboard
                             </a>
                         </div>
@@ -185,6 +185,29 @@
 
     @include('panels.datatable.scripts')
     <script>
+        const flavorAlert = () =>{
+            toastr['error']('', 'El sabor es requerido', {
+                closeButton: true,
+                tapToDismiss: false,
+            });
+        }
+        function backToDash(){
+            let marcador = $('.helado span').html();
+            let dash_btn = $('#dash-btn');
+            let url = "{!! route('dashboard-employee')!!}";
+            if( marcador == 'Seleccione un sabor ') flavorAlert();
+            else window.location.href = url;
+        }
+        function closeModal(){
+            let select_array = $('td select');
+            let err = 0;
+            for(let i = 0; i < (select_array.length); i++)
+            {
+                if(select_array[i].value == 'none') err++;
+            }
+            if(err > 0) flavorAlert();
+            else $("#modal_show_ingredients").modal("hide");
+        }
 
         $(document).on('click', '#add_dish', function () {
             this_button = $(this);
@@ -266,45 +289,58 @@
         }
     
         function updateOrder(element, id = null) {
-            let item = {}
-            let input = element
+            let marcador = $('.helado span').html();
+            let dash_btn = $('#dash-btn');
+            let url = "{!! route('dashboard-employee')!!}";
+            let pending = $('#pending');
+            if( marcador == 'Seleccione un sabor ')
+            {
+                toastr['error']('', 'El sabor es requerido', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                });
+                pending.prop('checked', true);
+            }else{
+                let item = {}
+                let input = element
 
-            if (element.attributes.name.value == 'is_for_carry' && $(element).is(':checked')) {
-                item [element.attributes.name.value] = 1;
-                item ['id'] = id;
-                item ['form'] = 'update_order_dish';
-            }else if(element.attributes.name.value == 'is_for_carry'){
-                item [element.attributes.name.value] = 0;
-                item ['id'] = id;
-                item ['form'] = 'update_order_dish';
-            }
-
-            if(element.attributes.name.value != 'is_for_carry'){
-                item [element.attributes.name.value] = element.value;
-                item ['form'] = 'update_general_data';
-            }
-
-            item ['_method'] = 'PATCH';
-
-            $.post('{{ route('orders.update', $order->id) }}', item)
-            .done(function(data){
-                $(input).removeClass('is-invalid')
-                $(input).addClass('is-valid')
-                setTimeout(() => {
-                    $(input).removeClass('is-valid')
-                },1000)
-            })
-            .fail(function(data) {
-                data_errors = data.responseJSON.errors;
-                errors = Object.values(data_errors);
-                for (var i = 0; i < errors.length; i++){
-                    toastr['error']('', errors[i][0], {
-                        closeButton: true,
-                        tapToDismiss: false,
-                    });
+                if (element.attributes.name.value == 'is_for_carry' && $(element).is(':checked')) {
+                    item [element.attributes.name.value] = 1;
+                    item ['id'] = id;
+                    item ['form'] = 'update_order_dish';
+                }else if(element.attributes.name.value == 'is_for_carry'){
+                    item [element.attributes.name.value] = 0;
+                    item ['id'] = id;
+                    item ['form'] = 'update_order_dish';
                 }
-                $(input).addClass('is-invalid')
-            });
+
+                if(element.attributes.name.value != 'is_for_carry'){
+                    item [element.attributes.name.value] = element.value;
+                    item ['form'] = 'update_general_data';
+                }
+
+                item ['_method'] = 'PATCH';
+
+                $.post('{{ route('orders.update', $order->id) }}', item)
+                .done(function(data){
+                    $(input).removeClass('is-invalid')
+                    $(input).addClass('is-valid')
+                    setTimeout(() => {
+                        $(input).removeClass('is-valid')
+                    },1000)
+                })
+                .fail(function(data) {
+                    data_errors = data.responseJSON.errors;
+                    errors = Object.values(data_errors);
+                    for (var i = 0; i < errors.length; i++){
+                        toastr['error']('', errors[i][0], {
+                            closeButton: true,
+                            tapToDismiss: false,
+                        });
+                    }
+                    $(input).addClass('is-invalid')
+                });
+            }
         }
 
         // function updateOrder(element) {
@@ -499,7 +535,7 @@
                     data: "[relleno]",
                     name: "pivot.id",
                     title: "Sabor de Helado",
-                    "class": "text-center",
+                    "class": "text-center helado",
                     visible: true,
                     searchable: true,
                 },
