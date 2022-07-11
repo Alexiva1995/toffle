@@ -8,7 +8,7 @@ use App\Models\Dish;
 use App\Models\Category;
 use App\Models\Inventory;
 use Carbon\Carbon;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -42,12 +42,7 @@ class DashboardController extends Controller
   public function dashboardAdmin()
   {
     $pageConfigs = ['pageHeader' => false];
-    //Consulta innecesaria
-    // $orders = Order::all();
-
     $orders_today = Order::where('status', '2')->whereDate('created_at', '=', now()->format('Y-m-d'))->get();
-    //consulta innecesaria
-    // $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
     $dishes_under_review = Dish::where('status', '2')
       ->whereColumn('suggested_price', '>','designated_price')
       ->get();
@@ -56,7 +51,6 @@ class DashboardController extends Controller
       'dishes_under_review',
       'orders_today',
     ]));
-
   }
 
   public function showSoldProducts()
@@ -73,7 +67,7 @@ class DashboardController extends Controller
     ->orderBy('portions', 'DESC')
     ->groupBy(['products.name', 'inventories.local'])->get();
     return datatables()::of($soldProducts)->toJson();
-}
+  }
 
   public function dashboarEmployee()
   {
@@ -229,7 +223,7 @@ class DashboardController extends Controller
                  ->render();
              break;
          case 'order_history':
-             $orders = Order::whereDate('created_at', now())->with('dishes')->with('ingredients')->get();
+             $orders = Order::whereDate('created_at', now()->today())->with('dishes')->with('ingredients')->get();
              return view('employee.dashboard.orders.history')
                  ->with('orders', $orders)
                  ->render();

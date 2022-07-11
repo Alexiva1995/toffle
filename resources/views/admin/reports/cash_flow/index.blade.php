@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="my-auto">
                                     <h4 class="fw-bolder mb-0">
-                                        $ <span id="balance"></span>
+                                        $ <span id="balance">0</span>
                                     </h4>
                                 </div>
                             </div>
@@ -207,7 +207,11 @@
         var request = $.ajax({
             method: "GET",
             url: '{!! route('reports.expenses.total.data') !!}',
-            data:{ from : $('#income_from').val(), to : $('#income_to').val() }
+            data:{ 
+                from : $('#income_from').val(), 
+                to : $('#income_to').val(),
+                category: $('#expenses_category_id').val()
+            }
         });
 
         request.done(function(data) {
@@ -240,20 +244,13 @@
         let gain_no_points = gain.replace('.', '');
         let gain_final = gain_no_points.replace(',', '.');
         gain_final = parseFloat(gain_final);
-        
         let expenses = $('#expenses').html();
         let expenses_no_points = expenses.replace('.', '');
         let expenses_final = expenses_no_points.replace(',', '.');
         expenses_final = parseFloat(expenses_final);
-
         let balance = gain_final - expenses_final
         balance = balance.toLocaleString();
-        if(balance >= 0)
-        {
-            $('#balance').html(balance);
-        }else{
-            $('#balance').html(0);
-        }
+        $('#balance').html(balance);
     } 
     
 
@@ -263,6 +260,7 @@
             serverSide: true,
             ordering: true,
             pageLength: 50,
+            searching: false,
             language: {
                 url: '{!! asset('data/datatable/Spanish.json') !!}'
             },
@@ -369,14 +367,12 @@
             getGainAmount();
             getExpensesAmount();
             calculateBalance();
-
             feather.replace();
         });
 
         $('#income_timestamp').change(function() {
             income_table.search('').draw();
         });
-
         $('#income_category_id').change(function() {
             income_table.search('').draw();
         });
@@ -465,6 +461,7 @@
 
         }).on('processing.dt', function (e, settings, processing) {
             getExpensesAmount();
+            calculateBalance();
             feather.replace();
         });
 

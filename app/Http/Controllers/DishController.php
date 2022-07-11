@@ -21,7 +21,7 @@ class DishController extends Controller
     
     public function index()
     {
-        $dishes = Dish::orderBy('id', 'DESC')->get();
+        $dishes = Dish::with('category')->orderBy('id', 'DESC')->get();
 
         $ingredients = Inventory::orderBy('id', 'DESC')->get();
 
