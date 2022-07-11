@@ -124,7 +124,7 @@
 
                                         <div class="row justify-content-center mt-3">
                                             <div class="col-auto">
-                                                <a href="{{ route('dashboard-employee') }}" class="btn btn-primary me-1">
+                                                <a onclick="completeOrder()" id="finalizar_orden" class="btn btn-primary me-1">
                                                      Finalizar Órden
                                                 </a>
                                             </div>
@@ -176,6 +176,34 @@
 
 @include('panels.datatable.scripts')
 <script>
+    const flavorAlert = () =>{
+        toastr['error']('', 'El sabor es requerido', {
+            closeButton: true,
+            tapToDismiss: false,
+        });
+    }
+    function completeOrder(){
+        let marcador = $('.helado span').html();
+        let finish_button = $('#finalizar_orden');
+        let url = "{!! route('dashboard-employee')!!}";
+        if( marcador == 'Seleccione un sabor ')
+        {
+            flavorAlert();
+        }else{
+            window.location.href = url;
+        }
+    }
+
+    function closeModal(){
+        let select_array = $('td select');
+        let err = 0;
+        for(let i = 0; i < (select_array.length); i++)
+        {
+            if(select_array[i].value == 'none') err++;
+        }
+        if(err > 0) flavorAlert();
+        else $("#modal_show_ingredients").modal("hide");
+    }
 
     $(document).on('click', '#add_dish', function () {
         this_button = $(this);
@@ -465,7 +493,7 @@
                     data: "[relleno]",
                     name: "pivot.id",
                     title: "Sabor de Helado",
-                    "class": "text-center",
+                    "class": "text-center helado",
                     visible: true,
                     searchable: true,
                 },
@@ -480,14 +508,14 @@
                         return ( row.pivot.price * row.pivot.unit ).toFixed(2);
                     }  
                 },    
-                {
-                    data: "pivot.id",
-                    name: "pivot.id",
-                    title: "Para Llevar",
-                    "class": "text-center",
-                    visible: true,
-                    searchable: true,
-                },
+                // {
+                //     data: "pivot.id",
+                //     name: "pivot.id",
+                //     title: "Para Llevar",
+                //     "class": "text-center",
+                //     visible: true,
+                //     searchable: true,
+                // },
                 {
                     data: "pivot.id",
                     name: "pivot.id",
@@ -521,16 +549,18 @@
 
                 field=$('td:eq(3)', elemt);
                 buttons='';
-
+                /* Inicio opcion para llevar */
+                /* 
                 var checked = "";
                 if (data.pivot.is_for_carry == 1) {
                     checked = "checked";
                 }
-
                 button = '<input type="hidden" name="is_for_carry" value="0"/><input class="form-check-input border border-primary" type="checkbox" name="is_for_carry" id="is_for_carry" value="1" '+checked+'  oninput="updateOrder(this, '+data.pivot.id+')"/>'
                 buttons+=button;
                 field=field.html(buttons);
-                // console.log(data);
+                */
+                /* Fin opcion para llevar */
+
                 if(data.name.includes('Helado') || data.category_id == 4){
                     field=$('td:eq(1)', elemt);
                     buttons='';
@@ -540,7 +570,7 @@
                 }
 
 
-                field=$('td:eq(4)', elemt);
+                field=$('td:eq(3)', elemt);
                 buttons='';
                 button = '<button class="btn btn-sm btn-danger" onclick="deleteDish({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="trash-2"></i></button>'
                 buttons+=button;

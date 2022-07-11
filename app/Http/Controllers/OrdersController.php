@@ -345,15 +345,14 @@ class OrdersController extends Controller
     {
         if ($type == 'pending') {
             $orders = Order::whereIn('status', ['0', '1'])
-            ->orderBy('id', 'DESC')->whereDate( 'created_at', now() );
+            ->orderBy('id', 'DESC')->whereDate( 'created_at', now()->today() );
         }else{
-            $orders = Order::orderBy('id', 'DESC')->whereDate( 'created_at', now() );
+            $orders = Order::orderBy('id', 'DESC')->whereDate( 'created_at', now()->today() );
         }
 
             
-        return Datatables::of($orders)->filter(function ($query) use($request) {
-        }, true)
-        ->toJson();
+        return datatables()::of($orders)->filter(function ($query) use($request) {
+        }, true)->toJson();
     }
 
     public function showOrderDetails(Request $request)
