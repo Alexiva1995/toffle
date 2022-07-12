@@ -29,9 +29,9 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        return view('admin.expenses.create')
-            ->with('categories', $categories);
+        //Obtiene las categorias de tipo 'Gastos'
+        $categories = Category::where('type', 0)->get();
+        return view('admin.expenses.create')->with('categories', $categories);
     }
 
     /**
