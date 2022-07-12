@@ -20,9 +20,9 @@
                 <table class="table" id="product_table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Cantidad</th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Presentación</th>
                             <th class="text-center">Fecha de Creación</th>
                             <th class="text-center">Acción</th>
                         </tr>
@@ -31,12 +31,12 @@
                         @foreach ($products as $product)
                         <tr>
                             {{-- <td>{{ $loop->iteration }}</td> --}}
-                            <td>{{ $product->id }}</td>
-                            <td>{{ $product->name }}</td>
+                            <td class="text-center">{{ $product->id }}</td>
+                            <td class="text-center">{{ $product->name }}</td>
                             @if ($product->gr != null)
-                                <td>{{ $product->gr}}g</td>
+                                <td class="text-center">{{ $product->gr}}Gr</td>
                             @else
-                                <td>{{ $product->quantity }} Unid.</td>
+                                <td class="text-center">{{ $product->quantity }} Unid.</td>
                             @endif
                             <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
                             <td class="text-center"> 

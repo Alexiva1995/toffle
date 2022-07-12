@@ -16,13 +16,11 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        $inventories= Inventory::orderBy('id', 'DESC')->get();
+        $inventories= Inventory::with('product')->orderBy('id', 'DESC')->get();
 
         $products= Product::orderBy('id', 'DESC')->get();
 
-        return view('admin.inventory.index')
-            ->with('inventories', $inventories)
-            ->with('products', $products);
+        return view('admin.inventory.index', compact('inventories','products'));
     }
 
     /**
