@@ -25,12 +25,12 @@
                             <div class="d-flex flex-row justify-content-center">
                                 <div class="avatar bg-light-success me-1">
                                     <div class="avatar-content">
-                                        N°
+                                        <i data-feather="dollar-sign" class="avatar-icon"></i>
                                     </div>
                                 </div>
                                 <div class="my-auto">
                                     <h4 class="fw-bolder mb-0">
-                                        <span id="ventas"></span>
+                                        $ <span id="ventas"></span>
                                     </h4>
                                 </div>
                             </div>
@@ -168,11 +168,11 @@
 @include('panels.datatable.scripts')
 
 <script>
-    // Obtiene el num de ventas para el cuadro Ventas
+    // Obtiene el total de ventas para el cuadro Ventas
     function getSalesQuantity(){
         var request = $.ajax({
             method: "GET",
-            url: '{!! route('cash.flow.sales.quantity') !!}',
+            url: '{!! route('cash.flow.sales.total') !!}',
             data:{ from : $('#income_from').val(), to : $('#income_to').val() }
         });
 

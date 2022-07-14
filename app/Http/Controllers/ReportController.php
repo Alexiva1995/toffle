@@ -530,27 +530,27 @@ class ReportController extends Controller
             ->with('expenses', $expenses)
             ->with('capital_available', $capital_available);
     }
-    //Obtiene el numero de ventas para Flujo de caja
-    public function salesQuantity()
+    //Obtiene el total de ventas para Flujo de caja
+    public function salesTotal()
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        if ( request()->has('from') && request('from') != '' && request()->has('to') && request('to') !='') 
         {
             $start = date("Y-m-d",strtotime(request('from')));
             $end = date("Y-m-d",strtotime(request('to')));
-            $orders_quantity = Order::where('status', '2')
+            $orders_total = Order::where('status', '2')
                 ->whereBetween('orders.updated_at',[$start. " 00:00:00", $end. " 23:59:59"])
-                ->count();
-            return $orders_quantity;
+                ->sum('total_amount');
         }
         else
         {
             $month_start = date('Y-m-d', strtotime('first day of this month', time()));
             $month_end = date('Y-m-d', strtotime('last day of this month', time()));
-            $orders_quantity = Order::where('status', '2')
+            $orders_total = Order::where('status', '2')
                 ->whereBetween('orders.updated_at',[$month_start. " 00:00:00", $month_end. " 23:59:59"])
-                ->count(); 
-            return $orders_quantity;
+                ->sum('total_amount'); 
         }
+
+        return number_format($orders_total, 2, ',', '.');
     }
 
     public function incomeData(Request $request)
