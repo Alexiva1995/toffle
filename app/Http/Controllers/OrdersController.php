@@ -373,7 +373,7 @@ class OrdersController extends Controller
         $order_dish= $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
 
         $ingredients = Inventory::orderBy('id', 'DESC')
-                                    ->where('public', '>', 0)
+                                    ->where('local', '>', 0)
                                     ->get();
 
         $dish = Dish::where('id', $request->dish_id)->first();

@@ -32,7 +32,7 @@
                                 @if ($order_ingredient->pivot->it_has_flavors == true)
                                     <select class="select2 form-control" data-toggle="select" class="form-control flavor" id="flavor_name_{{ $order_ingredient->pivot->id }}" onchange="updateFlavorName( this, {{ $order->id }}, {{ $order_ingredient->pivot->id }})">
                                         <option disabled selected value="none">--Selecione un sabor--</option>                                     
-                                        @foreach ($ingredients->where('product_id', $order_ingredient->product->id)->where('local') as $item)
+                                        @foreach ($ingredients->where('product_id', $order_ingredient->product->id) as $item)
                                             <option value="{{ $item->flavor_name }}" {{ $item->flavor_name == $order_ingredient->pivot->flavor_name ? 'selected' : ''}}>{{ ucfirst($item->flavor_name) }}</option>
                                         @endforeach
                                     </select>
