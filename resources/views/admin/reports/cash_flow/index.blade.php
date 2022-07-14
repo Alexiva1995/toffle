@@ -25,12 +25,12 @@
                             <div class="d-flex flex-row justify-content-center">
                                 <div class="avatar bg-light-success me-1">
                                     <div class="avatar-content">
-                                        N°
+                                        <i data-feather="dollar-sign" class="avatar-icon"></i>
                                     </div>
                                 </div>
                                 <div class="my-auto">
                                     <h4 class="fw-bolder mb-0">
-                                        <span id="ventas"></span>
+                                        $ <span id="ventas"></span>
                                     </h4>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="my-auto">
                                     <h4 class="fw-bolder mb-0">
-                                        $ <span id="balance">0</span>
+                                        $ <span id="balance"></span>
                                     </h4>
                                 </div>
                             </div>
@@ -168,11 +168,13 @@
 @include('panels.datatable.scripts')
 
 <script>
-    // Obtiene el num de ventas para el cuadro Ventas
+    getTotalBalance();
+
+    // Obtiene el total de ventas para el cuadro Ventas
     function getSalesQuantity(){
         var request = $.ajax({
             method: "GET",
-            url: '{!! route('cash.flow.sales.quantity') !!}',
+            url: '{!! route('cash.flow.sales.total') !!}',
             data:{ from : $('#income_from').val(), to : $('#income_to').val() }
         });
 
@@ -185,7 +187,7 @@
         });
     }
 
-    // Calcula y dibuja el Total en Ganancia Netas
+    // Obtiene y dibuja el Total en Ganancia Netas
     function getGainAmount(){
         var request = $.ajax({
             method: "GET",
@@ -202,57 +204,42 @@
         });
     }
 
-    // Calcula y dibuja el Total en Gastos
+    // Obtiene y dibuja el Total en Gastos
     function getExpensesAmount(){
         var request = $.ajax({
             method: "GET",
             url: '{!! route('reports.expenses.total.data') !!}',
             data:{ 
-                from : $('#income_from').val(), 
-                to : $('#income_to').val(),
+                from : $('#expenses_from').val(), 
+                to : $('#expenses_to').val(),
                 category: $('#expenses_category_id').val()
             }
         });
 
-        request.done(function(data) {
+        request.done( (data) => {
             $('#expenses').html(data);
         });
 
-        request.fail(function() {
+        request.fail( (e) => {
             $('#expenses').html(0);
         });
     }
-    //Actualizar para el filtro de expenses
-    function getExpensesAmount(){
+
+    // Calcula y dibuja el Total en Saldo
+    function getTotalBalance(){
         var request = $.ajax({
             method: "GET",
-            url: '{!! route('reports.expenses.total.data') !!}',
-            data:{ from : $('#expenses_from').val(), to : $('#expenses_to').val() }
+            url: '{!! route('reports.total.balance') !!}'
         });
 
-        request.done(function(data) {
-            $('#expenses').html(data);
+        request.done( (data) => {
+            $('#balance').html(data);
         });
 
-        request.fail(function() {
-            $('#expenses').html(0);
+        request.fail( (e) => {
+            $('#balance').html(0);
         });
     }
-    // Calcula y dibuja el Total en Saldo
-    function calculateBalance(){
-        let gain = $('#gain').html();
-        let gain_no_points = gain.replace('.', '');
-        let gain_final = gain_no_points.replace(',', '.');
-        gain_final = parseFloat(gain_final);
-        let expenses = $('#expenses').html();
-        let expenses_no_points = expenses.replace('.', '');
-        let expenses_final = expenses_no_points.replace(',', '.');
-        expenses_final = parseFloat(expenses_final);
-        let balance = gain_final - expenses_final
-        balance = balance.toLocaleString();
-        $('#balance').html(balance);
-    } 
-    
 
     $(document).ready(function () {
         income_table = $('#income_table').DataTable({
@@ -365,8 +352,6 @@
         }).on('processing.dt', function (e, settings, processing) {
             getSalesQuantity();
             getGainAmount();
-            getExpensesAmount();
-            calculateBalance();
             feather.replace();
         });
 
@@ -461,7 +446,6 @@
 
         }).on('processing.dt', function (e, settings, processing) {
             getExpensesAmount();
-            calculateBalance();
             feather.replace();
         });
 
