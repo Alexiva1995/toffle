@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="my-auto">
                                     <h4 class="fw-bolder mb-0">
-                                        $ <span id="balance">0</span>
+                                        $ <span id="balance"></span>
                                     </h4>
                                 </div>
                             </div>
@@ -222,37 +222,14 @@
             $('#expenses').html(0);
         });
     }
-    //Actualizar para el filtro de expenses
-    function getExpensesAmount(){
-        var request = $.ajax({
-            method: "GET",
-            url: '{!! route('reports.expenses.total.data') !!}',
-            data:{ from : $('#expenses_from').val(), to : $('#expenses_to').val() }
-        });
 
-        request.done(function(data) {
-            $('#expenses').html(data);
-        });
-
-        request.fail(function() {
-            $('#expenses').html(0);
-        });
-    }
     // Calcula y dibuja el Total en Saldo
     function calculateBalance(){
-        let gain = $('#gain').html();
-        let gain_no_points = gain.replace('.', '');
-        let gain_final = gain_no_points.replace(',', '.');
-        gain_final = parseFloat(gain_final);
-        let expenses = $('#expenses').html();
-        let expenses_no_points = expenses.replace('.', '');
-        let expenses_final = expenses_no_points.replace(',', '.');
-        expenses_final = parseFloat(expenses_final);
-        let balance = gain_final - expenses_final
-        balance = balance.toLocaleString();
+        let gain = parseFloat( $('#gain').html().replaceAll('.', '').replace(',', '.') );
+        let expenses = parseFloat( $('#expenses').html().replaceAll('.', '').replace(',', '.') );
+        let balance = (gain - expenses).toLocaleString();
         $('#balance').html(balance);
     } 
-    
 
     $(document).ready(function () {
         income_table = $('#income_table').DataTable({
