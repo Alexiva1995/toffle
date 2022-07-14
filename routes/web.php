@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('gain-data', [ReportController::class, 'gainData'])->name('reports.gain.data');
                 Route::get('gain-data/amount', [ReportController::class, 'gainAmount'])->name('reports.gain.amount.data');
                 Route::get('gain-data/fixed-cost', [ReportController::class, 'gainFixedCost'])->name('reports.gain.fixed.cost');
+                Route::get('cash-flow/total-balance', [ReportController::class, 'totalBalance'])->name('reports.total.balance');
                 Route::get('gain-data/unexpected', [ReportController::class, 'gainUnexpected'])->name('reports.gain.unexpected');
                 Route::get('gain-show/{date}', [ReportController::class, 'gainShow'])->name('gain.show');
                 Route::get('gain-data-show/{date}', [ReportController::class, 'gainDataShow'])->name('gain.data.show');

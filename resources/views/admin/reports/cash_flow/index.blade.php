@@ -168,6 +168,8 @@
 @include('panels.datatable.scripts')
 
 <script>
+    getTotalBalance();
+
     // Obtiene el total de ventas para el cuadro Ventas
     function getSalesQuantity(){
         var request = $.ajax({
@@ -185,7 +187,7 @@
         });
     }
 
-    // Calcula y dibuja el Total en Ganancia Netas
+    // Obtiene y dibuja el Total en Ganancia Netas
     function getGainAmount(){
         var request = $.ajax({
             method: "GET",
@@ -202,34 +204,42 @@
         });
     }
 
-    // Calcula y dibuja el Total en Gastos
+    // Obtiene y dibuja el Total en Gastos
     function getExpensesAmount(){
         var request = $.ajax({
             method: "GET",
             url: '{!! route('reports.expenses.total.data') !!}',
             data:{ 
-                from : $('#income_from').val(), 
-                to : $('#income_to').val(),
+                from : $('#expenses_from').val(), 
+                to : $('#expenses_to').val(),
                 category: $('#expenses_category_id').val()
             }
         });
 
-        request.done(function(data) {
+        request.done( (data) => {
             $('#expenses').html(data);
         });
 
-        request.fail(function() {
+        request.fail( (e) => {
             $('#expenses').html(0);
         });
     }
 
     // Calcula y dibuja el Total en Saldo
-    function calculateBalance(){
-        let gain = parseFloat( $('#gain').html().replaceAll('.', '').replace(',', '.') );
-        let expenses = parseFloat( $('#expenses').html().replaceAll('.', '').replace(',', '.') );
-        let balance = (gain - expenses).toLocaleString();
-        $('#balance').html(balance);
-    } 
+    function getTotalBalance(){
+        var request = $.ajax({
+            method: "GET",
+            url: '{!! route('reports.total.balance') !!}'
+        });
+
+        request.done( (data) => {
+            $('#balance').html(data);
+        });
+
+        request.fail( (e) => {
+            $('#balance').html(0);
+        });
+    }
 
     $(document).ready(function () {
         income_table = $('#income_table').DataTable({
@@ -342,8 +352,6 @@
         }).on('processing.dt', function (e, settings, processing) {
             getSalesQuantity();
             getGainAmount();
-            getExpensesAmount();
-            calculateBalance();
             feather.replace();
         });
 
@@ -438,7 +446,6 @@
 
         }).on('processing.dt', function (e, settings, processing) {
             getExpensesAmount();
-            calculateBalance();
             feather.replace();
         });
 
