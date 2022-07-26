@@ -150,10 +150,12 @@ class ReportController extends Controller
 
     public function totalBalance()
     {
-        $profits = Order::selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
-                ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
-                ->where('orders.status', '2')
-                ->sum('total_amount');
+        $profits = Order::where('status', '2')->sum('total_amount');
+        
+        // $profits = Order::selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
+        //         ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
+        //         ->where('orders.status', '2')
+        //         ->sum('total_amount');
 
         $expenses = Expense::sum('amount');
         $total = $profits - $expenses;         
