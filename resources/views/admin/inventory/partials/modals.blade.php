@@ -52,7 +52,7 @@
     </div>
 </div>
 
-{{-- Modal Edit Inventory Without Package --}}
+{{-- Modal Edit Inventory --}}
 
 <div class="modal fade text-start"
   id="modal_edit_inventory_2"

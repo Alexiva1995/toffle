@@ -13,51 +13,51 @@
 @section('content')
 <!-- Basic table -->
 <section id="basic-datatable">
-    <section id="nav-tabs-aligned">
-        <div class="row match-height">
-          <!-- Centered Aligned Tabs starts -->
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body">
-                <ul class="nav nav-tabs justify-content-center" role="tablist">
-                  <li class="nav-item">
-                    <a
-                      class="nav-link {{ Session::has('products') == true ? '' : 'active' }}"
-                      id="inventories-tab-center"
-                      data-bs-toggle="tab"
-                        href="#inventories-center"
-                      aria-controls="inventories-center"
-                      role="tab"
-                      aria-selected="false"
-                      >Inventario</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link {{ Session::has('products') == true ? 'active' : '' }}"
-                      id="products-tab-center"
-                      data-bs-toggle="tab"
-                      href="#products-center"
-                      aria-controls="products-center"
-                      role="tab"
-                      aria-selected="false"
-                      >Productos</a
-                    >
-                  </li>
-                </ul>
-                <div class="tab-content">
-                  <div class="tab-pane {{ Session::has('products') == true ? '' : 'active' }}" id="inventories-center" aria-labelledby="inventories-tab-center" role="tabpanel">
-                    @include('admin.inventory.list')
-                  </div>
-                  <div class="tab-pane {{ Session::has('products') == true ? 'active' : '' }}" id="products-center" aria-labelledby="products-tab-center" role="tabpanel">
-                    @include('admin.products.list')
-                  </div>
+  <section id="nav-tabs-aligned">
+      <div class="row match-height">
+        <!-- Centered Aligned Tabs starts -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <ul class="nav nav-tabs justify-content-center" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link {{ Session::has('products') == true ? '' : 'active' }}"
+                    id="inventories-tab-center"
+                    data-bs-toggle="tab"
+                      href="#inventories-center"
+                    aria-controls="inventories-center"
+                    role="tab"
+                    aria-selected="false"
+                    >Inventario</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {{ Session::has('products') == true ? 'active' : '' }}"
+                    id="products-tab-center"
+                    data-bs-toggle="tab"
+                    href="#products-center"
+                    aria-controls="products-center"
+                    role="tab"
+                    aria-selected="false"
+                    >Productos</a
+                  >
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane {{ Session::has('products') == true ? '' : 'active' }}" id="inventories-center" aria-labelledby="inventories-tab-center" role="tabpanel">
+                  @include('admin.inventory.list')
+                </div>
+                <div class="tab-pane {{ Session::has('products') == true ? 'active' : '' }}" id="products-center" aria-labelledby="products-tab-center" role="tabpanel">
+                  @include('admin.products.list')
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+  </section>
 </section>
 @endsection
 
@@ -107,35 +107,13 @@
       $('#modal_edit_product').modal('show');
     }
 
-    function editInventory(id, product_id, qty_package, unit_package, price, cost, deposit, local, public, total) {
-
-      var route = '{{route('inventory.update', 'replace_this')}}'.replace('replace_this', id);
-      $('#form_edit_inventory').attr('action', route);
-      $("#edit_product_id option[value="+ product_id +"]").attr("selected", 'selected').trigger('change');
-      $('#edit_qty_package').val(qty_package);
-      $('#edit_unit_package').val(unit_package);
-      $('#edit_price').val(price);
-      $('#edit_cost').val(cost);
-      $('#edit_deposit').val(deposit);
-      $('#edit_local').val(local);
-      $('#edit_public').val(public);
-      $('#edit_total').val(total);
-      $('#modal_edit_inventory').modal('show');
-
-    }
-
-    function editInventoryWithoutPackage(id, product_id, unit_package, price, cost, deposit, local, public, total) {
+    function editInventory(id, cost, local) {
       var route = '{{route('inventory.update', 'replace_this')}}'.replace('replace_this', id);
       $('#form_edit_inventory_2').attr('action', route);
-      $("#edit_product_id option[value="+ product_id +"]").attr("selected", 'selected').trigger('change');
-      $('#edit_unit_package_2').val(unit_package);
-      $('#edit_price_2').val(price);
       $('#edit_cost_2').val(cost);
-      $('#edit_deposit_2').val(deposit);
-      $('#edit_local_2').val(local);
-      $('#edit_public_2').val(public);
-      $('#edit_total_2').val(total);
+      $('#edit_total_2').val(local);
       $('#modal_edit_inventory_2').modal('show');
+
     }
 
     function operation(department, operator, id, max_value = 0) {
