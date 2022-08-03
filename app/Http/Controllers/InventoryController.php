@@ -122,15 +122,17 @@ class InventoryController extends Controller
         $inventory = Inventory::with('product')->find($id);
         //Pregunta si el metodo update viene desde la acción Editar
         if ($request->update_type == "1") {
-
-            $inventory->update([
-                'cost' => $request->cost,
-                'local' => $request->total,
-                'unit_package' => $request->total,
-            ]);
+            if ($inventory->product->it_has_flavors) {
+                $inventory_flavors = Inventory::where('product_id', $inventory->product->id)->get();
+                foreach ($inventory_flavors as $item) {
+                    $item->update(['cost' => $request->cost]);
+                }
+            }
+            $data = ['cost' => $request->cost,'local' => $request->total,'unit_package' => $request->total];
+            $inventory->update($data);
 
         }else{
-            $deposit = $inventory->deposit +  $request->unit_package;
+            $inventory->deposit +  $request->unit_package;
 
             $inventory->update([
                 // 'qty_package' => $request->qty_package,
