@@ -42,6 +42,7 @@
                                             <tr>
                                                 <th>N°</th>
                                                 <th>Nombre</th>
+                                                <th>Tipo</th>
                                                 <th class="text-center">Fecha de Creación</th>
                                                 <th class="text-center">Acción</th>
                                             </tr>
@@ -51,6 +52,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $category->name }}</td>
+                                                <td>{{ $category->type == 0 ? 'Gasto' : 'Ingreso' }}</td>
                                                 <td class="text-center">{{ date('d-m-Y', strtotime($category->created_at)) }}</td>
                                                 <td class="text-center"> 
                                                     
