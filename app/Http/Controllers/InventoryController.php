@@ -64,21 +64,29 @@ class InventoryController extends Controller
         ];
 
         $this->validate($request, $fields, $msj);
+        $i_model = new Inventory();
         
         if ($request->it_has_flavors == true) {
-            $flavor_name = strtolower($request->flavor_name);
-
-            $inventory = Inventory::where('product_id', $request->product_id)
-                ->where('flavor_name', $flavor_name)
-                ->first(); 
+            $inventories = Inventory::where('product_id', $request->product_id)->get();
+            if ($inventories == null) { $this->store($request); }
+            else{
+                $inventory = $inventories->first();
+                $promedial_price = $i_model->promedialPrice($inventory->price, $request->price, $inventories->sum('local'), $request->unit_package);
+                $request->price = $promedial_price;
+                $request->unit_price = $promedial_price;
+                foreach ($inventories as $item) {
+                    $this->update($request, $item->id);
+                }
+            }
         }else{
-            $inventory = Inventory::where('product_id', $request->product_id)->first(); 
-        }
-        if ($inventory == null) {
-            $this->store($request);
-        }else{
-
-            $this->update($request, $inventory->id);
+            $inventory = Inventory::where('product_id', $request->product_id)->first();
+            $promedial_price = $i_model->promedialPrice($inventory->price, $request->price, $inventory->unit_package, $request->unit_package);
+            $request->price = $promedial_price;
+            $request->unit_price = $promedial_price;
+            if ($inventory == null) { $this->store($request); }
+            else {
+                $this->update($request, $inventory->id);
+            }
         }
 
         return redirect()->route('inventory.index')->with('success', 'Productos Añadidos al Inventario');
