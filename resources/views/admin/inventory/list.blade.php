@@ -48,7 +48,7 @@
                                             {{ $inventory->id }}, 
                                             {{ $inventory->cost }},
                                             {{ $inventory->local }},)">
-                                            <i data-feather="edit"></i>                                   
+                                            @include('partials.edit_icon_svg')                             
                                         </button>    
                                         
                                         <span class="btn btn-sm btn-danger"
@@ -56,7 +56,7 @@
                                         '#delete_inventory_', 
                                         'este Inventario',
                                         'IMPORTANTE: Si esté Producto del Inventario está añadido en uno de los platos, no podrá ser removido' )"> 
-                                            <i data-feather="trash-2"></i> 
+                                            @include('partials.trash_icon_svg')
                                         </span> 
                             
                                         <form id="delete_inventory_{{ $inventory->id }}" action="{{ route('inventory.destroy', $inventory->id) }}" method="POST">

@@ -51,7 +51,7 @@
                                             'Gramos',
                                             {{ $product->gr }},
                                             {{ $product->it_has_flavors }})"> 
-                                            <i data-feather="edit"></i> 
+                                            @include('partials.edit_icon_svg')
                                         </button> 
                                     @else
                                         <button class="btn btn-sm btn-info my-1"
@@ -61,7 +61,7 @@
                                             'Unidades',
                                             {{ $product->quantity }},
                                             {{ $product->it_has_flavors }})"> 
-                                            <i data-feather="edit"></i> 
+                                            @include('partials.edit_icon_svg')
                                         </button> 
                                     @endif
 
@@ -70,7 +70,7 @@
                                         '#delete_product_', 
                                         'este Producto',
                                         'IMPORTANTE: Si esté Producto está añadido en el inventario, no podrá ser removido' )"> 
-                                        <i data-feather="trash-2"></i> 
+                                        @include('partials.trash_icon_svg') 
                                     </button>
                                     <form id="delete_product_{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="POST">
                                         @csrf
