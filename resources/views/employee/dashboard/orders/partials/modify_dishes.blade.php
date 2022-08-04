@@ -146,6 +146,7 @@
   tabindex="-1"
   aria-labelledby="myModalLabel1"
   aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false"
 >
     <div class="modal-dialog modal-lg">
         <div class="modal-content ingredients_details">
@@ -183,24 +184,19 @@
         });
     }
     function completeOrder(){
-        let marcador = $('.helado span').html();
-        let finish_button = $('#finalizar_orden');
+        let err = 0;
+        const array_items = $('.helado span');
+        array_items.map( index => { array_items[index].textContent == 'Seleccione un sabor ' ? err++ : '' });
         let url = "{!! route('dashboard-employee')!!}";
-        if( marcador == 'Seleccione un sabor ')
-        {
-            flavorAlert();
-        }else{
-            window.location.href = url;
-        }
+
+        if(err > 0) flavorAlert();
+        else window.location.href = url;
     }
 
     function closeModal(){
         let select_array = $('td select');
         let err = 0;
-        for(let i = 0; i < (select_array.length); i++)
-        {
-            if(select_array[i].value == 'none') err++;
-        }
+        select_array.map( index =>{ select_array[index].value == 'none' ? err++ : '' });
         if(err > 0) flavorAlert();
         else $("#modal_show_ingredients").modal("hide");
     }
