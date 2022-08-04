@@ -83,13 +83,12 @@ Route::middleware('auth')->group(function () {
                 Route::get('list', [DishController::class, 'list'])->name('dishes.list');
             });
 
-            Route::resource('dishes', DishController::class);
-
             // Inventories
             Route::group(['prefix' => 'inventory'], function () {
                 Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
                 Route::post('add-product-to-inventory', [InventoryController::class, 'addProductToInventory'])->name('add.product.to.inventory');
             });
+            Route::resource('dishes', DishController::class);
 
             Route::resource('inventory', InventoryController::class);
 
@@ -150,7 +149,7 @@ Route::middleware('auth')->group(function () {
 
         });
     });
-
+    
     Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 
     Route::group(['prefix' => 'employee'], function () {
@@ -187,6 +186,9 @@ Route::middleware('auth')->group(function () {
             // });
 
         });
+
+        // Inventories
+        Route::get('inventory', [InventoryController::class, 'index'])->name('employee.inventory.index');
 
     });
 
