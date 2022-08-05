@@ -5,7 +5,7 @@
       "name": "dashboard",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "home",
-      "slug": "dashboard"
+      "slug": "dashboard-admin"
     },
     {
       "url": "admin/employees/list",
@@ -13,6 +13,13 @@
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "users",
       "slug": "employees.list"
+    },
+    {
+      "url": "admin/employees/active/sessions",
+      "name": "sessions",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "monitor",
+      "slug": "show.active.users"
     },
     {
       "url": "admin/inventory",

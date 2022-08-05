@@ -13,7 +13,7 @@
                                 <label class="form-label" for="name">Nombre</label>
                                 <div class="input-group input-group-merge ">
                                     <span class="input-group-text"><i data-feather="bookmark"></i></span>
-                                    <input type="text" id="create_name" class="form-control requerid @error('name') is-invalid @enderror" name="name"
+                                    <input type="text" required id="create_name" class="form-control requerid @error('name') is-invalid @enderror" name="name"
                                         placeholder="Nombre"/>
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -21,6 +21,13 @@
                                     </span>
                                     @enderror
                                 </div>
+                                <br>
+                                <label class="form-label" for="type">Tipo</label>
+                                <select class="select2 form-control @error('type') is-invalid @enderror" name="type" data-toggle="select" class="form-control" id="type" required>
+                                    <option disabled selected>Selecciona un tipo</option>
+                                    <option value="0">Gasto</option>
+                                    <option value="1">Ingreso</option>
+                                </select>
                             </div>
                         </div>                   
                     </div>

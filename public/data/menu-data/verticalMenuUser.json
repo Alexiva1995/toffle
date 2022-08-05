@@ -15,6 +15,20 @@
       "slug": "orders.index"
     },
     {
+      "url": "/employee/inventory",
+      "name": "inventory",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "database",
+      "slug": "employee.inventory.index"
+    },
+    {
+      "url": "/employee/expenses/index",
+      "name": "expenses",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "trending-down",
+      "slug": "employee.expenses.index"
+    },
+    {
       "url": "employee/flow-days",
       "name": "flow_day",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",

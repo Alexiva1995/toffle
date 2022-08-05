@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use App\Models\User;
-use Carbon\Carbon;
 
 
 class UserController extends Controller
@@ -85,6 +85,12 @@ class UserController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function showActiveUsers()
+    {
+        $sessions = Session::with('user')->where('user_id', '!=', null)->get();
+        return view('admin.sessions.index', compact('sessions'));
     }
 
     /**

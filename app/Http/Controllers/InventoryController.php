@@ -16,13 +16,11 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        $inventories= Inventory::orderBy('id', 'DESC')->get();
+        $inventories = Inventory::with('product')->orderBy('id', 'DESC')->get();
 
-        $products= Product::orderBy('id', 'DESC')->get();
+        $products = Product::orderBy('id', 'DESC')->get();
 
-        return view('admin.inventory.index')
-            ->with('inventories', $inventories)
-            ->with('products', $products);
+        return view('admin.inventory.index', compact('inventories','products'));
     }
 
     /**
@@ -66,20 +64,29 @@ class InventoryController extends Controller
         ];
 
         $this->validate($request, $fields, $msj);
+        $i_model = new Inventory();
         
         if ($request->it_has_flavors == true) {
-            $flavor_name = strtolower($request->flavor_name);
-
-            $inventory = Inventory::where('product_id', $request->product_id)
-                ->where('flavor_name', $flavor_name)
-                ->first(); 
+            $inventories = Inventory::where('product_id', $request->product_id)->get();
+            if ($inventories == null) { $this->store($request); }
+            else{
+                $inventory = $inventories->first();
+                $promedial_price = $i_model->promedialPrice($inventory->price, $request->price, $inventories->sum('local'), $request->unit_package);
+                $request->price = $promedial_price;
+                $request->unit_price = $promedial_price;
+                foreach ($inventories as $item) {
+                    $this->update($request, $item->id);
+                }
+            }
         }else{
-            $inventory = Inventory::where('product_id', $request->product_id)->first(); 
-        }
-        if ($inventory == null) {
-            $this->store($request);
-        }else{
-            $this->update($request, $inventory->id);
+            $inventory = Inventory::where('product_id', $request->product_id)->first();
+            $promedial_price = $i_model->promedialPrice($inventory->price, $request->price, $inventory->unit_package, $request->unit_package);
+            $request->price = $promedial_price;
+            $request->unit_price = $promedial_price;
+            if ($inventory == null) { $this->store($request); }
+            else {
+                $this->update($request, $inventory->id);
+            }
         }
 
         return redirect()->route('inventory.index')->with('success', 'Productos Añadidos al Inventario');
@@ -97,7 +104,7 @@ class InventoryController extends Controller
         $inventory->flavor_name = request()->it_has_flavors == true ? strtolower($request->flavor_name) : null;
         $inventory->deposit = $request->input('unit_package');
         $inventory->unit_package = request()->unit_package;
-        $inventory->total = request()->unit_package;
+        $inventory->local = request()->unit_package;
         $inventory->price = request()->price;
         $inventory->cost = doubleval(request()->unit_cost);
         $inventory->save();
@@ -112,44 +119,32 @@ class InventoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $inventory = Inventory::with('product')->find($id);
         //Pregunta si el metodo update viene desde la acción Editar
         if ($request->update_type == "1") {
-
-            $inventory->update([
-                'qty_package' => $request->qty_package,
-                'unit_package' => $request->unit_package,
-                'price' => $request->price,
-                'cost' => $request->cost,
-                'total' => $request->total,
-                'deposit' => $request->deposit,
-                'local' => $request->local,
-                'public' => $request->public,
-            ]);
+            if ($inventory->product->it_has_flavors) {
+                $inventory_flavors = Inventory::where('product_id', $inventory->product->id)->get();
+                foreach ($inventory_flavors as $item) {
+                    $item->update(['cost' => $request->cost]);
+                }
+            }
+            $data = ['cost' => $request->cost,'local' => $request->total,'unit_package' => $request->total];
+            $inventory->update($data);
 
         }else{
-            $deposit = $inventory->deposit +  $request->unit_package;
+            $inventory->deposit +  $request->unit_package;
 
             $inventory->update([
                 // 'qty_package' => $request->qty_package,
-                'unit_package' => $request->unit_package,
+                'unit_package' => $inventory->unit_package + $request->unit_package,
                 'price' => $request->price,
                 'cost' => number_format($request->price / $request->unit_package, 2, '.', ''),
-                'total' => $deposit + $inventory->local + $inventory->public,
-                'deposit' => $deposit,
-                'local' => $inventory->local,
-                'public' => $inventory->public,
+                'local' => $inventory->local + $request->unit_package,
             ]);
         }
  
         $cost_product = $inventory->cost;
-        if($inventory->product->gr != null)
-        {
-            $unit_product = $inventory->product->gr;
-        }else{
-            $unit_product = $inventory->product->quantity;
-        }
+        $unit_product = $inventory->product->gr != null ? $inventory->product->gr : $inventory->product->quantity;
 
         $dishes = Dish::whereHas('ingredients', function($q) use($inventory) {
             $q->where('inventory_id', $inventory->id);

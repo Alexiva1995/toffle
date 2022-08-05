@@ -42,30 +42,29 @@
                                             <tr>
                                                 <th>N°</th>
                                                 <th>Nombre</th>
+                                                <th>Tipo</th>
                                                 <th class="text-center">Fecha de Creación</th>
                                                 <th class="text-center">Acción</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($categories as $category)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $category->name }}</td>
-                                                    <td class="text-center">{{ date('d-m-Y', strtotime($category->created_at)) }}</td>
-                                                    <td class="text-center"> 
-    
-                                                        <button class="btn btn-sm btn-info my-1"
-                                                            onclick="editCategory(
-                                                            {{ $category->id }}, 
-                                                            '{{ $category->name }}')"> 
-                                                            <i data-feather="edit"></i> 
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $category->name }}</td>
+                                                <td>{{ $category->type == 0 ? 'Gasto' : 'Ingreso' }}</td>
+                                                <td class="text-center">{{ date('d-m-Y', strtotime($category->created_at)) }}</td>
+                                                <td class="text-center"> 
+                                                    
+                                                        <button class="btn btn-sm btn-info my-1" onclick="showModal({{$category->id}})">
+                                                            @include('partials.edit_icon_svg')
                                                         </button> 
                 
                                                         <button class="btn btn-sm btn-danger"
                                                             onclick="deleteElement( {{ $category->id }}, 
                                                             '#delete_category_', 
                                                             'esta Categoría' )"> 
-                                                            <i data-feather="trash-2"></i> 
+                                                            @include('partials.trash_icon_svg')
                                                         </button>
                                                         <form id="delete_category_{{ $category->id }}" action="{{ route('categories.destroy', $category->id) }}" method="POST">
                                                             @csrf
@@ -73,6 +72,9 @@
                                                         </form>
                                                     </td>
                                                 </tr>
+                                                @include('admin.categories.partials.modal-edit',[
+                                                    'category' => $category 
+                                                ])
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -107,12 +109,8 @@
       submitForms('#add_category', '.loading_btn_c', '#form_add_category');
       submitForms('#edit_category', '.loading_edit_c', '#form_edit_category');
 
-      function editCategory(id, name) {
-        var route = '{{route('categories.update', 'replace_this')}}'.replace('replace_this', id);
-        $('#form_edit_category').attr('action', route);
-        $('#edit_name').val(name);
-        $('#modal_edit_category').modal('show');
-      }
+      const showModal = id =>  $(`#modal_edit_category${id}`).modal('show');
+      const submitEditForm = id => $(`#form_edit_category${id}`).submit();
 
       dataTable('#table');
       

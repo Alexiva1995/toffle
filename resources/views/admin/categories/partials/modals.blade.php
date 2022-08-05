@@ -27,7 +27,7 @@
 
 
 <!-- Modal Edit Product -->
-<div
+{{-- <div
   class="modal fade text-start"
   id="modal_edit_category"
   tabindex="-1"
@@ -51,4 +51,4 @@
         </div>
       </div>
     </div>
-</div>
+</div> --}}
