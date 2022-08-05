@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Expense;
 use App\Models\Category;
 use DataTables;
-use Carbon\Carbon;
-use Session;
+use Illuminate\Support\Facades\Auth;
 
 
 class ExpensesController extends Controller
@@ -17,9 +16,10 @@ class ExpensesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    //Index para empleados
     public function index()
     {
-        //
+        return view('employee.expenses.index');
     }
 
     /**
@@ -31,7 +31,15 @@ class ExpensesController extends Controller
     {
         //Obtiene las categorias de tipo 'Gastos'
         $categories = Category::where('type', 0)->get();
+        if(Auth::user()->role == '0'){
+            return view('employee.expenses.create')->with('categories', $categories);
+        }
         return view('admin.expenses.create')->with('categories', $categories);
+    }
+
+    public function employeeCreate()
+    {
+        return view('employee.expenses.create');
     }
 
     /**
@@ -60,10 +68,14 @@ class ExpensesController extends Controller
 
         $expense = Expense::create($request->all());
 
-        if ($request->status == '0') {
+        if ($request->status == '0' && Auth::user()->role == '1') {
             return redirect()->route('expenses.list.to.pay')->with('success', 'Gasto Añadido');
         }else{
-            return redirect()->route('expenses.list.historical')->with('success', 'Gasto Añadido');
+            // Role 1 es admin
+            if(Auth::user()->role == '1'){
+                return redirect()->route('expenses.list.historical')->with('success', 'Gasto Añadido');
+            }
+            return redirect()->route('employee.expenses.index')->with('success', 'Gasto Añadido');
         }
     }
 
@@ -87,15 +99,16 @@ class ExpensesController extends Controller
         }
 
         $expenses = Expense::whereDate('updated_at', $date)
+            ->with('category')
             ->orderBy('updated_at', 'ASC')
             ->get();
 
         $categories = Category::all();
+        if(Auth::user()->role == '1'){
+            return view('admin.expenses.show', compact('categories', 'expense_details', 'expenses'));
+        }
+        return view('employee.expenses.show', compact('categories', 'expense_details', 'expenses'));
 
-        return view('admin.expenses.show')
-            ->with('categories', $categories)
-            ->with('expense_details', $expense_details)
-            ->with('expenses', $expenses);
     }
 
     /**
