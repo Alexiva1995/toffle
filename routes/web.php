@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::resource('employees', UserController::class);
-
+            Route::get('employees/active/sessions', [UserController::class, 'showActiveUsers'])->name('show.active.users');
             // Dishes
             Route::group(['prefix' => 'dishes'], function () {
                 Route::post('ingredients-remove/{id}', [DishController::class, 'removeIngredient'])->name('ingredients.remove');

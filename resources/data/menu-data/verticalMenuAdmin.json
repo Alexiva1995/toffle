@@ -15,6 +15,13 @@
       "slug": "employees.list"
     },
     {
+      "url": "admin/employees/active/sessions",
+      "name": "sessions",
+      "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
+      "icon": "monitor",
+      "slug": "show.active.users"
+    },
+    {
       "url": "admin/inventory",
       "name": "inventory",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
