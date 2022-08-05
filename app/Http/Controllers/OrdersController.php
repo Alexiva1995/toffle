@@ -268,12 +268,13 @@ class OrdersController extends Controller
     
                 $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
                 $grams_used = $value->pivot->portion * $order_dish->pivot->unit;
-                $units = $grams_used / $inventory->product->gr;
+                $product_quantity = $inventory->product->gr != null ? $inventory->product->gr : $inventory->product->quantity;
+                $units = $grams_used / $product_quantity;
     
                 $inventory->increment('local', $units);
-                $inventory->update([
-                    'total' => $inventory->deposit + $inventory->local + $inventory->public
-                ]);
+                // $inventory->update([
+                //     'total' => $inventory->deposit + $inventory->local + $inventory->public
+                // ]);
             }
 
             $order->ingredients()->wherePivot('code_operation', $order_dish->pivot->code_operation)->detach();
@@ -288,7 +289,6 @@ class OrdersController extends Controller
     {
         $order = Order::find($order_id);
         $dish = Dish::find($request->dish_id);
-
         for ($i=1; $i <= $request->unit; $i++) { 
 
             do {
@@ -325,12 +325,13 @@ class OrdersController extends Controller
                 ]);
                 $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
                 $grams_used = $value->pivot->portion * 1;
-                $units = $grams_used / $inventory->product->gr;
+                $product_quantity = $inventory->product->gr != null ? $inventory->product->gr : $inventory->product->quantity;
+                $units = $grams_used / $product_quantity ;
     
                 $inventory->decrement('local', $units);
-                $inventory->update([
-                    'total' => $inventory->deposit + $inventory->local + $inventory->public
-                ]);
+                // $inventory->update([
+                //     'total' => $inventory->deposit + $inventory->local + $inventory->public
+                // ]);
             }
     
             $total_amount = $dish->designated_price;
@@ -389,7 +390,6 @@ class OrdersController extends Controller
             ->with('code_operation', $code_operation)
             ->render();
     }
-
     public function addIngredientsOrder(Request $request)
     {
         $order = Order::where('id', $request->order_id)->first();
@@ -447,7 +447,6 @@ class OrdersController extends Controller
             'order_ingredient.flavor_name' => $request->flavor_name,
         ]);
     }
-
     public function removeIngredientsOrder(Request $request)
     {
         $order = Order::where('id', $request->order_id)->first();
@@ -460,7 +459,8 @@ class OrdersController extends Controller
 
         $inventory = Inventory::where('id', $order_ingredient->pivot->inventory_id)->first();
         $grams_used = $order_ingredient->pivot->portion * $order_dish->pivot->unit;
-        $units = $grams_used / $inventory->product->gr;
+        $product_quantity = $inventory->product->gr != null ? $inventory->product->gr : $inventory->product->quantity;
+        $units = $grams_used / $product_quantity;
 
         $inventory->increment('local', $units);
         $inventory->update([

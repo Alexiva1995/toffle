@@ -76,20 +76,19 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::resource('employees', UserController::class);
-
+            Route::get('employees/active/sessions', [UserController::class, 'showActiveUsers'])->name('show.active.users');
             // Dishes
             Route::group(['prefix' => 'dishes'], function () {
                 Route::post('ingredients-remove/{id}', [DishController::class, 'removeIngredient'])->name('ingredients.remove');
                 Route::get('list', [DishController::class, 'list'])->name('dishes.list');
             });
 
-            Route::resource('dishes', DishController::class);
-
             // Inventories
             Route::group(['prefix' => 'inventory'], function () {
                 Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
                 Route::post('add-product-to-inventory', [InventoryController::class, 'addProductToInventory'])->name('add.product.to.inventory');
             });
+            Route::resource('dishes', DishController::class);
 
             Route::resource('inventory', InventoryController::class);
 
@@ -150,7 +149,7 @@ Route::middleware('auth')->group(function () {
 
         });
     });
-
+    
     Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 
     Route::group(['prefix' => 'employee'], function () {
@@ -187,6 +186,13 @@ Route::middleware('auth')->group(function () {
             // });
 
         });
+        Route::get('expenses/index', [ExpensesController::class, 'index'])->name('employee.expenses.index');
+        Route::get('expenses/show/{id}', [ExpensesController::class, 'show'])->name('employee.expenses.show');
+        Route::get('expenses/create', [ExpensesController::class, 'create'])->name('employee.expenses.create');
+        Route::get('list-historical-data', [ExpensesController::class, 'listHistoricalData'])->name('employee.expenses.list.historical.data');
+        Route::post('expenses/store', [ExpensesController::class, 'store'])->name('employee.expenses.store');
+        // Inventories
+        Route::get('inventory', [InventoryController::class, 'index'])->name('employee.inventory.index');
 
     });
 

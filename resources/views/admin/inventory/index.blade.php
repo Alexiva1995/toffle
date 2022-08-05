@@ -13,51 +13,51 @@
 @section('content')
 <!-- Basic table -->
 <section id="basic-datatable">
-    <section id="nav-tabs-aligned">
-        <div class="row match-height">
-          <!-- Centered Aligned Tabs starts -->
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body">
-                <ul class="nav nav-tabs justify-content-center" role="tablist">
-                  <li class="nav-item">
-                    <a
-                      class="nav-link {{ Session::has('products') == true ? '' : 'active' }}"
-                      id="inventories-tab-center"
-                      data-bs-toggle="tab"
-                        href="#inventories-center"
-                      aria-controls="inventories-center"
-                      role="tab"
-                      aria-selected="false"
-                      >Inventario</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link {{ Session::has('products') == true ? 'active' : '' }}"
-                      id="products-tab-center"
-                      data-bs-toggle="tab"
-                      href="#products-center"
-                      aria-controls="products-center"
-                      role="tab"
-                      aria-selected="false"
-                      >Productos</a
-                    >
-                  </li>
-                </ul>
-                <div class="tab-content">
-                  <div class="tab-pane {{ Session::has('products') == true ? '' : 'active' }}" id="inventories-center" aria-labelledby="inventories-tab-center" role="tabpanel">
-                    @include('admin.inventory.list')
-                  </div>
-                  <div class="tab-pane {{ Session::has('products') == true ? 'active' : '' }}" id="products-center" aria-labelledby="products-tab-center" role="tabpanel">
-                    @include('admin.products.list')
-                  </div>
+  <section id="nav-tabs-aligned">
+      <div class="row match-height">
+        <!-- Centered Aligned Tabs starts -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <ul class="nav nav-tabs justify-content-center" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link {{ Session::has('products') == true ? '' : 'active' }}"
+                    id="inventories-tab-center"
+                    data-bs-toggle="tab"
+                      href="#inventories-center"
+                    aria-controls="inventories-center"
+                    role="tab"
+                    aria-selected="false"
+                    >Inventario</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {{ Session::has('products') == true ? 'active' : '' }}"
+                    id="products-tab-center"
+                    data-bs-toggle="tab"
+                    href="#products-center"
+                    aria-controls="products-center"
+                    role="tab"
+                    aria-selected="false"
+                    >Productos</a
+                  >
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane {{ Session::has('products') == true ? '' : 'active' }}" id="inventories-center" aria-labelledby="inventories-tab-center" role="tabpanel">
+                  @include('admin.inventory.list')
+                </div>
+                <div class="tab-pane {{ Session::has('products') == true ? 'active' : '' }}" id="products-center" aria-labelledby="products-tab-center" role="tabpanel">
+                  @include('admin.products.list')
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+  </section>
 </section>
 @endsection
 
@@ -107,112 +107,90 @@
       $('#modal_edit_product').modal('show');
     }
 
-    function editInventory(id, product_id, qty_package, unit_package, price, cost, deposit, local, public, total) {
-
-        var route = '{{route('inventory.update', 'replace_this')}}'.replace('replace_this', id);
-        $('#form_edit_inventory').attr('action', route);
-        $("#edit_product_id option[value="+ product_id +"]").attr("selected", 'selected').trigger('change');
-        $('#edit_qty_package').val(qty_package);
-        $('#edit_unit_package').val(unit_package);
-        $('#edit_price').val(price);
-        $('#edit_cost').val(cost);
-        $('#edit_deposit').val(deposit);
-        $('#edit_local').val(local);
-        $('#edit_public').val(public);
-        $('#edit_total').val(total);
-        $('#modal_edit_inventory').modal('show');
-
-    }
-
-    function editInventoryWithoutPackage(id, product_id, unit_package, price, cost, deposit, local, public, total) {
+    function editInventory(id, cost, local) {
       var route = '{{route('inventory.update', 'replace_this')}}'.replace('replace_this', id);
       $('#form_edit_inventory_2').attr('action', route);
-      $("#edit_product_id option[value="+ product_id +"]").attr("selected", 'selected').trigger('change');
-      $('#edit_unit_package_2').val(unit_package);
-      $('#edit_price_2').val(price);
       $('#edit_cost_2').val(cost);
-      $('#edit_deposit_2').val(deposit);
-      $('#edit_local_2').val(local);
-      $('#edit_public_2').val(public);
-      $('#edit_total_2').val(total);
+      $('#edit_total_2').val(local);
       $('#modal_edit_inventory_2').modal('show');
+
     }
 
     function operation(department, operator, id, max_value = 0) {
-        var title = '';
-        var btn_text = '';
+      var title = '';
+      var btn_text = '';
 
-        var route = "{{ route('operation.inventory', 'id') }}";
-        route = route.replace('id', id);
-        $('#form_operation').attr('action', route);
+      var route = "{{ route('operation.inventory', 'id') }}";
+      route = route.replace('id', id);
+      $('#form_operation').attr('action', route);
 
-        if (operator == 'subtract') {
-          btn_text = "Restar" ;
-        }
+      if (operator == 'subtract') {
+        btn_text = "Restar" ;
+      }
 
-        if (operator == 'sum') {
-          btn_text = "Sumar" ;
-        }
+      if (operator == 'sum') {
+        btn_text = "Sumar" ;
+      }
 
-        switch (department) {
-          case 'deposit':
-            title = btn_text+" Depósito" ;
-            break;
-          case 'local':
-            title = btn_text+" Local" ;
-            break;
-          case 'public':
-            title = btn_text+" Público" ;
-            break;
-        
-          default:
-            break;
-        }       
+      switch (department) {
+        case 'deposit':
+          title = btn_text+" Depósito" ;
+          break;
+        case 'local':
+          title = btn_text+" Local" ;
+          break;
+        case 'public':
+          title = btn_text+" Público" ;
+          break;
+      
+        default:
+          break;
+      }       
 
-        $('#modal_title').text(title);
-        $('#btn_text').text(btn_text);
-        $('#department').val(department); 
-        $('#operation').val(operator);   
-        $('#qty').val('');
-        $('#max_value').val(max_value);   
-        $("#modal_operation").modal("show");
+      $('#modal_title').text(title);
+      $('#btn_text').text(btn_text);
+      $('#department').val(department); 
+      $('#operation').val(operator);   
+      $('#qty').val('');
+      $('#max_value').val(max_value);   
+      $("#modal_operation").modal("show");
     }
 
     function calculateCost() {
-        var unit_package = $('#edit_unit_package').val();
-        var price = $('#edit_price').val();
+      var unit_package = $('#edit_unit_package').val();
+      var price = $('#edit_price').val();
 
-        var cost = price / unit_package;
-        cost = roundDecimal(cost, 2);
-        $('#edit_cost').val(cost);
+      var cost = price / unit_package;
+      cost = roundDecimal(cost, 2);
+      $('#edit_cost').val(cost);
     }
 
     //Calcular el costo a inventario despues de las modificaciones (G-2.0 Inventario)
     function calculateCost2() {
-        var unit_package = $('#edit_unit_package_2').val();
-        var price = $('#edit_price_2').val();
+      var unit_package = $('#edit_unit_package_2').val();
+      var price = $('#edit_price_2').val();
 
-        var cost = price / unit_package;
-        cost = roundDecimal(cost, 2);
-        $('#edit_cost_2').val(cost);
+      var cost = price / unit_package;
+      cost = roundDecimal(cost, 2);
+      $('#edit_cost_2').val(cost);
     }
 
     function calculateTotal() {
-        var deposit = $('#edit_deposit').val();
-        var local = $('#edit_local').val();
-        var public = $('#edit_public').val();
+      var deposit = $('#edit_deposit').val();
+      var local = $('#edit_local').val();
+      var public = $('#edit_public').val();
 
-        var total = parseFloat(deposit = null ? 0 : deposit) + parseFloat(local = null ? 0 : local) + parseFloat(public = null ? 0 : public);
-        $('#edit_total').val(total);
+      var total = parseFloat(deposit = null ? 0 : deposit) + parseFloat(local = null ? 0 : local) + parseFloat(public = null ? 0 : public);
+      $('#edit_total').val(total);
     }
     //Calcular el total a inventario despues de las modificaciones (G-2.0 Inventario)
     function calculateTotal2() {
-        var deposit = $('#edit_deposit_2').val();
-        var local = $('#edit_local_2').val();
-        var public = $('#edit_public_2').val();
+      var deposit = $('#edit_deposit_2').val();
+      var local = $('#edit_local_2').val();
+      var public = $('#edit_public_2').val();
 
-        var total = parseFloat(deposit = null ? 0 : deposit) + parseFloat(local = null ? 0 : local) + parseFloat(public = null ? 0 : public);
-        $('#edit_total_2').val(total);
+      var total = parseFloat(deposit = null ? 0 : deposit) + parseFloat(local = null ? 0 : local) + parseFloat(public = null ? 0 : public);
+      $('#edit_total_2').val(total);
     }
     //Filtro para que el campo "unidades" solo acepte números enteros 
     function filter() {
@@ -240,7 +218,7 @@
 
       $('#btn_max').click( function() {
         $('#qty').val( $('#max_value').val() );
-        toastr['success']('', 'Cantidad Máxima Agregada', {
+          toastr['success']('', 'Cantidad Máxima Agregada', {
           closeButton: true,
           tapToDismiss: false,
         });
@@ -259,8 +237,8 @@
       //Oculta los inputs ya que COP es marcado por default
       if( $('#radio_COP').is(':checked'))
       {
-          $('#dolar_cop').css('display', 'none');
-          $('#dolar_bs').css('display', 'none');
+        $('#dolar_cop').css('display', 'none');
+        $('#dolar_bs').css('display', 'none');
       }
       //Mostrar - Ocultar inputs segun el radio
       $('#radio_COP').click(function(){

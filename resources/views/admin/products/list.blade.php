@@ -20,60 +20,64 @@
                 <table class="table" id="product_table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Cantidad</th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Presentación</th>
                             <th class="text-center">Fecha de Creación</th>
-                            <th class="text-center">Acción</th>
+                            @if (auth()->user()->role == 1)
+                                <th class="text-center">Acción</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($products as $product)
                         <tr>
                             {{-- <td>{{ $loop->iteration }}</td> --}}
-                            <td>{{ $product->id }}</td>
-                            <td>{{ $product->name }}</td>
+                            <td class="text-center">{{ $product->id }}</td>
+                            <td class="text-center">{{ $product->name }}</td>
                             @if ($product->gr != null)
-                                <td>{{ $product->gr}}g</td>
+                                <td class="text-center">{{ $product->gr}}Gr</td>
                             @else
-                                <td>{{ $product->quantity }} Unid.</td>
+                                <td class="text-center">{{ $product->quantity }} Unid.</td>
                             @endif
                             <td class="text-center">{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
-                            <td class="text-center"> 
-                                @if ($product->gr != null)
-                                    <button class="btn btn-sm btn-info my-1"
-                                        onclick="editProduct(
-                                        {{ $product->id }}, 
-                                        '{{ $product->name }}',
-                                        'Gramos',
-                                        {{ $product->gr }},
-                                        {{ $product->it_has_flavors }})"> 
-                                        <i data-feather="edit"></i> 
-                                    </button> 
-                                @else
-                                    <button class="btn btn-sm btn-info my-1"
-                                        onclick="editProduct(
-                                        {{ $product->id }}, 
-                                        '{{ $product->name }}',
-                                        'Unidades',
-                                        {{ $product->quantity }},
-                                        {{ $product->it_has_flavors }})"> 
-                                        <i data-feather="edit"></i> 
-                                    </button> 
-                                @endif
+                            @if (auth()->user()->role == 1)
+                                <td class="text-center"> 
+                                    @if ($product->gr != null)
+                                        <button class="btn btn-sm btn-info my-1"
+                                            onclick="editProduct(
+                                            {{ $product->id }}, 
+                                            '{{ $product->name }}',
+                                            'Gramos',
+                                            {{ $product->gr }},
+                                            {{ $product->it_has_flavors }})"> 
+                                            @include('partials.edit_icon_svg')
+                                        </button> 
+                                    @else
+                                        <button class="btn btn-sm btn-info my-1"
+                                            onclick="editProduct(
+                                            {{ $product->id }}, 
+                                            '{{ $product->name }}',
+                                            'Unidades',
+                                            {{ $product->quantity }},
+                                            {{ $product->it_has_flavors }})"> 
+                                            @include('partials.edit_icon_svg')
+                                        </button> 
+                                    @endif
 
-                                <button class="btn btn-sm btn-danger"
-                                    onclick="deleteElement( {{ $product->id }}, 
-                                    '#delete_product_', 
-                                    'este Producto',
-                                    'IMPORTANTE: Si esté Producto está añadido en el inventario, no podrá ser removido' )"> 
-                                    <i data-feather="trash-2"></i> 
-                                </button>
-                                <form id="delete_product_{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')                                      
-                                </form>
-                            </td>
+                                    <button class="btn btn-sm btn-danger"
+                                        onclick="deleteElement( {{ $product->id }}, 
+                                        '#delete_product_', 
+                                        'este Producto',
+                                        'IMPORTANTE: Si esté Producto está añadido en el inventario, no podrá ser removido' )"> 
+                                        @include('partials.trash_icon_svg') 
+                                    </button>
+                                    <form id="delete_product_{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')                                      
+                                    </form>
+                                </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>
