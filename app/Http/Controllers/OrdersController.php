@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Dish;
-use App\Models\Category;
 use App\Models\Inventory;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DataTables;
+use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class OrdersController extends Controller
 {
@@ -144,10 +143,20 @@ class OrdersController extends Controller
     public function update(Request $request, $id)
     {
         if ($request->ajax()) {
-
             $order = Order::find($id);
 
             if ($request->form == 'update_general_data') {
+                $order_ingredients = DB::table('order_ingredient')->where('order_id', $order->id)->get();
+                foreach($order_ingredients as $ingredient)
+                {
+                    if($ingredient->it_has_flavors == 1 && $ingredient->flavor_name == null)
+                    {
+                        $response = new stdClass;
+                        $response->error = true;
+                        $response->message = 'Esta orden tiene ingredientes con sabores sin definir';
+                        return $response;
+                    }
+                }
                 $this->updateGeneralData($request, $order);
             }
 
