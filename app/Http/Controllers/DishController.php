@@ -134,7 +134,7 @@ class DishController extends Controller
     public function edit($id)
     {
         $dish = Dish::find($id);
-        $ingredients = Inventory::orderBy('id', 'DESC')->get();
+        $ingredients = Inventory::orderBy('id', 'DESC')->with('product')->get();
         $category = Category::orderBy('id', 'DESC')->get();
 
         return view('admin.dishes.edit', compact('dish', 'ingredients', 'category'));
