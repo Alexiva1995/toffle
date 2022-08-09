@@ -1,16 +1,15 @@
-
 @extends('layouts/contentLayoutMaster')
 
 @section('title', 'Dashboard')
 
 @section('vendor-style')
-  {{-- vendor css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
-  @include('panels.datatable.styles')
+{{-- vendor css files --}}
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
+@include('panels.datatable.styles')
 @endsection
 @section('page-style')
-  {{-- Page css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
+{{-- Page css files --}}
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
 @endsection
 
 @section('content')
@@ -21,14 +20,14 @@
       <div class="card card-congratulation-medal">
         <div class="card-body">
           <div class="row">
-              <div class="col-auto">
-                <h3 class="mb-5"> 
-                    <span class="icon-wrapper">
-                      <i data-feather="edit"></i>
-                    </span> Pedidos
-                </h3>
-                <a href="{{ route('orders.create') }}" class="btn btn-primary">Agregar Pedido</a>
-              </div>
+            <div class="col-auto">
+              <h3 class="mb-5">
+                <span class="icon-wrapper">
+                  <i data-feather="edit"></i>
+                </span> Pedidos
+              </h3>
+              <a href="{{ route('orders.create') }}" class="btn btn-primary">Agregar Pedido</a>
+            </div>
           </div>
         </div>
       </div>
@@ -36,7 +35,7 @@
     <!-- Add Order Card -->
 
     <div class="col-xl-9 col-md-6 col-12" id="statistics"></div>
- 
+
     <div class="col-12">
       @include('employee.dashboard.orders.pending')
     </div>
@@ -51,38 +50,32 @@
 
   </div>
 
-  <div
-  class="modal fade text-start"
-  id="modal_show_order_details"
-  tabindex="-1"
-  aria-labelledby="myModalLabel1"
-  aria-hidden="true"
->
+  <div class="modal fade text-start" id="modal_show_order_details" tabindex="-1" aria-labelledby="myModalLabel1"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content order_details">
-        </div>
+      <div class="modal-content order_details">
+      </div>
     </div>
   </div>
-@endsection
+  @endsection
 
-@section('vendor-script')
+  @section('vendor-script')
   {{-- vendor files --}}
   <script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
   <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
-@endsection
-@section('page-script')
+  @endsection
+  @section('page-script')
   {{-- Page js files --}}
-@endsection
+  @endsection
 
-@section('custom-js')
+  @section('custom-js')
 
   @include('panels.datatable.scripts')
   <script>
-      dataTable('#order_history_table');
+    dataTable('#order_history_table');
       // dataTable('#table_list');
       dataTable('#money_flow_table');
       // dataTable('#inventory_reposition_table');
-
       function loadData(type) {
           var route = "{{ route('load.data', 'parameter') }}";
           route = route.replace('parameter', type);
@@ -114,21 +107,29 @@
 
         item ['_method'] = 'PATCH';
         $.post(url, item)
-        .done(function(data){
-          $(input).removeClass('is-invalid')
-          $(input).addClass('is-valid')
+        .done( function(data){
+          if('error' in data){
+            toastr['error']('', data.message, {
+                closeButton: true,
+                tapToDismiss: false,
+            });
+          }else{
+            $(input).removeClass('is-invalid')
+            $(input).addClass('is-valid')
 
-          setTimeout(() => {
-              $(input).removeClass('is-valid')
-          },1000)
+            setTimeout(() => {
+                $(input).removeClass('is-valid')
+            },1000)
 
+            loadData('statistics');
+            loadData('order_history');
+            // loadData('tables');
+            loadData('cash_flow');
+            // loadData('inventory_replenishment');
+          }
           table.search('').draw();
 
-          loadData('statistics');
-          loadData('order_history');
-          // loadData('tables');
-          loadData('cash_flow');
-          // loadData('inventory_replenishment');
+          
         })
         .fail(function(data) {
             $(input).addClass('is-invalid')
@@ -253,4 +254,4 @@
       
   </script>
 
-@endsection
+  @endsection
