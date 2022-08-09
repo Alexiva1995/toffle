@@ -34,7 +34,7 @@
       "name": "dishes",
       "badgeClass": "badge badge-light-warning badge-pill ml-auto mr-1",
       "icon": "layers",
-      "slug": "index.dishes"
+      "slug": "dishes.index"
     },
 
     {
@@ -48,7 +48,7 @@
           "url": "admin/reports/cash-flow",
           "name": "r_cash_flow",
           "icon": "circle",
-          "slug": "reports.cashflow"
+          "slug": "reports.cash.flow"
         },
         {
           "url": "admin/reports/sales",

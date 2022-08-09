@@ -236,28 +236,7 @@
                     return data.toLocaleString();
                 }  
             },
-            {
-                data: null,
-                sortable: true, 
-                title: "Costo Fijo",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }  
-            },
-            {
-                data: null,
-                sortable: true, 
-                title: "Imprevisto",
-                "class": "text-center",
-                visible: true,
-                searchable: true,
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }  
-            },
+            
             {
                 data: "updated_at",
                 name: "updated_at",
