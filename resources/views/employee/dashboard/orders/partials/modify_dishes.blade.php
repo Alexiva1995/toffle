@@ -558,12 +558,34 @@
                 /* Fin opcion para llevar */
 
                 // if(data.name.includes('Helado') || data.category_id == 4){
-                    field=$('td:eq(1)', elemt);
-                    buttons='';
-                    button = '<span>'+ (data.flavor != null ? data.flavor : 'Seleccione un sabor') +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
-                    buttons+=button;
-                    field=field.html(buttons);
-                // }
+                    if('flavor' in data){
+                        if(data.details == true && data.flavor != null){
+                            field=$('td:eq(1)', elemt);
+                            buttons='';
+                            button = '<span>'+ (data.flavor) +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
+                            buttons+=button;
+                            field=field.html(buttons);
+
+                        }else if(data.details == false && data.flavor != null){
+                            field=$('td:eq(1)', elemt);
+                            buttons='';
+                            button = '<span>'+ (data.flavor) +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
+                            buttons+=button;
+                            field=field.html(buttons);
+                        }else if(data.details == true && data.flavor == null){
+                            field=$('td:eq(1)', elemt);
+                            buttons='';
+                            button = '<span>'+ ('Seleccione un sabor') +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
+                            buttons+=button;
+                            field=field.html(buttons);
+                        }else{
+                            field=$('td:eq(1)', elemt);
+                            buttons='';
+                            button = '<span>'+ ('----------------') +' </span>'
+                            buttons+=button;
+                            field=field.html(buttons);
+                        }
+                    }
 
 
                 field=$('td:eq(3)', elemt);
