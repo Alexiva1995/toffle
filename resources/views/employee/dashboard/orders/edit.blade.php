@@ -24,20 +24,21 @@
                 <div class="card-header">
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ route('dashboard-employee') }}">
-                                        Dashboard
-                                    </a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    Editar Pedido
-                                </li>
-                            </ol>
-                      </div>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('dashboard-employee') }}">
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                Editar Pedido
+                            </li>
+                        </ol>
+                    </div>
                 </div>
                 <div class="card-body px-2">
                     <h4 class="text-center mb-3">Datos del Pedido</h4>
-                    <form class="form form-vertical mb-3" action="{{ route('orders.update', $order->id) }}" id="form_edit_order" method="POST">
+                    <form class="form form-vertical mb-3" action="{{ route('orders.update', $order->id) }}"
+                        id="form_edit_order" method="POST">
                         @csrf
                         @method('PATCH')
                         <div class="row justify-content-center align-items-center">
@@ -46,7 +47,9 @@
                                     <label class="form-label" for="customer_name">Nombre del Cliente</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text"><i data-feather="user"></i></span>
-                                        <input type="text" id="customer_name" class="form-control requerid" name="customer_name" value="{{ $order->customer_name }}" placeholder="Nombre" oninput="updateOrder(this)" required/>
+                                        <input type="text" id="customer_name" class="form-control requerid"
+                                            name="customer_name" value="{{ $order->customer_name }}"
+                                            placeholder="Nombre" oninput="updateOrder(this)" required />
                                     </div>
                                 </div>
                             </div>
@@ -55,76 +58,90 @@
                                     <label class="form-label" for="table">Mesa</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text"><i data-feather="tag"></i></span>
-                                        <input type="number" id="table" class="form-control requerid" name="table" value="{{ $order->table }}" placeholder="Mesa" oninput="updateOrder(this)" required/>
+                                        <input type="number" id="table" class="form-control requerid" name="table"
+                                            value="{{ $order->table }}" placeholder="Mesa" oninput="updateOrder(this)"
+                                            required />
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-12 col-md-6 mb-2">
                                 <h5 class="text-center">Estado</h5>
                                 <div class="row justify-content-center @error('status') is-invalid @enderror">
                                     <div class="col-auto">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="pending" value="0" {{ $order->status == 0 ? 'checked' : '' }} oninput="updateOrder(this)" />
+                                            <input type="radio" class="form-check-input border border-primary"
+                                                type="checkbox" name="status" id="pending" value="0" {{ $order->status
+                                            == 0 ? 'checked' : '' }} oninput="updateOrder(this)" />
                                             <label class="form-check-label" for="pending">Pendiente</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="on_hold" value="1" {{ $order->status == 1 ? 'checked' : '' }} oninput="updateOrder(this)" />
+                                            <input type="radio" class="form-check-input border border-primary"
+                                                type="checkbox" name="status" id="on_hold" value="1" {{ $order->status
+                                            == 1 ? 'checked' : '' }} oninput="updateOrder(this)" />
                                             <label class="form-check-label" for="on_hold">En Espera</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="finalized" value="2" {{ $order->status == 2 ? 'checked' : '' }} oninput="updateOrder(this)" />
+                                            <input type="radio" class="form-check-input border border-primary"
+                                                type="checkbox" name="status" id="finalized" value="2" {{ $order->status
+                                            == 2 ? 'checked' : '' }} oninput="updateOrder(this)" />
                                             <label class="form-check-label" for="finalized">Finalizado</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input border border-primary" type="checkbox" name="status" id="cancelled" value="3" {{ $order->status == 3 ? 'checked' : '' }} oninput="updateOrder(this)" />
+                                            <input type="radio" class="form-check-input border border-primary"
+                                                type="checkbox" name="status" id="cancelled" value="3" {{ $order->status
+                                            == 3 ? 'checked' : '' }} oninput="updateOrder(this)" />
                                             <label class="form-check-label" for="cancelled">Cancelado</label>
-                                        </div>  
-                                    </div>                                   
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </form>
 
                     <div class="row justify-content-center mb-3">
-                        <form class="form form-vertical" action="{{ route('order.add.dish', $order->id) }}" id="form_add_order" method="POST">
+                        <form class="form form-vertical" action="{{ route('order.add.dish', $order->id) }}"
+                            id="form_add_order" method="POST">
                             @csrf
                             <div class="row justify-content-center align-items-center">
                                 <div class="col-12">
                                     <div class="mb-1">
                                         <h5 class="mb-2 text-center">Añadir Platos</h5>
                                         <div class="row justify-content-center">
-                                            <div class="col-12 col-md-4 mb-1">           
-                                                <select class="select2 form-control" data-toggle="select" class="form-control" id="dish_id">
+                                            <div class="col-12 col-md-4 mb-1">
+                                                <select class="select2 form-control" data-toggle="select"
+                                                    class="form-control" id="dish_id">
                                                     <option disabled selected value=''>Selecciona un Plato</option>
                                                     @foreach ($dish_category as $item)
-                                                        @if ( count( $item->collectionDishes($item->category_id) ) > 0 )
-                                                            <optgroup label="{{ $item->category->name }}"> 
-                                                                @foreach ($item->collectionDishes($item->category_id) as $dish)
-                                                                    <option data-price = {{ $dish->designated_price }} value="{{ $dish->id }}">{{ $dish->name }}</option>
-                                                                @endforeach
-                                                            </optgroup>
-                                                        @endif
+                                                    @if ( count( $item->collectionDishes($item->category_id) ) > 0 )
+                                                    <optgroup label="{{ $item->category->name }}">
+                                                        @foreach ($item->collectionDishes($item->category_id) as $dish)
+                                                        <option data-price={{ $dish->designated_price }} value="{{
+                                                            $dish->id }}">{{ $dish->name }}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                    @endif
                                                     @endforeach
                                                 </select>
                                             </div>
 
                                             <div class="col-12 col-md-4 mb-1">
-                                                <input type="number" id="units" class="form-control" placeholder="Cantidad"/>
+                                                <input type="number" id="units" class="form-control"
+                                                    placeholder="Cantidad" />
                                             </div>
 
                                             <div class="col-auto">
                                                 <a class="btn btn-info" id="add_dish">
-                                                    <i class="icon_dish" data-feather="plus-circle"></i> 
+                                                    <i class="icon_dish" data-feather="plus-circle"></i>
                                                     <span class="loading_add_dish mr-2"></span>
                                                     Añadir
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                </div>                                    
+                                </div>
                             </div>
-                        </form> 
+                        </form>
                     </div>
 
                     <div class="row justify-content-center my-2">
@@ -133,7 +150,8 @@
                             <div class="mb-1 row justify-content-center align-items-center">
                                 <label for="total_amount" class="col-auto" style="font-size:15px">Monto Total:</label>
                                 <div class="col-auto">
-                                  <input type="number" id="total_amount" class="form-control requerid" name="total_amount" value="{{ $order->total_amount }}" readonly/>
+                                    <input type="number" id="total_amount" class="form-control requerid"
+                                        name="total_amount" value="{{ $order->total_amount }}" readonly />
                                 </div>
                             </div>
                         </div>
@@ -141,8 +159,8 @@
 
                     <div class="table-responsive mb-3 mx-2">
                         <table class="table" id="dish_to_order_table">
-                        </table>           
-                    </div> 
+                        </table>
+                    </div>
 
                     <div class="row justify-content-center mt-3">
                         <div class="col-auto" id="dash-btn">
@@ -154,17 +172,11 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </section>
 
-<div
-  class="modal fade text-start"
-  id="modal_show_ingredients"
-  tabindex="-1"
-  aria-labelledby="myModalLabel1"
-  aria-hidden="true"
-  data-bs-backdrop="static" data-bs-keyboard="false"
->
+<div class="modal fade text-start" id="modal_show_ingredients" tabindex="-1" aria-labelledby="myModalLabel1"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content ingredients_details">
         </div>
@@ -184,9 +196,9 @@
 
 @section('custom-js')
 
-    @include('panels.datatable.scripts')
-    <script>
-        const flavorAlert = () =>{
+@include('panels.datatable.scripts')
+<script>
+    const flavorAlert = () =>{
             toastr['error']('', 'El sabor es requerido', {
                 closeButton: true,
                 tapToDismiss: false,
@@ -604,13 +616,34 @@
                     */
                     /* Inicio Opcion para llevar  */
                     // if(data.name.includes('Helado') || data.category_id == 4){
-                        field=$('td:eq(1)', elemt);
-                        buttons='';
-                        button = '<span>'+ (data.flavor != null ? data.flavor : 'Seleccione un sabor') +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
-                        buttons+=button;
-                        field=field.html(buttons);
-                    // }
-                    
+                    if('flavor' in data){
+                        if(data.details == true && data.flavor != null){
+                            field=$('td:eq(1)', elemt);
+                            buttons='';
+                            button = '<span>'+ (data.flavor) +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
+                            buttons+=button;
+                            field=field.html(buttons);
+
+                        }else if(data.details == false && data.flavor != null){
+                            field=$('td:eq(1)', elemt);
+                            buttons='';
+                            button = '<span>'+ (data.flavor) +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
+                            buttons+=button;
+                            field=field.html(buttons);
+                        }else if(data.details == true && data.flavor == null){
+                            field=$('td:eq(1)', elemt);
+                            buttons='';
+                            button = '<span>'+ ('Seleccione un sabor') +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
+                            buttons+=button;
+                            field=field.html(buttons);
+                        }else{
+                            field=$('td:eq(1)', elemt);
+                            buttons='';
+                            button = '<span>'+ ('----------------') +' </span>'
+                            buttons+=button;
+                            field=field.html(buttons);
+                        }
+                    }
 
                     field=$('td:eq(3)', elemt);
                     buttons='';
@@ -623,5 +656,5 @@
                 feather.replace();
             });
         });
-    </script>
+</script>
 @endsection

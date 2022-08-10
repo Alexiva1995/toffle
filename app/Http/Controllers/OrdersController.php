@@ -516,11 +516,13 @@ class OrdersController extends Controller
         return Datatables::of($ingredients)->filter(function ($query) use($request) {
         }, true)
         ->addColumn('details', function ($ingredients) use($order) {
-            if ($order->productRequiresFlavor($order->id, $ingredients->pivot->id) == true) {
-                return '<span class="text-danger"><i data-feather="edit"></i> </span>
-                Se debe agregar el sabor a uno de los ingredientes de este plato.';
+            if ($order->productRequiresFlavor($order->id, $ingredients->pivot->code_operation)) {
+                return true;
+                // return '<span class="text-danger"><i data-feather="edit"></i> </span>
+                // Se debe agregar el sabor a uno de los ingredientes de este plato.';
             }else{
-                return '<span class="text-center text-primary"> ---- </span>';
+                return false;
+                // return '<span class="text-center text-primary"> ---- </span>';
             }
         })
         ->toJson();
