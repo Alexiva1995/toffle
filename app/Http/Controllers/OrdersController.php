@@ -491,16 +491,16 @@ class OrdersController extends Controller
         $ingredients = $order->dishes;
 
         //Lista de sabores de helados disponibles
-        $avaliable_flavors = Inventory::where('product_id', '=', 75)
-                                        ->orderBy('id', 'DESC')
-                                        ->where('public', '>', 0)
-                                        ->pluck('flavor_name');
+        // $avaliable_flavors = Inventory::where('product_id', '=', 75)
+        //                                 ->orderBy('id', 'DESC')
+        //                                 ->where('public', '>', 0)
+        //                                 ->pluck('flavor_name');
 
         foreach($ingredients as $dish)
         {
             //Verificar si el plato contiene "Helado" o esta en la categoria de Helados
-            if( strpos($dish->name, 'Helado') || $dish->category_id == 4 )
-            {
+            // if( strpos($dish->name, 'Helado') || $dish->category_id == 4 )
+            // {
             //Obtener el sabor del producto
             $flavor = $order->ingredients()
                             ->wherePivot('order_id', '=', $dish->pivot->order_id)
@@ -510,7 +510,7 @@ class OrdersController extends Controller
                             ->pluck('order_ingredient.flavor_name');
             //Crea un campo Sabor que almacena el sabor actual del helado en cuestion.
             $dish->flavor = $flavor->pop();
-            }
+            // }
         }
             
         return Datatables::of($ingredients)->filter(function ($query) use($request) {
