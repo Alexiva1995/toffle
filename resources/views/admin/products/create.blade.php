@@ -5,7 +5,11 @@
                 <h5 class="card-title">Datos Requeridos</h4>
             </div>
             <div class="card-body px-2">
-                <form class="form form-vertical" action="{{ route('products.store') }}" id="form_add_product" method="POST">
+                @if(Auth::user()->role == 1)
+                    <form class="form form-vertical" action="{{ route('products.store') }}" id="form_add_product" method="POST">
+                @else
+                    <form class="form form-vertical" action="{{ route('store.product.employee') }}" id="form_add_product" method="POST">
+                @endif
                     @csrf
                     <div class="row justify-content-center align-items-center">
                         <div class="col-12 col-md-6 mb-1">
