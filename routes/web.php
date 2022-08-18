@@ -193,6 +193,8 @@ Route::middleware('auth')->group(function () {
         Route::post('expenses/store', [ExpensesController::class, 'store'])->name('employee.expenses.store');
         // Inventories
         Route::get('inventory', [InventoryController::class, 'index'])->name('employee.inventory.index');
+        Route::post('employe-add-product-to-inventory', [InventoryController::class, 'addProductToInventory'])->name('add.product.to.inventory.employee');
+        Route::post('employe-store-products', [ProductController::class, 'store'])->name('store.product.employee');
 
     });
 

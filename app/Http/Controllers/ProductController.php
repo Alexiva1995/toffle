@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\Dish;
+use Illuminate\Support\Facades\Auth;
 use Session;
 
 class ProductController extends Controller
@@ -69,7 +70,11 @@ class ProductController extends Controller
         }
 
         Session::flash('products', true); 
-        return redirect()->route('inventory.index')->with('success', 'Producto Añadido');
+        if(Auth::user()->role == 1)
+        {
+            return redirect()->route('inventory.index')->with('success', 'Producto Añadido');
+        }
+        return redirect()->route('employee.inventory.index')->with('success', 'Producto Añadido');
     }
 
     /**

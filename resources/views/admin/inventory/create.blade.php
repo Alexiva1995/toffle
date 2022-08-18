@@ -5,8 +5,13 @@
                 <h4 class="card-title">Datos Requeridos</h4>
             </div>
             <div class="card-body p-0 px-2">
-                <form class="form form-vertical" action="{{ route('add.product.to.inventory') }}"
-                    id="form_add_inventory" method="POST">
+                @if(auth()->user()->role == 1)
+                    <form class="form form-vertical" action="{{ route('add.product.to.inventory') }}"
+                        id="form_add_inventory" method="POST">
+                @else
+                    <form class="form form-vertical" action="{{ route('add.product.to.inventory.employee') }}"
+                        id="form_add_inventory" method="POST">
+                @endif
                     @csrf
                     <div class="row justify-content-center">
 
