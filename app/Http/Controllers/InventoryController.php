@@ -137,8 +137,8 @@ class InventoryController extends Controller
             $inventory->update($data);
 
         }else{
-            $inventory->deposit +  $request->unit_package;
-
+            $inventory->deposit + $request->unit_package;
+            $inventory->local = $inventory->local < 0 ? 0 : $inventory->local; 
             $inventory->update([
                 // 'qty_package' => $request->qty_package,
                 'unit_package' => $inventory->unit_package + $request->unit_package,
