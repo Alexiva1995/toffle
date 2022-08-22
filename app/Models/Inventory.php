@@ -55,12 +55,9 @@ class Inventory extends Model
                     $inventory = Inventory::where('id', $inventory_id)->first();
                     $grams_used = $item->pivot->portion;
                     $units = $units + ($grams_used / $inventory->product->gr);
-
                 }
-
             }
         }
-
         return number_format($units, 2, '.', '');
     }
 }
