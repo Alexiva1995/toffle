@@ -22,7 +22,9 @@
                         <tr>
                             <th class="text-center">ID</th>
                             <th class="text-center">Producto</th>
-                            <th class="text-center">Cantidad</th>
+                            @if(auth()->user()->role == 1)
+                                <th class="text-center">Cantidad</th>
+                            @endif
                             <th class="text-right">Costo</th>
                             <th class="text-center">Fecha de Creación</th>
                             @if (auth()->user()->role == 1)
@@ -36,7 +38,9 @@
                             {{-- <td>{{ $loop->iteration }}</td> --}}
                             <td>{{ $inventory->id }}</td>
                             <td class="text-center">{{ $inventory->product->name }} {{ $inventory->flavor_name != null ? '('.ucwords($inventory->flavor_name).')' : '' }}</td>
-                            <td class="text-center">{{ $inventory->local }}</td>
+                            @if(auth()->user()->role == 1)
+                                <td class="text-center">{{ $inventory->local }}</td>
+                            @endif
                             <td class="text-right">{{ number_format($inventory->cost, 2, ',', '.') }}</td>
                             <td class="text-center">{{ date('d-m-Y', strtotime($inventory->created_at)) }}</td>
                             @if (auth()->user()->role == 1)
