@@ -67,14 +67,13 @@ class InventoryController extends Controller
         $i_model = new Inventory();
         
         if ($request->it_has_flavors == true) {
-            $inventory_item = Inventory::where('product_id', $request->product_id)
+            $inventory = Inventory::where('product_id', $request->product_id)
                                         ->where('flavor_name', strtolower($request->flavor_name))
                                         ->first();
-            if($inventory_item == null || empty($inventory)){ $inventory = $this->store($request); }
+            if($inventory== null || empty($inventory)){ $inventory = $this->store($request); }
             $inventories = Inventory::where('product_id', $request->product_id)->get();
             
-            $inventory = $inventories->first();
-            $promedial_price = $i_model->promedialPrice($inventory->price, $request->price, $inventories->sum('local'), $request->unit_package);
+            $promedial_price = $i_model->promedialPrice($inventory->cost, $request->price, $inventory->local, $request->unit_package);
             $request->price = $promedial_price;
             $request->unit_price = $promedial_price;
             foreach ($inventories as $item) {
@@ -84,7 +83,7 @@ class InventoryController extends Controller
         }else{
             $inventory = Inventory::where('product_id', $request->product_id)->first();
             if ($inventory == null || empty($inventory)) { $inventory = $this->store($request); }
-            $promedial_price = $i_model->promedialPrice($inventory->price, $request->price, $inventory->unit_package, $request->unit_package);
+            $promedial_price = $i_model->promedialPrice($inventory->cost, $request->price, $inventory->local, $request->unit_package);
             $request->price = $promedial_price;
             $request->unit_price = $promedial_price;
             if ($inventory == null) { $this->store($request); }
