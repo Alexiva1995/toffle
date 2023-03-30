@@ -73,9 +73,9 @@ class InventoryController extends Controller
             if($inventory== null || empty($inventory)){ $inventory = $this->store($request); }
             $inventories = Inventory::where('product_id', $request->product_id)->get();
             
-            $promedial_price = $i_model->promedialPrice($inventory->cost, $request->price, $inventory->local, $request->unit_package);
-            $request->price = $promedial_price;
-            $request->unit_price = $promedial_price;
+            $promedial_price = $i_model->promedialPrice($inventory->cost, floatval($request->unit_cost), $inventory->local, $request->unit_package);
+            $request['price'] = $promedial_price;
+            $request['cost'] = $promedial_price;
             foreach ($inventories as $item) {
                 $this->update($request, $item->id);
             }
@@ -83,9 +83,9 @@ class InventoryController extends Controller
         }else{
             $inventory = Inventory::where('product_id', $request->product_id)->first();
             if ($inventory == null || empty($inventory)) { $inventory = $this->store($request); }
-            $promedial_price = $i_model->promedialPrice($inventory->cost, $request->price, $inventory->local, $request->unit_package);
-            $request->price = $promedial_price;
-            $request->unit_price = $promedial_price;
+            $promedial_price = $i_model->promedialPrice($inventory->cost, floatval($request->unit_cost), $inventory->local, $request->unit_package);
+            $request['price'] = $promedial_price;
+            $request['cost'] = $promedial_price;
             if ($inventory == null) { $this->store($request); }
             else {
                 $this->update($request, $inventory->id);
@@ -142,7 +142,7 @@ class InventoryController extends Controller
                 // 'qty_package' => $request->qty_package,
                 'unit_package' => $inventory->unit_package + $request->unit_package,
                 'price' => $request->price,
-                'cost' => number_format($request->price / $request->unit_package, 2, '.', ''),
+                'cost' => $request->cost,
                 'local' => $inventory->local + $request->unit_package,
             ]);
         }
