@@ -11,6 +11,31 @@
 @endsection
 
 @section('content')
+<div class="row justify-content-center">
+  <div class="col-6 col-md-6">
+      <div class="card">
+          <div class="card-body">
+              <div class="row justify-content-center">
+                  <div class="col-md-12 col-12">
+                      <h4 class="card-text text-center mb-2">Valor Total de Inventario</h3>
+                          <div class="d-flex flex-row justify-content-center">
+                              <div class="avatar bg-light-success me-1">
+                                  <div class="avatar-content">
+                                      <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                  </div>
+                              </div>
+                              <div class="my-auto">
+                                  <h4 class="fw-bolder mb-0">
+                                      $ <span id="total">{{ number_format($total_inventory_value,2,',','.') }}</span>
+                                  </h4>
+                              </div>
+                          </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
 <!-- Basic table -->
 <section id="basic-datatable">
   <section id="nav-tabs-aligned">

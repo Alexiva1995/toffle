@@ -20,7 +20,9 @@ class InventoryController extends Controller
 
         $products = Product::orderBy('id', 'DESC')->get();
 
-        return view('admin.inventory.index', compact('inventories','products'));
+        $total_inventory_value = $inventories->sum('cost') * $inventories->sum('local');
+
+        return view('admin.inventory.index', compact('inventories','products','total_inventory_value'));
     }
 
     /**
