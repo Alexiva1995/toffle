@@ -72,14 +72,19 @@ class InventoryController extends Controller
             $inventory = Inventory::where('product_id', $request->product_id)
                                         ->where('flavor_name', strtolower($request->flavor_name))
                                         ->first();
-            if($inventory== null || empty($inventory)){ $inventory = $this->store($request); }
+            if($inventory == null || empty($inventory)){ $inventory = $this->store($request); }
             $inventories = Inventory::where('product_id', $request->product_id)->get();
             
             $promedial_price = $i_model->promedialPrice($inventory->cost, floatval($request->unit_cost), $inventory->local, $request->unit_package);
             $request['price'] = $promedial_price;
             $request['cost'] = $promedial_price;
+            $inventory->local += +$request->unit_package;
+            $inventory->save();
             foreach ($inventories as $item) {
-                $this->update($request, $item->id);
+                $item->update([
+                    'price' => $promedial_price,
+                    'cost' => $promedial_price
+                ]);
             }
             
         }else{
@@ -88,13 +93,13 @@ class InventoryController extends Controller
             $promedial_price = $i_model->promedialPrice($inventory->cost, floatval($request->unit_cost), $inventory->local, $request->unit_package);
             $request['price'] = $promedial_price;
             $request['cost'] = $promedial_price;
+            $request['local'] = $inventory->local + +$request->unit_package;
             if ($inventory == null) { $this->store($request); }
             else {
                 $this->update($request, $inventory->id);
             }
         }
         return back()->with('success', 'Productos Añadidos al Inventario');
-        // return redirect()->route('inventory.index')->with('success', 'Productos Añadidos al Inventario');
     }
     /**
      * Store a newly created resource in storage.
