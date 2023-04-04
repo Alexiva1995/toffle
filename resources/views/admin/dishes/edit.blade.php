@@ -286,10 +286,11 @@
                                     });
                                     for( var i = 0; i < ids.length; i++){ 
                                         if ( ids[i] === $("#dish_ids_"+id).val()) { 
-                                          ids.splice(i, 1); 
+                                            ids.splice(i, 1); 
                                         }
                                     }
                                     calculate();
+                                    window.location.reload();
                                 },
                             );
                         }

@@ -245,12 +245,7 @@ class DishController extends Controller
     {
         $dish = Dish::find($request->dish_id);
 
-        $ingredient = $dish->ingredients()->wherePivot('id', $id)->first();
-
-        if ($ingredient != null) {
-
-            $dish->ingredients()->wherePivot('id', $id)->detach();
-        }
+        $ingredient = $dish->ingredients()->wherePivot('id', $id)->detach();
 
         $cost_price = 0;
 
