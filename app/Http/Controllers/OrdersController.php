@@ -229,6 +229,22 @@ class OrdersController extends Controller
                 }
             }
         }
+        if($request->status == '2') {
+            $order_ingredients = DB::table('order_ingredient')->where('order_id', $order->id)->get();
+            foreach($order_ingredients as $ingredient)
+            {
+                if($ingredient->it_has_flavors == 1)
+                {
+                    $item_base = Inventory::find($ingredient->inventory_id);
+
+                    $item = Inventory::where('product_id', $item_base->product_id)
+                                        ->where('flavor_name',$ingredient->flavor_name)
+                                        ->first();
+                                        $item->local -= $ingredient->portion;
+                                        $item->save();
+                }
+            }
+        }
 
         $order->update($request->all());
     }
@@ -279,8 +295,10 @@ class OrdersController extends Controller
                 $grams_used = $value->pivot->portion * $order_dish->pivot->unit;
                 $product_quantity = $inventory->product->gr != null ? $inventory->product->gr : $inventory->product->quantity;
                 $units = $grams_used / $product_quantity;
-    
-                $inventory->increment('local', $units);
+                // Si el producto base es distinto a un helado no se suma ya que no se resto.
+                if($inventory->product_id != 75) {
+                    $inventory->increment('local', $units);
+                }
                 // $inventory->update([
                 //     'total' => $inventory->deposit + $inventory->local + $inventory->public
                 // ]);
@@ -336,8 +354,10 @@ class OrdersController extends Controller
                 $grams_used = $value->pivot->portion * 1;
                 $product_quantity = $inventory->product->gr != null ? $inventory->product->gr : $inventory->product->quantity;
                 $units = $grams_used / $product_quantity ;
-    
-                $inventory->decrement('local', $units);
+                // Si el producto base es diferente a un helado se resta al momento.
+                if($inventory->product_id != 75) {
+                    $inventory->decrement('local', $units);
+                }
                 // $inventory->update([
                 //     'total' => $inventory->deposit + $inventory->local + $inventory->public
                 // ]);
