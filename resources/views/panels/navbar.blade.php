@@ -41,6 +41,9 @@
           <ul class="nav navbar-nav d-xl-none">
             <li class="nav-item"><a class="nav-link menu-toggle" href="javascript:void(0);"><i class="ficon" data-feather="menu"></i></a></li>
           </ul>
+          <span class="h2 pt-1">
+           <b>@yield('title')</b>
+          </span>
         {{--<ul class="nav navbar-nav bookmark-icons">
             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{url('app/email')}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Email"><i class="ficon" data-feather="mail"></i></a></li>
             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{url('app/chat')}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Chat"><i class="ficon" data-feather="message-square"></i></a></li>
@@ -63,12 +66,16 @@
           </ul>--}}
         </div>
         <ul class="nav navbar-nav align-items-center ms-auto">
-          <li class="nav-item dropdown dropdown-language">
+          
+          {{-- <li class="nav-item dropdown dropdown-language">
             <a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true">
-              <i class="flag-icon flag-icon-us"></i>
-              <span class="selected-language">English</span>
+              <i class="flag-icon flag-icon-es"></i>
+              <span class="selected-language">Español</span>
             </a>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag">
+              <a class="dropdown-item" href="{{url('lang/es')}}" data-language="es">
+                <i class="flag-icon flag-icon-es"></i> Español
+              </a>
               <a class="dropdown-item" href="{{url('lang/en')}}" data-language="en">
                 <i class="flag-icon flag-icon-us"></i> English
               </a>
@@ -82,8 +89,12 @@
                 <i class="flag-icon flag-icon-pt"></i> Portuguese
               </a>
             </div>
-          </li>
-          <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="{{($configData['theme'] === 'dark') ? 'sun' : 'moon' }}"></i></a></li>
+          </li> --}}
+
+          
+          {{-- <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="{{($configData['theme'] === 'dark') ? 'sun' : 'moon' }}"></i></a></li> --}}
+          
+          
           {{-- <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon" data-feather="search"></i></a>
             <div class="search-input">
               <div class="search-input-icon"><i data-feather="search"></i></div>
@@ -92,6 +103,8 @@
               <ul class="search-list search-list-main"></ul>
             </div>
           </li> --}}
+
+
           {{-- <li class="nav-item dropdown dropdown-cart me-25">
             <a class="nav-link" href="javascript:void(0);" data-bs-toggle="dropdown">
               <i class="ficon" data-feather="shopping-cart"></i>
@@ -190,7 +203,9 @@
               </li>
             </ul>
           </li> --}}
-          <li class="nav-item dropdown dropdown-notification me-25">
+
+
+          {{-- <li class="nav-item dropdown dropdown-notification me-25">
             <a class="nav-link" href="javascript:void(0);" data-bs-toggle="dropdown">
               <i class="ficon" data-feather="bell"></i>
               <span class="badge rounded-pill bg-danger badge-up">5</span>
@@ -291,16 +306,18 @@
                 <a class="btn btn-primary w-100" href="javascript:void(0)">Read all notifications</a>
               </li>
           </ul>
-        </li>
+        </li> --}}
+
+
         <li class="nav-item dropdown dropdown-user">
           <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true">
             <div class="user-nav d-sm-flex d-none">
-              <span class="user-name fw-bolder">John Doe</span>
-              <span class="user-status">Admin</span>
+              <span class="user-name fw-bolder"> {{ Auth::user()->name }} {{ Auth::user()->last_name }} </span>
+              <span class="user-status">{{ Auth::user()->role == 1 ? 'Admin' : 'Empleado' }}</span>
             </div>
             <span class="avatar">
-              <img class="round" src="{{asset('images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40">
-              <span class="avatar-status-online"></span>
+              <img class="round" src="{{asset('images/logo/logo-toffle.png')}}" alt="avatar" height="40" width="40">
+              <span class="avatar-status-{{ Auth::user()->status == true ? 'online' : 'busy' }}"></span>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
@@ -308,9 +325,13 @@
               <i class="me-50" data-feather="user"></i> Profile
             </a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{{url('auth/login-v2')}}">
-              <i class="me-50" data-feather="power"></i> Logout
-            </a>
+            <form method="POST" class="" action="{{ route('logout') }}">
+              @csrf
+              <button class="dropdown-item w-100" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        this.closest('form').submit();">
+                  <i class="mr-50" data-feather="power"></i> Cerrar Sesion
+              </button>
+            </form>
           </div>
         </li>
       </ul>

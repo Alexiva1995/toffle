@@ -1,9 +1,8 @@
-@extends('layouts/fullLayoutMaster')
+{{-- @extends('layouts/fullLayoutMaster')
 
 @section('title', 'Reset Password')
 
 @section('page-style')
-{{-- Page Css files --}}
 <link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-auth.css')) }}">
 @endsection
 
@@ -61,7 +60,7 @@
             <div class="d-flex justify-content-between">
               <label for="reset-password-new">New Password</label>
             </div>
-            <div class="input-group input-group-merge form-password-toggle @error('password') is-invalid @enderror">
+            <div class="input-group input-group-merge  form-password-toggle @error('password') is-invalid @enderror">
               <input type="password" class="form-control form-control-merge @error('password') is-invalid @enderror" id="reset-password-new" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="reset-password-new" tabindex="2" autofocus />
                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
             </div>
@@ -75,7 +74,7 @@
             <div class="d-flex justify-content-between">
               <label for="reset-password-confirm">Confirm Password</label>
             </div>
-            <div class="input-group input-group-merge form-password-toggle">
+            <div class="input-group input-group-merge  form-password-toggle">
               <input type="password" class="form-control form-control-merge" id="reset-password-confirm" name="password_confirmation" autocomplete="new-password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="reset-password-confirm" tabindex="3" />
                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
             </div>
@@ -95,4 +94,4 @@
     <!-- /Reset Password v1 -->
   </div>
 </div>
-@endsection
+@endsection --}}

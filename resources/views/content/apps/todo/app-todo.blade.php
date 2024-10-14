@@ -36,7 +36,7 @@
       <i data-feather="menu" class="font-medium-5"></i>
     </div>
     <div class="d-flex align-content-center justify-content-between w-100">
-      <div class="input-group input-group-merge">
+      <div class="input-group input-group-merge ">
         <span class="input-group-text"><i data-feather="search" class="text-muted"></i></span>
         <input
           type="text"
@@ -554,7 +554,7 @@
             </div>
             <div class="mb-1">
               <label for="task-tag" class="form-label d-block">Tag</label>
-              <select class="form-select task-tag" id="task-tag" name="task-tag" multiple="multiple">
+              <select class="form-select rounded border-primary task-tag" id="task-tag" name="task-tag" multiple="multiple">
                 <option value="Team">Team</option>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>

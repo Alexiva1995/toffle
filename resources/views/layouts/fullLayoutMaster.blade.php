@@ -18,9 +18,10 @@ data-textdirection="{{ env('MIX_CONTENT_DIRECTION') === 'rtl' ? 'rtl' : 'ltr' }}
   <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
   <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
   <meta name="author" content="PIXINVENT">
-  <title>@yield('title') - Vuexy - Bootstrap HTML & Laravel admin template</title>
+  <title>Toffle - @yield('title')</title>
   <link rel="apple-touch-icon" href="{{asset('images/ico/apple-icon-120.png')}}">
-  <link rel="shortcut icon" type="image/x-icon" href="{{asset('images/logo/favicon.ico')}}">
+  {{-- <link rel="shortcut icon" type="image/x-icon" href="{{asset('images/logo/favicon.ico')}}"> --}}
+  <link rel="shortcut icon" type="image/x-icon" href="{{asset('images/logo/logo-toffle.png')}}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
   {{-- Include core + vendor Styles --}}
@@ -30,9 +31,7 @@ data-textdirection="{{ env('MIX_CONTENT_DIRECTION') === 'rtl' ? 'rtl' : 'ltr' }}
   @include('panels/styles')
 </head>
 
-
-
-<body class="vertical-layout vertical-menu-modern {{ $configData['bodyClass'] }} {{($configData['theme'] === 'dark') ? 'dark-layout' : ''}} {{ $configData['blankPageClass'] }} blank-page"
+<body class="bg-login vertical-layout vertical-menu-modern {{ $configData['bodyClass'] }} {{($configData['theme'] === 'dark') ? 'dark-layout' : ''}} {{ $configData['blankPageClass'] }} blank-page"
 data-menu="vertical-menu-modern"
 data-col="blank-page"
 data-framework="laravel"

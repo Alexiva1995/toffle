@@ -1,24 +1,32 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppsController;
+use App\Http\Controllers\DishController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CardsController;
+use App\Http\Controllers\FormsController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\TableController;
+use App\Http\Controllers\ChartsController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\AppsController;
-use App\Http\Controllers\UserInterfaceController;
-use App\Http\Controllers\CardsController;
-use App\Http\Controllers\ComponentsController;
 use App\Http\Controllers\ExtensionController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ComponentsController;
+
+
 use App\Http\Controllers\PageLayoutController;
-use App\Http\Controllers\FormsController;
-use App\Http\Controllers\TableController;
-use App\Http\Controllers\PagesController;
 use App\Http\Controllers\MiscellaneousController;
+use App\Http\Controllers\UserInterfaceController;
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\ChartsController;
-
-
-use App\Http\Controllers\UserController;
-
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,18 +43,175 @@ use App\Http\Controllers\UserController;
 // Main Page Route
 // Route::get('/', [DashboardController::class,'dashboardEcommerce'])->name('dashboard-ecommerce')->middleware('verified');
 
-Route::middleware('auth')->group(function () { 
-    Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
+Route::get('/clear-cache', function() {
+    Artisan::call('optimize:clear');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    return 'DONE'; //Return anything
+});
+/* Route Dashboards */
+Auth::routes(['verify' => true]);
 
-    Route::middleware('admin')->group(function () { 
-        Route::group(['prefix' => 'employees'], function () {
-            Route::get('create', [UserController::class, 'create'])->name('register.employees');
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
+
+    Route::middleware('admin')->group(function () {
+
+        Route::group(['prefix' => 'admin'], function () {
+
+            Route::group(['prefix' => 'dashboard'], function () {
+                Route::get('/', [DashboardController::class, 'dashboardAdmin'])->name('dashboard-admin');
+                Route::get('sold-products', [DashboardController::class, 'showSoldProducts'])->name('show.sold.products');
+            });
+
+            // Employees
+            Route::group(['prefix' => 'employees'], function () {
+                Route::get('list', [UserController::class, 'list'])->name('employees.list');
+                Route::post('generate-password', [UserController::class, 'generatePassword'])->name('generate.password');
+            });
+
+            Route::resource('employees', UserController::class);
+            Route::get('employees/active/sessions', [UserController::class, 'showActiveUsers'])->name('show.active.users');
+            // Dishes
+            Route::group(['prefix' => 'dishes'], function () {
+                Route::post('ingredients-remove/{id}', [DishController::class, 'removeIngredient'])->name('ingredients.remove');
+                Route::get('list', [DishController::class, 'list'])->name('dishes.list');
+            });
+
+            // Inventories
+            Route::group(['prefix' => 'inventory'], function () {
+                Route::patch('operation/{id}', [InventoryController::class, 'operation'])->name('operation.inventory');
+                Route::post('add-product-to-inventory', [InventoryController::class, 'addProductToInventory'])->name('add.product.to.inventory');
+            });
+            Route::resource('dishes', DishController::class);
+
+            Route::resource('inventory', InventoryController::class);
+
+            // Products
+            Route::resource('products', ProductController::class);
+
+            // Categories
+            Route::group(['prefix' => 'categories'], function () {
+                Route::get('list', [CategoriesController::class, 'list'])->name('categories.list');
+            });
+
+            //Reports
+            Route::group(['prefix' => 'reports'], function () {
+                Route::get('best-seller', [ReportController::class, 'bestSeller'])->name('reports.best.seller');
+                Route::get('best-seller-data', [ReportController::class, 'bestSellerData'])->name('reports.best.seller.data');
+
+                Route::get('gain', [ReportController::class, 'gain'])->name('reports.gain');
+                Route::get('gain-data', [ReportController::class, 'gainData'])->name('reports.gain.data');
+                Route::get('gain-data/amount', [ReportController::class, 'gainAmount'])->name('reports.gain.amount.data');
+                Route::get('gain-data/fixed-cost', [ReportController::class, 'gainFixedCost'])->name('reports.gain.fixed.cost');
+                Route::get('cash-flow/total-balance', [ReportController::class, 'totalBalance'])->name('reports.total.balance');
+                Route::get('gain-data/unexpected', [ReportController::class, 'gainUnexpected'])->name('reports.gain.unexpected');
+                Route::get('gain-show/{date}', [ReportController::class, 'gainShow'])->name('gain.show');
+                Route::get('gain-data-show/{date}', [ReportController::class, 'gainDataShow'])->name('gain.data.show');
+
+                Route::get('cash-flow', [ReportController::class, 'cashFlow'])->name('reports.cash.flow');
+                Route::get('cash-flow/sales-total', [ReportController::class, 'salesTotal'])->name('cash.flow.sales.total');
+                Route::get('income-data', [ReportController::class, 'incomeData'])->name('reports.income.data');
+                Route::get('paid-expenses-data', [ReportController::class, 'paidExpensesData'])->name('reports.paid.expenses.data');
+
+                Route::get('expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
+                Route::get('expenses-data/{status?}', [ReportController::class, 'expensesData'])->name('reports.expenses.data');
+                Route::get('expenses/total-amount', [ReportController::class, 'expensesTotalAmount'])->name('reports.expenses.total.data');
+
+                Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
+                Route::get('sales-data', [ReportController::class, 'salesData'])->name('reports.sales.data');
+                Route::get('sales/fixed-cost', [ReportController::class, 'fixedCostAmount'])->name('reports.fixed.cost.data');
+                Route::get('sales/unexpected', [ReportController::class, 'unexpectedAmount'])->name('reports.unexpected.data');
+                Route::get('sales/total-amount', [ReportController::class, 'totalSalesAmount'])->name('reports.total.sales.amount.data');
+            });
+
+            Route::resource('categories', CategoriesController::class);
+
+            // Expenses
+            Route::group(['prefix' => 'expenses'], function () {
+                Route::get('list-historical', [ExpensesController::class, 'listHistorical'])->name('expenses.list.historical');
+                
+                Route::get('list-historical-data', [ExpensesController::class, 'listHistoricalData'])->name('expenses.list.historical.data');
+
+                Route::get('list-to-pay', [ExpensesController::class, 'listToPay'])->name('expenses.list.to.pay');
+
+                Route::get('list-to-pay-data', [ExpensesController::class, 'listToPayData'])->name('expenses.list.to.pay.data');
+
+                Route::post('mark-as-paid/{id}', [ExpensesController::class, 'markAsPaid'])->name('expenses.mark.as.paid');
+            });
+
+            Route::resource('expenses', ExpensesController::class);
+
         });
     });
-});
+    
+    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 
-Route::group(['prefix' => 'employees'], function () {
-    Route::get('register', [UserController::class, 'create'])->name('register.employees');
+    Route::group(['prefix' => 'employee'], function () {
+
+        Route::get('/flow-days', [OrdersController::class, 'flowDays'])->name('flow.days');
+
+        Route::group(['prefix' => 'dashboard'], function () {
+            Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
+
+            Route::post('data-chart-amount-vs-gain', [DashboardController::class, 'dataChartAmountVsGain'])->name('data.chart.amount.vs.gain');
+            Route::post('data-chart-weekly-sales', [DashboardController::class, 'dataChartWeeklySales'])->name('data.chart.weekly.sales');
+            Route::post('data-chart-profit-by-category', [DashboardController::class, 'dataProfitByCategory'])->name('data.chart.profit.by.category');
+
+            Route::get('load-data/{type}', [DashboardController::class, 'loadData'])->name('load.data');
+
+            // Orders
+            Route::group(['prefix' => 'orders'], function () {
+                Route::post('remove-dish/{order_id}', [OrdersController::class, 'removeDish'])->name('order.remove.dish');
+
+                Route::post('add-dish/{order_id}', [OrdersController::class, 'addDish'])->name('order.add.dish');
+
+                Route::get('modify-dishes/{order_id}', [OrdersController::class, 'modifyDishes'])->name('order.modify.dishes');
+
+                Route::get('order-table-data/{type}', [OrdersController::class, 'orderTableData'])->name('order.table.data');
+            });
+
+            Route::resource('orders', OrdersController::class)->except(['index']);
+
+            // Route::group(['prefix' => 'ingredients'], function () {
+            //     Route::get('create', [IngredientController::class, 'create'])->name('create.ingredients');
+            //     Route::post('store', [IngredientController::class, 'store'])->name('store.ingredients');
+            //     Route::get('edit/{id}', [IngredientController::class, 'edit'])->name('edit.ingredients');
+            //     Route::patch('update/{id}', [IngredientController::class, 'update'])->name('update.ingredients');
+            // });
+
+        });
+        Route::get('expenses/index', [ExpensesController::class, 'index'])->name('employee.expenses.index');
+        Route::get('expenses/show/{id}', [ExpensesController::class, 'show'])->name('employee.expenses.show');
+        Route::get('expenses/create', [ExpensesController::class, 'create'])->name('employee.expenses.create');
+        Route::get('list-historical-data', [ExpensesController::class, 'listHistoricalData'])->name('employee.expenses.list.historical.data');
+        Route::post('expenses/store', [ExpensesController::class, 'store'])->name('employee.expenses.store');
+        // Inventories
+        Route::get('inventory', [InventoryController::class, 'index'])->name('employee.inventory.index');
+        Route::post('employe-add-product-to-inventory', [InventoryController::class, 'addProductToInventory'])->name('add.product.to.inventory.employee');
+        Route::post('employe-store-products', [ProductController::class, 'store'])->name('store.product.employee');
+
+    });
+
+    Route::get('show-order-details', [OrdersController::class, 'showOrderDetails'])->name('reports.show.order.details');
+
+    Route::get('modal-modify-ingredients', [OrdersController::class, 'modalModifyIngredients'])->name('orders.modal.modify.ingredients');
+
+    Route::post('add-ingredient-to-order', [OrdersController::class, 'addIngredientsOrder'])->name('orders.add.ingredients');
+
+    Route::post('update-ingredient-to-order', [OrdersController::class, 'updateIngredientsOrder'])->name('orders.update.ingredients');
+
+    Route::post('remove-ingredient-to-order', [OrdersController::class, 'removeIngredientsOrder'])->name('orders.remove.ingredients');
+
+    Route::get('order-dishes-table-data/{id}', [OrdersController::class, 'orderDishesTableData'])->name('orders.dishes.table.data');
+
+    Route::get('check-order-ingredients/{id}', [OrdersController::class, 'checkOrderIngredients'])->name('check.order.ingredients');
+
 });
 
 // Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
@@ -55,9 +220,6 @@ Route::group(['prefix' => 'employees'], function () {
 //     Route::get('analytics', [DashboardController::class, 'dashboardAnalytics'])->name('dashboard-analytics');
 //     Route::get('ecommerce', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
 // });
-
-/* Route Dashboards */
-Auth::routes(['verify' => true]);
 
 /* Route Apps */
 Route::group(['prefix' => 'app'], function () {
@@ -196,8 +358,8 @@ Route::group(['prefix' => 'page'], function () {
     Route::get('profile', [PagesController::class, 'profile'])->name('page-profile');
     Route::get('faq', [PagesController::class, 'faq'])->name('page-faq');
     Route::get('knowledge-base', [PagesController::class, 'knowledge_base'])->name('page-knowledge-base');
-    Route::get('knowledge-base/category', [PagesController::class, 'kb_category'])->name('page-knowledge-base');
-    Route::get('knowledge-base/category/question', [PagesController::class, 'kb_question'])->name('page-knowledge-base');
+    // Route::get('knowledge-base/category', [PagesController::class, 'kb_category'])->name('page-knowledge-base');
+    // Route::get('knowledge-base/category/question', [PagesController::class, 'kb_question'])->name('page-knowledge-base');
     Route::get('pricing', [PagesController::class, 'pricing'])->name('page-pricing');
     Route::get('blog/list', [PagesController::class, 'blog_list'])->name('page-blog-list');
     Route::get('blog/detail', [PagesController::class, 'blog_detail'])->name('page-blog-detail');

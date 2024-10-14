@@ -85,7 +85,7 @@
                     <label class="col-form-label" for="fname-icon">First Name</label>
                   </div>
                   <div class="col-sm-9">
-                    <div class="input-group input-group-merge">
+                    <div class="input-group input-group-merge ">
                       <span class="input-group-text"><i data-feather="user"></i></span>
                       <input
                         type="text"
@@ -104,7 +104,7 @@
                     <label class="col-form-label" for="email-icon">Email</label>
                   </div>
                   <div class="col-sm-9">
-                    <div class="input-group input-group-merge">
+                    <div class="input-group input-group-merge ">
                       <span class="input-group-text"><i data-feather="mail"></i></span>
                       <input
                         type="email"
@@ -123,7 +123,7 @@
                     <label class="col-form-label" for="contact-icon">Mobile</label>
                   </div>
                   <div class="col-sm-9">
-                    <div class="input-group input-group-merge">
+                    <div class="input-group input-group-merge ">
                       <span class="input-group-text"><i data-feather="smartphone"></i></span>
                       <input
                         type="number"
@@ -142,7 +142,7 @@
                     <label class="col-form-label" for="pass-icon">Password</label>
                   </div>
                   <div class="col-sm-9">
-                    <div class="input-group input-group-merge">
+                    <div class="input-group input-group-merge ">
                       <span class="input-group-text"><i data-feather="lock"></i></span>
                       <input
                         type="password"
@@ -257,7 +257,7 @@
               <div class="col-12">
                 <div class="mb-1">
                   <label class="form-label" for="first-name-icon">First Name</label>
-                  <div class="input-group input-group-merge">
+                  <div class="input-group input-group-merge ">
                     <span class="input-group-text"><i data-feather="user"></i></span>
                     <input
                       type="text"
@@ -272,7 +272,7 @@
               <div class="col-12">
                 <div class="mb-1">
                   <label class="form-label" for="email-id-icon">Email</label>
-                  <div class="input-group input-group-merge">
+                  <div class="input-group input-group-merge ">
                     <span class="input-group-text"><i data-feather="mail"></i></span>
                     <input
                       type="email"
@@ -287,7 +287,7 @@
               <div class="col-12">
                 <div class="mb-1">
                   <label class="form-label" for="contact-info-icon">Mobile</label>
-                  <div class="input-group input-group-merge">
+                  <div class="input-group input-group-merge ">
                     <span class="input-group-text"><i data-feather="smartphone"></i></span>
                     <input
                       type="number"
@@ -302,7 +302,7 @@
               <div class="col-12">
                 <div class="mb-1">
                   <label class="form-label" for="password-icon">Password</label>
-                  <div class="input-group input-group-merge">
+                  <div class="input-group input-group-merge ">
                     <span class="input-group-text"><i data-feather="lock"></i></span>
                     <input
                       type="password"

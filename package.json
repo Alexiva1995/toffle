@@ -8,7 +8,8 @@
     "production": "mix --production"
   },
   "dependencies": {
-    "bootstrap": "5.0.1"
+    "bootstrap": "5.0.1",
+    "flatpickr": "^4.6.9"
   },
   "devDependencies": {
     "axios": "^0.21",

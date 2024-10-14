@@ -2,12 +2,14 @@
 $configData = Helper::applClasses();
 @endphp
 <div class="main-menu menu-fixed {{(($configData['theme'] === 'dark') || ($configData['theme'] === 'semi-dark')) ? 'menu-dark' : 'menu-light'}} menu-accordion menu-shadow" data-scroll-to-active="true">
-  <div class="navbar-header">
+  <div class="navbar-header mb-5">
     <ul class="nav navbar-nav flex-row">
       <li class="nav-item me-auto">
-        <a class="navbar-brand" href="{{url('/')}}">
-          <span class="brand-logo">
-            <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24">
+        <a class="navbar-brandd" href="{{url('/')}}">
+          {{-- <img class="d-block mx-auto" src="{{ asset('images/logo/logo-toffle.png') }}" alt="" width="100px" height="50px"> --}}
+          <span class="brand-logo d-flex justify-content-center">
+            <img class="img-fluid" src="{{ asset('images/logo/logo-toffle.png') }}"  width="200px" alt="">
+            {{-- <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24">
               <defs>
                 <lineargradient id="linearGradient-1" x1="100%" y1="10.5120544%" x2="50%" y2="89.4879456%">
                   <stop stop-color="#000000" offset="0%"></stop>
@@ -29,9 +31,9 @@ $configData = Helper::applClasses();
                   </g>
                 </g>
               </g>
-            </svg>
+            </svg> --}}
           </span>
-          <h2 class="brand-text">Vuexy</h2>
+          {{-- <h2 class="brand-text">Toffle</h2> --}}
         </a>
       </li>
       <li class="nav-item nav-toggle">
@@ -43,9 +45,80 @@ $configData = Helper::applClasses();
     </ul>
   </div>
   <div class="shadow-bottom"></div>
-  <div class="main-menu-content">
+  <div class="main-menu-content pt-5">
     <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+      {{-- Para Usuarios Normales --}}
+      @if (Auth::user()->role == 0)
+        {{-- Foreach menu item starts --}}
+        @if(isset($menuData[0]))
+          @foreach($menuData[0]->menu as $menu)
+            @if(isset($menu->navheader))
+            <li class="navigation-header">
+              <span>{{ __('locale.'.$menu->navheader) }}</span>
+              <i data-feather="more-horizontal"></i>
+            </li>
+            @else
+              {{-- Add Custom Class with nav-item --}}
+              @php
+              $custom_classes = "";
+              if(isset($menu->classlist)) {
+              $custom_classes = $menu->classlist;
+              }
+              @endphp
+              <li class="nav-item {{ Route::currentRouteName() === $menu->slug ? 'active' : '' }} {{ $custom_classes }}">
+                <a href="{{isset($menu->url)? url($menu->url):'javascript:void(0)'}}" class="d-flex align-items-center" target="{{isset($menu->newTab) ? '_blank':'_self'}}">
+                  <i data-feather="{{ $menu->icon }}"></i>
+                  <span class="menu-title text-truncate">{{ __('locale.'.$menu->name) }}</span>
+                  @if (isset($menu->badge))
+                  <?php $badgeClasses = "badge badge-pill badge-light-primary ml-auto mr-1" ?>
+                  <span class="{{ isset($menu->badgeClass) ? $menu->badgeClass : $badgeClasses }} ">{{$menu->badge}}</span>
+                  @endif
+                </a>
+                @if(isset($menu->submenu))
+                  @include('panels/submenu', ['menu' => $menu->submenu])
+                @endif
+              </li>
+            @endif
+          @endforeach
+        @endif
+        {{-- Foreach menu item ends --}}
 
+      {{-- Para Usuarios Admin --}}
+      @else
+        {{-- Foreach menu item starts --}}
+        @if(isset($menuData[1]))
+          @foreach($menuData[1]->menu as $menu)
+            @if(isset($menu->navheader))
+              <li class="navigation-header">
+                <span>{{ __('locale.'.$menu->navheader) }}</span>
+                <i data-feather="more-horizontal"></i>
+              </li>
+            @else
+              {{-- Add Custom Class with nav-item --}}
+              @php
+              $custom_classes = "";
+              if(isset($menu->classlist)) {
+              $custom_classes = $menu->classlist;
+              }
+              @endphp
+              <li class="nav-item {{ Route::currentRouteName() === $menu->slug ? 'active' : '' }} {{ $custom_classes }}">
+                <a href="{{isset($menu->url)? url($menu->url):'javascript:void(0)'}}" class="d-flex align-items-center" target="{{isset($menu->newTab) ? '_blank':'_self'}}">
+                  <i data-feather="{{ $menu->icon }}"></i>
+                  <span class="menu-title text-truncate">{{ __('locale.'.$menu->name) }}</span>
+                  @if (isset($menu->badge))
+                  <?php $badgeClasses = "badge badge-pill badge-light-primary ml-auto mr-1" ?>
+                  <span class="{{ isset($menu->badgeClass) ? $menu->badgeClass : $badgeClasses }} ">{{$menu->badge}}</span>
+                  @endif
+                </a>
+                @if(isset($menu->submenu))
+                  @include('panels/submenu', ['menu' => $menu->submenu])
+                @endif
+              </li>
+            @endif
+          @endforeach
+        @endif
+        {{-- Foreach menu item ends --}}
+    @endif
     </ul>
   </div>
 </div>

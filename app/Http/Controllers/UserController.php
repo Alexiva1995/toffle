@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 use App\Models\User;
-use Carbon\Carbon;
+
 
 class UserController extends Controller
 {
@@ -25,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin/employees/create');
+        return view('admin.employees.create');
     }
 
     /**
@@ -39,11 +43,13 @@ class UserController extends Controller
         $fields = [
             'name' => ['required'],
             'last_name' => ['required'],
-            'dni' => ['required'],
+            'dni' => ['required', 'unique:users'],
             'phone' => ['required'],
-            'date_birth' => ['required'],
             'email' => ['required', 'string', 'email', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required'],
+            'salary' => ['required'],
+            'date_birth' => ['required'],
+            'status' => ['required'],
         ];
 
         $msj = [
@@ -51,23 +57,23 @@ class UserController extends Controller
             'last_name.required' => 'El apellido es requerido.',
             'dni.required' => 'El DNI es requerido.',
             'phone.required' => 'El número de teléfono es requerido.',
-            'date_birth.required' => 'La fecha de nacimiento es requerido.',
-            'email.required' => 'El email es requerido.',
-            'email.unique:users' => 'El email debe ser único. Este email ya está registrado.',
+            'email.required' => 'El correo es requerido.',
+            'email.unique' => 'El correo debe ser único. Este correo ya está registrado.',
+            'dni.unique' => 'El dni debe ser único. Este dni ya está registrado.',
             'password.required' => 'La contraseña es requerida.',
+            'salary.required' => 'El sueldo base es requerido.',
+            'date_birth.required' => 'La fecha de nacimiento es requerido.',
+            'status.required' => 'El estatus es requerido.',
         ];
 
         $this->validate($request, $fields, $msj);
 
-        $user = User::create($request->all());
-        $user->password = Hash::make($request->password);
-        $user->save();
+        $employee = User::create($request->all());
+        $employee->password = Hash::make($request->password);
+        $employee->token_crypt = Crypt::encrypt($request->password);
+        $employee->save();
 
-        // User::create([
-        //     'name' => $data['name'],
-        //     'email' => $data['email'],
-        //     'password' => Hash::make($data['password']),
-        // ]);
+        return redirect()->route('employees.list')->with('success', 'Empleado Registrado');
     }
 
     /**
@@ -81,6 +87,12 @@ class UserController extends Controller
         //
     }
 
+    public function showActiveUsers()
+    {
+        $sessions = Session::with('user')->where('user_id', '!=', null)->get();
+        return view('admin.sessions.index', compact('sessions'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -89,7 +101,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $employee = User::find($id);
+        $password = Crypt::decrypt($employee->token_crypt);
+        return view('admin.employees.edit')
+        ->with('employee', $employee)
+        ->with('password', $password);
     }
 
     /**
@@ -101,7 +117,40 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $employee = User::find($id);
+
+        $fields = [
+            'name' => ['required'],
+            'last_name' => ['required'],
+            'dni' => ['required'],
+            'phone' => ['required'],
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required'],
+            'salary' => ['required'],
+            'date_birth' => ['required'],
+            'status' => ['required'],
+        ];
+
+        $msj = [
+            'name.required' => 'El nombre es requerido.',
+            'last_name.required' => 'El apellido es requerido.',
+            'dni.required' => 'El DNI es requerido.',
+            'phone.required' => 'El número de teléfono es requerido.',
+            'email.required' => 'El correo es requerido.',
+            'password.required' => 'La contraseña es requerida.',
+            'salary.required' => 'El sueldo base es requerido.',
+            'date_birth.required' => 'La fecha de nacimiento es requerido.',
+            'status.required' => 'El estatus es requerido.',
+        ];
+
+        $this->validate($request, $fields, $msj);
+
+        $employee->update($request->all());
+        $employee->password = Hash::make($request->password);
+        $employee->token_crypt = Crypt::encrypt($request->password);
+        $employee->save();
+
+        return redirect()->route('employees.list')->with('success', 'Empleado Actualizado');
     }
 
     /**
@@ -112,6 +161,26 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $employee = User::find($id);
+
+        $employee->delete();
+
+        return redirect()->route('employees.list')->with('success', 'Empleado Eliminado');
+
+    }
+
+    public function list()
+    {
+        $employees = User::orderBy('id', 'DESC')->get();
+
+        return view('admin.employees.list')->with('employees', $employees);
+    }
+
+    public function generatePassword(Request $request)
+    {
+        if ($request->ajax()) {
+            $password = Str::random(8);
+            return $password;
+        }
     }
 }

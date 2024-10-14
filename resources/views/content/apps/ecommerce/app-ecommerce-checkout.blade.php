@@ -388,7 +388,7 @@
           <div class="card">
             <div class="card-body">
               <label class="section-label form-label mb-1">Options</label>
-              <div class="coupons input-group input-group-merge">
+              <div class="coupons input-group input-group-merge ">
                 <input
                   type="text"
                   class="form-control"
@@ -513,7 +513,7 @@
               <div class="col-md-6 col-sm-12">
                 <div class="mb-2">
                   <label class="form-label" cfor="add-type">Address Type:</label>
-                  <select class="form-select" id="add-type">
+                  <select class="form-select rounded border-primary" id="add-type">
                     <option>Home</option>
                     <option>Work</option>
                   </select>

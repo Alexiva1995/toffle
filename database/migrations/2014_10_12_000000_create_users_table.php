@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('dni')->unique();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('token_crypt')->nullable();
             $table->double('salary');
             $table->enum('role', [0, 1])->comment('0 - Empleado, 1 - Administrador');
             $table->boolean('status')->default(0)->comment('0 - Inactivo, 1 - Activo');

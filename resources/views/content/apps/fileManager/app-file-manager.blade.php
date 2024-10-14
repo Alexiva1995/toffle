@@ -28,7 +28,7 @@
       <div class="sidebar-toggle d-block d-xl-none float-start align-middle ms-1">
         <i data-feather="menu" class="font-medium-5"></i>
       </div>
-      <div class="input-group input-group-merge shadow-none m-0 flex-grow-1">
+      <div class="input-group input-group-merge  shadow-none m-0 flex-grow-1">
         <span class="input-group-text border-0">
           <i data-feather="search"></i>
         </span>
