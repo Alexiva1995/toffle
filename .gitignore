@@ -1,27 +1,37 @@
+# Dependencias
 /node_modules
-# /public/hot
-# /public/data
-# /public/fonts
-# /public/images
-# /public/storage
-# /public/js
-# /public/css
-# /public/css-rtl
-# /public/vendors
-/storage/*.key
 /vendor
-.env
-.env.backup
+
+# Build output
+/public/build/
+/public/dist/
+
+# Logs y caché
+*.log
+*.tmp
 .phpunit.result.cache
-Homestead.json
-Homestead.yaml
 npm-debug.log
 yarn-error.log
-/vuexy-shell-scripts
 supervisord.log
 supervisord.pid
 
-composer.lock
-composer.lock
+# Configuración de entorno
+.env
+.env.backup
+/storage/*.key
+
+# Entorno de desarrollo local
+Homestead.json
+Homestead.yaml
+
+# Directorios generados dinamicamente.
+/public/hot
+/public/data
+/public/fonts
+/public/storage
+/public/js
+/public/css
+/public/css-rtl
+/public/vendors
+/vuexy-shell-scripts
 storage
-composer.lock
