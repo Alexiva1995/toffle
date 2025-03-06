@@ -16,7 +16,23 @@
 @section('content')
     <section id="dashboard-ecommerce">
         <div class="row match-height justify-content-center">
-            <!-- Add Order Card -->
+
+            <div class="col-xl-3 col-md-6 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Buscar Cliente por Cédula</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" id="client_id_card" class="form-control" placeholder="Cédula del Cliente">
+                            <button class="btn btn-primary" type="button" id="search_client">Buscar</button>
+                        </div>
+                        <div id="client_info" class="mt-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-xl-3 col-md-6 col-12">
                 <div class="card card-congratulation-medal">
                     <div class="col-xl-12 col-md-12 col-12" id="statistics"></div>
@@ -24,9 +40,9 @@
                             {{ number_format($orders_today->sum('total_amount'), 0, ' ', '.') }} COP</span></h4>
                     <a href="{{ route('orders.create') }}" class="btn btn-primary btn-lg btn-block btn-center-height"
                         role="button" aria-pressed="true">Agregar Pedido</a>
-
                 </div>
             </div>
+
             <div class="col-12">
                 @include('employee.dashboard.orders.pending')
             </div>
@@ -39,7 +55,8 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </section>
+@endsection
 
     @section('vendor-script')
         {{-- vendor files --}}
@@ -288,7 +305,31 @@
                 }).on('processing.dt', function(e, settings, processing) {
                     feather.replace();
                 });
+                $('#search_client').click(function() {
+                var idCard = $('#client_id_card').val();
+                if (idCard) {
+                    $.ajax({
+                        url: "{{ route('clients.search') }}",
+                        type: 'GET',
+                        data: {
+                            id_card: idCard
+                        },
+                        success: function(response) {
+                            if (response.exists) {
+                                $('#client_info').html('<p class="text-success">' + response.message + '</p>');
+                            } else {
+                                $('#client_info').html('<p class="text-danger">' + response.message + '</p>');
+                            }
+                        },
+                        error: function() {
+                            $('#client_info').html('<p class="text-danger">Error al buscar el cliente.</p>');
+                        }
+                    });
+                } else {
+                    $('#client_info').html('<p class="text-warning">Por favor, ingresa la cédula del cliente.</p>');
+                }
             });
+        });
         </script>
 
     @endsection
