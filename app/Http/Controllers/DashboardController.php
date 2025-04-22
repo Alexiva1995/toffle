@@ -77,14 +77,50 @@ class DashboardController extends Controller
     return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
     ->with('orders_today', $orders_today);
   }
-  public function search(Request $request)
-{
-    $exists = Client::where('id_card', $request->id_card)->exists();
 
-    if ($exists) {
-        return response()->json(['exists' => true, 'message' => 'Cliente encontrado.']);
-    } else {
-        return response()->json(['exists' => false, 'message' => 'Cliente no encontrado.']);
+public function search(Request $request)
+{
+    $client = Client::where('id_card', $request->id_card)->first();
+
+    return response()->json([
+        'exists' => $client ? true : false,
+        'message' => $client ? 'Cliente encontrado: ' . $client->full_name : 'Cliente no registrado'
+    ]);
+}
+
+public function store(Request $request)
+{
+    try {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'identity_type' => 'required|string|max:3|in:V,J,G,P',
+            'id_card' => 'required|string|max:20|unique:clients',
+            'address' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20'
+        ]);
+
+        $client = Client::create($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cliente creado exitosamente',
+            'client' => $client
+        ]);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error de validación',
+            'errors' => $e->errors()
+        ], 422);
+
+    } catch (\Exception $e) {
+        \Log::error('Error al crear cliente: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Error interno del servidor'
+        ], 500);
     }
 }
 

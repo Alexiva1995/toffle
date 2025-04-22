@@ -160,6 +160,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
             Route::get('/clients/search', [DashboardController::class, 'search'])->name('clients.search');
+            Route::post('/clients', [DashboardController::class, 'store'])->name('clients.store');
             Route::post('data-chart-amount-vs-gain', [DashboardController::class, 'dataChartAmountVsGain'])->name('data.chart.amount.vs.gain');
             Route::post('data-chart-weekly-sales', [DashboardController::class, 'dataChartWeeklySales'])->name('data.chart.weekly.sales');
             Route::post('data-chart-profit-by-category', [DashboardController::class, 'dataProfitByCategory'])->name('data.chart.profit.by.category');
