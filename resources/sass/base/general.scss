@@ -1,0 +1,261 @@
+html,
+body {
+    background: #512F26 !important;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label,
+span,
+.form-label {
+    color: #512F26
+}
+
+// CSS para los inputs
+// input[type=text], input[type=password] , input[type=email], input[type=checkbox], input[type=search], input[type=number]{
+//   border: 1px solid #512F26 !important;
+// }
+
+// .input-group-text > input[type=text], input[type=password] , input[type=email], input[type=checkbox], input[type=search], input[type=number]{
+//   border-left: transparent !important;
+// }
+
+// span.input-group-text {
+//   background: transparent;
+//   border-color: #512F26 !important;
+// }
+
+// css sidebard
+.main-menu.menu-light .navigation>li.active span.menu-title.text-truncate {
+    color: #fff !important;
+}
+
+.main-menu .shadow-bottom {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(248, 239, 216, 1) 0%);
+}
+
+// color de los placeholder
+::placeholder {
+    color: #512F26 !important;
+}
+
+// borde de los inputs
+.border-primary {
+    border: 1 #FF5933 !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #512F26 !important;
+    color: #fff !important;
+}
+
+.btn-max {
+    background-color: #FF5933
+}
+
+.btn-max:hover {
+    background-color: #e02900e1
+}
+
+.btn-sm,
+.btn-group-sm>.btn {
+    padding: 0.286rem 0.5rem;
+    font-size: 0.9rem;
+    border-radius: 0.358rem;
+}
+
+// css datatable
+
+.table> :not(:last-child)> :last-child>* {
+    border-bottom-color: #EBE9F1;
+}
+
+.table:not(.table-dark):not(.table-light) thead:not(.table-dark) th,
+.table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th {
+
+    background-color: #512F26;
+    color: #fff;
+}
+
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_desc:before {
+    background-image: url('./svg/arrow-up.svg') !important;
+
+}
+
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after {
+    background-image: url('./svg/arrow-down.svg') !important;
+}
+
+.page-item.previous .page-link,
+.page-item.prev .page-link,
+.page-item.next .page-link,
+.page-item.first .page-link,
+.page-item.last .page-link {
+
+    color: #fff;
+}
+
+.page-item.active {
+    background-color: #512F26;
+}
+
+.page-item:not(.prev-item) .page-link,
+.page-item:not(.next-item) .page-link,
+.page-item:not(.first) .page-link,
+.page-item:not(.last) .page-link,
+.page-item:not(.active) .page-link {
+    background-color: #512F26;
+}
+
+.dataTables_info {
+    color: #512F26 !important;
+}
+
+.page-item.next .page-link:after {
+
+    color: #fff;
+}
+
+// css modales
+.modal .modal-header {
+    background-color: #512F26 !important;
+}
+
+#myModalLabel1 {
+    color: #FF5933 !important;
+    margin-left: 22px !important;
+    font-weight: bolder !important;
+}
+
+.modal .modal-header .btn-close {
+    background-color: #FF5933 !important;
+}
+
+.btn-close {
+    background-image: url('./svg/close.svg') !important;
+}
+
+// css select
+.form-select {
+    color: #512F26 !important;
+    background-color: #F8EFD8 !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d8d6de' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    border: 1px solid #512F26 !important;
+}
+
+// css scroll
+
+body::-webkit-scrollbar {
+    width: 7px !important;
+    height: 7px !important;
+    overflow: visible !important;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #FF5933 !important;
+    border-radius: 7px !important;
+}
+
+body::-webkit-scrollbar-thumb:horizontal {
+    background: #FF5933 !important;
+    border-radius: 7px !important;
+}
+
+
+.avatar .avatar-content {
+    width: 45px !important;
+    height: 43px !important;
+}
+
+// Spinner
+
+.spinner-container{
+    position: relative;
+    z-index:999; 
+
+}
+
+#overlay {
+    opacity:0.1; 
+    height: 100%;
+    width: 100%;
+    position:fixed;
+    z-index: -1;
+    left:0;
+    top:0;  
+}
+
+.spinner2 {
+  margin: 10px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner2 > div {
+  background-color: red;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  opacity: 1 !important;
+
+
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner2 .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner2 .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner2 .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner2 .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}
+
+// Flatpickr
+
+.flatpickr-calendar .flatpickr-day.flatpickr-disabled, .flatpickr-calendar .flatpickr-day.prevMonthDay, .flatpickr-calendar .flatpickr-day.nextMonthDay {
+    color: #b9b8b8 !important;
+}
+
+.jconfirm .jconfirm-box {
+    background: #F8EFD8 !important;
+}

@@ -1,9 +1,8 @@
-@extends('layouts/fullLayoutMaster')
+{{-- @extends('layouts/fullLayoutMaster')
 
 @section('title', 'Login Page')
 
 @section('page-style')
-{{-- Page Css files --}}
 <link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-auth.css')) }}">
 @endsection
 
@@ -47,7 +46,7 @@
           @csrf
 
           <div class="form-group">
-            <div class="input-group input-group-merge form-password-toggle">
+            <div class="input-group input-group-merge  form-password-toggle">
               <input type="password" class="form-control form-control-merge" id="login-password" name="password" tabindex="1" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="login-password" />
               <div class="input-group-append">
                 <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
@@ -71,4 +70,4 @@
     <!-- /Login v1 -->
   </div>
 </div>
-@endsection
+@endsection --}}

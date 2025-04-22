@@ -1,244 +1,212 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Crear empleado')
+@section('title', 'Crear Empleado')
 
 @section('vendor-style')
-<!-- vendor css files -->
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/wizard/bs-stepper.min.css')) }}">
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
+    <!-- vendor css files -->
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
 @endsection
 
 @section('page-style')
-<!-- Page css files -->
-<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
-<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
 @endsection
 
 @section('content')
 <!-- Vertical Wizard -->
 <section class="vertical-wizard">
-  
-    <div class="bs-stepper vertical vertical-wizard-example">
-        <div class="bs-stepper-header">
-            <div class="step" data-target="#account-details-vertical" role="tab" id="account-details-vertical-trigger">
-                <button type="button" class="step-trigger">
-                    <span class="bs-stepper-box">1</span>
-                    <span class="bs-stepper-label">
-                        <span class="bs-stepper-title">Account Details</span>
-                        <span class="bs-stepper-subtitle">Setup Account Details</span>
-                    </span>
-                </button>
-            </div>
-            <div class="step" data-target="#personal-info-vertical" role="tab" id="personal-info-vertical-trigger">
-                <button type="button" class="step-trigger">
-                    <span class="bs-stepper-box">2</span>
-                    <span class="bs-stepper-label">
-                        <span class="bs-stepper-title">Personal Info</span>
-                        <span class="bs-stepper-subtitle">Add Personal Info</span>
-                    </span>
-                </button>
-            </div>
-            <div class="step" data-target="#address-step-vertical" role="tab" id="address-step-vertical-trigger">
-                <button type="button" class="step-trigger">
-                    <span class="bs-stepper-box">3</span>
-                    <span class="bs-stepper-label">
-                        <span class="bs-stepper-title">Address</span>
-                        <span class="bs-stepper-subtitle">Add Address</span>
-                    </span>
-                </button>
-            </div>
-            <div class="step" data-target="#social-links-vertical" role="tab" id="social-links-vertical-trigger">
-                <button type="button" class="step-trigger">
-                    <span class="bs-stepper-box">4</span>
-                    <span class="bs-stepper-label">
-                        <span class="bs-stepper-title">Social Links</span>
-                        <span class="bs-stepper-subtitle">Add Social Links</span>
-                    </span>
-                </button>
-            </div>
-        </div>
-
-        <div class="bs-stepper-content">
-            <div id="account-details-vertical" class="content" role="tabpanel"
-                aria-labelledby="account-details-vertical-trigger">
-                <div class="content-header">
-                    <h5 class="mb-0">Account Details</h5>
-                    <small class="text-muted">Enter Your Account Details.</small>
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Datos Requeridos</h4>
                 </div>
-                <div class="row">
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-username">Username</label>
-                        <input type="text" id="vertical-username" class="form-control" placeholder="johndoe" />
-                    </div>
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-email">Email</label>
-                        <input type="email" id="vertical-email" class="form-control" placeholder="john.doe@email.com"
-                            aria-label="john.doe" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="mb-1 form-password-toggle col-md-6">
-                        <label class="form-label" for="vertical-password">Password</label>
-                        <input type="password" id="vertical-password" class="form-control"
-                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
-                    </div>
-                    <div class="mb-1 form-password-toggle col-md-6">
-                        <label class="form-label" for="vertical-confirm-password">Confirm Password</label>
-                        <input type="password" id="vertical-confirm-password" class="form-control"
-                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-outline-secondary btn-prev" disabled>
-                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-                        <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                    </button>
-                    <button class="btn btn-primary btn-next">
-                        <span class="align-middle d-sm-inline-block d-none">Next</span>
-                        <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="personal-info-vertical" class="content" role="tabpanel"
-                aria-labelledby="personal-info-vertical-trigger">
-                <div class="content-header">
-                    <h5 class="mb-0">Personal Info</h5>
-                    <small>Enter Your Personal Info.</small>
-                </div>
-                <div class="row">
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-first-name">First Name</label>
-                        <input type="text" id="vertical-first-name" class="form-control" placeholder="John" />
-                    </div>
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-last-name">Last Name</label>
-                        <input type="text" id="vertical-last-name" class="form-control" placeholder="Doe" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-country">Country</label>
-                        <select class="select2 w-100" id="vertical-country">
-                            <option label=" "></option>
-                            <option>UK</option>
-                            <option>USA</option>
-                            <option>Spain</option>
-                            <option>France</option>
-                            <option>Italy</option>
-                            <option>Australia</option>
-                        </select>
-                    </div>
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-language">Language</label>
-                        <select class="select2 w-100" id="vertical-language" multiple>
-                            <option>English</option>
-                            <option>French</option>
-                            <option>Spanish</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-primary btn-prev">
-                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-                        <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                    </button>
-                    <button class="btn btn-primary btn-next">
-                        <span class="align-middle d-sm-inline-block d-none">Next</span>
-                        <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="address-step-vertical" class="content" role="tabpanel"
-                aria-labelledby="address-step-vertical-trigger">
-                <div class="content-header">
-                    <h5 class="mb-0">Address</h5>
-                    <small>Enter Your Address.</small>
-                </div>
-                <div class="row">
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-address">Address</label>
-                        <input type="text" id="vertical-address" class="form-control"
-                            placeholder="98  Borough bridge Road, Birmingham" />
-                    </div>
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-landmark">Landmark</label>
-                        <input type="text" id="vertical-landmark" class="form-control" placeholder="Borough bridge" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="pincode2">Pincode</label>
-                        <input type="text" id="pincode2" class="form-control" placeholder="658921" />
-                    </div>
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="city2">City</label>
-                        <input type="text" id="city2" class="form-control" placeholder="Birmingham" />
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-primary btn-prev">
-                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-                        <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                    </button>
-                    <button class="btn btn-primary btn-next">
-                        <span class="align-middle d-sm-inline-block d-none">Next</span>
-                        <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="social-links-vertical" class="content" role="tabpanel"
-                aria-labelledby="social-links-vertical-trigger">
-                <div class="content-header">
-                    <h5 class="mb-0">Social Links</h5>
-                    <small>Enter Your Social Links.</small>
-                </div>
-                <div class="row">
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-twitter">Twitter</label>
-                        <input type="text" id="vertical-twitter" class="form-control"
-                            placeholder="https://twitter.com/abc" />
-                    </div>
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-facebook">Facebook</label>
-                        <input type="text" id="vertical-facebook" class="form-control"
-                            placeholder="https://facebook.com/abc" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-google">Google+</label>
-                        <input type="text" id="vertical-google" class="form-control"
-                            placeholder="https://plus.google.com/abc" />
-                    </div>
-                    <div class="mb-1 col-md-6">
-                        <label class="form-label" for="vertical-linkedin">Linkedin</label>
-                        <input type="text" id="vertical-linkedin" class="form-control"
-                            placeholder="https://linkedin.com/abc" />
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-primary btn-prev">
-                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-                        <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                    </button>
-                    <button class="btn btn-success btn-submit">Submit</button>
+                <div class="card-body">
+                    <form class="form form-vertical" action="{{ route('employees.store') }}" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <div class="mb-1">
+                                    <label class="form-label" for="name">Nombres</label>
+                                    <div class="input-group input-group-merge  rounded ">
+                                        <span class="input-group-text"><i data-feather="user"></i></span>
+                                        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name"
+                                            placeholder="Nombres" />
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="mb-1">
+                                    <label class="form-label" for="last_name">Apellidos</label>
+                                    <div class="input-group input-group-merge ">
+                                        <span class="input-group-text"><i data-feather="user"></i></span>
+                                        <input type="text" id="last_name" class="form-control @error('last_name') is-invalid @enderror" name="last_name"
+                                            placeholder="Apellidos" />
+                                        @error('last_name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="mb-1">
+                                    <label class="form-label" for="dni">DNI</label>
+                                    <div class="input-group input-group-merge ">
+                                        <span class="input-group-text"><i data-feather="credit-card"></i></span>
+                                        <input type="text" id="dni" class="form-control @error('dni') is-invalid @enderror" name="dni"
+                                            placeholder="DNI" />
+                                        @error('dni')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="mb-1">
+                                    <label class="form-label" for="phone">Número de Teléfono</label>
+                                    <div class="input-group input-group-merge ">
+                                        <span class="input-group-text"><i data-feather="smartphone"></i></span>
+                                        <input type="text" id="phone" class="form-control @error('phone') is-invalid @enderror"
+                                            name="phone" placeholder="Teléfono" />
+                                        @error('phone')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="mb-1">
+                                    <label class="form-label" for="email">Correo</label>
+                                    <div class="input-group input-group-merge ">
+                                        <span class="input-group-text"><i data-feather="mail"></i></span>
+                                        <input type="email" id="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                                            placeholder="Correo" />
+                                        @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="mb-1">
+                                    <label for="register-password" class="form-label">Contraseña</label>
+                                    <div class="input-group input-group-merge  form-password-toggle">
+                                        <input type="password"
+                                            class="form-control form-control-merge @error('password') is-invalid @enderror"
+                                            id="password" name="password"
+                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                            aria-describedby="register-password" tabindex="3" />
+                                        <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="col-auto mt-1">
+                                            <a class="btn  btn-primary" id="generate_password"> Generar Contraseña </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="mb-1">
+                                    <label class="form-label" for="salary">Sueldo</label>
+                                    <div class="input-group input-group-merge ">
+                                        <span class="input-group-text"><i data-feather="briefcase"></i></span>
+                                        <input type="number" id="salary" class="form-control @error('salary') is-invalid @enderror"
+                                            name="salary" placeholder="Sueldo" step="0.01"/>
+                                        @error('salary')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 mb-1">
+                                <label class="form-label" for="date_birth">Fecha de Nacimiento</label>
+                                <input type="text" id="date_birth" name="date_birth" class="form-control flatpickr-basic rounded  @error('date_birth') is-invalid @enderror" placeholder="YYYY-MM-DD"/>
+                                @error('date_birth')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-4 mb-1">
+                                <div class="mb-1">
+                                    <label class="form-label" for="status">Estatus</label>
+                                    <select class="form-select rounded border-primary @error('status') is-invalid @enderror" id="status" name="status">
+                                      <option selected disabled>Selecciona un Estatus</option>
+                                      <option value="1">Activo</option>
+                                      <option value="0">Inactivo</option>
+                                    </select>
+                                    @error('status')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end mt-2">
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary me-1">Crear</button>
+                                <a href="{{ route('employees.list') }}"  class="btn btn-outline-secondary">Cancelar</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- /Vertical Wizard -->
-
-
 @endsection
 
 @section('vendor-script')
-<!-- vendor files -->
-<script src="{{ asset(mix('vendors/js/forms/wizard/bs-stepper.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
+  <!-- vendor files -->
+  <script src="{{ asset(mix('vendors/js/pickers/pickadate/picker.js')) }}"></script>
+  <script src="{{ asset(mix('vendors/js/pickers/pickadate/picker.date.js')) }}"></script>
+  <script src="{{ asset(mix('vendors/js/pickers/pickadate/picker.time.js')) }}"></script>
+  <script src="{{ asset(mix('vendors/js/pickers/pickadate/legacy.js')) }}"></script>
+  <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
 @endsection
+
 @section('page-script')
-<!-- Page js files -->
-<script src="{{ asset(mix('js/scripts/forms/form-wizard.js')) }}"></script>
+  <!-- Page js files -->
+  <script src="{{ asset(mix('js/scripts/forms/pickers/form-pickers.js')) }}"></script>
 @endsection
+
+@section('custom-js')
+  <script>
+    $(document).ready(function () {
+        $('#generate_password').click(function (e) {
+            $.post("{{ route('generate.password') }}", {},
+                function (data, textStatus, jqXHR) {
+                    $('#password').val(data);
+                    toastr['success']('', 'Contraseña Generada', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                    });
+                },
+            );
+        });
+    });
+  </script>
+@endsection
+

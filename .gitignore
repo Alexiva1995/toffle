@@ -1,13 +1,13 @@
 /node_modules
-/public/hot
-/public/data
-/public/fonts
-/public/images
-/public/storage
-/public/js
-/public/css
-/public/css-rtl
-/public/vendors
+# /public/hot
+# /public/data
+# /public/fonts
+# /public/images
+# /public/storage
+# /public/js
+# /public/css
+# /public/css-rtl
+# /public/vendors
 /storage/*.key
 /vendor
 .env
@@ -20,3 +20,8 @@ yarn-error.log
 /vuexy-shell-scripts
 supervisord.log
 supervisord.pid
+
+composer.lock
+composer.lock
+storage
+composer.lock

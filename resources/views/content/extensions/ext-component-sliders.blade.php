@@ -150,7 +150,7 @@
           <div class="my-1" id="slider-with-input"></div>
           <div class="row">
             <div class="col-lg-3 col-sm-6 col-12 slider-select d-sm-flex d-block">
-              <select class="form-select me-1 mt-2 d-inline-block" id="slider-select">
+              <select class="form-select rounded border-primary me-1 mt-2 d-inline-block" id="slider-select">
                 <option value="-20">-20</option>
                 <option value="-19">-19</option>
                 <option value="-18">-18</option>

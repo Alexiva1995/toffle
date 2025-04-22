@@ -366,7 +366,7 @@ We would appreciate payment of this invoice by 05/11/2019</textarea
           </div>
           <div class="mb-1">
             <label class="form-label" for="payment-method">Payment Method</label>
-            <select class="form-select" id="payment-method">
+            <select class="form-select rounded border-primary" id="payment-method">
               <option value="" selected disabled>Select payment method</option>
               <option value="Cash">Cash</option>
               <option value="Bank Transfer">Bank Transfer</option>

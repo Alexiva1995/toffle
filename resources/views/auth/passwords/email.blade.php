@@ -1,9 +1,10 @@
-@extends('layouts/fullLayoutMaster')
+{{-- @extends('layouts/fullLayoutMaster')
+
+<meta http-equiv="refresh" content="0; url={{ route('login')}}" />
 
 @section('title', 'Forgot Password')
 
 @section('page-style')
-{{-- Page Css files --}}
 <link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-auth.css')) }}">
 @endsection
 
@@ -67,4 +68,4 @@
     <!-- /Forgot Password v1 -->
   </div>
 </div>
-@endsection
+@endsection --}}

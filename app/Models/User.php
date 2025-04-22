@@ -22,6 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'dni',
         'email',
         'password',
+        'token_crypt',
         'salary',
         'role',
         'status',
@@ -47,4 +48,16 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function sessions()
+    {
+        return $this->hasMany(Session::class);
+    }
+
+    public function getFullName()
+    {   
+        $first_name = $this->name;
+        $last_name = $this->last_name;
+        return "${first_name} ${last_name}";
+    }
 }

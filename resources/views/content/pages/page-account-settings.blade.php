@@ -308,7 +308,7 @@
                   <div class="col-12 col-sm-6">
                     <div class="mb-1">
                       <label class="form-label" for="accountSelect">Country</label>
-                      <select class="form-select" id="accountSelect">
+                      <select class="form-select rounded border-primary" id="accountSelect">
                         <option>USA</option>
                         <option>India</option>
                         <option>Canada</option>

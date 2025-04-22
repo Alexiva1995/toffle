@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 
 class LoginController extends Controller
 {
@@ -19,7 +23,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    // use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -36,6 +40,76 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function login(Request $request)
+    {
+        $fields = [
+            "email" => ['required'],
+            "password" => ['required'],
+        ];
+
+        $msj = [];
+
+        $this->validate($request, $fields, $msj);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $this->remember($request->remember, $request->email, $request->password);
+            return redirect('/');
+        }else{         
+            return back()->with('danger', $this->msgError($request->email, $request->password));
+        }
+    }
+
+    public function msgError($email, $password)
+    {
+        $msg_error= '';
+        $validator_password;
+        $user = User::where('email', $email)->first();
+        if ($user != null) {
+            $user_token = Crypt::decrypt($user->token_crypt);
+            $validator_password = ($user_token != $password ? false : '');
+        }else{
+            $validator_password = false;
+        }
+
+        // if (User::where('email', $email)->exists() == null && $validator_password == false) {
+        //     $msg_error= 'Correo y Contraseña Incorrectos.';
+        // }
+        
+        if (User::where('email', $email)->exists() == null){
+            $msg_error= 'El Correo es Incorrecto.';
+        }else if($validator_password == false){
+            $msg_error= 'La Contraseña es Incorrecta.';
+        }
+
+        return $msg_error;
+    }
+
+    public function remember($remember, $email, $password)
+    {
+        if ($remember) {
+            session([
+                'remember' => '1',
+                'email' => $email,
+                'password'=> $password
+            ]);
+        }else{
+            session([
+                'remember' => '0'
+            ]);
+            session()->forget('email');
+            session()->forget('password');
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        return redirect()->route('login')->with('success', 'Sesión Finalizada');
     }
 
     // Login

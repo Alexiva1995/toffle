@@ -1,0 +1,75 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header">
+                <h5 class="card-title">Datos Requeridos</h4>
+            </div>
+            <div class="card-body px-2">
+                <form class="form form-vertical" id="form_edit_product" method="POST">
+                    @csrf
+                    @method('PATCH')
+
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-12 col-md-6 mb-1">
+                            <div class="mb-1">
+                                <label class="form-label" for="name">Nombre</label>
+                                <div class="input-group input-group-merge ">
+                                    <span class="input-group-text"><i data-feather="package"></i></span>
+                                    <input type="text" id="edit_name" class="form-control requerid @error('name') is-invalid @enderror" name="name"
+                                        placeholder="Nombre"/>
+                                    @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1">
+                            <div class="mb-1">
+                                <label class="form-label" id="cant_type" for="quantity"></label>
+                                <div class="input-group input-group-merge ">
+                                    <span class="input-group-text"><i data-feather="archive"></i></span>
+                                    <input type="number" id="edit_quantity" class="form-control requerid @error('quantity') is-invalid @enderror" name="quantity" onkeydown="filter()" placeholder="Cantidad" />
+                                    @error('quantity')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+     
+                        <div class="col-12 mb-2">
+                            <div class="d-flex justify-content-center @error('it_has_flavors') is-invalid @enderror">
+                                <div class="form-check form-check-inline">
+                                    
+                                    <input type="hidden" name="it_has_flavors" value="0"/>
+                                    <input class="form-check-input border border-primary @error('it_has_flavors') is-invalid @enderror" type="checkbox" name="it_has_flavors" id="edit_flavors" value="1"/>
+
+                                    <label class="form-check-label" for="it_has_flavors">Sabores</label>
+                                </div>
+                            </div>
+                            @error('it_has_flavors')
+                                <span class="invalid-feedback text-center" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror   
+                        </div>  
+                        <input type="hidden" name="typeOfCant" id="typeOfCant">                 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

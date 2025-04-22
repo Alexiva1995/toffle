@@ -83,7 +83,7 @@
           <h4 class="card-title">Merged</h4>
         </div>
         <div class="card-body">
-          <div class="input-group input-group-merge mb-2">
+          <div class="input-group input-group-merge  mb-2">
             <span class="input-group-text" id="basic-addon-search2"><i data-feather="search"></i></span>
             <input
               type="text"
@@ -95,7 +95,7 @@
           </div>
 
           <label class="form-label" for="basic-default-password1">Password</label>
-          <div class="input-group input-group-merge form-password-toggle mb-2">
+          <div class="input-group input-group-merge  form-password-toggle mb-2">
             <input
               type="password"
               class="form-control"
@@ -106,7 +106,7 @@
             <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
           </div>
 
-          <div class="input-group input-group-merge mb-2">
+          <div class="input-group input-group-merge  mb-2">
             <span class="input-group-text" id="basic-addon5">@</span>
             <input
               type="text"
@@ -117,7 +117,7 @@
             />
           </div>
 
-          <div class="input-group input-group-merge mb-2">
+          <div class="input-group input-group-merge  mb-2">
             <input
               type="text"
               class="form-control"
@@ -129,18 +129,18 @@
             <span class="input-group-text" id="basic-addon6">@example.com</span>
           </div>
 
-          <div class="input-group input-group-merge mb-2">
+          <div class="input-group input-group-merge  mb-2">
             <span class="input-group-text" id="basic-addon7">https://example.com/users/</span>
             <input type="text" class="form-control" id="basic-url7" aria-describedby="basic-addon7" />
           </div>
 
-          <div class="input-group input-group-merge mb-2">
+          <div class="input-group input-group-merge  mb-2">
             <span class="input-group-text">$</span>
             <input type="text" class="form-control" placeholder="100" aria-label="Amount (to the nearest dollar)" />
             <span class="input-group-text">.00</span>
           </div>
 
-          <div class="input-group input-group-merge">
+          <div class="input-group input-group-merge ">
             <span class="input-group-text">With textarea</span>
             <textarea class="form-control" aria-label="With textarea"></textarea>
           </div>
