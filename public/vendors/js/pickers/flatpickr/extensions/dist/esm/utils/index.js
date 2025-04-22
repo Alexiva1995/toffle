@@ -1,10 +1,1 @@
-export const pad = (number, length = 2) => `000${number}`.slice(length * -1);
-export const int = (bool) => (bool === true ? 1 : 0);
-export function debounce(fn, wait) {
-    let t;
-    return function () {
-        clearTimeout(t);
-        t = setTimeout(() => fn.apply(this, arguments), wait);
-    };
-}
-export const arrayify = (obj) => obj instanceof Array ? obj : [obj];
+export const pad=(t,e=2)=>`000${t}`.slice(-1*e);export const int=t=>!0===t?1:0;export function debounce(t,e){let o;return function(){clearTimeout(o),o=setTimeout((()=>t.apply(this,arguments)),e)}}export const arrayify=t=>t instanceof Array?t:[t];

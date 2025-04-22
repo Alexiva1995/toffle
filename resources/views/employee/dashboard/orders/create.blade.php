@@ -34,7 +34,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                Modificaciones Adicionales
+                                Agregar pedido
                             </li>
                         </ol>
                     </div>
@@ -44,32 +44,6 @@
                         <div class="row justify-content-center">
                             <div class="col-12">
                                 <div class="bs-stepper horizontal-wizard-example" style="box-shadow:none">
-                                    <div class="bs-stepper-header" role="tablist">
-                                        <div class="step active" data-target="#general-data" role="tab" id="general-data-trigger">
-                                            <button type="button" class="step-trigger">
-                                                <span class="bs-stepper-box">1</span>
-                                                <span class="bs-stepper-label">
-                                                    <span class="bs-stepper-title">Agregar Pedido</span>
-                                                    <span class="bs-stepper-subtitle">Se agregara el pedido con  los datos generales</span>
-                                                </span>
-                                            </button>
-                                        </div>
-                                        <div class="line">
-                                            <i data-feather="chevron-right" class="font-medium-2"></i>
-                                        </div>
-                                        <div class="step" data-target="#add-dishes" role="tab" id="add-dishes-trigger">
-                                            <button type="button" class="step-trigger">
-                                                <span class="bs-stepper-box">2</span>
-                                                <span class="bs-stepper-label">
-                                                    <span class="bs-stepper-title">Platos</span>
-                                                    <span class="bs-stepper-subtitle">Agregar platos de la órden y modificar sus ingredientes</span>
-                                                </span>
-                                            </button>
-                                        </div>
-                                        <div class="line">
-                                            <i data-feather="chevron-right" class="font-medium-2"></i>
-                                        </div>
-                                    </div>
                                     <div class="bs-stepper-content">
                                         <div id="general-data" class="content active" role="tabpanel" aria-labelledby="general-data-trigger">
                                             <div class="content-header">
@@ -80,43 +54,25 @@
                                             <form id="form_add_order" class="form form-vertical" action="{{ route('orders.store') }}" method="POST">
                                                 @csrf
                                                 <div class="row justify-content-center align-items-center">
-                                                    <div class="col-12 col-md-5 mb-1">
-                                                        <div class="mb-1">
-                                                            <label class="form-label" for="customer_name">Nombre del Cliente</label>
-                                                            <div class="input-group input-group-merge">
-                                                                <span class="input-group-text"><i data-feather="user"></i></span>
-                                                                <input type="text" id="customer_name" class="form-control requerid @error('customer_name') is-invalid @enderror" name="customer_name"
-                                                                placeholder="Nombre" required/>
-                                                                @error('customer_name')
-                                                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-md-5 mb-1">
-                                                        <div class="mb-1">
-                                                            <label class="form-label" for="table">Mesa</label>
-                                                            <div class="input-group input-group-merge">
+                                                    <div class="col-12 col-sm-7 col-md-7 col-lg-9 mb-1 center">
+                                                            <div class="col-12 input-group input-group-merge">
                                                                 <span class="input-group-text"><i data-feather="tag"></i></span>
                                                                 <input type="number" id="table" class="form-control requerid @error('table') is-invalid @enderror" name="table"
-                                                                placeholder="Mesa" required/>
+                                                                placeholder="# de pedido" required/>
                                                                 @error('table')
                                                                 <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
                                                                 @enderror
                                                             </div>
-                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row justify-content-center">
-                                                    <div class="col-auto">
-                                                        <button type="submit" class="btn btn-primary me-1" id="btn_add_order">
-                                                            <span class="loading_add_order mr-2"></span> Añadir
-                                                        </button>
-                                                        <a href="{{ route('dashboard-employee') }}" class="btn btn-outline-secondary">Cancelar</a>
+                                                    <div class="col-12 col-sm-5 col-md-5 col-lg-3 mb-1">
+                                                            <div class="col-12 center">
+                                                                <button type="submit" class="btn btn-primary me-1" id="btn_add_order">
+                                                                    <span class="loading_add_order mr-2"></span> Añadir
+                                                                </button>
+                                                                <a href="{{ route('dashboard-employee') }}" class="btn btn-outline-secondary">Cancelar</a>
+                                                            </div>
                                                     </div>
                                                 </div>
                                             </form> 

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Dish;
 use App\Models\Category;
 use App\Models\Inventory;
+use App\Models\Client;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,18 +73,20 @@ class DashboardController extends Controller
   public function dashboarEmployee()
   {
     $pageConfigs = ['pageHeader' => false];
-
-    // $orders = Order::all();
-
-    // $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
-
-    // $inventories = Inventory::all();
-
-    return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs]);
-      // ->with('tables', $tables)
-      // ->with('inventories', $inventories)
-      // ->with('orders', $orders);
+    $orders_today = Order::where('status', '2')->whereDate('created_at', '=', Carbon::now()->format('Y-m-d'))->get();
+    return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
+    ->with('orders_today', $orders_today);
   }
+  public function search(Request $request)
+{
+    $exists = Client::where('id_card', $request->id_card)->exists();
+
+    if ($exists) {
+        return response()->json(['exists' => true, 'message' => 'Cliente encontrado.']);
+    } else {
+        return response()->json(['exists' => false, 'message' => 'Cliente no encontrado.']);
+    }
+}
 
   public function dataChartAmountVsGain() {
       $orders = Order::selectRaw('orders.created_at as date')
@@ -121,12 +124,12 @@ class DashboardController extends Controller
       ->orderBy('category_name', 'ASC')
       ->groupBy('d.id', 'd.name')
       ->get();
-    
+
     return response()->json([
         'orders' => $orders
     ]);
   }
- 
+
   public function dataChartWeeklySales(Request $request) {
 
       $dates = [];
@@ -158,9 +161,9 @@ class DashboardController extends Controller
                'total_amount' => $order->total_amount,
                'date' => date('d', strtotime($order->date)).' '.$this->getDay($order->date),
              ]);
- 
+
              $dates_found = array_merge($dates_found, $array);
- 
+
              $array_dates = array($order->date);
              $array_dates_found = array_merge($array_dates_found, $array_dates);
           }
@@ -184,8 +187,8 @@ class DashboardController extends Controller
       ksort($dates);
 
       $keys = array(0, 1, 2, 3, 4, 5, 6);
-      
-      $dates = array_combine($keys, $dates); 
+
+      $dates = array_combine($keys, $dates);
 
       return response()->json([
         'dates' => $dates,
@@ -198,7 +201,7 @@ class DashboardController extends Controller
 
       $weekdays = [];
       $days = ['0', '1', '2', '3', '4', '5', '6'];
-     
+
       foreach ($days as $key => $day) {
         $dates = array(date('Y-m-d', strtotime($year."W".$week_number.$day)));
           $weekdays = array_merge($weekdays, $dates) ;
@@ -212,6 +215,7 @@ class DashboardController extends Controller
      $days = array("Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo");
      return $days[date('N', strtotime($date)) - 1 ];
  }
+
 
  public function loadData(Request $request, $type)
  {
@@ -229,7 +233,7 @@ class DashboardController extends Controller
                  ->render();
              break;
          case 'tables':
-             $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
+             $tables = Order::select('table')->whereIn('status', ['0', '1', '2', '3'])->groupBy('table')->get();
              return view('employee.dashboard.table.list')
                  ->with('tables', $tables)
                  ->render();

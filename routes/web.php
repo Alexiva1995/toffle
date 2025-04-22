@@ -135,7 +135,7 @@ Route::middleware('auth')->group(function () {
             // Expenses
             Route::group(['prefix' => 'expenses'], function () {
                 Route::get('list-historical', [ExpensesController::class, 'listHistorical'])->name('expenses.list.historical');
-                
+
                 Route::get('list-historical-data', [ExpensesController::class, 'listHistoricalData'])->name('expenses.list.historical.data');
 
                 Route::get('list-to-pay', [ExpensesController::class, 'listToPay'])->name('expenses.list.to.pay');
@@ -149,7 +149,7 @@ Route::middleware('auth')->group(function () {
 
         });
     });
-    
+
     Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 
     Route::group(['prefix' => 'employee'], function () {
@@ -157,8 +157,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/flow-days', [OrdersController::class, 'flowDays'])->name('flow.days');
 
         Route::group(['prefix' => 'dashboard'], function () {
-            Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
 
+            Route::get('/', [DashboardController::class, 'dashboarEmployee'])->name('dashboard-employee');
+            Route::get('/clients/search', [DashboardController::class, 'search'])->name('clients.search');
             Route::post('data-chart-amount-vs-gain', [DashboardController::class, 'dataChartAmountVsGain'])->name('data.chart.amount.vs.gain');
             Route::post('data-chart-weekly-sales', [DashboardController::class, 'dataChartWeeklySales'])->name('data.chart.weekly.sales');
             Route::post('data-chart-profit-by-category', [DashboardController::class, 'dataProfitByCategory'])->name('data.chart.profit.by.category');

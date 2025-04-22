@@ -11,11 +11,19 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'customer_name',
+       
         'table',
         'total_amount',
         'status',
     ];
+    
+    public function hoy() {
+         $datehoy = Carbon::now();
+         $orderdates = whereBetween('created_at', ['2023-01-01', '2024-01-31']);
+         
+        return $datehoy;
+        
+    }
 
     public function dishes()
     {
