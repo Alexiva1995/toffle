@@ -25,7 +25,7 @@ class Helper
             'contentLayout' => 'default',
             'blankPage' => false,
             'defaultLanguage' => 'es',
-            'direction' => env('MIX_CONTENT_DIRECTION', 'ltr'),
+            'direction' => env('VITE_CONTENT_DIRECTION', 'ltr'),
         ];
 
         // if any key missing of array from custom.php file it will be merge and set a default value from dataDefault array and store in data variable

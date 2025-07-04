@@ -9,7 +9,7 @@ $configData = Helper::applClasses();
 
 <html class="loading {{ ($configData['theme'] === 'light') ? '' : $configData['layoutTheme']}}"
 lang="@if(session()->has('locale')){{session()->get('locale')}}@else{{$configData['defaultLanguage']}}@endif"
-data-textdirection="{{ env('MIX_CONTENT_DIRECTION') === 'rtl' ? 'rtl' : 'ltr' }}"
+data-textdirection="{{ env('VITE_CONTENT_DIRECTION') === 'rtl' ? 'rtl' : 'ltr' }}"
 @if($configData['theme'] === 'dark') data-layout="dark-layout" @endif>
 
 <head>
