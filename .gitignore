@@ -26,6 +26,7 @@ Homestead.yaml
 
 # Directorios generados dinamicamente.
 /public/hot
+/public/build
 /public/data
 /public/fonts
 /public/storage
