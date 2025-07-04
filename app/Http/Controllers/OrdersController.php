@@ -65,12 +65,11 @@ class OrdersController extends Controller
     public function store(Request $request)
     {
         $fields = [
-            "customer_name" => ['required'],
             "table" => ['required'],
         ];
 
         $msj = [
-            'customer_name.required' => 'El nombre del cliente es requerido',
+
             'table.required' => 'La mesa es requerida',
         ];
 
@@ -147,16 +146,6 @@ class OrdersController extends Controller
 
             if ($request->form == 'update_general_data') {
                 $order_ingredients = DB::table('order_ingredient')->where('order_id', $order->id)->get();
-                foreach($order_ingredients as $ingredient)
-                {
-                    if($ingredient->it_has_flavors == 1 && $ingredient->flavor_name == null)
-                    {
-                        $response = new stdClass;
-                        $response->error = true;
-                        $response->message = 'Esta orden tiene ingredientes con sabores sin definir';
-                        return $response;
-                    }
-                }
                 $this->updateGeneralData($request, $order);
             }
 
@@ -374,8 +363,7 @@ class OrdersController extends Controller
     public function orderTableData(Request $request, $type)
     {
         if ($type == 'pending') {
-            $orders = Order::whereIn('status', ['0', '1'])
-            ->orderBy('id', 'DESC')->whereDate( 'created_at', now()->today() );
+            $orders = Order::orderBy('id', 'DESC')->whereDate( 'created_at', now()->today() );
         }else{
             $orders = Order::orderBy('id', 'DESC')->whereDate( 'created_at', now()->today() );
         }

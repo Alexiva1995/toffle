@@ -34,7 +34,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                Agregar Platos 
+                                Agregar Pedido
                             </li>
                         </ol>
                     </div>
@@ -43,43 +43,15 @@
                     <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="bs-stepper horizontal-wizard-example" style="box-shadow:none">
-                                <div class="bs-stepper-header" role="tablist">
-                                    <div class="step" data-target="#general-data" role="tab" id="general-data-trigger">
-                                        <button type="button" class="step-trigger">
-                                            <span class="bs-stepper-box">1</span>
-                                            <span class="bs-stepper-label">
-                                                <span class="bs-stepper-title">Agregar Pedido</span>
-                                                <span class="bs-stepper-subtitle">Se agregara el pedido con  los datos generales</span>
-                                            </span>
-                                        </button>
-                                    </div>
-                                    <div class="line">
-                                        <i data-feather="chevron-right" class="font-medium-2"></i>
-                                    </div>
-                                    <div class="step active" data-target="#add-dishes" role="tab" id="add-dishes-trigger">
-                                        <button type="button" class="step-trigger">
-                                            <span class="bs-stepper-box">2</span>
-                                            <span class="bs-stepper-label">
-                                                <span class="bs-stepper-title">Platos</span>
-                                                <span class="bs-stepper-subtitle">Agregar platos de la órden y modificar sus ingredientes</span>
-                                            </span>
-                                        </button>
-                                    </div>
-                                    <div class="line">
-                                        <i data-feather="chevron-right" class="font-medium-2"></i>
-                                    </div>
-                                </div>
                                 <div class="bs-stepper-content">
                                     <div id="add-dishes" class="content active" role="tabpanel" aria-labelledby="add-dishes-trigger">
                                         <div class="content-header">
                                             <h5 class="mb-0">Agregar Platos</h5>
-                                            <small class="text-muted">Agregar platos de la órden y modificar sus ingredientes.</small>
                                         </div>
                                         <form class="form form-vertical">
                                             @csrf
-                                            <h5 class="mb-2 text-center">Añadir Platos</h5>
                                             <div class="row justify-content-center align-items-center">
-                                                <div class="col-12 col-md-4 mb-1">           
+                                                <div class="col-12 col-sm-5 col-md-6 col-lg-8 mb-1">           
                                                     <select class="select2 form-control" data-toggle="select" class="form-control" id="dish_id">
                                                         <option disabled selected value=''>Selecciona un Plato</option>
                                                         @foreach ($dish_category as $item)
@@ -93,10 +65,10 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="col-12 col-md-4 mb-1">
+                                                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-1">
                                                     <input type="number" id="units" class="form-control" placeholder="Cantidad"/>
                                                 </div>
-                                                <div class="col-auto mb-1">
+                                                <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-1 center">
                                                     <a class="btn btn-info" id="add_dish">
                                                         <i class="icon_dish" data-feather="plus-circle"></i> 
                                                         <span class="loading_add_dish mr-2"></span>
@@ -466,33 +438,6 @@
                   visible: true,
                   searchable: true,
                 },
-                // {
-                //   data: "pivot.unit",
-                //   name: "pivot.unit",
-                //   title: "Cantidad",
-                //   "class": "text-center",
-                //   visible: true,
-                //   searchable: true
-                // },
-                // {
-                //   data: "pivot.price",
-                //   name: "pivot.price",
-                //   title: "Precio Unitario",
-                //   "class": "text-center",
-                //   visible: true,
-                //   searchable: true,
-                //   render: function (data, type, row, meta) {
-                //       return row.pivot.price.toFixed(2);
-                //   }  
-                // },
-                {
-                    data: "[relleno]",
-                    name: "pivot.id",
-                    title: "Sabor de Helado",
-                    "class": "text-center helado",
-                    visible: true,
-                    searchable: true,
-                },
                 {
                     data: "pivot.price",
                     name: "pivot.price",
@@ -504,14 +449,7 @@
                         return ( row.pivot.price * row.pivot.unit ).toFixed(2);
                     }  
                 },    
-                // {
-                //     data: "pivot.id",
-                //     name: "pivot.id",
-                //     title: "Para Llevar",
-                //     "class": "text-center",
-                //     visible: true,
-                //     searchable: true,
-                // },
+               
                 {
                     data: "pivot.id",
                     name: "pivot.id",
@@ -520,31 +458,12 @@
                     visible: true,
                     searchable: true,
                 },
-                //   {
-                //       data: "details",
-                //       name: "details",
-                //       title: "Detalles",
-                //       "class": "text-center",
-                //       visible: true,
-                //       searchable: true, 
-                //       render: function (data, type, row) {
-                //           return $("<div/>").html(row.details).text();
-                //       }
-                //   },
-                // {
-                //   data: "pivot.id",
-                //   name: "pivot.id",
-                //   title: "Ingredientes",
-                //   "class": "text-center",
-                //   visible: true,
-                //   searchable: true,
-                //  },
+    
             ],
             fnCreatedRow: function (elemt, data, iDataIndex) {
                 var indice = iDataIndex + 1;
 
-                field=$('td:eq(3)', elemt);
-                buttons='';
+              
                 /* Inicio opcion para llevar */
                 /* 
                 var checked = "";
@@ -558,37 +477,8 @@
                 /* Fin opcion para llevar */
 
                 // if(data.name.includes('Helado') || data.category_id == 4){
-                    if('flavor' in data){
-                        if(data.details == true && data.flavor != null){
-                            field=$('td:eq(1)', elemt);
-                            buttons='';
-                            button = '<span>'+ (data.flavor) +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
-                            buttons+=button;
-                            field=field.html(buttons);
 
-                        }else if(data.details == false && data.flavor != null){
-                            field=$('td:eq(1)', elemt);
-                            buttons='';
-                            button = '<span>'+ (data.flavor) +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
-                            buttons+=button;
-                            field=field.html(buttons);
-                        }else if(data.details == true && data.flavor == null){
-                            field=$('td:eq(1)', elemt);
-                            buttons='';
-                            button = '<span>'+ ('Seleccione un sabor') +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
-                            buttons+=button;
-                            field=field.html(buttons);
-                        }else{
-                            field=$('td:eq(1)', elemt);
-                            buttons='';
-                            button = '<span>'+ ('----------------') +' </span>'
-                            buttons+=button;
-                            field=field.html(buttons);
-                        }
-                    }
-
-
-                field=$('td:eq(3)', elemt);
+                field=$('td:eq(2)', elemt);
                 buttons='';
                 button = '<button class="btn btn-sm btn-danger" onclick="deleteDish({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="trash-2"></i></button>'
                 buttons+=button;

@@ -72,17 +72,9 @@ class DashboardController extends Controller
   public function dashboarEmployee()
   {
     $pageConfigs = ['pageHeader' => false];
-
-    // $orders = Order::all();
-
-    // $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
-
-    // $inventories = Inventory::all();
-
-    return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs]);
-      // ->with('tables', $tables)
-      // ->with('inventories', $inventories)
-      // ->with('orders', $orders);
+    $orders_today = Order::where('status', '2')->whereDate('created_at', '=', Carbon::now()->format('Y-m-d'))->get();
+    return view('employee.dashboard.index', ['pageConfigs' => $pageConfigs])
+    ->with('orders_today', $orders_today);
   }
 
   public function dataChartAmountVsGain() {
@@ -213,6 +205,7 @@ class DashboardController extends Controller
      return $days[date('N', strtotime($date)) - 1 ];
  }
 
+
  public function loadData(Request $request, $type)
  {
      switch ($type) {
@@ -229,7 +222,7 @@ class DashboardController extends Controller
                  ->render();
              break;
          case 'tables':
-             $tables = Order::select('table')->whereIn('status', ['0', '1'])->groupBy('table')->get();
+             $tables = Order::select('table')->whereIn('status', ['0', '1', '2', '3'])->groupBy('table')->get();
              return view('employee.dashboard.table.list')
                  ->with('tables', $tables)
                  ->render();
