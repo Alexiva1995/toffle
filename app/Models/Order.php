@@ -27,13 +27,13 @@ class Order extends Model
 
     public function dishes()
     {
-        return $this->belongsToMany('App\Models\Dish', 'order_dish')
+        return $this->belongsToMany(\App\Models\Dish::class, 'order_dish')
                 ->withPivot('id', 'order_id', 'dish_id', 'code_operation', 'unit', 'price', 'cost', 'is_for_carry', 'created_at', 'updated_at');
     }
 
     public function ingredients()
     {
-        return $this->belongsToMany('App\Models\Inventory', 'order_ingredient')
+        return $this->belongsToMany(\App\Models\Inventory::class, 'order_ingredient')
                 ->withPivot('id', 'order_id', 'inventory_id', 'code_operation', 'dish_id', 'portion', 'designated_cost', 'it_has_flavors', 'flavor_name', 'created_at', 'updated_at');
     }
 

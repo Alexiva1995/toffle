@@ -20,6 +20,6 @@ class Product extends Model
 
     public function inventory()
     {
-        return $this->belongsTo('App\Models\Inventory', 'id', 'product_id');
+        return $this->belongsTo(\App\Models\Inventory::class, 'id', 'product_id');
     }
 }

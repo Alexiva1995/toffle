@@ -24,7 +24,7 @@ class Inventory extends Model
 
     public function product()
     {
-        return $this->hasOne('App\Models\Product', 'id', 'product_id');
+        return $this->hasOne(\App\Models\Product::class, 'id', 'product_id');
     }
     //Calcula el promedio para el nuevo precio del inventario
     public function promedialPrice($old_price, $new_price, $stock, $add_to_stock)
