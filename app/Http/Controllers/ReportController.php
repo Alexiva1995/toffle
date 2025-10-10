@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Expense;
 use App\Models\Order;
@@ -9,7 +10,7 @@ use Yajra\DataTables\DataTables;
 
 class ReportController extends Controller
 {
-    //Permite  obtener el listado de los productos mas vendidos
+    //Permite obtener el listado de los productos mas vendidos
     public function bestSeller()
     {
         $categories = Category::all();
@@ -20,14 +21,23 @@ class ReportController extends Controller
 
     public function bestSellerData(Request $request)
     {
+        $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+        $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+
         $best_sellers = Order::selectRaw('c.name as name_dish')
         ->selectRaw('c.category_id as category_id')
         ->selectRaw('SUM(b.unit) as units')
         ->selectRaw('SUM( ROUND( (b.price - b.cost) * b.unit, 2 ) ) as gain')
         ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
         ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
-        ->where('orders.status', '2');
-            
+        ->where('orders.status', '2')
+        ->groupBy('name_dish', 'category_id');
+
+        // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
+        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
+            $best_sellers->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
+        }
+
         return DataTables::of($best_sellers)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
                 $start = date("Y-m-d",strtotime(request('from')));
@@ -39,13 +49,14 @@ class ReportController extends Controller
                 $query->where('category_id', request('category_id'));
             }
 
+            // La agrupación ya está fuera de la función filter para evitar errores de MySQL
+
             if(request()->has('order_by_for') && request('order_by_for') == 'units'){
                 $query->orderBy('units', 'DESC');
             }
             if(request()->has('order_by_for') && request('order_by_for') == 'gain'){
                 $query->orderBy('gain', 'DESC');
             }
-            $query->groupBy('name_dish', 'category_id');
         }, true)
         ->addColumn('category_name', function (Order $best_sellers) {
             $category = Category::where('id', $best_sellers->category_id)->first();
@@ -57,26 +68,6 @@ class ReportController extends Controller
     //permite obtener el listado de informes de ganancias
     public function gain()
     {
-        // $gains = Order::selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
-        // ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
-        // ->where('orders.status', '2')
-        // ->get();
-        // $profit_total = $gains->sum('gain');
-        $month_start = date('Y-m-d', strtotime('first day of this month', time()));
-        $month_end = date('Y-m-d', strtotime('last day of this month', time()));
-
-        // $gains = Order::selectRaw('DATE(orders.updated_at) as updated_at')
-        //     ->selectRaw('ROUND(orders.total_amount, 2) as total_amount')
-        //     ->selectRaw('SUM(ROUND( (b.price - b.cost) * b.unit, 2 )) as gain')
-        //     ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
-        //     ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
-        //     ->where('orders.status', '2')
-        //     ->orderBy('updated_at', 'DESC')
-        //     ->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"])
-        //     ->groupBy('updated_at', 'total_amount')->get();
-
-        // return $gains;
-
         return view('admin.reports.gain');
     }
 
@@ -93,8 +84,9 @@ class ReportController extends Controller
             ->where('orders.status', '2')
             ->orderBy('updated_at', 'DESC')
             ->groupBy('updated_at', 'total_amount');
-            
-        if ( ( request()->has('from') && request('from') == '' ) || ( request('to') == '' && request()->has('to') ) ) {
+
+        // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
+        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
             $gains->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
 
@@ -109,146 +101,111 @@ class ReportController extends Controller
             return $gains->getDay($gains->updated_at);
         })
         ->addColumn('updated_at_timezone', function (Order $gains) {
+            // Asumo que tienes una propiedad accessor 'updated_at_timezone' en tu modelo Order
             return $gains->updated_at_timezone;
         })
         ->toJson();
     }
+
     //Obtiene la Ganancia neta de la vista reports->gain
     //Y para el cuadro ganancias en flujo de caja
     public function gainAmount(Request $request)
     {
-        if ( request()->has('from') && request('from') != '' && request()->has('to') && request('to') != '' ) 
+        if ( request()->has('from') && request('from') != '' && request()->has('to') && request('to') != '' )
         {
-            //Busca entre fechas
+            // Busca entre fechas
             $start = date("Y-m-d",strtotime(request('from')));
             $end = date("Y-m-d",strtotime(request('to')));
-
-            $gains = Order::selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
-                ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
-                ->where('orders.status', '2')
-                ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
-                ->get();
-                            
-            $profit_total = $gains->sum('gain');
+            $gains_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
         {
-            //Obtiene el mensual por defecto
+            // Obtiene el mensual por defecto
             $month_start = date('Y-m-d', strtotime('first day of this month', time()));
             $month_end = date('Y-m-d', strtotime('last day of this month', time()));
-            
-            $gains = Order::selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
-                ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
-                ->where('orders.status', '2')
-                ->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"])
-                ->get();
-                            
-            $profit_total = $gains->sum('gain');
+            $gains_query = Order::whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
+
+        $gains = $gains_query->selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
+            ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
+            ->where('orders.status', '2')
+            ->get();
+
+        $profit_total = $gains->sum('gain');
+
         return number_format($profit_total, 2, ',', '.');
     }
 
     public function totalBalance()
     {
         $profits = Order::where('status', '2')->sum('total_amount');
-        
-        // $profits = Order::selectRaw('ROUND( (order_dish.price - order_dish.cost) * order_dish.unit, 2 ) as gain')
-        //         ->leftJoin('order_dish', 'orders.id', '=', 'order_dish.order_id')
-        //         ->where('orders.status', '2')
-        //         ->sum('total_amount');
-
         $expenses = Expense::sum('amount');
-        $total = $profits - $expenses;         
+        $total = $profits - $expenses;
         return number_format($total, 2, ',', '.');
     }
+
     //Costo fijo para Ganancias
     public function gainFixedCost(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
         {
             $start = date("Y-m-d",strtotime(request('from')));
             $end = date("Y-m-d",strtotime(request('to')));
-
-            //Obtener el costo fijo (product_id 83) acumulado entre fechas
-            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
-            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
-            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
-            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
-            ->where('orders.status', '2')
-            ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
-            ->where('products.id', '=', 83)
-            ->groupBy(['products.name'])->first('cost');
-
-            $costo_fijo = $costo_fijo->cost;
-            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
-
-            return $costo_fijo;
+            $costo_fijo_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
         {
             //Obtiene el mensual por defecto
             $month_start = date('Y-m-d', strtotime('first day of this month', time()));
             $month_end = date('Y-m-d', strtotime('last day of this month', time()));
-
-            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
-            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
-            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
-            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
-            ->where('orders.status', '2')
-            ->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"])
-            ->where('products.id', '=', 83)
-            ->groupBy(['products.name'])->first('cost');
-
-            $costo_fijo = $costo_fijo->cost;
-            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
-
-            return $costo_fijo;
+            $costo_fijo_query = Order::whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
+
+        //Obtener el costo fijo (product_id 83) acumulado
+        $costo_fijo = $costo_fijo_query->selectRaw('SUM(order_ingredient.designated_cost) as cost')
+        ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+        ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
+        ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
+        ->where('orders.status', '2')
+        ->where('products.id', '=', 83)
+        ->groupBy(['products.name'])->first('cost');
+
+        $costo_fijo = $costo_fijo->cost ?? 0;
+        $costo_fijo = number_format($costo_fijo, 2, ',', '.');
+
+        return $costo_fijo;
     }
+
     // Obtener el imprevisto para Reportes -> Ganancias
     public function gainUnexpected(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
         {
             $start = date("Y-m-d",strtotime(request('from')));
             $end = date("Y-m-d",strtotime(request('to')));
-
-            //Obtener el imprevisto (product_id 93) acumulado entre fechas
-            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
-            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
-            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
-            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
-            ->where('orders.status', '2')
-            ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
-            ->where('products.id', '=', 93)
-            ->groupBy(['products.name'])->first('cost');
-
-            $costo_fijo = $costo_fijo->cost;
-            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
-
-            return $costo_fijo;
+            $costo_fijo_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
         {
             //Obtiene el mensual por defecto
-            //Obtener el imprevisto (product_id 93) acumulado de todas las ventas
             $month_start = date('Y-m-d', strtotime('first day of this month', time()));
             $month_end = date('Y-m-d', strtotime('last day of this month', time()));
-
-            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
-            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
-            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
-            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
-            ->where('orders.status', '2')
-            ->where('products.id', '=', 93)
-            ->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"])
-            ->groupBy(['products.name'])->first('cost');
-
-            $costo_fijo = $costo_fijo->cost;
-            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
-
-            return $costo_fijo;
+            $costo_fijo_query = Order::whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
+
+        //Obtener el imprevisto (product_id 93) acumulado
+        $costo_fijo = $costo_fijo_query->selectRaw('SUM(order_ingredient.designated_cost) as cost')
+        ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+        ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
+        ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
+        ->where('orders.status', '2')
+        ->where('products.id', '=', 93)
+        ->groupBy(['products.name'])->first('cost');
+
+        $costo_fijo = $costo_fijo->cost ?? 0;
+        $costo_fijo = number_format($costo_fijo, 2, ',', '.');
+
+        return $costo_fijo;
     }
 
     public function gainShow($date)
@@ -287,8 +244,13 @@ class ReportController extends Controller
             ->whereDate('orders.updated_at', $date)
             ->where('orders.status', '2')
             ->orderBy('orders.id', 'DESC');
-            
+
+        // No necesita filtro de mes por defecto, ya que usa una fecha específica ($date)
+
         return Datatables::of($gain_dishes)->filter(function ($query) use($request) {
+            // Este bloque de filtro por rango de fechas puede ser redundante aquí,
+            // ya que la función se llama con una fecha específica.
+            // Lo mantengo por si la lógica de DataTables lo necesita.
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
                 $start = date("Y-m-d",strtotime(request('from')));
                 $end = date("Y-m-d",strtotime(request('to')));
@@ -319,28 +281,29 @@ class ReportController extends Controller
     {
         $month_start = date('Y-m-d', strtotime('first day of this month', time()));
         $month_end = date('Y-m-d', strtotime('last day of this month', time()));
-        
+
         switch ($status) {
             case '1':
                 $expenses = Expense::with('category')
                     ->where('status', $status)
                     ->orderBy('updated_at', 'DESC');
-                break; 
+                break;
             default:
                 $expenses = Expense::with('category')
                 ->orderBy('updated_at', 'DESC');
                 break;
         }
 
-        if ( ( request()->has('from') && request('from') == '' ) || ( request('to') == '' && request()->has('to') ) ) {
+        // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
+        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
             $expenses->whereBetween('updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
-            
+
         return Datatables::of($expenses)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
                 $start = date("Y-m-d",strtotime(request('from')));
                 $end = date("Y-m-d",strtotime(request('to')));
-                $query->whereBetween('updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);    
+                $query->whereBetween('updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
 
             if(request()->has('category_id') && request('category_id')!= ''){
@@ -355,14 +318,15 @@ class ReportController extends Controller
             return $expenses->category->name;
         })
         ->addColumn('updated_at_timezone', function (Expense $expenses) {
+            // Asumo que tienes una propiedad accessor 'updated_at_timezone' en tu modelo Expense
             return $expenses->updated_at_timezone;
         })
         ->toJson();
     }
+
     //Obtiene el total para el cuadro Ganancias de informes->Flujo de caja
     public function expensesTotalAmount()
     {
-        
         if ( request()->has('from') && request('from') != '' && request()->has('to') && request('to') != '' ) {
             $start = date("Y-m-d",strtotime(request('from')));
             $end = date("Y-m-d",strtotime(request('to')));
@@ -381,14 +345,22 @@ class ReportController extends Controller
     public function sales()
     {
         $categories = Category::all();
-        
+
         return view('admin.reports.sales', compact('categories'));
     }
 
     public function salesData(Request $request)
     {
         $sales = Order::whereStatus('2')->orderBy('id', 'DESC');
-            
+
+        $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+        $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+
+        // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
+        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
+            $sales->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
+        }
+
         return Datatables::of($sales)->filter(function ($query) use($request) {
             if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
                 $start = date("Y-m-d",strtotime(request('from')));
@@ -404,11 +376,8 @@ class ReportController extends Controller
                 $query->where('orders.status', request('status'));
             }
         }, true)
-        // ->addColumn('category_name', function (Order $sales) {
-        //     $category = Category::where('id', $sales->category_id)->first();
-        //     return $category->name;
-        // })
         ->addColumn('updated_at_timezone', function (Order $sales) {
+            // Asumo que tienes una propiedad accessor 'updated_at_timezone' en tu modelo Order
             return $sales->updated_at_timezone;
         })
         ->toJson();
@@ -419,42 +388,33 @@ class ReportController extends Controller
      */
     public function fixedCostAmount(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
         {
             $start = date("Y-m-d",strtotime(request('from')));
             $end = date("Y-m-d",strtotime(request('to')));
-
-            //Obtener el costo fijo (product_id 83) acumulado entre fechas
-            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
-            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
-            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
-            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
-            ->where('orders.status', '2')
-            ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
-            ->where('products.id', '=', 83)
-            ->groupBy(['products.name'])->first('cost');
-
-            $costo_fijo = $costo_fijo->cost;
-            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
-
-            return $costo_fijo;
+            $costo_fijo_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
         {
-            //Obtener el costo fijo (product_id 83) acumulado de todas las ventas
-            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
-            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
-            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
-            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
-            ->where('orders.status', '2')
-            ->where('products.id', '=', 83)
-            ->groupBy(['products.name'])->first('cost');
-
-            $costo_fijo = $costo_fijo->cost;
-            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
-
-            return $costo_fijo;
+            //Obtener el mensual por defecto
+            $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+            $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+            $costo_fijo_query = Order::whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
+
+        //Obtener el costo fijo (product_id 83) acumulado
+        $costo_fijo = $costo_fijo_query->selectRaw('SUM(order_ingredient.designated_cost) as cost')
+        ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+        ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
+        ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
+        ->where('orders.status', '2')
+        ->where('products.id', '=', 83)
+        ->groupBy(['products.name'])->first('cost');
+
+        $costo_fijo = $costo_fijo->cost ?? 0;
+        $costo_fijo = number_format($costo_fijo, 2, ',', '.');
+
+        return $costo_fijo;
     }
 
     /*
@@ -462,42 +422,71 @@ class ReportController extends Controller
      */
     public function unexpectedAmount(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
         {
             $start = date("Y-m-d",strtotime(request('from')));
             $end = date("Y-m-d",strtotime(request('to')));
-
-            //Obtener el imprevisto (product_id 93) acumulado entre fechas
-            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
-            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
-            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
-            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
-            ->where('orders.status', '2')
-            ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
-            ->where('products.id', '=', 93)
-            ->groupBy(['products.name'])->first('cost');
-
-            $costo_fijo = $costo_fijo->cost;
-            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
-
-            return $costo_fijo;
+            $costo_fijo_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
         {
-            //Obtener el imprevisto (product_id 93) acumulado de todas las ventas
-            $costo_fijo = Order::selectRaw('SUM(order_ingredient.designated_cost) as cost')
-            ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
-            ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
-            ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
-            ->where('orders.status', '2')
-            ->where('products.id', '=', 93)
-            ->groupBy(['products.name'])->first('cost');
-
-            $costo_fijo = $costo_fijo->cost;
-            $costo_fijo = number_format($costo_fijo, 2, ',', '.');
-
-            return $costo_fijo;
+            //Obtener el mensual por defecto
+            $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+            $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+            $costo_fijo_query = Order::whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
+
+        //Obtener el imprevisto (product_id 93) acumulado
+        $costo_fijo = $costo_fijo_query->selectRaw('SUM(order_ingredient.designated_cost) as cost')
+        ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+        ->leftJoin('inventories', 'order_ingredient.inventory_id', '=', 'inventories.id')
+        ->leftJoin('products', 'inventories.product_id', '=', 'products.id')
+        ->where('orders.status', '2')
+        ->where('products.id', '=', 93)
+        ->groupBy(['products.name'])->first('cost');
+
+        $costo_fijo = $costo_fijo->cost ?? 0;
+        $costo_fijo = number_format($costo_fijo, 2, ',', '.');
+
+        return $costo_fijo;
+    }
+
+    /*
+     * Obtener el Costo de Productos Vendidos (CPV) para Reportes -> Ventas.
+     * Suma los costos designados de todos los ingredientes usados en órdenes finalizadas.
+     */
+    public function getCPVAmount(Request $request)
+    {
+    // 1. Manejo de Fechas: Determinar el rango de fechas para la consulta.
+    if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
+    {
+        $start = date("Y-m-d",strtotime(request('from')));
+        $end = date("Y-m-d",strtotime(request('to')));
+
+        $cpv_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
+    }
+    else
+    {
+        // 2. Obtener el CPV mensual por defecto
+        $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+        $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+
+        $cpv_query = Order::whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
+    }
+
+    $cpv = $cpv_query->selectRaw('SUM(order_ingredient.designated_cost) as cost')
+    ->leftJoin('order_ingredient', 'orders.id', '=', 'order_ingredient.order_id')
+    // Se filtra solo por las órdenes de estado '2' (Finalizadas)
+    ->where('orders.status', '2')
+    // CORRECCIÓN: Excluir los costos de los ingredientes con inventory_id 88 y 97 del total del CPV.
+    ->whereNotIn('order_ingredient.inventory_id', [88, 97])
+    ->first('cost');
+
+    // 3. Formateo y retorno del resultado
+    $total_cpv = $cpv->cost ?? 0;
+    $total_cpv = number_format($total_cpv, 2, ',', '.');
+
+    return $total_cpv;
     }
 
     /*
@@ -505,7 +494,7 @@ class ReportController extends Controller
      */
     public function totalSalesAmount(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') ) 
+        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
         {
             //Busca entre fechas
             $start = date("Y-m-d",strtotime(request('from')));
@@ -519,32 +508,50 @@ class ReportController extends Controller
         }
         else
         {
-            //Obtiene el general
-            $total_sales_amount = Order::where('status', '2')->sum('total_amount');
+            //Obtiene el general (si no hay filtro, obtiene el total de todas las ventas finalizadas)
+            // Para mantener el comportamiento de "mes actual" por defecto:
+            $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+            $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+            $total_sales_amount = Order::where('status', '2')
+                ->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"])
+                ->sum('total_amount');
+
             $total_sales_amount = number_format($total_sales_amount, 2, ',', '.');
 
             return $total_sales_amount;
         }
     }
+
     //premite obtener el listado de informes del flujo de caja
     public function cashFlow()
     {
-        $income = Order::where('status', '2')->sum('total_amount');
-        $expenses = Expense::where('status', '1')->sum('amount');
+        // Estos cálculos deben reflejar el mes actual o el período por defecto si desea coherencia con las tablas
+        $month_start = date('Y-m-d', strtotime('first day of this month', time()));
+        $month_end = date('Y-m-d', strtotime('last day of this month', time()));
+
+        $income = Order::where('status', '2')
+            ->whereBetween('updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"])
+            ->sum('total_amount');
+
+        $expenses = Expense::where('status', '1')
+            ->whereBetween('updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"])
+            ->sum('amount');
+
         $capital_available = $income - $expenses;
 
         $categories = Category::all();
 
         return view('admin.reports.cash_flow.index')
             ->with('categories', $categories)
-            ->with('income', $income) 
+            ->with('income', $income)
             ->with('expenses', $expenses)
             ->with('capital_available', $capital_available);
     }
+
     //Obtiene el total de ventas para Flujo de caja
     public function salesTotal()
     {
-        if ( request()->has('from') && request('from') != '' && request()->has('to') && request('to') !='') 
+        if ( request()->has('from') && request('from') != '' && request()->has('to') && request('to') !='')
         {
             $start = date("Y-m-d",strtotime(request('from')));
             $end = date("Y-m-d",strtotime(request('to')));
@@ -558,7 +565,7 @@ class ReportController extends Controller
             $month_end = date('Y-m-d', strtotime('last day of this month', time()));
             $orders_total = Order::where('status', '2')
                 ->whereBetween('orders.updated_at',[$month_start. " 00:00:00", $month_end. " 23:59:59"])
-                ->sum('total_amount'); 
+                ->sum('total_amount');
         }
 
         return number_format($orders_total, 2, ',', '.');
@@ -584,7 +591,8 @@ class ReportController extends Controller
             ->where('orders.status', '2')
             ->orderBy('b.id', 'DESC');
 
-        if ( ( request()->has('from') && request('from') == '' ) || ( request('to') == '' && request()->has('to') ) ) {
+        // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
+        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
             $income->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
 
@@ -605,6 +613,7 @@ class ReportController extends Controller
             return $category->name;
         })
         ->addColumn('updated_at_timezone', function (Order $income) {
+            // Asumo que tienes una propiedad accessor 'updated_at_timezone' en tu modelo Order
             return $income->updated_at_timezone;
         })
         ->toJson();

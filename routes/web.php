@@ -128,6 +128,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('sales/fixed-cost', [ReportController::class, 'fixedCostAmount'])->name('reports.fixed.cost.data');
                 Route::get('sales/unexpected', [ReportController::class, 'unexpectedAmount'])->name('reports.unexpected.data');
                 Route::get('sales/total-amount', [ReportController::class, 'totalSalesAmount'])->name('reports.total.sales.amount.data');
+                 Route::get('sales/cpv-cost', [ReportController::class, 'getCPVAmount'])->name('reports.cpv.cost.data');
             });
 
             Route::resource('categories', CategoriesController::class);
@@ -135,7 +136,7 @@ Route::middleware('auth')->group(function () {
             // Expenses
             Route::group(['prefix' => 'expenses'], function () {
                 Route::get('list-historical', [ExpensesController::class, 'listHistorical'])->name('expenses.list.historical');
-                
+
                 Route::get('list-historical-data', [ExpensesController::class, 'listHistoricalData'])->name('expenses.list.historical.data');
 
                 Route::get('list-to-pay', [ExpensesController::class, 'listToPay'])->name('expenses.list.to.pay');
@@ -149,7 +150,7 @@ Route::middleware('auth')->group(function () {
 
         });
     });
-    
+
     Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 
     Route::group(['prefix' => 'employee'], function () {

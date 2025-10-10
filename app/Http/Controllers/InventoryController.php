@@ -37,6 +37,7 @@ class InventoryController extends Controller
 
     public function addProductToInventory(Request $request)
     {
+        // 1. Validación (Sin cambios)
         if ($request->it_has_flavors == true) {
             $fields = [
                 'product_id' => ['required'],
@@ -61,41 +62,76 @@ class InventoryController extends Controller
             'unit_package.required' => 'Las unidades son requerida.',
             'price.required' => 'El precio es requerido.',
             'unit_cost.required' => 'El precio unitario es requerido.',
-            'flavor_name.required' => 'El nombre del sabor es requerido.', 
-            'currency.required' => 'El tipo de moneda es necesario.', 
+            'flavor_name.required' => 'El nombre del sabor es requerido.',
+            'currency.required' => 'El tipo de moneda es necesario.',
         ];
 
         $this->validate($request, $fields, $msj);
         $i_model = new Inventory();
-        
+
+        // 2. Lógica para productos CON sabores (Corrección menor para precio)
         if ($request->it_has_flavors == true) {
             $inventory = Inventory::where('product_id', $request->product_id)
-                                        ->where('flavor_name', strtolower($request->flavor_name))
-                                        ->first();
-            if($inventory == null || empty($inventory)){ $inventory = $this->store($request); }
-            $inventories = Inventory::where('product_id', $request->product_id)->get();
-            
-            $promedial_price = $i_model->promedialPrice($inventory->cost, floatval($request->unit_cost), $inventory->local, $request->unit_package);
-            $request['price'] = $promedial_price;
-            $request['cost'] = $promedial_price;
-            $inventory->local += +$request->unit_package;
-            $inventory->save();
-            foreach ($inventories as $item) {
-                $item->update([
-                    'price' => $promedial_price,
-                    'cost' => $promedial_price
-                ]);
+                                 ->where('flavor_name', strtolower($request->flavor_name))
+                                 ->first();
+
+            if($inventory == null || empty($inventory)){
+                // Si el sabor no existe, se crea.
+                $inventory = $this->store($request);
+
+                // NOTA: Si es nuevo, el precio ya está establecido por store, no hay que promediar.
+            } else {
+
+                // **** LÓGICA DE PRECIO CORREGIDA PARA SABORES ****
+                if ($inventory->local <= 0) {
+                    // Si el inventario local es cero o negativo, toma el costo del paquete nuevo.
+                    $promedial_price = floatval($request->unit_cost);
+                } else {
+                    // Si hay inventario, promedia.
+                    $promedial_price = $i_model->promedialPrice($inventory->cost, floatval($request->unit_cost), $inventory->local, $request->unit_package);
+                }
+
+                // Se incrementa la cantidad local.
+                $inventory->local += $request->unit_package;
+                $inventory->save();
+
+                // Se actualizan todos los sabores del producto con el nuevo precio/costo.
+                $inventories = Inventory::where('product_id', $request->product_id)->get();
+                foreach ($inventories as $item) {
+                    $item->update([
+                        'price' => $promedial_price,
+                        'cost' => $promedial_price
+                    ]);
+                }
             }
-            
+
         }else{
+            // 3. Lógica para productos SIN sabores (CORRECCIÓN PRINCIPAL)
             $inventory = Inventory::where('product_id', $request->product_id)->first();
-            if ($inventory == null || empty($inventory)) { $inventory = $this->store($request); }
-            $promedial_price = $i_model->promedialPrice($inventory->cost, floatval($request->unit_cost), $inventory->local, $request->unit_package);
-            $request['price'] = $promedial_price;
-            $request['cost'] = $promedial_price;
-            $request['local'] = $inventory->local + +$request->unit_package;
-            if ($inventory == null) { $this->store($request); }
-            else {
+
+            if ($inventory == null || empty($inventory)) {
+                // Si el inventario es NUEVO, solo lo creamos. 'store' se encarga de la cantidad y precio.
+                $inventory = $this->store($request);
+            } else {
+
+                // **** LÓGICA DE PRECIO CORREGIDA ****
+                if ($inventory->local <= 0) {
+                    // Si el inventario local es cero o negativo, NO PROMEDIA.
+                    // Toma el costo/precio del paquete que se está ingresando.
+                    $promedial_price = floatval($request->unit_cost);
+                    $price = floatval($request->price);
+                } else {
+                    // Si hay inventario, SÍ PROMEDIA el costo.
+                    $promedial_price = $i_model->promedialPrice($inventory->cost, floatval($request->unit_cost), $inventory->local, $request->unit_package);
+                    $price = $promedial_price; // Usar el costo promediado como nuevo precio (si esa es tu lógica de negocio)
+                }
+
+                // Preparamos el Request para la función update
+                $request['price'] = $price;
+                $request['cost'] = $promedial_price; // Aseguramos que el costo refleje el resultado de la lógica.
+                $request['local'] = $inventory->local + $request->unit_package; // Calculamos el nuevo total
+
+                // Llamamos a update para actualizar el precio/costo y la cantidad total.
                 $this->update($request, $inventory->id);
             }
         }
@@ -108,13 +144,13 @@ class InventoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         $inventory = new Inventory;
         $inventory->product_id = request()->product_id;
         $inventory->flavor_name = request()->it_has_flavors == true ? strtolower($request->flavor_name) : null;
         $inventory->deposit = $request->input('unit_package');
         $inventory->unit_package = request()->unit_package;
-        $inventory->local = request()->unit_package;
+        $inventory->local = request()->unit_package; // Aquí se inicializa con la cantidad
         $inventory->price = request()->price;
         $inventory->cost = doubleval(request()->unit_cost);
         $inventory->save();
@@ -143,17 +179,20 @@ class InventoryController extends Controller
             $inventory->update($data);
 
         }else{
+            // Este bloque se usa para actualizar después de 'addProductToInventory' (para productos existentes sin sabores)
             $inventory->deposit + $request->unit_package;
-            $inventory->local = $inventory->local < 0 ? 0 : $inventory->local; 
+            $inventory->local = $inventory->local < 0 ? 0 : $inventory->local;
+
+            // En este punto, $request->local, $request->price y $request->cost ya vienen calculados
+            // desde addProductToInventory con la lógica de no-promediar si local es <= 0.
             $inventory->update([
-                // 'qty_package' => $request->qty_package,
-                'unit_package' => $inventory->unit_package + $request->unit_package,
+                'unit_package' => $request->unit_package,
                 'price' => $request->price,
                 'cost' => $request->cost,
-                'local' => $inventory->local + $request->unit_package,
+                'local' => $request->local,
             ]);
         }
- 
+
         $cost_product = $inventory->cost;
         $unit_product = $inventory->product->gr != null ? $inventory->product->gr : $inventory->product->quantity;
 
@@ -174,18 +213,18 @@ class InventoryController extends Controller
 
                     if ($item->pivot->inventory_id == $inventory->id) {
                         $designated_cost = ($portion * $cost_product) / $unit_product;
-    
+
                         $dish->ingredients()->wherePivot('inventory_id', $inventory->id)->update([
                             'designated_cost' => $designated_cost,
                         ]);
-        
+
                     }else{
                         $designated_cost = $item->pivot->designated_cost;
                     }
 
                     $cost_price = $cost_price + $designated_cost;
                 }
-                
+
                 $suggested_price = $cost_price * $profit;
 
                 if ($suggested_price > $dish->designated_price) {
@@ -287,7 +326,7 @@ class InventoryController extends Controller
                 case 'public':
                     if ($request->qty > $inventory->local) {
                         return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Sumar en Público es Mayor al Fondo Actual en Local');
-                    }else{ 
+                    }else{
                         $inventory->increment('public', $request->qty);
                         $inventory->decrement('local', $request->qty);
                         $msg_success = 'Operación de Suma en Público Éxitosa';
@@ -306,7 +345,7 @@ class InventoryController extends Controller
                 case 'deposit':
                     if ($request->qty > $inventory->deposit) {
                         return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Restar en Depósito es Mayor al Fondo Actual en Depósito');
-                    }else{ 
+                    }else{
                         $inventory->decrement('deposit', $request->qty);
                         $inventory->increment('local', $request->qty);
                         $msg_success = 'Operación de Resta en Depósito Éxitosa';
@@ -316,7 +355,7 @@ class InventoryController extends Controller
                 case 'local':
                     if ($request->qty > $inventory->local) {
                         return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Restar en Local es Mayor al Fondo Actual en Local');
-                    }else{ 
+                    }else{
                         $inventory->decrement('local', $request->qty);
                         $inventory->increment('deposit', $request->qty);
                         $msg_success = 'Operación de Resta en Local Éxitosa';
@@ -326,7 +365,7 @@ class InventoryController extends Controller
                 case 'public':
                     if ($request->qty > $inventory->public) {
                         return redirect()->route('inventory.index')->with('danger', 'La Cantidad a Restar en Público es Mayor al Fondo Actual en Público');
-                    }else{ 
+                    }else{
                         $inventory->decrement('public', $request->qty);
                         $inventory->increment('local', $request->qty);
                         $msg_success = 'Operación de Resta en Público Éxitosa';

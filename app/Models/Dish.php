@@ -15,6 +15,7 @@ class Dish extends Model
     protected $fillable = [
         'name',
         'cost_price',
+        'cpv',
         'suggested_price',
         'designated_price',
         'percentage_profit',
@@ -38,7 +39,7 @@ class Dish extends Model
         $dishes = Dish::where('category_id', $category_id)->whereIn('status', ['1', '2'])->get();
         return $dishes;
     }
-    
+
     public function status()
     {
         if($this->status == '0'){

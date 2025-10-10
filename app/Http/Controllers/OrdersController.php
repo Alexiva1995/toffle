@@ -31,7 +31,7 @@ class OrdersController extends Controller
             $today = Carbon::now();
             $orders = Order::orderBy('id', 'desc')->whereDate('created_at', $today)->get();
         }
-        
+
         $type == 'flow_days' ? 'flow_days' : '';
         return view('orders.index', ['orders' => $orders, 'type' =>$type ]);
     }
@@ -191,7 +191,7 @@ class OrdersController extends Controller
                     $fields = [
                         "status" => ['required'],
                     ];
-        
+
                     break;
                 default:
 
@@ -211,15 +211,15 @@ class OrdersController extends Controller
 
             if ($order_dishes != '[]') {
                 foreach ($order_dishes as $key => $order_dish) {
-            
+
                     $order_ingredients = $order->ingredients()->wherePivot('code_operation', $order_dish->pivot->code_operation)->get();
-                
+
                     foreach ($order_ingredients as $key => $value) {
-            
+
                         $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
                         $grams_used = $value->pivot->portion * $order_dish->pivot->unit;
                         $units = $grams_used / $inventory->product->gr;
-            
+
                         $inventory->increment('local', $units);
                         $inventory->update([
                             'total' => $inventory->deposit + $inventory->local + $inventory->public
@@ -238,10 +238,10 @@ class OrdersController extends Controller
                     $item_base = Inventory::find($ingredient->inventory_id);
 
                     $item = Inventory::where('product_id', $item_base->product_id)
-                                        ->where('flavor_name',$ingredient->flavor_name)
-                                        ->first();
-                                        $item->local -= $ingredient->portion;
-                                        $item->save();
+                                             ->where('flavor_name',$ingredient->flavor_name)
+                                             ->first();
+                                             $item->local -= $ingredient->portion;
+                                             $item->save();
                 }
             }
         }
@@ -288,9 +288,9 @@ class OrdersController extends Controller
             }
 
             $order_ingredients = $order->ingredients()->wherePivot('code_operation', $order_dish->pivot->code_operation)->get();
-        
+
             foreach ($order_ingredients as $key => $value) {
-    
+
                 $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
                 $grams_used = $value->pivot->portion * $order_dish->pivot->unit;
                 $product_quantity = $inventory->product->gr != null ? $inventory->product->gr : $inventory->product->quantity;
@@ -304,7 +304,7 @@ class OrdersController extends Controller
                 // ]);
             }
 
-            $order->ingredients()->wherePivot('code_operation', $order_dish->pivot->code_operation)->detach();
+            $order->ingredients()->wherePivot('code_operation', $request->code_operation)->detach();
 
             $order->dishes()->wherePivot('code_operation', $request->code_operation)->detach();
         }
@@ -316,36 +316,43 @@ class OrdersController extends Controller
     {
         $order = Order::find($order_id);
         $dish = Dish::find($request->dish_id);
-        for ($i=1; $i <= $request->unit; $i++) { 
+
+        // 🚀 LÍNEA AGREGADA: Obtener y formatear el valor CPV del plato
+        // Usamos null coalescing (??) por si $dish->cpv es nulo, para evitar errores
+        $cpv_value = number_format($dish->cpv ?? 0, 2, '.', '');
+
+        for ($i=1; $i <= $request->unit; $i++) {
 
             do {
                 $code_operation = mt_rand(100000000, 999999999);
                 $validator = \Validator::make(
-                  ['code_operation' => $code_operation],
-                  ['code_operation' => 'unique:order_dish,code_operation']
+                    ['code_operation' => $code_operation],
+                    ['code_operation' => 'unique:order_dish,code_operation']
                 );
             } while ($validator->fails());
 
-            $order_dish = $order->dishes()->attach( [ $order->id => 
+            $order_dish = $order->dishes()->attach( [ $order->id =>
                 [
                     'code_operation'=> $code_operation,
                     'order_id' => $order->id,
                     'dish_id' => $request->dish_id,
-                    'unit' => 1,          
+                    'unit' => 1,
                     'price' => number_format($dish->designated_price, 2, '.', ''),
                     'cost' => number_format($dish->cost_price, 2, '.', ''),
+                    // 🚀 LÍNEA AGREGADA: Guardar el CPV en la tabla pivote
+                    'cpv_value' => $cpv_value,
                 ]
             ]);
 
             foreach ($dish->ingredients()->get() as $key => $value) {
-    
-                $order->ingredients()->attach( [ $order->id => 
+
+                $order->ingredients()->attach( [ $order->id =>
                     [
                         'order_id' => $order->id,
                         'code_operation'=> $code_operation,
                         'dish_id' => $dish->id,
                         'inventory_id' => $value->pivot->inventory_id,
-                        'portion' => $value->pivot->portion,            
+                        'portion' => $value->pivot->portion,
                         'designated_cost' => $value->pivot->designated_cost,
                         'it_has_flavors' => $value->product->it_has_flavors,
                     ]
@@ -362,9 +369,9 @@ class OrdersController extends Controller
                 //     'total' => $inventory->deposit + $inventory->local + $inventory->public
                 // ]);
             }
-    
+
             $total_amount = $dish->designated_price;
-    
+
             $order->increment('total_amount', number_format($total_amount, 2, '.', '') );
         }
 
@@ -380,7 +387,7 @@ class OrdersController extends Controller
             $orders = Order::orderBy('id', 'DESC')->whereDate( 'created_at', now()->today() );
         }
 
-            
+
         return datatables()::of($orders)->filter(function ($query) use($request) {
         }, true)->toJson();
     }
@@ -403,8 +410,8 @@ class OrdersController extends Controller
         $order_dish= $order->dishes()->wherePivot('code_operation', $request->code_operation)->first();
 
         $ingredients = Inventory::orderBy('id', 'DESC')
-                                    ->where('local', '>', 0)
-                                    ->get();
+                                         ->where('local', '>', 0)
+                                         ->get();
 
         $dish = Dish::where('id', $request->dish_id)->first();
 
@@ -429,13 +436,13 @@ class OrdersController extends Controller
         $gr = $inventory->product->gr;
         $cost_ingredient = number_format( ($request->portion * $cost) / $gr, 2, '.', '');
 
-        $order_ingredient = $order->ingredients()->attach( [ $order->id => 
+        $order_ingredient = $order->ingredients()->attach( [ $order->id =>
             [
                 'order_id' => $order->id,
                 'code_operation' => $request->code_operation,
                 'dish_id' => $request->dish_id,
                 'inventory_id' => $request->inventory_id,
-                'portion' => $request->portion,            
+                'portion' => $request->portion,
                 'designated_cost' => $cost_ingredient,
                 'flavor_name' => $inventory->flavor_name,
                 'it_has_flavors' => $inventory->product->it_has_flavors,
@@ -510,39 +517,25 @@ class OrdersController extends Controller
         //Obtiene la lista de platos en la orden (Por alguna razon lo llamaron ingredientes)
         $ingredients = $order->dishes;
 
-        //Lista de sabores de helados disponibles
-        // $avaliable_flavors = Inventory::where('product_id', '=', 75)
-        //                                 ->orderBy('id', 'DESC')
-        //                                 ->where('public', '>', 0)
-        //                                 ->pluck('flavor_name');
-
         foreach($ingredients as $dish)
         {
-            //Verificar si el plato contiene "Helado" o esta en la categoria de Helados
-            // if( strpos($dish->name, 'Helado') || $dish->category_id == 4 )
-            // {
-            //Obtener el sabor del producto
             $flavor = $order->ingredients()
-                            ->wherePivot('order_id', '=', $dish->pivot->order_id)
-                            ->where('dish_id', '=', $dish->pivot->dish_id)
-                            ->wherePivot('flavor_name', '!=', null)
-                            ->wherePivot('code_operation', '=', $dish->pivot->code_operation)
-                            ->pluck('order_ingredient.flavor_name');
+                                ->wherePivot('order_id', '=', $dish->pivot->order_id)
+                                ->where('dish_id', '=', $dish->pivot->dish_id)
+                                ->wherePivot('flavor_name', '!=', null)
+                                ->wherePivot('code_operation', '=', $dish->pivot->code_operation)
+                                ->pluck('order_ingredient.flavor_name');
             //Crea un campo Sabor que almacena el sabor actual del helado en cuestion.
             $dish->flavor = $flavor->pop();
-            // }
         }
-            
+
         return Datatables::of($ingredients)->filter(function ($query) use($request) {
         }, true)
         ->addColumn('details', function ($ingredients) use($order) {
             if ($order->productRequiresFlavor($order->id, $ingredients->pivot->code_operation)) {
                 return true;
-                // return '<span class="text-danger"><i data-feather="edit"></i> </span>
-                // Se debe agregar el sabor a uno de los ingredientes de este plato.';
             }else{
                 return false;
-                // return '<span class="text-center text-primary"> ---- </span>';
             }
         })
         ->toJson();
@@ -567,6 +560,6 @@ class OrdersController extends Controller
         }else{
             return redirect()->route('dashboard-employee');
         }
-        
+
     }
 }

@@ -20,13 +20,14 @@ class Order extends Model
     public function dishes()
     {
         return $this->belongsToMany('App\Models\Dish', 'order_dish')
-                ->withPivot('id', 'order_id', 'dish_id', 'code_operation', 'unit', 'price', 'cost', 'is_for_carry', 'created_at', 'updated_at');
+            // 🚀 CAMBIO AQUÍ: Se añade 'cpv_value'
+            ->withPivot('id', 'order_id', 'dish_id', 'code_operation', 'unit', 'price', 'cost', 'is_for_carry', 'cpv_value', 'created_at', 'updated_at');
     }
 
     public function ingredients()
     {
         return $this->belongsToMany('App\Models\Inventory', 'order_ingredient')
-                ->withPivot('id', 'order_id', 'inventory_id', 'code_operation', 'dish_id', 'portion', 'designated_cost', 'it_has_flavors', 'flavor_name', 'created_at', 'updated_at');
+            ->withPivot('id', 'order_id', 'inventory_id', 'code_operation', 'dish_id', 'portion', 'designated_cost', 'it_has_flavors', 'flavor_name', 'created_at', 'updated_at');
     }
 
     public function estado()
@@ -53,7 +54,7 @@ class Order extends Model
         }else if($this->status == '3'){
             return "danger";
         }
-    } 
+    }
 
     public function getOrderIds($table)
     {
@@ -74,7 +75,7 @@ class Order extends Model
         if ($this->updated_at != null) {
             return (new Carbon( $this->updated_at ))->format('Y-m-d');
         }
-    
+
         return null;
     }
 
@@ -87,8 +88,8 @@ class Order extends Model
     public function getProfitPerOrder($order_id)
     {
         $order = Order::selectRaw(
-                'SUM( ROUND( (b.price - b.cost) * b.unit, 2 ) ) as profit'
-            )
+            'SUM( ROUND( (b.price - b.cost) * b.unit, 2 ) ) as profit'
+        )
             ->leftJoin('order_dish as b', 'orders.id', '=', 'b.order_id')
             ->where('orders.id', $order_id)
             ->groupBy('b.order_id')
