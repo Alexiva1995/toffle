@@ -24,13 +24,13 @@ class Dish extends Model
 
     public function ingredients()
     {
-        return $this->belongsToMany('App\Models\Inventory', 'dish_ingredient')
+        return $this->belongsToMany(\App\Models\Inventory::class, 'dish_ingredient')
                 ->withPivot('id', 'dish_id', 'inventory_id', 'portion', 'designated_cost', 'created_at', 'updated_at');
     }
 
     public function category()
     {
-        return $this->belongsTo('App\Models\Category', 'category_id', 'id');
+        return $this->belongsTo(\App\Models\Category::class, 'category_id', 'id');
     }
 
     public function collectionDishes($category_id)
