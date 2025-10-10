@@ -193,14 +193,14 @@ public function store(Request $request)
       if ($orders != null) {
         foreach ($orders as $key => $order) {
           if (in_array($order->date, $weekdays)) {
-             $array = array( $order->date => [
+             $array = [ $order->date => [
                'total_amount' => $order->total_amount,
                'date' => date('d', strtotime($order->date)).' '.$this->getDay($order->date),
-             ]);
+             ]];
 
              $dates_found = array_merge($dates_found, $array);
 
-             $array_dates = array($order->date);
+             $array_dates = [$order->date];
              $array_dates_found = array_merge($array_dates_found, $array_dates);
           }
         }
@@ -209,10 +209,10 @@ public function store(Request $request)
       foreach ($weekdays as $key => $weekday) {
         if (in_array($weekday, $array_dates_found)) {
         }else{
-            $array = array( $weekday => [
+            $array = [ $weekday => [
               'total_amount' => 0,
               'date' => date('d', strtotime($weekday)).' '.$this->getDay($weekday),
-            ]);
+            ]];
 
             $dates_not_found = array_merge($dates_not_found, $array);
         }
@@ -222,7 +222,7 @@ public function store(Request $request)
 
       ksort($dates);
 
-      $keys = array(0, 1, 2, 3, 4, 5, 6);
+      $keys = [0, 1, 2, 3, 4, 5, 6];
 
       $dates = array_combine($keys, $dates);
 
@@ -239,7 +239,7 @@ public function store(Request $request)
       $days = ['0', '1', '2', '3', '4', '5', '6'];
 
       foreach ($days as $key => $day) {
-        $dates = array(date('Y-m-d', strtotime($year."W".$week_number.$day)));
+        $dates = [date('Y-m-d', strtotime($year."W".$week_number.$day))];
           $weekdays = array_merge($weekdays, $dates) ;
       }
 
@@ -248,7 +248,7 @@ public function store(Request $request)
 
  public function getDay($date)
  {
-     $days = array("Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo");
+     $days = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
      return $days[date('N', strtotime($date)) - 1 ];
  }
 

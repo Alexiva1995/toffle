@@ -89,11 +89,11 @@ class DishController extends Controller
 
             foreach ($dish_ingredient as $key => $dishe) {
 
-                $ingredient_ = array([
+                $ingredient_ = [[
                     'ingredient_id' => str_replace("ingredient_", "", $key),
                     'portion' => $dishe[0],
                     'designated_cost' => $dishe[1],
-                ]);
+                ]];
     
                 $array_dish = array_merge($array_dish, $ingredient_);
             }
@@ -189,11 +189,11 @@ class DishController extends Controller
 
         foreach ($dish_ingredient as $key => $dishe) {
 
-            $ingredient_ = array([
+            $ingredient_ = [[
                 'ingredient_id' => str_replace("ingredient_", "", $key),
                 'portion' => $dishe[0],
                 'designated_cost' => $dishe[1],
-            ]);
+            ]];
 
             $array_dish = array_merge($array_dish, $ingredient_);
         }

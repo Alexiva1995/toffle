@@ -48,7 +48,7 @@ class Expense extends Model
 
     public function getDay($date)
     {
-        $days = array("Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo");
+        $days = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
         return $days[date('N', strtotime($date)) - 1 ];
     }
 

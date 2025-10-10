@@ -120,7 +120,7 @@ class OrdersController extends Controller
 
         $dish_category = Dish::select('category_id')->distinct()->get();
 
-        $array_dish = array();
+        $array_dish = [];
 
         foreach ($dishes as $key => $dish) {
             $array_dish[] = $dish->pivot->id;
