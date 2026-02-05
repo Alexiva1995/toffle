@@ -10,15 +10,15 @@
 // Variables
 // ------------------------------
 
-// Functions
-@import 'bootstrap/scss/functions'; // Bootstrap core function
+// Functions (ruta a node_modules: bootstrap-extended -> base -> sass -> resources -> raíz)
+@import '../../../../node_modules/bootstrap/scss/functions'; // Bootstrap core function
 @import 'functions.scss'; // Bootstrap extended function
 
 // Variables (ruta relativa desde sass/base/bootstrap-extended/ hacia resources/assets/scss/variables)
 @import '../../../assets/scss/variables/variables'; // Bootstrap custom variable override (for user purpose)
 @import 'variables.scss'; // Bootstrap extended variable override
-@import 'bootstrap/scss/variables'; // Bootstrap core variable
+@import '../../../../node_modules/bootstrap/scss/variables'; // Bootstrap core variable
 
 // Mixins
-@import 'bootstrap/scss/mixins'; // Bootstrap core mixins
+@import '../../../../node_modules/bootstrap/scss/mixins'; // Bootstrap core mixins
 @import 'mixins.scss'; // Bootstrap extended mixins

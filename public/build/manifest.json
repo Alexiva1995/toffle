@@ -1,8 +1,4 @@
 {
-  "_jquery-CbzS8guM.js": {
-    "file": "assets/jquery-CbzS8guM.js",
-    "name": "jquery"
-  },
   "resources/css/app-rtl.scss": {
     "file": "assets/app-rtl-xjkf_kd7.css",
     "src": "resources/css/app-rtl.scss",
@@ -22,31 +18,25 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-B-GXdH9P.js",
+    "file": "assets/app-C5qAC7Kz.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
-    "imports": [
-      "_jquery-CbzS8guM.js"
+    "css": [
+      "assets/app-DPJPQY3S.css"
     ]
   },
   "resources/js/scripts/tables/table-datatables-advanced.js": {
-    "file": "assets/table-datatables-advanced-C9-NSa0V.js",
+    "file": "assets/table-datatables-advanced-BGnfVzCw.js",
     "name": "table-datatables-advanced",
     "src": "resources/js/scripts/tables/table-datatables-advanced.js",
-    "isEntry": true,
-    "imports": [
-      "_jquery-CbzS8guM.js"
-    ]
+    "isEntry": true
   },
   "resources/js/scripts/tables/table-datatables-basic.js": {
-    "file": "assets/table-datatables-basic-B80KvTWA.js",
+    "file": "assets/table-datatables-basic-BEWSJELD.js",
     "name": "table-datatables-basic",
     "src": "resources/js/scripts/tables/table-datatables-basic.js",
-    "isEntry": true,
-    "imports": [
-      "_jquery-CbzS8guM.js"
-    ]
+    "isEntry": true
   },
   "resources/sass/base/svg/arrow-down.svg": {
     "file": "assets/arrow-down-Cd0TlGQE.svg",

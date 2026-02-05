@@ -1,29 +1,25 @@
-  {{-- vendor files --}}
-  <script src="{{ asset('vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/dataTables.bootstrap5.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/responsive.bootstrap4.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/datatables.checkboxes.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/jszip.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/pdfmake.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/vfs_fonts.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-  <script src="{{ asset('vendors/js/tables/datatable/dataTables.rowGroup.min.js') }}"></script>
+  {{-- DataTables ya están en app.js (Vite): jQuery + DataTables + extensiones. No cargar de nuevo. --}}
+  {{-- Flatpickr para páginas que lo usen en este panel --}}
   <script src="{{ asset('vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
 
-  {{-- Page js files (built by Vite) --}}
+  {{-- Page js files (built by Vite); usan window.$ / window.jQuery del bundle app.js --}}
   @vite(['resources/js/scripts/tables/table-datatables-basic.js'])
 
 <script>
     function dataTable(table_id) {
-      // console.log(table_id);
-      $(table_id).DataTable({
-        language: {
-          url: '{!! asset('data/datatable/Spanish.json') !!}'
-        },
-      });
+      var opts = { language: { url: '{!! asset('data/datatable/Spanish.json') !!}' } };
+      function init() {
+        if (typeof window.$ !== 'undefined' && typeof window.$.fn.DataTable !== 'undefined') {
+          window.$(table_id).DataTable(opts);
+        } else {
+          setTimeout(init, 50);
+        }
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
     }
 </script>
 

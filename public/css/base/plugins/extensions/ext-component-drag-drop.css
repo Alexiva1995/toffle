@@ -1,18 +1,42 @@
-/* Error: Can't find stylesheet to import.
- *    ,
- * 14 | @import 'bootstrap/scss/functions'; // Bootstrap core function
- *    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
- *    '
- *   resources\sass\base\bootstrap-extended\_include.scss 14:9                @import
- *   resources\sass\base\plugins\extensions\ext-component-drag-drop.scss 1:9  root stylesheet */
+.draggable {
+  cursor: grab;
+}
+.gu-unselectable .draggable {
+  cursor: grabbing;
+}
 
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a    \2577 \a 14 \2502  @import 'bootstrap/scss/functions'; // Bootstrap core function\d\a    \2502          ^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   resources\\sass\\base\\bootstrap-extended\\_include.scss 14:9                @import\a   resources\\sass\\base\\plugins\\extensions\\ext-component-drag-drop.scss 1:9  root stylesheet";
+#multiple-list-group-a,
+#multiple-list-group-b {
+  min-height: 5.714rem;
+}
+
+#dd-with-handle .list-group {
+  min-height: 5.714rem;
+}
+#dd-with-handle .list-group .handle {
+  padding: 0 5px;
+  margin-right: 5px;
+  background-color: rgba(34, 41, 47, 0.1);
+  cursor: move;
+  font-size: 1.2rem;
+}
+
+.gu-mirror .card {
+  margin: 0 1rem;
+}
+.gu-mirror .handle {
+  padding: 0 5px;
+  margin-right: 5px;
+  background-color: rgba(34, 41, 47, 0.1);
+  cursor: move;
+  font-size: 1.2rem;
+}
+
+.dark-layout .gu-mirror {
+  color: #b4b7bd;
+}
+.dark-layout .gu-mirror:not(.badge):not([class*=col-]) {
+  background-color: #283046;
+  border-color: #3b4253;
+  box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24);
 }

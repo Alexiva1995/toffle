@@ -3,12 +3,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:sass": "sass resources/sass/base:public/css/base --no-source-map --load-path=node_modules --watch",
     "build": "vite build && npm run copy-assets && npm run build:sass",
     "copy-assets": "node copy-assets.mjs",
-    "build:sass": "sass resources/sass/base:public/css/base --no-source-map"
+    "build:sass": "sass resources/sass/base:public/css/base --no-source-map --load-path=node_modules"
   },
   "dependencies": {
     "bootstrap": "5.0.1",
+    "datatables.net": "^2.0.8",
+    "datatables.net-bs5": "^2.3.7",
+    "datatables.net-buttons": "^2.0.2",
+    "datatables.net-buttons-bs5": "^2.0.2",
+    "datatables.net-responsive": "^3.0.2",
     "flatpickr": "^4.6.9",
     "jquery": "^3.6"
   },

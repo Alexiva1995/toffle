@@ -116,11 +116,23 @@
                                                 </div>
                                             </div>
                                         </div>
-                    
-                                        <div class="table-responsive mx-2">
-                                            <table class="table" id="dish_to_order_table">
-                                            </table>           
-                                        </div> 
+
+                                        <h6 class="my-2">Platos en esta orden</h6>
+                                        <p class="text-muted small mb-1">Aquí aparecen los platos que vas agregando; puedes eliminar si te equivocaste.</p>
+                                        <div class="table-responsive mx-2 border rounded">
+                                            <table class="table table-hover mb-0 table-striped" id="dish_to_order_table">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th class="text-center">Plato</th>
+                                                        <th class="text-center">Total</th>
+                                                        <th class="text-center">Eliminar</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                        <div id="dish_to_order_table_placeholder" class="text-muted text-center py-3 small">Cargando platos…</div>
+                                        <div id="dish_table_error" class="alert alert-danger py-2 small mt-2 d-none" role="alert"></div> 
 
                                         <div class="row justify-content-center mt-3">
                                             <div class="col-auto">
@@ -156,6 +168,8 @@
 @endsection
 
 @section('vendor-script')
+  <!-- Axios (necesario antes de custom-js para añadir plato y tabla) -->
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
   <!-- vendor files -->
   <script src="{{ asset('vendors/js/pickers/pickadate/picker.js') }}"></script>
   <script src="{{ asset('vendors/js/pickers/pickadate/picker.date.js') }}"></script>
@@ -165,40 +179,29 @@
   <script src="{{ asset('vendors/js/forms/select/select2.full.min.js') }}"></script>
   <script src="{{ asset('vendors/js/forms/wizard/bs-stepper.min.js') }}"></script>
   <script src="{{ asset('vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
+  {{-- DataTables vienen del bundle Vite (app.js); no cargar de nuevo --}}
 @endsection
 
 @section('page-script')
-  <!-- Page js files -->
+  <!-- Page js files (jQuery ya viene en vendors.min.js; no cargar de nuevo para evitar que DataTable quede en otro contexto) -->
   <script src="{{ asset('js/scripts/forms/pickers/form-pickers.js') }}"></script>
-  <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
 @endsection
 
 @section('custom-js')
-
-@include('panels.datatable.scripts')
 <script>
-    const flavorAlert = () =>{
-        toastr['error']('', 'El sabor es requerido', {
-            closeButton: true,
-            tapToDismiss: false,
-        });
-    }
-    function completeOrder(){
-        let err = 0;
-        const array_items = $('.helado span');
-        array_items.map( index => { array_items[index].textContent == 'Seleccione un sabor ' ? err++ : '' });
-        let url = "{!! route('dashboard-employee')!!}";
+    // Configurar Axios para Laravel (CSRF y peticiones AJAX)
+    (function(){
+        var token = document.querySelector('meta[name="csrf-token"]');
+        if (token) window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.getAttribute('content');
+        window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    })();
 
-        if(err > 0) flavorAlert();
-        else window.location.href = url;
+    function completeOrder(){
+        window.location.href = "{!! route('dashboard-employee') !!}";
     }
 
     function closeModal(){
-        let select_array = $('td select');
-        let err = 0;
-        select_array.map( index =>{ select_array[index].value == 'none' ? err++ : '' });
-        if(err > 0) flavorAlert();
-        else $("#modal_show_ingredients").modal("hide");
+        $("#modal_show_ingredients").modal("hide");
     }
 
     $(document).on('click', '#add_dish', function () {
@@ -230,23 +233,46 @@
                 tapToDismiss: false,
             });
         }else{
-            this_button.attr('disabled', 'disabled').addClass('disabled');
+            this_button.prop('disabled', true).addClass('disabled');
             $('.icon_dish').addClass('d-none');
             $('.loading_add_dish').addClass('spinner-border spinner-border-sm');
 
-            $.post("{{ route('order.add.dish', $order->id) }}", { dish_id: $('#dish_id').val(), unit: $('#units').val() })
-            .done(function(data){
-                table.search('').draw();
-                setTimeout(() => {
-                    this_button.removeAttr('disabled').removeClass('disabled');
-                    $('.loading_add_dish').removeClass('spinner-border spinner-border-sm');
-                    $('.icon_dish').removeClass('d-none');
-                },1000)
+            var completed = false;
+            function resetButton() {
+                this_button.prop('disabled', false).removeClass('disabled');
+                $('.loading_add_dish').removeClass('spinner-border spinner-border-sm');
+                $('.icon_dish').removeClass('d-none');
+            }
+            function safeReset() { completed = true; setTimeout(resetButton, 300); }
 
-                $('#total_amount').val(data);
-            })
-            .fail(function(data) {
-            });
+            axios.post("{{ route('order.add.dish', $order->id) }}", {
+                dish_id: $('#dish_id').val(),
+                unit: $('#units').val()
+            }).then(function(res) {
+                $('#total_amount').val(res.data);
+                refreshDishTable();
+                toastr['success']('', 'Plato añadido correctamente', { closeButton: true, tapToDismiss: false });
+            }).catch(function(err) {
+                var xhr = err.response;
+                var msg = 'No se pudo añadir el plato.';
+                if (xhr && xhr.data) {
+                    if (xhr.data.errors) {
+                        var e = xhr.data.errors;
+                        msg = (e.dish_id && e.dish_id[0]) || (e.unit && e.unit[0]) || msg;
+                    } else if (xhr.data.message) msg = xhr.data.message;
+                }
+                if (xhr && xhr.status === 419) msg = 'Sesión expirada. Recarga la página e intenta de nuevo.';
+                if (xhr && xhr.status === 500) msg = 'Error en el servidor. Revisa la consola (F12).';
+                toastr['error']('', msg, { closeButton: true, tapToDismiss: false });
+            }).finally(safeReset);
+
+            setTimeout(function() {
+                if (!completed && this_button.prop('disabled')) {
+                    completed = true;
+                    resetButton();
+                    toastr['warning']('', 'La petición tardó demasiado. Comprueba la conexión.', { closeButton: true });
+                }
+            }, 15000);
         }
     });
 
@@ -263,7 +289,7 @@
                     action: function () {
                         $.post("{{ route('order.remove.dish', $order->id) }}", { order_id: order_id, code_operation:code_operation},
                             function (data, textStatus, jqXHR) {
-                                table.search('').draw();
+                                refreshDishTable();
                                 $('#total_amount').val(data);
 
                                 toastr['success']('', 'El Plato fue Removido exitosamente', {
@@ -370,7 +396,7 @@
                     $('#total_amount').val(data.total_amount);
 
                     modalDataModifyIngredients(order_id, code_operation, dish_id);
-                    table.search('').draw();
+                    refreshDishTable();
 
                     setTimeout(() => {
                         this_button.removeAttr('disabled').removeClass('disabled');
@@ -392,7 +418,7 @@
                 $(input).removeClass('is-valid')
             },1000)
 
-            table.search('').draw();
+            refreshDishTable();
         })
         .fail(function(xhr, status, error) {
             $(input).addClass('is-invalid')
@@ -422,7 +448,7 @@
                                 $('#total_amount').val(data.total_amount);
 
                                 modalDataModifyIngredients(order_id, code_operation, dish_id);
-                                table.search('').draw();
+                                refreshDishTable();
                             }
                         );
                     }
@@ -433,31 +459,105 @@
         });
     }
 
-    $(document).ready(function () {
+    var tableDishesUrl = '{{ route('orders.dishes.table.data.fallback', $order->id) }}';
+    var tableDishesUrlFallback = '{{ route('orders.dishes.table.data', $order->id) }}';
 
-        $('#dish_id').change( function() {
-          var price = $('option:selected',this).data("price");
-          $('#price').val(price);
-        });
+    function setTableData(rows) {
+        $('#dish_to_order_table_placeholder').hide();
+        $('#dish_table_error').addClass('d-none').empty();
+        if (typeof table !== 'undefined' && table && $.fn.DataTable.isDataTable('#dish_to_order_table')) {
+            table.clear();
+            table.rows.add(rows || []);
+            table.draw();
+        } else {
+            initDishTable(rows || []);
+        }
+        if (typeof feather !== 'undefined') feather.replace();
+    }
 
+    function showTableError(reason) {
+        $('#dish_to_order_table_placeholder').hide();
+        $('#dish_table_error').removeClass('d-none').text(reason);
+        setTableData([]);
+    }
+
+    function loadTableWithAxios() {
+        $('#dish_table_error').addClass('d-none').empty();
+        if (typeof window.axios === 'undefined') {
+            showTableError('Axios no está cargado. Comprueba que el script de Axios se cargue en esta página.');
+            return;
+        }
+        if (!tableDishesUrl) {
+            showTableError('URL de la tabla no definida. Recarga la página.');
+            return;
+        }
+        var opts = {
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            timeout: 15000
+        };
+        function doRequest(url) {
+            return window.axios.get(url, opts).then(function(res) {
+                var rows = (res.data && res.data.data) ? res.data.data : [];
+                setTableData(rows);
+            });
+        }
+        function onFail(err, triedFallback) {
+            var status = err.response ? err.response.status : null;
+            var statusText = err.response ? err.response.statusText : '';
+            var msg = err.response && err.response.data && err.response.data.message ? err.response.data.message : '';
+            var reason = '';
+            if (status === 404) reason = '404: Ruta no encontrada. URL: ' + tableDishesUrl;
+            else if (status === 419) reason = '419: Token de sesión expirado. Recarga la página (F5).';
+            else if (status === 500) reason = '500: Error del servidor. ' + (msg ? msg : 'Revisa storage/logs/laravel.log');
+            else if (status) reason = status + ' ' + statusText + (msg ? ': ' + msg : '');
+            else reason = 'Sin respuesta. URL: ' + tableDishesUrl + ' | ' + (err.message || '');
+            console.error('Carga platos falló:', { status: status, url: tableDishesUrl, err: err });
+            if (!triedFallback && tableDishesUrlFallback && (status === 404 || status === 0 || !status)) {
+                window.axios.get(tableDishesUrlFallback, opts)
+                    .then(function(res) {
+                        var rows = (res.data && res.data.data) ? res.data.data : [];
+                        setTableData(rows);
+                    })
+                    .catch(function(err2) {
+                        toastr['error']('', 'No se pudieron cargar los platos.', { closeButton: true, tapToDismiss: false });
+                        showTableError(reason);
+                    });
+            } else {
+                toastr['error']('', 'No se pudieron cargar los platos.', { closeButton: true, tapToDismiss: false });
+                showTableError(reason);
+            }
+        }
+        doRequest(tableDishesUrl).catch(function(err) { onFail(err, false); });
+    }
+
+    function refreshDishTable() {
+        loadTableWithAxios();
+    }
+
+    var initDishTableRetries = 0;
+    function initDishTable(rows) {
+        if (typeof $.fn.DataTable === 'undefined') {
+            if (initDishTableRetries < 5) {
+                initDishTableRetries++;
+                setTimeout(function() { setTableData(rows); }, 300);
+            } else {
+                $('#dish_to_order_table_placeholder').hide();
+                $('#dish_table_error').removeClass('d-none').text('DataTable no disponible. Recarga la página.');
+            }
+            return;
+        }
         table = $('#dish_to_order_table').DataTable({
-            processing: true,
-            serverSide: true,
-            ordering: true,
-            searching: false, 
-            paging: false, 
-            info: false,
-            language: {
-                url: '{!! asset('data/datatable/Spanish.json') !!}'
-            },
-            ajax: {
-                url: '{!! route('orders.dishes.table.data', $order->id) !!}',
-                data: function (d) {
-
-                }
-            },
-
-            columns: [
+                data: rows || [],
+                processing: false,
+                ordering: true,
+                searching: false,
+                paging: false,
+                info: false,
+                language: {
+                    url: '{!! asset('data/datatable/Spanish.json') !!}',
+                    emptyTable: 'Aún no hay platos en esta orden. Agrega platos con el botón Añadir.'
+                },
+                columns: [
                 {
                   data: "name",
                   name: "name",
@@ -485,14 +585,6 @@
                 //       return row.pivot.price.toFixed(2);
                 //   }  
                 // },
-                {
-                    data: "[relleno]",
-                    name: "pivot.id",
-                    title: "Sabor de Helado",
-                    "class": "text-center helado",
-                    visible: true,
-                    searchable: true,
-                },
                 {
                     data: "pivot.price",
                     name: "pivot.price",
@@ -541,63 +633,22 @@
                 //  },
             ],
             fnCreatedRow: function (elemt, data, iDataIndex) {
-                var indice = iDataIndex + 1;
-
-                field=$('td:eq(3)', elemt);
-                buttons='';
-                /* Inicio opcion para llevar */
-                /* 
-                var checked = "";
-                if (data.pivot.is_for_carry == 1) {
-                    checked = "checked";
-                }
-                button = '<input type="hidden" name="is_for_carry" value="0"/><input class="form-check-input border border-primary" type="checkbox" name="is_for_carry" id="is_for_carry" value="1" '+checked+'  oninput="updateOrder(this, '+data.pivot.id+')"/>'
-                buttons+=button;
-                field=field.html(buttons);
-                */
-                /* Fin opcion para llevar */
-
-                // if(data.name.includes('Helado') || data.category_id == 4){
-                    if('flavor' in data){
-                        if(data.details == true && data.flavor != null){
-                            field=$('td:eq(1)', elemt);
-                            buttons='';
-                            button = '<span>'+ (data.flavor) +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
-                            buttons+=button;
-                            field=field.html(buttons);
-
-                        }else if(data.details == false && data.flavor != null){
-                            field=$('td:eq(1)', elemt);
-                            buttons='';
-                            button = '<span>'+ (data.flavor) +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
-                            buttons+=button;
-                            field=field.html(buttons);
-                        }else if(data.details == true && data.flavor == null){
-                            field=$('td:eq(1)', elemt);
-                            buttons='';
-                            button = '<span>'+ ('Seleccione un sabor') +' </span><button class="btn btn-sm btn-info" onclick="modifyIngredients({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.dish_id+')"><i data-feather="edit"></i></button>'
-                            buttons+=button;
-                            field=field.html(buttons);
-                        }else{
-                            field=$('td:eq(1)', elemt);
-                            buttons='';
-                            button = '<span>'+ ('----------------') +' </span>'
-                            buttons+=button;
-                            field=field.html(buttons);
-                        }
-                    }
-
-
-                field=$('td:eq(3)', elemt);
-                buttons='';
-                button = '<button class="btn btn-sm btn-danger" onclick="deleteDish({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.id+', '+data.pivot.dish_id+')"> <i data-feather="trash-2"></i></button>'
-                buttons+=button;
-                field=field.html(buttons);
-            },
-
-            }).on('processing.dt', function (e, settings, processing) {
-            feather.replace();
+                var field = $('td:eq(2)', elemt);
+                var button = '<button class="btn btn-sm btn-danger" onclick="deleteDish({{ $order->id }}, '+data.pivot.code_operation+', '+data.pivot.id+', '+data.pivot.dish_id+')"><i data-feather="trash-2"></i></button>';
+                field.html(button);
+            }
         });
+        if (typeof feather !== 'undefined') feather.replace();
+    }
+
+    $(document).ready(function () {
+        $('#dish_id').change( function() {
+          var price = $('option:selected',this).data("price");
+          $('#price').val(price);
+        });
+    });
+    $(window).on('load', function() {
+        loadTableWithAxios();
     });
 </script>
 @endsection

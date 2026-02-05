@@ -12,8 +12,8 @@
 
 @import '../core/colors/palette-variables';
 
-@import 'bootstrap/scss/mixins/_gradients';
-@import 'bootstrap/scss/mixins/gradients';
+@import '../../../node_modules/bootstrap/scss/mixins/_gradients';
+@import '../../../node_modules/bootstrap/scss/mixins/gradients';
 
 //Variables
 $chat-image-back-color: #f2f0f7;

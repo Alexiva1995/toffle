@@ -1,7 +1,8 @@
 /**
  * DataTables Advanced
+ * Usa window.$ / window.jQuery del bundle app.js (donde ya están jQuery + DataTables).
  */
-import $ from 'jquery';
+const $ = window.jQuery || window.$;
 
 'use strict';
 

@@ -1,18 +1,1 @@
-/* Error: Can't find stylesheet to import.
- *    ,
- * 14 | @import 'bootstrap/scss/functions'; // Bootstrap core function
- *    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
- *    '
- *   resources\sass\base\bootstrap-extended\_include.scss 14:9   @import
- *   resources\sass\base\core\colors\palette-variables.scss 2:9  root stylesheet */
 
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a    \2577 \a 14 \2502  @import 'bootstrap/scss/functions'; // Bootstrap core function\d\a    \2502          ^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   resources\\sass\\base\\bootstrap-extended\\_include.scss 14:9   @import\a   resources\\sass\\base\\core\\colors\\palette-variables.scss 2:9  root stylesheet";
-}

@@ -1,18 +1,121 @@
-/* Error: Can't find stylesheet to import.
- *    ,
- * 14 | @import 'bootstrap/scss/functions'; // Bootstrap core function
- *    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
- *    '
- *   resources\sass\base\bootstrap-extended\_include.scss 14:9  @import
- *   resources\sass\base\pages\page-auth.scss 1:9               root stylesheet */
+.auth-wrapper {
+  display: flex;
+  flex-basis: 100%;
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  width: 100%;
+}
+.auth-wrapper .auth-inner {
+  width: 100%;
+}
+.auth-wrapper.auth-v1 {
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.auth-wrapper.auth-v1 .auth-inner {
+  position: relative;
+}
+.auth-wrapper.auth-v1 .auth-inner:before {
+  width: 244px;
+  height: 243px;
+  content: " ";
+  position: absolute;
+  top: -54px;
+  left: -46px;
+}
+@media (max-width: 575.98px) {
+  .auth-wrapper.auth-v1 .auth-inner:before {
+    display: none;
+  }
+}
+.auth-wrapper.auth-v1 .auth-inner:after {
+  width: 272px;
+  height: 272px;
+  content: " ";
+  position: absolute;
+  bottom: -55px;
+  right: -75px;
+  z-index: -1;
+}
+@media (max-width: 575.98px) {
+  .auth-wrapper.auth-v1 .auth-inner:after {
+    display: none;
+  }
+}
+.auth-wrapper.auth-v2 {
+  align-items: flex-start;
+}
+.auth-wrapper.auth-v2 .auth-inner {
+  height: 100vh;
+  overflow-y: auto;
+  height: calc(var(--vh, 1vh) * 100);
+}
+.auth-wrapper.auth-v2 .brand-logo {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  margin: 0;
+  z-index: 1;
+  justify-content: unset;
+}
+.auth-wrapper.auth-v1 .auth-inner {
+  max-width: 400px;
+}
+.auth-wrapper .brand-logo {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 2rem 0;
+}
+.auth-wrapper .brand-logo .brand-text {
+  font-weight: 600;
+}
+.auth-wrapper .auth-footer-btn .btn {
+  padding: 0.6rem !important;
+}
+.auth-wrapper .auth-footer-btn .btn:not(:last-child) {
+  margin-right: 1rem;
+}
+.auth-wrapper .auth-footer-btn .btn:focus {
+  box-shadow: none;
+}
 
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a    \2577 \a 14 \2502  @import 'bootstrap/scss/functions'; // Bootstrap core function\d\a    \2502          ^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   resources\\sass\\base\\bootstrap-extended\\_include.scss 14:9  @import\a   resources\\sass\\base\\pages\\page-auth.scss 1:9               root stylesheet";
+@media (min-width: 1200px) {
+  .auth-wrapper.auth-v2 .auth-card {
+    width: 400px;
+  }
+}
+@media (max-width: 575.98px) {
+  .auth-wrapper.auth-v2 .brand-logo {
+    left: 1.5rem;
+    padding-left: 0;
+  }
+}
+.auth-wrapper .auth-bg {
+  background-color: #F8EFD8;
+}
+
+.dark-layout .auth-wrapper .auth-bg {
+  background-color: #283046;
+}
+
+@media (max-height: 625px) {
+  .dark-layout .auth-wrapper .auth-inner {
+    background-color: #283046;
+  }
+  .auth-wrapper .auth-bg {
+    padding-top: 3rem;
+  }
+  .auth-wrapper .auth-inner {
+    background-color: #F8EFD8;
+    padding-bottom: 1rem;
+  }
+  .auth-wrapper.auth-v2 .brand-logo {
+    position: relative;
+    left: 0;
+    padding-left: 1.5rem;
+  }
+}
+.bg-login {
+  background-color: #512F26;
 }

@@ -8,4 +8,4 @@
 // ================================================================================================
 
 @import 'bootstrap-extended/include'; // Bootstrap includes
-@import 'bootstrap/scss/bootstrap'; // Bootstrap core
+@import '../../../node_modules/bootstrap/scss/bootstrap'; // Bootstrap core (base -> sass -> resources -> root)

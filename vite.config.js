@@ -18,6 +18,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    optimizeDeps: {
+        include: ['jquery', 'datatables.net', 'datatables.net-bs5', 'datatables.net-responsive', 'datatables.net-buttons', 'datatables.net-buttons-bs5'],
+    },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),

@@ -21,8 +21,7 @@
 // Color palettes
 @import 'palette-variables';
 
-@import 'bootstrap/scss/mixins/_gradients';
-@import 'bootstrap/scss/mixins/gradients';
+@import '../../../../../node_modules/bootstrap/scss/mixins/gradients';
 
 @each $color_name, $color in $colors {
   @each $color_type, $color_value in $color {

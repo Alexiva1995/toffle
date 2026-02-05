@@ -1,18 +1,32 @@
-/* Error: Can't find stylesheet to import.
- *    ,
- * 14 | @import 'bootstrap/scss/functions'; // Bootstrap core function
- *    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
- *    '
- *   resources\sass\base\bootstrap-extended\_include.scss 14:9  @import
- *   resources\sass\base\pages\page-blog.scss 10:9              root stylesheet */
+.blog-list-wrapper .blog-title-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.blog-list-wrapper .blog-content-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a    \2577 \a 14 \2502  @import 'bootstrap/scss/functions'; // Bootstrap core function\d\a    \2502          ^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   resources\\sass\\base\\bootstrap-extended\\_include.scss 14:9  @import\a   resources\\sass\\base\\pages\\page-blog.scss 10:9              root stylesheet";
+.blog-detail-wrapper .blog-detail-share .dropdown-menu {
+  min-width: auto;
+}
+
+.blog-sidebar .blog-recent-posts img {
+  object-fit: cover;
+}
+.blog-sidebar .blog-recent-posts .text-body-heading:hover {
+  color: rgb(242.25, 84.55, 48.45) !important;
+}
+.blog-sidebar .blog-recent-post-title,
+.blog-sidebar .blog-category-title {
+  line-height: 23px;
+  letter-spacing: 0;
+}
+
+.blog-edit-wrapper .border {
+  border-color: #512F26 !important;
 }

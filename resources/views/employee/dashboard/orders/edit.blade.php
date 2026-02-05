@@ -190,8 +190,7 @@
 @endsection
 
 @section('page-script')
-
-<script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
+{{-- jQuery ya viene en vendors.min.js; DataTable se carga en custom-js vía panels.datatable.scripts --}}
 @endsection
 
 @section('custom-js')

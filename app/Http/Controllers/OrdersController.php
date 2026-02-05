@@ -272,8 +272,10 @@ class OrdersController extends Controller
 
     public function addDish(Request $request, int $order_id): mixed
     {
-        $order = Order::find($order_id);
-        $dish = Dish::find($request->dish_id);
+        $request->validate(['dish_id' => 'required|exists:dishes,id', 'unit' => 'required|integer|min:1']);
+
+        $order = Order::findOrFail($order_id);
+        $dish = Dish::findOrFail($request->dish_id);
 
         // 🚀 LÍNEA AGREGADA: Obtener y formatear el valor CPV del plato
         // Usamos null coalescing (??) por si $dish->cpv es nulo, para evitar errores
@@ -289,32 +291,26 @@ class OrdersController extends Controller
                 );
             } while ($validator->fails());
 
-            $order_dish = $order->dishes()->attach( [ $order->id =>
-                [
-                    'code_operation'=> $code_operation,
-                    'order_id' => $order->id,
-                    'dish_id' => $request->dish_id,
-                    'unit' => 1,
-                    'price' => number_format($dish->designated_price, 2, '.', ''),
-                    'cost' => number_format($dish->cost_price, 2, '.', ''),
-                    // 🚀 LÍNEA AGREGADA: Guardar el CPV en la tabla pivote
-                    'cpv_value' => $cpv_value,
-                ]
-            ]);
+            $order->dishes()->attach( [ (int) $request->dish_id => [
+                'code_operation' => $code_operation,
+                'order_id' => $order->id,
+                'dish_id' => $request->dish_id,
+                'unit' => 1,
+                'price' => number_format($dish->designated_price, 2, '.', ''),
+                'cost' => number_format($dish->cost_price, 2, '.', ''),
+                'cpv_value' => $cpv_value,
+            ] ]);
 
             foreach ($dish->ingredients()->get() as $key => $value) {
-
-                $order->ingredients()->attach( [ $order->id =>
-                    [
-                        'order_id' => $order->id,
-                        'code_operation'=> $code_operation,
-                        'dish_id' => $dish->id,
-                        'inventory_id' => $value->pivot->inventory_id,
-                        'portion' => $value->pivot->portion,
-                        'designated_cost' => $value->pivot->designated_cost,
-                        'it_has_flavors' => $value->product->it_has_flavors,
-                    ]
-                ]);
+                $inventory_id = $value->pivot->inventory_id;
+                $order->ingredients()->attach( [ $inventory_id => [
+                    'order_id' => $order->id,
+                    'code_operation' => $code_operation,
+                    'dish_id' => $dish->id,
+                    'portion' => $value->pivot->portion,
+                    'designated_cost' => $value->pivot->designated_cost,
+                    'it_has_flavors' => $value->product->it_has_flavors,
+                ] ]);
                 $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
                 $grams_used = $value->pivot->portion * 1;
                 $product_quantity = $inventory->product->gr != null ? $inventory->product->gr : $inventory->product->quantity;
@@ -471,32 +467,37 @@ class OrdersController extends Controller
 
     public function orderDishesTableData(Request $request, $id)
     {
-        $order = Order::where('id', $id)->with('dishes')->with('ingredients')->first();
-        //Obtiene la lista de platos en la orden (Por alguna razon lo llamaron ingredientes)
-        $ingredients = $order->dishes;
+        try {
+            $order = Order::where('id', $id)->with('dishes')->first();
 
-        foreach($ingredients as $dish)
-        {
-            $flavor = $order->ingredients()
-                                ->wherePivot('order_id', '=', $dish->pivot->order_id)
-                                ->where('dish_id', '=', $dish->pivot->dish_id)
-                                ->wherePivot('flavor_name', '!=', null)
-                                ->wherePivot('code_operation', '=', $dish->pivot->code_operation)
-                                ->pluck('order_ingredient.flavor_name');
-            //Crea un campo Sabor que almacena el sabor actual del helado en cuestion.
-            $dish->flavor = $flavor->pop();
-        }
-
-        return Datatables::of($ingredients)->filter(function ($query) use($request) {
-        }, true)
-        ->addColumn('details', function ($ingredients) use($order) {
-            if ($order->productRequiresFlavor($order->id, $ingredients->pivot->code_operation)) {
-                return true;
-            }else{
-                return false;
+            if (! $order) {
+                return response()->json(['data' => [], 'recordsTotal' => 0, 'recordsFiltered' => 0]);
             }
-        })
-        ->toJson();
+
+            $data = $order->dishes->map(function ($dish) {
+                return [
+                    'id' => $dish->id,
+                    'name' => $dish->name,
+                    'pivot' => [
+                        'id' => $dish->pivot->id,
+                        'order_id' => $dish->pivot->order_id,
+                        'dish_id' => $dish->pivot->dish_id,
+                        'code_operation' => $dish->pivot->code_operation,
+                        'unit' => (int) $dish->pivot->unit,
+                        'price' => (float) $dish->pivot->price,
+                    ],
+                ];
+            })->values()->all();
+
+            return response()->json([
+                'data' => $data,
+                'recordsTotal' => count($data),
+                'recordsFiltered' => count($data),
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('orderDishesTableData: ' . $e->getMessage(), ['id' => $id, 'trace' => $e->getTraceAsString()]);
+            return response()->json(['data' => [], 'recordsTotal' => 0, 'recordsFiltered' => 0]);
+        }
     }
 
     public function checkOrderIngredients($id)

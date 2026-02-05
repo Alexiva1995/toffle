@@ -175,6 +175,8 @@ Route::middleware('auth')->group(function () {
                 Route::get('modify-dishes/{order_id}', [OrdersController::class, 'modifyDishes'])->name('order.modify.dishes');
 
                 Route::get('order-table-data/{type}', [OrdersController::class, 'orderTableData'])->name('order.table.data');
+
+                Route::get('order-dishes-table-data/{id}', [OrdersController::class, 'orderDishesTableData'])->name('orders.dishes.table.data');
             });
 
             Route::resource('orders', OrdersController::class)->except(['index']);
@@ -209,10 +211,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('remove-ingredient-to-order', [OrdersController::class, 'removeIngredientsOrder'])->name('orders.remove.ingredients');
 
-    Route::get('order-dishes-table-data/{id}', [OrdersController::class, 'orderDishesTableData'])->name('orders.dishes.table.data');
-
     Route::get('check-order-ingredients/{id}', [OrdersController::class, 'checkOrderIngredients'])->name('check.order.ingredients');
 
+    Route::get('order-dishes-table-data/{id}', [OrdersController::class, 'orderDishesTableData'])->name('orders.dishes.table.data.fallback');
 });
 
 // Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');

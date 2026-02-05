@@ -1,18 +1,26 @@
-/* Error: Can't find stylesheet to import.
- *    ,
- * 14 | @import 'bootstrap/scss/functions'; // Bootstrap core function
- *    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
- *    '
- *   resources\sass\base\bootstrap-extended\_include.scss 14:9              @import
- *   resources\sass\base\plugins\extensions\ext-component-ratings.scss 1:9  root stylesheet */
+.jq-ry-container:not(.multi-color-ratings) .jq-ry-normal-group i,
+.jq-ry-container:not(.multi-color-ratings) .jq-ry-normal-group svg {
+  fill: #babfc7;
+}
+.jq-ry-container:not(.multi-color-ratings) .jq-ry-rated-group i,
+.jq-ry-container:not(.multi-color-ratings) .jq-ry-rated-group svg {
+  fill: #ff9f43;
+}
 
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a    \2577 \a 14 \2502  @import 'bootstrap/scss/functions'; // Bootstrap core function\d\a    \2502          ^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   resources\\sass\\base\\bootstrap-extended\\_include.scss 14:9              @import\a   resources\\sass\\base\\plugins\\extensions\\ext-component-ratings.scss 1:9  root stylesheet";
+.dark-layout .jq-ry-container:not(.multi-color-ratings) .jq-ry-normal-group i,
+.dark-layout .jq-ry-container:not(.multi-color-ratings) .jq-ry-normal-group svg {
+  fill: #676d7d;
+}
+
+[data-textdirection=rtl] .jq-ry-container:not(.multi-color-ratings) .jq-ry-normal-group i,
+[data-textdirection=rtl] .jq-ry-container:not(.multi-color-ratings) .jq-ry-normal-group svg {
+  fill: #ff9f43;
+}
+[data-textdirection=rtl] .jq-ry-container:not(.multi-color-ratings) .jq-ry-rated-group i,
+[data-textdirection=rtl] .jq-ry-container:not(.multi-color-ratings) .jq-ry-rated-group svg {
+  fill: #babfc7;
+}
+[data-textdirection=rtl] .dark-layout .jq-ry-container:not(.multi-color-ratings) .jq-ry-rated-group i,
+[data-textdirection=rtl] .dark-layout .jq-ry-container:not(.multi-color-ratings) .jq-ry-rated-group svg {
+  fill: #676d7d;
 }
