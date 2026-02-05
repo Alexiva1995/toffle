@@ -54,10 +54,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Session::class);
     }
 
-    public function getFullName()
-    {   
-        $first_name = $this->name;
-        $last_name = $this->last_name;
-        return "${first_name} ${last_name}";
+    public function getFullName(): string
+    {
+        return "{$this->name} {$this->last_name}";
     }
 }

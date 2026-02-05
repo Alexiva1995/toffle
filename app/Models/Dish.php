@@ -34,35 +34,32 @@ class Dish extends Model
         return $this->belongsTo('App\Models\Category', 'category_id', 'id');
     }
 
-    public function collectionDishes($category_id)
+    public function collectionDishes(int $category_id): \Illuminate\Database\Eloquent\Collection
     {
-        $dishes = Dish::where('category_id', $category_id)->whereIn('status', ['1', '2'])->get();
-        return $dishes;
+        return Dish::where('category_id', $category_id)->whereIn('status', ['1', '2'])->get();
     }
 
-    public function status()
+    public function status(): string
     {
-        if($this->status == '0'){
-            return "Inactivo";
-        }else if($this->status == '1'){
-            return "Activo";
-        }else if($this->status == '2'){
-            return "En Revisión";
-        }
+        return match ($this->status) {
+            '0' => 'Inactivo',
+            '1' => 'Activo',
+            '2' => 'En Revisión',
+            default => '',
+        };
     }
 
-    public function statusColor()
+    public function statusColor(): string
     {
-        if($this->status == '0'){
-            return "danger";
-        }else if($this->status == '1'){
-            return "success";
-        }else if($this->status == '2'){
-            return "info";
-        }
+        return match ($this->status) {
+            '0' => 'danger',
+            '1' => 'success',
+            '2' => 'info',
+            default => '',
+        };
     }
 
-    public function getDishIngredients($baseName)
+    public function getDishIngredients(string $baseName): \Illuminate\Support\Collection
     {
         $ingredients = collect();
         switch($baseName){
@@ -156,8 +153,8 @@ class Dish extends Model
                 }
                 return $ingredients;
                 break;
-
         }
 
+        return $ingredients;
     }
 }

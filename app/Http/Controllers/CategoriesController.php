@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use App\Models\Category;
 
 class CategoriesController extends Controller
 {
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $fields = [
             'name' => ['required'],
@@ -27,14 +29,7 @@ class CategoriesController extends Controller
         return redirect()->route('categories.list')->with('success', 'Categoría Creada');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category): RedirectResponse
     {
         $fields = [
             'name' => ['required'],
@@ -53,13 +48,7 @@ class CategoriesController extends Controller
         return redirect()->route('categories.list')->with('success', 'Categoría Actualizada');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $category = Category::find($id);
 
@@ -68,7 +57,7 @@ class CategoriesController extends Controller
         return redirect()->route('categories.list')->with('success', 'Categoría Eliminada');
     }
 
-    public function list()
+    public function list(): View
     {
         $categories = Category::all();
         return view('admin.categories.list')

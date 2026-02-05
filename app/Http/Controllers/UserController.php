@@ -3,42 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Session;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
-use App\Models\User;
-
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): void
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
         return view('admin.employees.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $fields = [
             'name' => ['required'],
@@ -76,30 +61,18 @@ class UserController extends Controller
         return redirect()->route('employees.list')->with('success', 'Empleado Registrado');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(int $id): void
     {
         //
     }
 
-    public function showActiveUsers()
+    public function showActiveUsers(): View
     {
         $sessions = Session::with('user')->where('user_id', '!=', null)->get();
         return view('admin.sessions.index', compact('sessions'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $employee = User::find($id);
         $password = Crypt::decrypt($employee->token_crypt);
@@ -108,14 +81,7 @@ class UserController extends Controller
         ->with('password', $password);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $employee = User::find($id);
 
@@ -153,34 +119,24 @@ class UserController extends Controller
         return redirect()->route('employees.list')->with('success', 'Empleado Actualizado');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $employee = User::find($id);
-
         $employee->delete();
-
         return redirect()->route('employees.list')->with('success', 'Empleado Eliminado');
-
     }
 
-    public function list()
+    public function list(): View
     {
         $employees = User::orderBy('id', 'DESC')->get();
-
         return view('admin.employees.list')->with('employees', $employees);
     }
 
-    public function generatePassword(Request $request)
+    public function generatePassword(Request $request): ?string
     {
         if ($request->ajax()) {
-            $password = Str::random(8);
-            return $password;
+            return Str::random(8);
         }
+        return null;
     }
 }

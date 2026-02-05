@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
 
@@ -42,7 +44,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
         $fields = [
             "email" => ['required'],
@@ -63,7 +65,7 @@ class LoginController extends Controller
         }
     }
 
-    public function msgError($email, $password)
+    public function msgError(?string $email, ?string $password): string
     {
         $msg_error= '';
         $validator_password;
@@ -88,7 +90,7 @@ class LoginController extends Controller
         return $msg_error;
     }
 
-    public function remember($remember, $email, $password)
+    public function remember(mixed $remember, ?string $email, ?string $password): void
     {
         if ($remember) {
             session([
@@ -105,7 +107,7 @@ class LoginController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
 
@@ -113,7 +115,8 @@ class LoginController extends Controller
     }
 
     // Login
-    public function showLoginForm(){
+    public function showLoginForm(): View
+    {
       $pageConfigs = [
           'bodyClass' => "bg-full-screen-image",
           'blankPage' => true
