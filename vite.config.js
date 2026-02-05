@@ -33,7 +33,17 @@ export default defineConfig({
                     path.resolve(__dirname, 'resources/assets'),
                     path.resolve(__dirname, 'resources/sass/base'),
                 ],
-                silenceDeprecations: ['legacy-js-api'],
+                // Silencia deprecaciones de Sass (Bootstrap 5.0.1 y tema Vuexy usan sintaxis antigua)
+                silenceDeprecations: [
+                    'legacy-js-api',
+                    'import',
+                    'if-function',
+                    'global-builtin',
+                    'slash-div',
+                    'color-functions',
+                    'function-units',
+                    'abs-percent',
+                ],
             },
         },
     },
