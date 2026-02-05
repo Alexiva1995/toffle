@@ -38,15 +38,18 @@ class CloseSessions extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         try {
             Log::info('Inciar Comando close:sessions ' . now()->format('Y-m-d'));
             DB::table('sessions')->delete();
             Log::info('Fin Comando close:sessions ' . now()->format('Y-m-d'));
-     
+
+            return Command::SUCCESS;
         } catch (\Throwable $th) {
             Log::info('error Comando close:sessions ' . now()->format('Y-m-d'));
+
+            return Command::FAILURE;
         }
     }
 }

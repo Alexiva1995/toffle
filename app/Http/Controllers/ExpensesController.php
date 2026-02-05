@@ -2,32 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 use App\Models\Expense;
 use App\Models\Category;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
 
-
 class ExpensesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    //Index para empleados
-    public function index()
+    public function index(): View
     {
         return view('employee.expenses.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
         //Obtiene las categorias de tipo 'Gastos'
         $categories = Category::where('type', 0)->get();
@@ -37,18 +28,12 @@ class ExpensesController extends Controller
         return view('admin.expenses.create')->with('categories', $categories);
     }
 
-    public function employeeCreate()
+    public function employeeCreate(): View
     {
         return view('employee.expenses.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $fields = [
             'amount' => ['required'],
@@ -79,13 +64,7 @@ class ExpensesController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(string $id): View|RedirectResponse
     {
         $date = $id;
 
@@ -111,25 +90,12 @@ class ExpensesController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(int $id): void
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $expense = Expense::find($id);
 
@@ -153,19 +119,14 @@ class ExpensesController extends Controller
             return redirect()->route('expenses.list.to.pay')->with('success', 'Gasto Actualizado');
         }
 
-        if ($request->type == 'paid_out') {   
-            return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->updated_at)) )->with('success', 'Gasto Actualizado');
+        if ($request->type == 'paid_out') {
+            return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->updated_at)))->with('success', 'Gasto Actualizado');
         }
 
+        return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, int $id): bool|RedirectResponse
     {
         $expense = Expense::find($id);
 
@@ -176,18 +137,19 @@ class ExpensesController extends Controller
             return true;
         }
 
-        if ($request->status == 'paid_out') {   
-            return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->updated_at)) )->with('success', 'Gasto Eliminado');
+        if ($request->status == 'paid_out') {
+            return redirect()->route('expenses.show', date('Y-m-d', strtotime($expense->updated_at)))->with('success', 'Gasto Eliminado');
         }
 
+        return redirect()->back();
     }
 
-    public function listHistorical()
+    public function listHistorical(): View
     {
         return view('admin.expenses.list_historical');
     }
 
-    public function listHistoricalData(Request $request)
+    public function listHistoricalData(Request $request): JsonResponse
     {
         $expenses = Expense::where('status', '1')
             ->selectRaw('DATE(updated_at) as updated_date')
@@ -211,7 +173,7 @@ class ExpensesController extends Controller
         ->toJson();
     }
 
-    public function listToPay()
+    public function listToPay(): View
     {
         $categories = Category::all();
 
@@ -219,7 +181,7 @@ class ExpensesController extends Controller
             ->with('categories', $categories);
     }
 
-    public function listToPayData(Request $request)
+    public function listToPayData(Request $request): JsonResponse
     {
         $expenses = Expense::with('category')
             ->where('status', '0')
@@ -241,7 +203,7 @@ class ExpensesController extends Controller
         ->toJson();
     }
 
-    public function markAsPaid($id)
+    public function markAsPaid(int $id): Expense
     {
         $expenses = Expense::where('id', $id)->first();
 

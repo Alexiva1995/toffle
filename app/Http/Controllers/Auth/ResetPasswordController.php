@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ResetPasswordController extends Controller
 {
@@ -29,7 +30,7 @@ class ResetPasswordController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    public function showResetForm(Request $request, $token = null)
+    public function showResetForm(Request $request, ?string $token = null): View
     {
       $pageConfigs = [
         'bodyClass' => "bg-full-screen-image",

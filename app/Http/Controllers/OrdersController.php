@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Order;
 use App\Models\Dish;
 use App\Models\Inventory;
@@ -13,13 +15,7 @@ use stdClass;
 
 class OrdersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function index(Request $request, $type = null)
+    public function index(Request $request, ?string $type = null): View
     {
         if(isset($request->fecha_ini) && !isset($request->fecha_fin)){
             $orders = Order::orderBy('id', 'desc')->whereDate('created_at', '>=' ,$request->fecha_ini)->get();
@@ -36,18 +32,12 @@ class OrdersController extends Controller
         return view('orders.index', ['orders' => $orders, 'type' =>$type ]);
     }
 
-    public function flowDays(Request $request)
+    public function flowDays(Request $request): View
     {
         return $this->index($request, 'flow_days');
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
         $dish_category = Dish::select('category_id')->distinct()->get();
 
@@ -55,14 +45,7 @@ class OrdersController extends Controller
             ->with('dish_category', $dish_category);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $fields = [
             "customer_name" => ['required'],
@@ -85,7 +68,7 @@ class OrdersController extends Controller
         return redirect()->route('order.modify.dishes', $order->id);
     }
 
-    public function modifyDishes(Request $request, $order_id)
+    public function modifyDishes(Request $request, int $order_id): View
     {
         $order = Order::find($order_id);
 
@@ -96,24 +79,12 @@ class OrdersController extends Controller
             ->with('order', $order);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(int $id): void
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $order = Order::find($id);
 
@@ -133,14 +104,7 @@ class OrdersController extends Controller
             ->with('order', $order);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): mixed
     {
         if ($request->ajax()) {
             $order = Order::find($id);
@@ -168,7 +132,7 @@ class OrdersController extends Controller
         return $order;
     }
 
-    public function updateGeneralData($request, $order)
+    public function updateGeneralData(Request $request, Order $order): void
     {
         foreach ($request->all() as $key => $value) {
             switch ($key) {
@@ -249,7 +213,7 @@ class OrdersController extends Controller
         $order->update($request->all());
     }
 
-    public function updateDishOrder($request, $order)
+    public function updateDishOrder(Request $request, Order $order): void
     {
         if ($request->is_for_carry != null) {
             $order->dishes()->wherePivot('id', $request->id)->update([
@@ -258,18 +222,12 @@ class OrdersController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(int $id): void
     {
         //
     }
 
-    public function removeDish(Request $request, $order_id)
+    public function removeDish(Request $request, int $order_id): float
     {
         $order = Order::find($order_id);
 
@@ -309,10 +267,10 @@ class OrdersController extends Controller
             $order->dishes()->wherePivot('code_operation', $request->code_operation)->detach();
         }
 
-        return $order->total_amount;
+        return (float) $order->total_amount;
     }
 
-    public function addDish(Request $request, $order_id)
+    public function addDish(Request $request, int $order_id): mixed
     {
         $order = Order::find($order_id);
         $dish = Dish::find($request->dish_id);

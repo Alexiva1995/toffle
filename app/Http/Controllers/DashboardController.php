@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use App\Models\Order;
 use App\Models\Dish;
 use App\Models\Category;
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
   // Dashboard - Analytics
-  public function dashboardAnalytics()
+  public function dashboardAnalytics(): View
   {
     $pageConfigs = ['pageHeader' => false];
 
@@ -21,14 +24,14 @@ class DashboardController extends Controller
   }
 
   // Dashboard - Ecommerce
-  public function dashboardEcommerce()
+  public function dashboardEcommerce(): View
   {
     $pageConfigs = ['pageHeader' => false];
 
     return view('/content/dashboard/dashboard-ecommerce', ['pageConfigs' => $pageConfigs]);
   }
 
-  public function dashboard()
+  public function dashboard(): RedirectResponse
   {
     if (Auth::user()->role == 0) {
       return redirect()->route('dashboard-employee');
@@ -37,9 +40,11 @@ class DashboardController extends Controller
     if (Auth::user()->role == 1) {
       return redirect()->route('dashboard-admin');
     }
+
+    return redirect()->route('login');
   }
 
-  public function dashboardAdmin()
+  public function dashboardAdmin(): View
   {
     $pageConfigs = ['pageHeader' => false];
     $orders_today = Order::where('status', '2')->whereDate('created_at', '=', now()->format('Y-m-d'))->get();
@@ -53,7 +58,7 @@ class DashboardController extends Controller
     ]));
   }
 
-  public function showSoldProducts()
+  public function showSoldProducts(): JsonResponse
   {
     //Productos gastados en los ultimos 30 dias
     $soldProducts = Order::selectRaw('products.name')
@@ -69,7 +74,7 @@ class DashboardController extends Controller
     return datatables()::of($soldProducts)->toJson();
   }
 
-  public function dashboarEmployee()
+  public function dashboarEmployee(): View
   {
     $pageConfigs = ['pageHeader' => false];
 
@@ -85,7 +90,8 @@ class DashboardController extends Controller
       // ->with('orders', $orders);
   }
 
-  public function dataChartAmountVsGain() {
+  public function dataChartAmountVsGain(): JsonResponse
+  {
       $orders = Order::selectRaw('orders.created_at as date')
         ->selectRaw('ROUND(orders.total_amount, 2) as total_amount')
         ->selectRaw('ROUND( (b.price - b.cost) * b.unit, 2 ) as gain')
@@ -100,7 +106,8 @@ class DashboardController extends Controller
       ]);
  }
 
-  public function dataProfitByCategory(Request $request) {
+  public function dataProfitByCategory(Request $request): JsonResponse
+  {
 
     $year = substr($request->week, 0, -4);
     $week_number = substr($request->week, -2);
@@ -127,7 +134,8 @@ class DashboardController extends Controller
     ]);
   }
  
-  public function dataChartWeeklySales(Request $request) {
+  public function dataChartWeeklySales(Request $request): JsonResponse
+  {
 
       $dates = [];
       $dates_found = [];
@@ -194,7 +202,8 @@ class DashboardController extends Controller
       ]);
   }
 
-  public function weekdays($year, $week_number) {
+  public function weekdays(string $year, string $week_number): array
+  {
 
       $weekdays = [];
       $days = ['0', '1', '2', '3', '4', '5', '6'];
@@ -207,13 +216,13 @@ class DashboardController extends Controller
       return $weekdays;
  }
 
- public function getDay($date)
+ public function getDay(string $date): string
  {
      $days = array("Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo");
      return $days[date('N', strtotime($date)) - 1 ];
  }
 
- public function loadData(Request $request, $type)
+ public function loadData(Request $request, string $type): ?string
  {
      switch ($type) {
          case 'statistics':
@@ -247,8 +256,7 @@ class DashboardController extends Controller
                  ->render();
              break;
          default:
-             # code...
-             break;
+             return null;
      }
  }
 }
