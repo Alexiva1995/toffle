@@ -4,7 +4,7 @@
 
 @section('page-style')
   {{-- Page Css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-profile.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/pages/page-profile.css') }}">
 @endsection
 
 @section('content')
@@ -1217,5 +1217,5 @@
 
 @section('page-script')
   {{-- Page js files --}}
-  <script src="{{ asset(mix('js/scripts/pages/page-profile.js')) }}"></script>
+  <script src="{{ asset('js/scripts/pages/page-profile.js') }}"></script>
 @endsection

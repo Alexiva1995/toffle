@@ -34,27 +34,27 @@ class ReportController extends Controller
         ->groupBy('name_dish', 'category_id');
 
         // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
-        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
+        if ( !request()->has('from') || request()->input('from') == '' || !request()->has('to') || request()->input('to') == '') {
             $best_sellers->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
 
         return DataTables::of($best_sellers)->filter(function ($query) use($request) {
-            if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
-                $start = date("Y-m-d",strtotime(request('from')));
-                $end = date("Y-m-d",strtotime(request('to')));
+            if (request()->has('from') && request()->input('from')!='' && request()->input('to')!='' && request()->has('to')) {
+                $start = date("Y-m-d",strtotime(request()->input('from')));
+                $end = date("Y-m-d",strtotime(request()->input('to')));
                 $query->whereBetween('orders.updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
 
-            if(request()->has('category_id') && request('category_id')!= ''){
-                $query->where('category_id', request('category_id'));
+            if(request()->has('category_id') && request()->input('category_id')!= ''){
+                $query->where('category_id', request()->input('category_id'));
             }
 
             // La agrupación ya está fuera de la función filter para evitar errores de MySQL
 
-            if(request()->has('order_by_for') && request('order_by_for') == 'units'){
+            if(request()->has('order_by_for') && request()->input('order_by_for') == 'units'){
                 $query->orderBy('units', 'DESC');
             }
-            if(request()->has('order_by_for') && request('order_by_for') == 'gain'){
+            if(request()->has('order_by_for') && request()->input('order_by_for') == 'gain'){
                 $query->orderBy('gain', 'DESC');
             }
         }, true)
@@ -86,14 +86,14 @@ class ReportController extends Controller
             ->groupBy('updated_at', 'total_amount');
 
         // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
-        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
+        if ( !request()->has('from') || request()->input('from') == '' || !request()->has('to') || request()->input('to') == '') {
             $gains->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
 
         return Datatables::of($gains)->filter(function ($query) use($request) {
-            if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
-                $start = date("Y-m-d",strtotime(request('from')));
-                $end = date("Y-m-d",strtotime(request('to')));
+            if (request()->has('from') && request()->input('from')!='' && request()->input('to')!='' && request()->has('to')) {
+                $start = date("Y-m-d",strtotime(request()->input('from')));
+                $end = date("Y-m-d",strtotime(request()->input('to')));
                 $query->whereBetween('orders.updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
         }, true)
@@ -111,11 +111,11 @@ class ReportController extends Controller
     //Y para el cuadro ganancias en flujo de caja
     public function gainAmount(Request $request)
     {
-        if ( request()->has('from') && request('from') != '' && request()->has('to') && request('to') != '' )
+        if ( request()->has('from') && request()->input('from') != '' && request()->has('to') && request()->input('to') != '' )
         {
             // Busca entre fechas
-            $start = date("Y-m-d",strtotime(request('from')));
-            $end = date("Y-m-d",strtotime(request('to')));
+            $start = date("Y-m-d",strtotime(request()->input('from')));
+            $end = date("Y-m-d",strtotime(request()->input('to')));
             $gains_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
@@ -147,10 +147,10 @@ class ReportController extends Controller
     //Costo fijo para Ganancias
     public function gainFixedCost(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
+        if ( request()->has('from') && request()->input('from')!= '' && request()->has('to') !='' && request()->input('to') )
         {
-            $start = date("Y-m-d",strtotime(request('from')));
-            $end = date("Y-m-d",strtotime(request('to')));
+            $start = date("Y-m-d",strtotime(request()->input('from')));
+            $end = date("Y-m-d",strtotime(request()->input('to')));
             $costo_fijo_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
@@ -179,10 +179,10 @@ class ReportController extends Controller
     // Obtener el imprevisto para Reportes -> Ganancias
     public function gainUnexpected(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
+        if ( request()->has('from') && request()->input('from')!= '' && request()->has('to') !='' && request()->input('to') )
         {
-            $start = date("Y-m-d",strtotime(request('from')));
-            $end = date("Y-m-d",strtotime(request('to')));
+            $start = date("Y-m-d",strtotime(request()->input('from')));
+            $end = date("Y-m-d",strtotime(request()->input('to')));
             $costo_fijo_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
@@ -251,14 +251,14 @@ class ReportController extends Controller
             // Este bloque de filtro por rango de fechas puede ser redundante aquí,
             // ya que la función se llama con una fecha específica.
             // Lo mantengo por si la lógica de DataTables lo necesita.
-            if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
-                $start = date("Y-m-d",strtotime(request('from')));
-                $end = date("Y-m-d",strtotime(request('to')));
+            if (request()->has('from') && request()->input('from')!='' && request()->input('to')!='' && request()->has('to')) {
+                $start = date("Y-m-d",strtotime(request()->input('from')));
+                $end = date("Y-m-d",strtotime(request()->input('to')));
                 $query->whereBetween('orders.updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
 
-            if(request()->has('category_id') && request('category_id')!= ''){
-                $query->where('category_id', request('category_id'));
+            if(request()->has('category_id') && request()->input('category_id')!= ''){
+                $query->where('category_id', request()->input('category_id'));
             }
         }, true)
         ->addColumn('category_name', function (Order $gain_dishes) {
@@ -295,23 +295,23 @@ class ReportController extends Controller
         }
 
         // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
-        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
+        if ( !request()->has('from') || request()->input('from') == '' || !request()->has('to') || request()->input('to') == '') {
             $expenses->whereBetween('updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
 
         return Datatables::of($expenses)->filter(function ($query) use($request) {
-            if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
-                $start = date("Y-m-d",strtotime(request('from')));
-                $end = date("Y-m-d",strtotime(request('to')));
+            if (request()->has('from') && request()->input('from')!='' && request()->input('to')!='' && request()->has('to')) {
+                $start = date("Y-m-d",strtotime(request()->input('from')));
+                $end = date("Y-m-d",strtotime(request()->input('to')));
                 $query->whereBetween('updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
 
-            if(request()->has('category_id') && request('category_id')!= ''){
-                $query->where('category_id', request('category_id'));
+            if(request()->has('category_id') && request()->input('category_id')!= ''){
+                $query->where('category_id', request()->input('category_id'));
             }
 
-            if(request()->has('status') && request('status')!= ''){
-                $query->where('status', request('status'));
+            if(request()->has('status') && request()->input('status')!= ''){
+                $query->where('status', request()->input('status'));
             }
         }, true)
         ->addColumn('category_name', function (Expense $expenses) {
@@ -327,9 +327,9 @@ class ReportController extends Controller
     //Obtiene el total para el cuadro Ganancias de informes->Flujo de caja
     public function expensesTotalAmount()
     {
-        if ( request()->has('from') && request('from') != '' && request()->has('to') && request('to') != '' ) {
-            $start = date("Y-m-d",strtotime(request('from')));
-            $end = date("Y-m-d",strtotime(request('to')));
+        if ( request()->has('from') && request()->input('from') != '' && request()->has('to') && request()->input('to') != '' ) {
+            $start = date("Y-m-d",strtotime(request()->input('from')));
+            $end = date("Y-m-d",strtotime(request()->input('to')));
             $expenses_total_amount = Expense::whereBetween( 'expenses.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )->sum('amount');
         }
         else{
@@ -357,23 +357,23 @@ class ReportController extends Controller
         $month_end = date('Y-m-d', strtotime('last day of this month', time()));
 
         // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
-        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
+        if ( !request()->has('from') || request()->input('from') == '' || !request()->has('to') || request()->input('to') == '') {
             $sales->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
 
         return Datatables::of($sales)->filter(function ($query) use($request) {
-            if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
-                $start = date("Y-m-d",strtotime(request('from')));
-                $end = date("Y-m-d",strtotime(request('to')));
+            if (request()->has('from') && request()->input('from')!='' && request()->input('to')!='' && request()->has('to')) {
+                $start = date("Y-m-d",strtotime(request()->input('from')));
+                $end = date("Y-m-d",strtotime(request()->input('to')));
                 $query->whereBetween('orders.updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
 
-            if(request()->has('category_id') && request('category_id')!= ''){
-                $query->where('category_id', request('category_id'));
+            if(request()->has('category_id') && request()->input('category_id')!= ''){
+                $query->where('category_id', request()->input('category_id'));
             }
 
-            if(request()->has('status') && request('status')!= ''){
-                $query->where('orders.status', request('status'));
+            if(request()->has('status') && request()->input('status')!= ''){
+                $query->where('orders.status', request()->input('status'));
             }
         }, true)
         ->addColumn('updated_at_timezone', function (Order $sales) {
@@ -388,10 +388,10 @@ class ReportController extends Controller
      */
     public function fixedCostAmount(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
+        if ( request()->has('from') && request()->input('from')!= '' && request()->has('to') !='' && request()->input('to') )
         {
-            $start = date("Y-m-d",strtotime(request('from')));
-            $end = date("Y-m-d",strtotime(request('to')));
+            $start = date("Y-m-d",strtotime(request()->input('from')));
+            $end = date("Y-m-d",strtotime(request()->input('to')));
             $costo_fijo_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
@@ -422,10 +422,10 @@ class ReportController extends Controller
      */
     public function unexpectedAmount(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
+        if ( request()->has('from') && request()->input('from')!= '' && request()->has('to') !='' && request()->input('to') )
         {
-            $start = date("Y-m-d",strtotime(request('from')));
-            $end = date("Y-m-d",strtotime(request('to')));
+            $start = date("Y-m-d",strtotime(request()->input('from')));
+            $end = date("Y-m-d",strtotime(request()->input('to')));
             $costo_fijo_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
         }
         else
@@ -458,10 +458,10 @@ class ReportController extends Controller
     public function getCPVAmount(Request $request)
     {
     // 1. Manejo de Fechas: Determinar el rango de fechas para la consulta.
-    if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
+    if ( request()->has('from') && request()->input('from')!= '' && request()->has('to') !='' && request()->input('to') )
     {
-        $start = date("Y-m-d",strtotime(request('from')));
-        $end = date("Y-m-d",strtotime(request('to')));
+        $start = date("Y-m-d",strtotime(request()->input('from')));
+        $end = date("Y-m-d",strtotime(request()->input('to')));
 
         $cpv_query = Order::whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] );
     }
@@ -494,11 +494,11 @@ class ReportController extends Controller
      */
     public function totalSalesAmount(Request $request)
     {
-        if ( request()->has('from') && request('from')!= '' && request()->has('to') !='' && request('to') )
+        if ( request()->has('from') && request()->input('from')!= '' && request()->has('to') !='' && request()->input('to') )
         {
             //Busca entre fechas
-            $start = date("Y-m-d",strtotime(request('from')));
-            $end = date("Y-m-d",strtotime(request('to')));
+            $start = date("Y-m-d",strtotime(request()->input('from')));
+            $end = date("Y-m-d",strtotime(request()->input('to')));
             $total_sales_amount = Order::where('status', '2')
                 ->whereBetween( 'orders.updated_at',[ $start. " 00:00:00", $end. " 23:59:59" ] )
                 ->sum('total_amount');
@@ -551,10 +551,10 @@ class ReportController extends Controller
     //Obtiene el total de ventas para Flujo de caja
     public function salesTotal()
     {
-        if ( request()->has('from') && request('from') != '' && request()->has('to') && request('to') !='')
+        if ( request()->has('from') && request()->input('from') != '' && request()->has('to') && request()->input('to') !='')
         {
-            $start = date("Y-m-d",strtotime(request('from')));
-            $end = date("Y-m-d",strtotime(request('to')));
+            $start = date("Y-m-d",strtotime(request()->input('from')));
+            $end = date("Y-m-d",strtotime(request()->input('to')));
             $orders_total = Order::where('status', '2')
                 ->whereBetween('orders.updated_at',[$start. " 00:00:00", $end. " 23:59:59"])
                 ->sum('total_amount');
@@ -592,19 +592,19 @@ class ReportController extends Controller
             ->orderBy('b.id', 'DESC');
 
         // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
-        if ( !request()->has('from') || request('from') == '' || !request()->has('to') || request('to') == '') {
+        if ( !request()->has('from') || request()->input('from') == '' || !request()->has('to') || request()->input('to') == '') {
             $income->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
 
         return Datatables::of($income)->filter(function ($query) use($request) {
-            if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
-                $start = date("Y-m-d",strtotime(request('from')));
-                $end = date("Y-m-d",strtotime(request('to')));
+            if (request()->has('from') && request()->input('from')!='' && request()->input('to')!='' && request()->has('to')) {
+                $start = date("Y-m-d",strtotime(request()->input('from')));
+                $end = date("Y-m-d",strtotime(request()->input('to')));
                 $query->whereBetween('orders.updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
 
-            if(request()->has('category_id') && request('category_id')!= ''){
-                $query->where('category_id', request('category_id'));
+            if(request()->has('category_id') && request()->input('category_id')!= ''){
+                $query->where('category_id', request()->input('category_id'));
             }
 
         }, true)

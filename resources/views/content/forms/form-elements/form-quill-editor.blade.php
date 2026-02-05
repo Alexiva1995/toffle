@@ -4,16 +4,16 @@
 
 @section('vendor-style')
   <!-- vendor css files -->
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/editors/quill/katex.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/editors/quill/monokai-sublime.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/editors/quill/quill.snow.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/editors/quill/quill.bubble.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/editors/quill/katex.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/editors/quill/monokai-sublime.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/editors/quill/quill.snow.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/editors/quill/quill.bubble.css') }}">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inconsolata&family=Roboto+Slab&family=Slabo+27px&family=Sofia&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 @endsection
 
 @section('page-style')
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-quill-editor.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/forms/form-quill-editor.css') }}">
 @endsection
 
 @section('content')
@@ -260,11 +260,11 @@ var quill = new Quill('#editor', {
 
 @section('vendor-script')
   <!-- vendor files -->
-  <script src="{{ asset(mix('vendors/js/editors/quill/katex.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/editors/quill/highlight.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/editors/quill/quill.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/editors/quill/katex.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/editors/quill/highlight.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/editors/quill/quill.min.js') }}"></script>
 @endsection
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/forms/form-quill-editor.js')) }}"></script>
+  <script src="{{ asset('js/scripts/forms/form-quill-editor.js') }}"></script>
 @endsection

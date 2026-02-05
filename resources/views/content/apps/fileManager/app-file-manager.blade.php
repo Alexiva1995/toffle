@@ -7,8 +7,8 @@
 @endsection
 {{-- page styles --}}
 @section('page-style')
-  <link rel="stylesheet" type="text/css" href="{{ asset(mix('css/base/plugins/extensions/ext-component-tree.css'))}}">
-  <link rel="stylesheet" type="text/css" href="{{ asset(mix('css/base/pages/app-file-manager.css'))}}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/base/plugins/extensions/ext-component-tree.css')}}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/base/pages/app-file-manager.css')}}">
 @endsection
 
 {{-- sidebar included --}}

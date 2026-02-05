@@ -222,5 +222,5 @@
 
 @section('page-script')
   {{-- Page js files --}}
-  <script src="{{ asset(mix('js/scripts/components/components-tooltips.js'))}}"></script>
+  <script src="{{ asset('js/scripts/components/components-tooltips.js')}}"></script>
 @endsection

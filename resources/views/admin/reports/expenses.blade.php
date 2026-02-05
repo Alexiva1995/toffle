@@ -9,7 +9,7 @@
 
 @section('page-style')
 {{-- Page css files --}}
-<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
+<link rel="stylesheet" href="{{ asset('css/base/plugins/forms/pickers/form-flat-pickr.css') }}">
 @endsection
 
 @section('content')

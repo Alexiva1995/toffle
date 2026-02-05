@@ -42,5 +42,5 @@
 @endsection
 @section('page-script')
 <!-- Page js files -->
-<script src="{{ asset(mix('js/scripts/extensions/ext-component-clipboard.js')) }}"></script>
+<script src="{{ asset('js/scripts/extensions/ext-component-clipboard.js') }}"></script>
 @endsection

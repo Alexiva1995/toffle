@@ -4,13 +4,13 @@
 
 @section('vendor-style')
   <!-- vendor css files -->
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/tether-theme-arrows.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/tether.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/shepherd.min.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/extensions/tether-theme-arrows.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/extensions/tether.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/extensions/shepherd.min.css') }}">
 @endsection
 @section('page-style')
   <!-- Page css files -->
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-tour.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/extensions/ext-component-tour.css') }}">
 @endsection
 
 @section('content')
@@ -34,11 +34,11 @@
 
 @section('vendor-script')
   <!-- vendor files -->
-  <script src="{{ asset(mix('vendors/js/extensions/tether.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/extensions/shepherd.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/extensions/tether.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/extensions/shepherd.min.js') }}"></script>
 @endsection
 
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/extensions/ext-component-tour.js')) }}"></script>
+  <script src="{{ asset('js/scripts/extensions/ext-component-tour.js') }}"></script>
 @endsection

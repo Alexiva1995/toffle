@@ -3,7 +3,7 @@
 @section('title', 'Invoice Print')
 
 @section('page-style')
-<link rel="stylesheet" href="{{asset(mix('css/base/pages/app-invoice-print.css'))}}">
+<link rel="stylesheet" href="{{asset('css/base/pages/app-invoice-print.css')}}">
 @endsection
 
 @section('content')

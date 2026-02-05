@@ -77,10 +77,10 @@
 @endsection
 
 @section('vendor-script')
-  <script src="{{ asset(mix('vendors/js/forms/cleave/cleave.min.js'))}}"></script>
-  <script src="{{ asset(mix('vendors/js/forms/cleave/addons/cleave-phone.us.js'))}}"></script>
+  <script src="{{ asset('vendors/js/forms/cleave/cleave.min.js')}}"></script>
+  <script src="{{ asset('vendors/js/forms/cleave/addons/cleave-phone.us.js')}}"></script>
 @endsection
 
 @section('page-script')
-  <script src="{{ asset(mix('js/scripts/forms/form-input-mask.js')) }}"></script>
+  <script src="{{ asset('js/scripts/forms/form-input-mask.js') }}"></script>
 @endsection

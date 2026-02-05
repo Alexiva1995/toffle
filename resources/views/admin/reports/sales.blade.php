@@ -8,7 +8,7 @@
 
 @section('page-style')
 {{-- Page css files --}}
-<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
+<link rel="stylesheet" href="{{ asset('css/base/plugins/forms/pickers/form-flat-pickr.css') }}">
 <style>
     /* * CORRECCIÓN CSS PARA 5 CARDS:
      * Si necesitas que los 5 cuadros queden ajustados en una sola fila en desktop (20% c/u),
@@ -227,17 +227,17 @@
 
 @include('panels.datatable.scripts')
 
-<script src="{{ asset(mix('vendors/js/forms/spinner/jquery.bootstrap-touchspin.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/forms/repeater/jquery.repeater.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/forms/cleave/cleave.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/forms/cleave/addons/cleave-phone.us.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/forms/tagging/tagging.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/forms/select/select2.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/extensions/moment.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/pickers/flatpickr/locales/es.js')) }}"></script>
+<script src="{{ asset('vendors/js/forms/spinner/jquery.bootstrap-touchspin.js') }}"></script>
+<script src="{{ asset('vendors/js/forms/select/select2.full.min.js') }}"></script>
+<script src="{{ asset('vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('vendors/js/forms/repeater/jquery.repeater.min.js') }}"></script>
+<script src="{{ asset('vendors/js/forms/cleave/cleave.min.js') }}"></script>
+<script src="{{ asset('vendors/js/forms/cleave/addons/cleave-phone.us.js') }}"></script>
+<script src="{{ asset('vendors/js/forms/tagging/tagging.min.js') }}"></script>
+<script src="{{ asset('vendors/js/forms/select/select2.min.js') }}"></script>
+<script src="{{ asset('vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
+<script src="{{ asset('vendors/js/extensions/moment.min.js') }}"></script>
+<script src="{{ asset('vendors/js/pickers/flatpickr/locales/es.js') }}"></script>
 <script>
     // Inicialización de Flatpickr
     flatpickr('#from_date', {

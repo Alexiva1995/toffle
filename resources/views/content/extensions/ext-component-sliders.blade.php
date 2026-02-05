@@ -3,11 +3,11 @@
 @section('title', 'Sliders')
 
 @section('vendor-style')
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/nouislider.min.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/extensions/nouislider.min.css') }}">
 @endsection
 @section('page-style')
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-sliders.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/core/colors/palette-noui.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/extensions/ext-component-sliders.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/base/core/colors/palette-noui.css') }}">
 @endsection
 
 @section('content')
@@ -290,10 +290,10 @@
 
 @section('vendor-script')
   <!-- vendor files -->
-  <script src="{{ asset(mix('vendors/js/extensions/wNumb.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/extensions/nouislider.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/extensions/wNumb.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/extensions/nouislider.min.js') }}"></script>
 @endsection
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/extensions/ext-component-sliders.js')) }}"></script>
+  <script src="{{ asset('js/scripts/extensions/ext-component-sliders.js') }}"></script>
 @endsection

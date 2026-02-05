@@ -4,16 +4,16 @@
 
 @section('vendor-style')
   {{-- Vendor Css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/spinner/jquery.bootstrap-touchspin.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/swiper.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/forms/spinner/jquery.bootstrap-touchspin.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/extensions/swiper.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/extensions/toastr.min.css') }}">
 @endsection
 
 @section('page-style')
   {{-- Page Css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-ecommerce-details.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-number-input.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/pages/app-ecommerce-details.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/forms/form-number-input.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/extensions/ext-component-toastr.css') }}">
 
 @endsection
 
@@ -287,13 +287,13 @@
 
 @section('vendor-script')
   {{-- Vendor js files --}}
-  <script src="{{ asset(mix('vendors/js/forms/spinner/jquery.bootstrap-touchspin.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/extensions/swiper.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/forms/spinner/jquery.bootstrap-touchspin.js') }}"></script>
+  <script src="{{ asset('vendors/js/extensions/swiper.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/extensions/toastr.min.js') }}"></script>
 @endsection
 
 @section('page-script')
   {{-- Page js files --}}
-  <script src="{{ asset(mix('js/scripts/pages/app-ecommerce-details.js')) }}"></script>
-  <script src="{{ asset(mix('js/scripts/forms/form-number-input.js')) }}"></script>
+  <script src="{{ asset('js/scripts/pages/app-ecommerce-details.js') }}"></script>
+  <script src="{{ asset('js/scripts/forms/form-number-input.js') }}"></script>
 @endsection

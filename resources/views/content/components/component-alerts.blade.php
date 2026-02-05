@@ -212,5 +212,5 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset(mix('js/scripts/components/components-alerts.js'))}}"></script>
+<script src="{{asset('js/scripts/components/components-alerts.js')}}"></script>
 @endsection

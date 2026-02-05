@@ -4,12 +4,12 @@
 
 @section('vendor-style')
 {{-- vendor css files --}}
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
+<link rel="stylesheet" href="{{ asset('vendors/css/forms/select/select2.min.css') }}">
 @include('panels.datatable.styles')
 @endsection
 @section('page-style')
 {{-- Page css files --}}
-<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
+<link rel="stylesheet" href="{{ asset('css/base/plugins/forms/form-wizard.css') }}">
 @endsection
 
 @section('content')
@@ -61,7 +61,7 @@
 
   @section('vendor-script')
   {{-- vendor files --}}
-  <script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/forms/select/select2.full.min.js') }}"></script>
   <script src="{{ asset('vendors/js/jquery/jquery.min.js') }}"></script>
   @endsection
   @section('page-script')

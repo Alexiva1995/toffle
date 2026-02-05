@@ -134,5 +134,5 @@
 @endsection
 
 @section('page-script')
-  <script src="{{ asset(mix('js/scripts/extensions/ext-component-blockui.js')) }}"></script>
+  <script src="{{ asset('js/scripts/extensions/ext-component-blockui.js') }}"></script>
 @endsection

@@ -317,5 +317,5 @@
 
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/forms/form-tooltip-valid.js'))}}"></script>
+  <script src="{{ asset('js/scripts/forms/form-tooltip-valid.js')}}"></script>
 @endsection

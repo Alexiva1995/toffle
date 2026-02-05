@@ -124,5 +124,5 @@
 @endsection
 
 @section('page-script')
-  <script src="{{ asset(mix('js/scripts/components/components-bs-toast.js')) }}"></script>
+  <script src="{{ asset('js/scripts/components/components-bs-toast.js') }}"></script>
 @endsection

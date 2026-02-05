@@ -94,9 +94,9 @@
 
 @section('vendor-script')
   <!-- vendor files -->
-  <script src="{{ asset(mix('vendors/js/forms/repeater/jquery.repeater.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/forms/repeater/jquery.repeater.min.js') }}"></script>
 @endsection
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/forms/form-repeater.js')) }}"></script>
+  <script src="{{ asset('js/scripts/forms/form-repeater.js') }}"></script>
 @endsection
