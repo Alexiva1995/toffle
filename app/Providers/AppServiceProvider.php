@@ -23,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Laravel 9: usar resources/lang si existe (compatibilidad con estructura L8)
+        $legacyLangPath = resource_path('lang');
+        if (is_dir($legacyLangPath)) {
+            $this->app->useLangPath($legacyLangPath);
+        }
     }
 }

@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
-var __webpack_exports__ = {};
 /*!****************************************!*\
   !*** ./resources/assets/js/scripts.js ***!
   \****************************************/
 (function (window, undefined) {
   'use strict';
+
   /*
   NOTE:
   ------

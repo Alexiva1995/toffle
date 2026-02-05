@@ -17,6 +17,11 @@ class Expense extends Model
         'description',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function getCreatedAtTimezoneAttribute()
     {
         if ($this->created_at != null) {

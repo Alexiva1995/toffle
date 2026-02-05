@@ -4,7 +4,6 @@
 }
 .kanban-application .kanban-wrapper .kanban-container {
   display: flex;
-  width: -webkit-max-content !important;
   width: -moz-max-content !important;
   width: max-content !important;
   padding-bottom: 1.5rem;
