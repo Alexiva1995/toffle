@@ -1,64 +1,18 @@
-/********* CONTEXT MENU *********/
-.context-menu-list {
-  margin: 0;
-  padding: 0.5rem 0;
-  border-radius: 0.357rem;
-  border: 1px solid rgba(34, 41, 47, 0.05);
-  box-shadow: 0 5px 25px rgba(34, 41, 47, 0.1);
-  min-width: 10rem;
-}
-.context-menu-list .context-menu-item {
-  padding: 0.65rem 1.28rem;
-  color: #6e6b7b;
-}
-.context-menu-list .context-menu-item.context-menu-submenu:after {
-  border-color: transparent transparent transparent #6e6b7b;
-}
-.context-menu-list .context-menu-item.context-menu-hover, .context-menu-list .context-menu-item:hover, .context-menu-list .context-menu-item:focus {
-  background-color: rgba(255, 89, 51, 0.12) !important;
-  color: #FF5933;
-}
-.context-menu-list .context-menu-item.context-menu-hover.context-menu-submenu:after, .context-menu-list .context-menu-item:hover.context-menu-submenu:after, .context-menu-list .context-menu-item:focus.context-menu-submenu:after {
-  border-color: transparent transparent transparent #FF5933 !important;
-}
-.context-menu-list .context-menu-item:focus {
-  outline: 0;
-}
+/* Error: Can't find stylesheet to import.
+ *    ,
+ * 14 | @import 'bootstrap/scss/functions'; // Bootstrap core function
+ *    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *    '
+ *   resources\sass\base\bootstrap-extended\_include.scss 14:9                   @import
+ *   resources\sass\base\plugins\extensions\ext-component-context-menu.scss 1:9  root stylesheet */
 
-.dark-layout .context-menu-list {
-  background-color: #161d31;
-  border-color: #3b4253;
-}
-.dark-layout .context-menu-list .context-menu-item {
-  background-color: #161d31;
-}
-.dark-layout .context-menu-list .context-menu-item span {
-  color: #b4b7bd;
-}
-.dark-layout .context-menu-list .context-menu-item.context-menu-hover > span {
-  color: #FF5933;
-}
-.dark-layout .context-menu-list .context-menu-item.context-menu-submenu:after {
-  border-color: transparent transparent transparent #b4b7bd;
-}
-
-[data-textdirection=rtl] .context-menu-list {
-  z-index: 1031 !important;
-}
-[data-textdirection=rtl] .context-menu-list .context-menu-item.context-menu-submenu:after {
-  transform: rotate(180deg);
-  top: 1.2rem;
-  right: 1rem;
-  left: auto;
-  border-color: transparent #6e6b7b transparent transparent;
-}
-[data-textdirection=rtl] .context-menu-list .context-menu-item.context-menu-hover.context-menu-submenu:after {
-  border-color: transparent #FF5933 transparent transparent !important;
-}
-[data-textdirection=rtl] .context-menu-list .context-menu-item > .context-menu-list {
-  left: 100%;
-  margin-left: 0;
-}
-[data-textdirection=rtl] .dark-layout .context-menu-list .context-menu-item.context-menu-submenu:after {
-  border-color: transparent #b4b7bd transparent transparent;
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Can't find stylesheet to import.\a    \2577 \a 14 \2502  @import 'bootstrap/scss/functions'; // Bootstrap core function\d\a    \2502          ^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   resources\\sass\\base\\bootstrap-extended\\_include.scss 14:9                   @import\a   resources\\sass\\base\\plugins\\extensions\\ext-component-context-menu.scss 1:9  root stylesheet";
 }

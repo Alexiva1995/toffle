@@ -1,48 +1,18 @@
-.invoice-list-wrapper .dataTables_wrapper .dataTables_length label,
-.invoice-list-wrapper .dataTables_wrapper .dataTables_filter label {
-  margin-top: 0.55rem;
-}
-.invoice-list-wrapper .dataTables_wrapper .dataTables_length select {
-  margin-left: 0.5rem;
-}
-.invoice-list-wrapper .dataTables_wrapper .invoice-list-table thead th:before, .invoice-list-wrapper .dataTables_wrapper .invoice-list-table thead th:after {
-  left: auto;
-}
-.invoice-list-wrapper .dataTables_wrapper .invoice-list-table thead th:last-child:before, .invoice-list-wrapper .dataTables_wrapper .invoice-list-table thead th:last-child:after {
-  display: none;
-}
-.invoice-list-wrapper .dataTables_wrapper .invoice-list-table tbody .control:before {
-  background-color: #FF5933;
-  line-height: 1rem;
-  font-family: var(--bs-font-sans-serif);
-}
-.invoice-list-wrapper .dataTables_wrapper .invoice-list-table tbody .col-actions a:not(.dropdown-item) {
-  color: #6e6b7b;
-}
-.invoice-list-wrapper .dataTables_wrapper .invoice-list-table tbody .col-actions .dropdown .dropdown-item {
-  display: flex;
-  align-items: center;
-}
-@media (max-width: 470px) {
-  .invoice-list-wrapper .invoice_status {
-    margin-top: 1rem;
-    width: 100%;
-  }
-  .invoice-list-wrapper .invoice_status select {
-    margin-left: 0 !important;
-  }
-}
+/* Error: Can't find stylesheet to import.
+ *    ,
+ * 14 | @import 'bootstrap/scss/functions'; // Bootstrap core function
+ *    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *    '
+ *   resources\sass\base\bootstrap-extended\_include.scss 14:9  @import
+ *   resources\sass\base\pages\app-invoice-list.scss 11:9       root stylesheet */
 
-.dtr-bs-modal .modal-header {
-  flex-direction: row-reverse;
-}
-.dtr-bs-modal .modal-body {
-  padding-left: 0;
-  padding-right: 0;
-}
-.dtr-bs-modal .modal-body .table tr td {
-  border-color: #ebe9f1;
-}
-.dtr-bs-modal .modal-body .table tr td .col-actions a:not(.dropdown-item) {
-  color: #6e6b7b;
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Can't find stylesheet to import.\a    \2577 \a 14 \2502  @import 'bootstrap/scss/functions'; // Bootstrap core function\d\a    \2502          ^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   resources\\sass\\base\\bootstrap-extended\\_include.scss 14:9  @import\a   resources\\sass\\base\\pages\\app-invoice-list.scss 11:9       root stylesheet";
 }

@@ -1,0 +1,63 @@
+{
+  "_jquery-CbzS8guM.js": {
+    "file": "assets/jquery-CbzS8guM.js",
+    "name": "jquery"
+  },
+  "resources/css/app-rtl.scss": {
+    "file": "assets/app-rtl-xjkf_kd7.css",
+    "src": "resources/css/app-rtl.scss",
+    "isEntry": true,
+    "name": "app-rtl",
+    "names": [
+      "app-rtl.css"
+    ]
+  },
+  "resources/css/app.scss": {
+    "file": "assets/app-Cn-GPzqg.css",
+    "src": "resources/css/app.scss",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-B-GXdH9P.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_jquery-CbzS8guM.js"
+    ]
+  },
+  "resources/js/scripts/tables/table-datatables-advanced.js": {
+    "file": "assets/table-datatables-advanced-C9-NSa0V.js",
+    "name": "table-datatables-advanced",
+    "src": "resources/js/scripts/tables/table-datatables-advanced.js",
+    "isEntry": true,
+    "imports": [
+      "_jquery-CbzS8guM.js"
+    ]
+  },
+  "resources/js/scripts/tables/table-datatables-basic.js": {
+    "file": "assets/table-datatables-basic-B80KvTWA.js",
+    "name": "table-datatables-basic",
+    "src": "resources/js/scripts/tables/table-datatables-basic.js",
+    "isEntry": true,
+    "imports": [
+      "_jquery-CbzS8guM.js"
+    ]
+  },
+  "resources/sass/base/svg/arrow-down.svg": {
+    "file": "assets/arrow-down-Cd0TlGQE.svg",
+    "src": "resources/sass/base/svg/arrow-down.svg"
+  },
+  "resources/sass/base/svg/arrow-up.svg": {
+    "file": "assets/arrow-up-DwxYBT_a.svg",
+    "src": "resources/sass/base/svg/arrow-up.svg"
+  },
+  "resources/sass/base/svg/close.svg": {
+    "file": "assets/close-DfFLEYKF.svg",
+    "src": "resources/sass/base/svg/close.svg"
+  }
+}

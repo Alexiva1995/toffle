@@ -2,7 +2,6 @@
   head {
     font-family: "xs 0px";
   }
-
   body:after {
     content: "xs - min-width: 0px";
   }
@@ -11,7 +10,6 @@
   head {
     font-family: "sm 544px";
   }
-
   body:after {
     content: "sm - min-width: 544px";
   }
@@ -20,7 +18,6 @@
   head {
     font-family: "md 768px";
   }
-
   body:after {
     content: "md - min-width: 768px";
   }
@@ -29,7 +26,6 @@
   head {
     font-family: "lg 992px";
   }
-
   body:after {
     content: "lg - min-width: 992px";
   }
@@ -38,7 +34,6 @@
   head {
     font-family: "xl 1200px";
   }
-
   body:after {
     content: "xl - min-width: 1200px";
   }

@@ -16,6 +16,16 @@ function copyDir(src, dest) {
   }
 }
 
+// En producción, quitar public/hot para que @vite() use los assets compilados
+// en lugar del servidor de desarrollo (evita pantalla sin estilos tras el build)
+const hotPath = path.join(root, 'public', 'hot');
+try {
+  if (fs.existsSync(hotPath)) {
+    fs.unlinkSync(hotPath);
+    console.log('Removed public/hot (use built assets)');
+  }
+} catch (e) {}
+
 const dirs = [
   ['resources/vendors', 'public/vendors'],
   ['resources/fonts', 'public/fonts'],

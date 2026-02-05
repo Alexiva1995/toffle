@@ -1,62 +1,18 @@
-html,
-body {
-  background: #F8EFD8 !important;
-}
+/* Error: Can't find stylesheet to import.
+ *    ,
+ * 14 | @import 'bootstrap/scss/functions'; // Bootstrap core function
+ *    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *    '
+ *   resources\sass\base\bootstrap-extended\_include.scss 14:9  @import
+ *   resources\sass\base\pages\app-invoice-print.scss 11:9      root stylesheet */
 
-.invoice-print {
-  min-width: 768px !important;
-  font-size: 15px !important;
-}
-.invoice-print .invoice-date-wrapper {
-  display: flex;
-  align-items: center;
-}
-.invoice-print .invoice-date-wrapper .invoice-date-title {
-  width: 8rem;
-}
-.invoice-print i,
-.invoice-print svg {
-  fill: #6e6b7b !important;
-}
-.invoice-print .invoice-total-wrapper {
-  width: 100%;
-  max-width: 12rem;
-}
-.invoice-print .invoice-total-wrapper .invoice-total-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.invoice-print .invoice-total-wrapper .invoice-total-item .invoice-total-title {
-  margin-bottom: 0.35rem;
-}
-.invoice-print .invoice-total-wrapper .invoice-total-item .invoice-total-amount {
-  margin-bottom: 0.35rem;
-  font-weight: 600;
-}
-
-.invoice-print * {
-  border-color: rgba(34, 41, 47, 0.5) !important;
-  color: #6e6b7b !important;
-}
-
-@media print {
-  .invoice-print {
-    padding: 0px !important;
-  }
-
-  .invoice-header {
-    border-bottom: 1px solid #ebe9f1;
-    flex-direction: row !important;
-    margin-bottom: 3rem;
-    padding-right: 5rem;
-  }
-
-  .table-responsive {
-    overflow-x: hidden;
-  }
-
-  hr {
-    display: none;
-  }
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Can't find stylesheet to import.\a    \2577 \a 14 \2502  @import 'bootstrap/scss/functions'; // Bootstrap core function\d\a    \2502          ^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   resources\\sass\\base\\bootstrap-extended\\_include.scss 14:9  @import\a   resources\\sass\\base\\pages\\app-invoice-print.scss 11:9      root stylesheet";
 }
