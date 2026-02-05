@@ -96,17 +96,27 @@
       // loadData('inventory_replenishment');
 
       $(document).on('change', '.update_status', function () {
-        let item = {}
+        let item = {};
         let input = this;
 
-        item ['status'] = this.value;
-        item ['form'] = 'update_general_data';
+        item.status = this.value;
+        item.form = 'update_general_data';
+        item._method = 'PATCH';
+        item._token = $('meta[name="csrf-token"]').attr('content');
 
         var url = "{{ route('orders.update', 'id') }}";
         url = url.replace('id', $(this).data('id'));
 
-        item ['_method'] = 'PATCH';
-        $.post(url, item)
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: item,
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+          }
+        })
         .done( function(data){
           if('error' in data){
             toastr['error']('', data.message, {
@@ -131,8 +141,14 @@
 
           
         })
-        .fail(function(data) {
-            $(input).addClass('is-invalid')
+        .fail(function(xhr) {
+            $(input).addClass('is-invalid');
+            if (xhr.status === 419) {
+              toastr['error']('', 'Sesión expirada. Recarga la página (F5) e intenta de nuevo.', {
+                closeButton: true,
+                tapToDismiss: false,
+              });
+            }
         });
       });
 

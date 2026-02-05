@@ -173,7 +173,7 @@ class OrdersController extends Controller
         if ($request->status == '3') {
             $order_dishes = $order->dishes()->get();
 
-            if ($order_dishes != '[]') {
+            if ($order_dishes->isNotEmpty()) {
                 foreach ($order_dishes as $key => $order_dish) {
 
                     $order_ingredients = $order->ingredients()->wherePivot('code_operation', $order_dish->pivot->code_operation)->get();
@@ -181,8 +181,15 @@ class OrdersController extends Controller
                     foreach ($order_ingredients as $key => $value) {
 
                         $inventory = Inventory::where('id', $value->pivot->inventory_id)->first();
+                        if (!$inventory || !$inventory->product) {
+                            continue;
+                        }
+                        $gr = (float) $inventory->product->gr;
+                        if ($gr <= 0) {
+                            continue;
+                        }
                         $grams_used = $value->pivot->portion * $order_dish->pivot->unit;
-                        $units = $grams_used / $inventory->product->gr;
+                        $units = $grams_used / $gr;
 
                         $inventory->increment('local', $units);
                         $inventory->update([
@@ -210,7 +217,7 @@ class OrdersController extends Controller
             }
         }
 
-        $order->update($request->all());
+        $order->update($request->only($order->getFillable()));
     }
 
     public function updateDishOrder(Request $request, Order $order): void
