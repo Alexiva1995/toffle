@@ -6,7 +6,7 @@ $configData = Helper::applClasses();
 @section('title', 'Maintenance')
 
 @section('page-style')
-<link rel="stylesheet" href="{{asset(mix('css/base/pages/page-misc.css'))}}">
+<link rel="stylesheet" href="{{asset('css/base/pages/page-misc.css')}}">
 @endsection
 
 @section('content')

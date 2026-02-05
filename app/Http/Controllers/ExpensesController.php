@@ -158,9 +158,9 @@ class ExpensesController extends Controller
             ->groupBy('updated_date');
             
         return Datatables::of($expenses)->filter(function ($query) use($request) {
-            if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
-                $start = date("Y-m-d",strtotime(request('from')));
-                $end = date("Y-m-d",strtotime(request('to')));
+            if (request()->has('from') && request()->input('from')!='' && request()->input('to')!='' && request()->has('to')) {
+                $start = date("Y-m-d",strtotime(request()->input('from')));
+                $end = date("Y-m-d",strtotime(request()->input('to')));
                 $query->whereBetween('updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
         }, true)
@@ -188,9 +188,9 @@ class ExpensesController extends Controller
             ->orderBy('created_at', 'ASC');
             
         return Datatables::of($expenses)->filter(function ($query) use($request) {
-            if (request()->has('from') && request('from')!='' && request('to')!='' && request()->has('to')) {
-                $start = date("Y-m-d",strtotime(request('from')));
-                $end = date("Y-m-d",strtotime(request('to')));
+            if (request()->has('from') && request()->input('from')!='' && request()->input('to')!='' && request()->has('to')) {
+                $start = date("Y-m-d",strtotime(request()->input('from')));
+                $end = date("Y-m-d",strtotime(request()->input('to')));
                 $query->whereBetween('updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
             }
         }, true)

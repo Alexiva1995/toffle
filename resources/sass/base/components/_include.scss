@@ -7,7 +7,7 @@
 //  Author URL: http://www.themeforest.net/user/pixinvent
 // ================================================================================================
 
-// Overrides user variable
-@import 'scss/variables/_variables-components'; // Component custom variable override (for user purpose)
-@import 'variables'; // Component variable
-@import 'variables-dark'; // Dark variable
+// Overrides user variable (ruta relativa desde sass/base/components/ hacia resources/assets/scss/variables)
+@import '../../../assets/scss/variables/variables-components'; // Component custom variable override (for user purpose)
+@import 'variables.scss'; // Component variable
+@import 'variables-dark.scss'; // Dark variable

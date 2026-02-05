@@ -4,11 +4,11 @@
 
 @section('vendor-style')
   <!-- vendor css files -->
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/maps/leaflet.min.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/maps/leaflet.min.css') }}">
 @endsection
 
 @section('page-style')
- <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/maps/map-leaflet.css')) }}">
+ <link rel="stylesheet" href="{{ asset('css/base/plugins/maps/map-leaflet.css') }}">
 @endsection
 
 @section('content')
@@ -110,9 +110,9 @@
 
 @section('vendor-script')
   <!-- vendor files -->
-  <script src="{{ asset(mix('vendors/js/maps/leaflet.min.js'))}}"></script>
+  <script src="{{ asset('vendors/js/maps/leaflet.min.js')}}"></script>
 @endsection
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/maps/map-leaflet.js'))}}"></script>
+  <script src="{{ asset('js/scripts/maps/map-leaflet.js')}}"></script>
 @endsection

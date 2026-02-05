@@ -6,7 +6,7 @@
     });
 </script>
 
-<script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
+<script src="{{ asset('vendors/js/extensions/toastr.min.js') }}"></script>
 
 <script src="{{ asset('vendors/js/jquery-confirm/jquery-confirm.min.js') }}"></script>
 

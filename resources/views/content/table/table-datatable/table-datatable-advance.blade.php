@@ -5,9 +5,9 @@
 
 @section('vendor-style')
   {{-- vendor css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/dataTables.bootstrap5.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/responsive.bootstrap4.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/tables/datatable/dataTables.bootstrap5.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
 @endsection
 
 @section('page-style')
@@ -261,14 +261,14 @@
 
 @section('vendor-script')
 {{-- vendor files --}}
-  <script src="{{ asset(mix('vendors/js/tables/datatable/jquery.dataTables.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/tables/datatable/dataTables.bootstrap5.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/tables/datatable/dataTables.responsive.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/tables/datatable/responsive.bootstrap4.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/tables/datatable/dataTables.bootstrap5.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/tables/datatable/responsive.bootstrap4.js') }}"></script>
+  <script src="{{ asset('vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
 @endsection
 
 @section('page-script')
   {{-- Page js files --}}
-  <script src="{{ asset(mix('js/scripts/tables/table-datatables-advanced.js')) }}"></script>
+  <script src="{{ asset('js/scripts/tables/table-datatables-advanced.js') }}"></script>
 @endsection

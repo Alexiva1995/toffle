@@ -3,7 +3,7 @@
 @section('title', 'Reset Password')
 
 @section('page-style')
-<link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-auth.css')) }}">
+<link rel="stylesheet" href="{{ asset('css/base/pages/page-auth.css') }}">
 @endsection
 
 @section('content')

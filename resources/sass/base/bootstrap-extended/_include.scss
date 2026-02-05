@@ -12,13 +12,13 @@
 
 // Functions
 @import 'bootstrap/scss/functions'; // Bootstrap core function
-@import 'functions'; // Bootstrap extended function
+@import 'functions.scss'; // Bootstrap extended function
 
-// Variables
-@import 'scss/variables/variables'; // Bootstrap custom variable override (for user purpose)
-@import 'variables'; // Bootstrap extended variable override
+// Variables (ruta relativa desde sass/base/bootstrap-extended/ hacia resources/assets/scss/variables)
+@import '../../../assets/scss/variables/variables'; // Bootstrap custom variable override (for user purpose)
+@import 'variables.scss'; // Bootstrap extended variable override
 @import 'bootstrap/scss/variables'; // Bootstrap core variable
 
 // Mixins
 @import 'bootstrap/scss/mixins'; // Bootstrap core mixins
-@import 'mixins'; // Bootstrap extended mixins
+@import 'mixins.scss'; // Bootstrap extended mixins

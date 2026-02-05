@@ -5,8 +5,8 @@
 
 @section('page-style')
   <!-- Page css files -->
-  <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-chat.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-chat-list.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/pages/app-chat.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/base/pages/app-chat-list.css') }}">
 @endsection
 
 @section('content-sidebar')
@@ -299,5 +299,5 @@
 
 @section('page-script')
 <!-- Page js files -->
-<script src="{{ asset(mix('js/scripts/pages/app-chat.js')) }}"></script>
+<script src="{{ asset('js/scripts/pages/app-chat.js') }}"></script>
 @endsection

@@ -640,5 +640,5 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset(mix('js/scripts/components/components-accordion.js'))}}"></script>
+<script src="{{asset('js/scripts/components/components-accordion.js')}}"></script>
 @endsection

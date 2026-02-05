@@ -13,7 +13,7 @@ class MenuServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
@@ -23,7 +23,7 @@ class MenuServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // get all data from menu.json file
         // $verticalMenuJson = file_get_contents(base_path('resources/data/menu-data/verticalMenu.json'));

@@ -4,13 +4,13 @@
 
 @section('vendor-style')
   <!-- vendor css files -->
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/charts/apexcharts.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/charts/apexcharts.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
 @endsection
 
 @section('page-style')
- <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
- <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/charts/chart-apex.css')) }}">
+ <link rel="stylesheet" href="{{ asset('css/base/plugins/forms/pickers/form-flat-pickr.css') }}">
+ <link rel="stylesheet" href="{{ asset('css/base/plugins/charts/chart-apex.css') }}">
 @endsection
 
 @section('content')
@@ -301,11 +301,11 @@
 
 @section('vendor-script')
   <!-- vendor files -->
-  <script src="{{ asset(mix('vendors/js/charts/apexcharts.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/charts/apexcharts.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
 @endsection
 
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/charts/chart-apex.js')) }}"></script>
+  <script src="{{ asset('js/scripts/charts/chart-apex.js') }}"></script>
 @endsection

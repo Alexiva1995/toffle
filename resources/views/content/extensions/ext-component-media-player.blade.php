@@ -4,11 +4,11 @@
 
 @section('vendor-style')
   <!-- vendor css files -->
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/plyr.min.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/extensions/plyr.min.css') }}">
 @endsection
 @section('page-style')
   <!-- Page css files -->
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-media-player.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/extensions/ext-component-media-player.css') }}">
 @endsection
 
 @section('content')
@@ -54,10 +54,10 @@
 
 @section('vendor-script')
   <!-- vendor files -->
-  <script src="{{ asset(mix('vendors/js/extensions/plyr.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/extensions/plyr.polyfilled.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/extensions/plyr.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/extensions/plyr.polyfilled.min.js') }}"></script>
 @endsection
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/extensions/ext-component-media-player.js')) }}"></script>
+  <script src="{{ asset('js/scripts/extensions/ext-component-media-player.js') }}"></script>
 @endsection

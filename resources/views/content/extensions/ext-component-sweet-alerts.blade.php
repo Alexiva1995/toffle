@@ -3,12 +3,12 @@
 @section('title', 'Sweet Alerts')
 
 @section('vendor-style')
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/animate/animate.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/animate/animate.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/extensions/sweetalert2.min.css') }}">
 @endsection
 
 @section('page-style')
-<link rel="stylesheet" href="{{asset(mix('css/base/plugins/extensions/ext-component-sweet-alerts.css'))}}">
+<link rel="stylesheet" href="{{asset('css/base/plugins/extensions/ext-component-sweet-alerts.css')}}">
 @endsection
 
 @section('content')
@@ -152,9 +152,9 @@
 @endsection
 
 @section('vendor-script')
-  <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/extensions/polyfill.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/extensions/polyfill.min.js') }}"></script>
 @endsection
 @section('page-script')
-  <script src="{{ asset(mix('js/scripts/extensions/ext-component-sweet-alerts.js')) }}"></script>
+  <script src="{{ asset('js/scripts/extensions/ext-component-sweet-alerts.js') }}"></script>
 @endsection

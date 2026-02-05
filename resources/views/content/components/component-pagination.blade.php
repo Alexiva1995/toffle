@@ -501,10 +501,10 @@
 
 @section('vendor-script')
 <!-- vendor js files -->
-<script src="{{ asset(mix('vendors/js/pagination/jquery.bootpag.min.js')) }}"></script>
-<script src="{{ asset(mix('vendors/js/pagination/jquery.twbsPagination.min.js')) }}"></script>
+<script src="{{ asset('vendors/js/pagination/jquery.bootpag.min.js') }}"></script>
+<script src="{{ asset('vendors/js/pagination/jquery.twbsPagination.min.js') }}"></script>
 @endsection
 @section('page-script')
 {{-- Page js files --}}
-<script src="{{ asset(mix('js/scripts/pagination/components-pagination.js')) }}"></script>
+<script src="{{ asset('js/scripts/pagination/components-pagination.js') }}"></script>
 @endsection

@@ -1,0 +1,10 @@
+/* Theme core & overrides */
+@import '../sass/core.scss';
+@import '../sass/overrides.scss';
+
+/* Menu types (vertical and horizontal - layout chooses via class) */
+@import '../sass/base/core/menu/menu-types/vertical-menu.scss';
+@import '../sass/base/core/menu/menu-types/horizontal-menu.scss';
+
+/* App style */
+@import '../assets/scss/style.scss';

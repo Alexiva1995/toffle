@@ -7,8 +7,8 @@ $configData = Helper::applClasses();
 
 @section('page-style')
   {{-- Page Css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-auth.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/forms/form-validation.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/base/pages/page-auth.css') }}">
 @endsection
 
 @section('content')
@@ -94,9 +94,9 @@ $configData = Helper::applClasses();
 @endsection
 
 @section('vendor-script')
-<script src="{{asset(mix('vendors/js/forms/validation/jquery.validate.min.js'))}}"></script>
+<script src="{{asset('vendors/js/forms/validation/jquery.validate.min.js')}}"></script>
 @endsection
 
 @section('page-script')
-<script src="{{asset(mix('js/scripts/pages/page-auth-reset-password.js'))}}"></script>
+<script src="{{asset('js/scripts/pages/page-auth-reset-password.js')}}"></script>
 @endsection

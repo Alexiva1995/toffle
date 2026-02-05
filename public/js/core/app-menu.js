@@ -1,12 +1,710 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-sliders.scss"
+/*!***************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-sliders.scss ***!
+  \***************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-sweet-alerts.scss"
+/*!********************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-sweet-alerts.scss ***!
+  \********************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-swiper.scss"
+/*!**************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-swiper.scss ***!
+  \**************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-toastr.scss"
+/*!**************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-toastr.scss ***!
+  \**************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-tour.scss"
+/*!************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-tour.scss ***!
+  \************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-tree.scss"
+/*!************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-tree.scss ***!
+  \************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/forms/form-file-uploader.scss"
+/*!*******************************************************************!*\
+  !*** ./resources/sass/base/plugins/forms/form-file-uploader.scss ***!
+  \*******************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/forms/form-number-input.scss"
+/*!******************************************************************!*\
+  !*** ./resources/sass/base/plugins/forms/form-number-input.scss ***!
+  \******************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/forms/form-quill-editor.scss"
+/*!******************************************************************!*\
+  !*** ./resources/sass/base/plugins/forms/form-quill-editor.scss ***!
+  \******************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/forms/form-validation.scss"
+/*!****************************************************************!*\
+  !*** ./resources/sass/base/plugins/forms/form-validation.scss ***!
+  \****************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/forms/form-wizard.scss"
+/*!************************************************************!*\
+  !*** ./resources/sass/base/plugins/forms/form-wizard.scss ***!
+  \************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/forms/pickers/form-flat-pickr.scss"
+/*!************************************************************************!*\
+  !*** ./resources/sass/base/plugins/forms/pickers/form-flat-pickr.scss ***!
+  \************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/forms/pickers/form-pickadate.scss"
+/*!***********************************************************************!*\
+  !*** ./resources/sass/base/plugins/forms/pickers/form-pickadate.scss ***!
+  \***********************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/maps/map-leaflet.scss"
+/*!***********************************************************!*\
+  !*** ./resources/sass/base/plugins/maps/map-leaflet.scss ***!
+  \***********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/ui/coming-soon.scss"
+/*!*********************************************************!*\
+  !*** ./resources/sass/base/plugins/ui/coming-soon.scss ***!
+  \*********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-calendar.scss"
+/*!*****************************************************!*\
+  !*** ./resources/sass/base/pages/app-calendar.scss ***!
+  \*****************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-chat-list.scss"
+/*!******************************************************!*\
+  !*** ./resources/sass/base/pages/app-chat-list.scss ***!
+  \******************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-chat.scss"
+/*!*************************************************!*\
+  !*** ./resources/sass/base/pages/app-chat.scss ***!
+  \*************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-ecommerce-details.scss"
+/*!**************************************************************!*\
+  !*** ./resources/sass/base/pages/app-ecommerce-details.scss ***!
+  \**************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-ecommerce.scss"
+/*!******************************************************!*\
+  !*** ./resources/sass/base/pages/app-ecommerce.scss ***!
+  \******************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-email.scss"
+/*!**************************************************!*\
+  !*** ./resources/sass/base/pages/app-email.scss ***!
+  \**************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-file-manager.scss"
+/*!*********************************************************!*\
+  !*** ./resources/sass/base/pages/app-file-manager.scss ***!
+  \*********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-invoice-list.scss"
+/*!*********************************************************!*\
+  !*** ./resources/sass/base/pages/app-invoice-list.scss ***!
+  \*********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-invoice-print.scss"
+/*!**********************************************************!*\
+  !*** ./resources/sass/base/pages/app-invoice-print.scss ***!
+  \**********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-invoice.scss"
+/*!****************************************************!*\
+  !*** ./resources/sass/base/pages/app-invoice.scss ***!
+  \****************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-kanban.scss"
+/*!***************************************************!*\
+  !*** ./resources/sass/base/pages/app-kanban.scss ***!
+  \***************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-todo.scss"
+/*!*************************************************!*\
+  !*** ./resources/sass/base/pages/app-todo.scss ***!
+  \*************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/app-user.scss"
+/*!*************************************************!*\
+  !*** ./resources/sass/base/pages/app-user.scss ***!
+  \*************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/dashboard-ecommerce.scss"
+/*!************************************************************!*\
+  !*** ./resources/sass/base/pages/dashboard-ecommerce.scss ***!
+  \************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/page-auth.scss"
+/*!**************************************************!*\
+  !*** ./resources/sass/base/pages/page-auth.scss ***!
+  \**************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/page-blog.scss"
+/*!**************************************************!*\
+  !*** ./resources/sass/base/pages/page-blog.scss ***!
+  \**************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/page-coming-soon.scss"
+/*!*********************************************************!*\
+  !*** ./resources/sass/base/pages/page-coming-soon.scss ***!
+  \*********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/page-faq.scss"
+/*!*************************************************!*\
+  !*** ./resources/sass/base/pages/page-faq.scss ***!
+  \*************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/page-knowledge-base.scss"
+/*!************************************************************!*\
+  !*** ./resources/sass/base/pages/page-knowledge-base.scss ***!
+  \************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/page-misc.scss"
+/*!**************************************************!*\
+  !*** ./resources/sass/base/pages/page-misc.scss ***!
+  \**************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/page-pricing.scss"
+/*!*****************************************************!*\
+  !*** ./resources/sass/base/pages/page-pricing.scss ***!
+  \*****************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/page-profile.scss"
+/*!*****************************************************!*\
+  !*** ./resources/sass/base/pages/page-profile.scss ***!
+  \*****************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/pages/ui-feather.scss"
+/*!***************************************************!*\
+  !*** ./resources/sass/base/pages/ui-feather.scss ***!
+  \***************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/colors/palette-gradient.scss"
+/*!***************************************************************!*\
+  !*** ./resources/sass/base/core/colors/palette-gradient.scss ***!
+  \***************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/colors/palette-noui.scss"
+/*!***********************************************************!*\
+  !*** ./resources/sass/base/core/colors/palette-noui.scss ***!
+  \***********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/colors/palette-variables.scss"
+/*!****************************************************************!*\
+  !*** ./resources/sass/base/core/colors/palette-variables.scss ***!
+  \****************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/menu/menu-types/horizontal-menu.scss"
+/*!***********************************************************************!*\
+  !*** ./resources/sass/base/core/menu/menu-types/horizontal-menu.scss ***!
+  \***********************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/menu/menu-types/vertical-menu.scss"
+/*!*********************************************************************!*\
+  !*** ./resources/sass/base/core/menu/menu-types/vertical-menu.scss ***!
+  \*********************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/menu/menu-types/vertical-overlay-menu.scss"
+/*!*****************************************************************************!*\
+  !*** ./resources/sass/base/core/menu/menu-types/vertical-overlay-menu.scss ***!
+  \*****************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/mixins/alert.scss"
+/*!****************************************************!*\
+  !*** ./resources/sass/base/core/mixins/alert.scss ***!
+  \****************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/mixins/hex2rgb.scss"
+/*!******************************************************!*\
+  !*** ./resources/sass/base/core/mixins/hex2rgb.scss ***!
+  \******************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/mixins/main-menu-mixin.scss"
+/*!**************************************************************!*\
+  !*** ./resources/sass/base/core/mixins/main-menu-mixin.scss ***!
+  \**************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/core/mixins/transitions.scss"
+/*!**********************************************************!*\
+  !*** ./resources/sass/base/core/mixins/transitions.scss ***!
+  \**********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/core.scss"
+/*!**********************************!*\
+  !*** ./resources/sass/core.scss ***!
+  \**********************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/overrides.scss"
+/*!***************************************!*\
+  !*** ./resources/sass/overrides.scss ***!
+  \***************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/charts/chart-apex.scss"
+/*!************************************************************!*\
+  !*** ./resources/sass/base/plugins/charts/chart-apex.scss ***!
+  \************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/custom-rtl.scss"
+/*!*********************************************!*\
+  !*** ./resources/sass/base/custom-rtl.scss ***!
+  \*********************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/assets/scss/style-rtl.scss"
+/*!**********************************************!*\
+  !*** ./resources/assets/scss/style-rtl.scss ***!
+  \**********************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/assets/scss/style.scss"
+/*!******************************************!*\
+  !*** ./resources/assets/scss/style.scss ***!
+  \******************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-context-menu.scss"
+/*!********************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-context-menu.scss ***!
+  \********************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-drag-drop.scss"
+/*!*****************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-drag-drop.scss ***!
+  \*****************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-media-player.scss"
+/*!********************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-media-player.scss ***!
+  \********************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./resources/sass/base/plugins/extensions/ext-component-ratings.scss"
+/*!***************************************************************************!*\
+  !*** ./resources/sass/base/plugins/extensions/ext-component-ratings.scss ***!
+  \***************************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
 
 /***/ "./resources/js/core/app-menu.js"
 /*!***************************************!*\
   !*** ./resources/js/core/app-menu.js ***!
   \***************************************/
-() {
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
+__webpack_require__.r(__webpack_exports__);
 /*=========================================================================================
   File Name: app-menu.js
   Description: Menu navigation, custom scrollbar, hover scroll bar, multilevel menu
@@ -839,760 +1537,6 @@ window.addEventListener('resize', function () {
   var vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', vh + 'px');
 });
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-sliders.scss"
-/*!***************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-sliders.scss ***!
-  \***************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-sweet-alerts.scss"
-/*!********************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-sweet-alerts.scss ***!
-  \********************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-swiper.scss"
-/*!**************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-swiper.scss ***!
-  \**************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-toastr.scss"
-/*!**************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-toastr.scss ***!
-  \**************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-tour.scss"
-/*!************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-tour.scss ***!
-  \************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-tree.scss"
-/*!************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-tree.scss ***!
-  \************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/forms/form-file-uploader.scss"
-/*!*******************************************************************!*\
-  !*** ./resources/sass/base/plugins/forms/form-file-uploader.scss ***!
-  \*******************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/forms/form-number-input.scss"
-/*!******************************************************************!*\
-  !*** ./resources/sass/base/plugins/forms/form-number-input.scss ***!
-  \******************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/forms/form-quill-editor.scss"
-/*!******************************************************************!*\
-  !*** ./resources/sass/base/plugins/forms/form-quill-editor.scss ***!
-  \******************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/forms/form-validation.scss"
-/*!****************************************************************!*\
-  !*** ./resources/sass/base/plugins/forms/form-validation.scss ***!
-  \****************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/forms/form-wizard.scss"
-/*!************************************************************!*\
-  !*** ./resources/sass/base/plugins/forms/form-wizard.scss ***!
-  \************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/forms/pickers/form-flat-pickr.scss"
-/*!************************************************************************!*\
-  !*** ./resources/sass/base/plugins/forms/pickers/form-flat-pickr.scss ***!
-  \************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/forms/pickers/form-pickadate.scss"
-/*!***********************************************************************!*\
-  !*** ./resources/sass/base/plugins/forms/pickers/form-pickadate.scss ***!
-  \***********************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/maps/map-leaflet.scss"
-/*!***********************************************************!*\
-  !*** ./resources/sass/base/plugins/maps/map-leaflet.scss ***!
-  \***********************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/ui/coming-soon.scss"
-/*!*********************************************************!*\
-  !*** ./resources/sass/base/plugins/ui/coming-soon.scss ***!
-  \*********************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-calendar.scss"
-/*!*****************************************************!*\
-  !*** ./resources/sass/base/pages/app-calendar.scss ***!
-  \*****************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-chat-list.scss"
-/*!******************************************************!*\
-  !*** ./resources/sass/base/pages/app-chat-list.scss ***!
-  \******************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-chat.scss"
-/*!*************************************************!*\
-  !*** ./resources/sass/base/pages/app-chat.scss ***!
-  \*************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-ecommerce-details.scss"
-/*!**************************************************************!*\
-  !*** ./resources/sass/base/pages/app-ecommerce-details.scss ***!
-  \**************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-ecommerce.scss"
-/*!******************************************************!*\
-  !*** ./resources/sass/base/pages/app-ecommerce.scss ***!
-  \******************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-email.scss"
-/*!**************************************************!*\
-  !*** ./resources/sass/base/pages/app-email.scss ***!
-  \**************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-file-manager.scss"
-/*!*********************************************************!*\
-  !*** ./resources/sass/base/pages/app-file-manager.scss ***!
-  \*********************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-invoice-list.scss"
-/*!*********************************************************!*\
-  !*** ./resources/sass/base/pages/app-invoice-list.scss ***!
-  \*********************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-invoice-print.scss"
-/*!**********************************************************!*\
-  !*** ./resources/sass/base/pages/app-invoice-print.scss ***!
-  \**********************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-invoice.scss"
-/*!****************************************************!*\
-  !*** ./resources/sass/base/pages/app-invoice.scss ***!
-  \****************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-kanban.scss"
-/*!***************************************************!*\
-  !*** ./resources/sass/base/pages/app-kanban.scss ***!
-  \***************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-todo.scss"
-/*!*************************************************!*\
-  !*** ./resources/sass/base/pages/app-todo.scss ***!
-  \*************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/app-user.scss"
-/*!*************************************************!*\
-  !*** ./resources/sass/base/pages/app-user.scss ***!
-  \*************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/dashboard-ecommerce.scss"
-/*!************************************************************!*\
-  !*** ./resources/sass/base/pages/dashboard-ecommerce.scss ***!
-  \************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/page-auth.scss"
-/*!**************************************************!*\
-  !*** ./resources/sass/base/pages/page-auth.scss ***!
-  \**************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/page-blog.scss"
-/*!**************************************************!*\
-  !*** ./resources/sass/base/pages/page-blog.scss ***!
-  \**************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/page-coming-soon.scss"
-/*!*********************************************************!*\
-  !*** ./resources/sass/base/pages/page-coming-soon.scss ***!
-  \*********************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/page-faq.scss"
-/*!*************************************************!*\
-  !*** ./resources/sass/base/pages/page-faq.scss ***!
-  \*************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/page-knowledge-base.scss"
-/*!************************************************************!*\
-  !*** ./resources/sass/base/pages/page-knowledge-base.scss ***!
-  \************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/page-misc.scss"
-/*!**************************************************!*\
-  !*** ./resources/sass/base/pages/page-misc.scss ***!
-  \**************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/page-pricing.scss"
-/*!*****************************************************!*\
-  !*** ./resources/sass/base/pages/page-pricing.scss ***!
-  \*****************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/page-profile.scss"
-/*!*****************************************************!*\
-  !*** ./resources/sass/base/pages/page-profile.scss ***!
-  \*****************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/pages/ui-feather.scss"
-/*!***************************************************!*\
-  !*** ./resources/sass/base/pages/ui-feather.scss ***!
-  \***************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/colors/palette-gradient.scss"
-/*!***************************************************************!*\
-  !*** ./resources/sass/base/core/colors/palette-gradient.scss ***!
-  \***************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/colors/palette-noui.scss"
-/*!***********************************************************!*\
-  !*** ./resources/sass/base/core/colors/palette-noui.scss ***!
-  \***********************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/colors/palette-variables.scss"
-/*!****************************************************************!*\
-  !*** ./resources/sass/base/core/colors/palette-variables.scss ***!
-  \****************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/menu/menu-types/horizontal-menu.scss"
-/*!***********************************************************************!*\
-  !*** ./resources/sass/base/core/menu/menu-types/horizontal-menu.scss ***!
-  \***********************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/menu/menu-types/vertical-menu.scss"
-/*!*********************************************************************!*\
-  !*** ./resources/sass/base/core/menu/menu-types/vertical-menu.scss ***!
-  \*********************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/menu/menu-types/vertical-overlay-menu.scss"
-/*!*****************************************************************************!*\
-  !*** ./resources/sass/base/core/menu/menu-types/vertical-overlay-menu.scss ***!
-  \*****************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/mixins/alert.scss"
-/*!****************************************************!*\
-  !*** ./resources/sass/base/core/mixins/alert.scss ***!
-  \****************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/mixins/hex2rgb.scss"
-/*!******************************************************!*\
-  !*** ./resources/sass/base/core/mixins/hex2rgb.scss ***!
-  \******************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/mixins/main-menu-mixin.scss"
-/*!**************************************************************!*\
-  !*** ./resources/sass/base/core/mixins/main-menu-mixin.scss ***!
-  \**************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/core/mixins/transitions.scss"
-/*!**********************************************************!*\
-  !*** ./resources/sass/base/core/mixins/transitions.scss ***!
-  \**********************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/core.scss"
-/*!**********************************!*\
-  !*** ./resources/sass/core.scss ***!
-  \**********************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/overrides.scss"
-/*!***************************************!*\
-  !*** ./resources/sass/overrides.scss ***!
-  \***************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/charts/chart-apex.scss"
-/*!************************************************************!*\
-  !*** ./resources/sass/base/plugins/charts/chart-apex.scss ***!
-  \************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/custom-rtl.scss"
-/*!*********************************************!*\
-  !*** ./resources/sass/base/custom-rtl.scss ***!
-  \*********************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/assets/scss/style-rtl.scss"
-/*!**********************************************!*\
-  !*** ./resources/assets/scss/style-rtl.scss ***!
-  \**********************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/assets/scss/style.scss"
-/*!******************************************!*\
-  !*** ./resources/assets/scss/style.scss ***!
-  \******************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-context-menu.scss"
-/*!********************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-context-menu.scss ***!
-  \********************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-drag-drop.scss"
-/*!*****************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-drag-drop.scss ***!
-  \*****************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-media-player.scss"
-/*!********************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-media-player.scss ***!
-  \********************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ },
-
-/***/ "./resources/sass/base/plugins/extensions/ext-component-ratings.scss"
-/*!***************************************************************************!*\
-  !*** ./resources/sass/base/plugins/extensions/ext-component-ratings.scss ***!
-  \***************************************************************************/
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
 
 /***/ }
 

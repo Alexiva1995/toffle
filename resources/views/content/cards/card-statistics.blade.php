@@ -3,10 +3,10 @@
 @section('title', 'Statistics Cards')
 
 @section('vendor-style')
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/charts/apexcharts.css')) }}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/charts/apexcharts.css') }}">
 @endsection
 @section('page-style')
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/charts/chart-apex.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/charts/chart-apex.css') }}">
 @endsection
 
 @section('content')
@@ -372,8 +372,8 @@
 @endsection
 
 @section('vendor-script')
-  <script src="{{ asset(mix('vendors/js/charts/apexcharts.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/charts/apexcharts.min.js') }}"></script>
 @endsection
 @section('page-script')
-  <script src="{{ asset(mix('js/scripts/cards/card-statistics.js')) }}"></script>
+  <script src="{{ asset('js/scripts/cards/card-statistics.js') }}"></script>
 @endsection

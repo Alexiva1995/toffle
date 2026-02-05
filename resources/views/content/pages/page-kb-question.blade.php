@@ -4,7 +4,7 @@
 
 @section('page-style')
   {{-- Page Css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-knowledge-base.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/pages/page-knowledge-base.css') }}">
 @endsection
 
 @section('content')

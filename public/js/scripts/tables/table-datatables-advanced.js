@@ -1,6 +1,7 @@
 /**
  * DataTables Advanced
  */
+import $ from 'jquery';
 
 'use strict';
 

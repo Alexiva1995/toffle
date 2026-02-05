@@ -4,14 +4,14 @@
 
 @section('vendor-style')
   <!-- vendor css files -->
-  <link rel='stylesheet' href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
-  <link rel='stylesheet' href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
+  <link rel='stylesheet' href="{{ asset('vendors/css/forms/select/select2.min.css') }}">
+  <link rel='stylesheet' href="{{ asset('vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
 @endsection
 @section('page-style')
   <!-- Page css files -->
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/forms/pickers/form-pickadate.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/forms/pickers/form-flat-pickr.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/forms/form-validation.css') }}">
 @endsection
 
 @section('content')
@@ -561,12 +561,12 @@
 
 @section('vendor-script')
   <!-- vendor files -->
-  <script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/file-uploaders/dropzone.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/forms/select/select2.full.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/file-uploaders/dropzone.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
 @endsection
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/pages/page-account-settings.js')) }}"></script>
+  <script src="{{ asset('js/scripts/pages/page-account-settings.js') }}"></script>
 @endsection

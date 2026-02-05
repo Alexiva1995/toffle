@@ -4,12 +4,12 @@
 
 @section('vendor-style')
   <!-- vendor css files -->
-  <link rel="stylesheet" href="{{ asset(mix('fonts/font-awesome/css/font-awesome.min.css'))}}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/jstree.min.css'))}}">
+  <link rel="stylesheet" href="{{ asset('fonts/font-awesome/css/font-awesome.min.css')}}">
+  <link rel="stylesheet" href="{{ asset('vendors/css/extensions/jstree.min.css')}}">
 @endsection
 @section('page-style')
   <!-- Page css files -->
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-tree.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/base/plugins/extensions/ext-component-tree.css') }}">
 @endsection
 
 @section('content')
@@ -136,9 +136,9 @@
 
 @section('vendor-script')
   <!-- vendor files -->
-  <script src="{{ asset(mix('vendors/js/extensions/jstree.min.js')) }}"></script>
+  <script src="{{ asset('vendors/js/extensions/jstree.min.js') }}"></script>
 @endsection
 @section('page-script')
   <!-- Page js files -->
-  <script src="{{ asset(mix('js/scripts/extensions/ext-component-tree.js')) }}"></script>
+  <script src="{{ asset('js/scripts/extensions/ext-component-tree.js') }}"></script>
 @endsection
