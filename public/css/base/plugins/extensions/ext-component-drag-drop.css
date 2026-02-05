@@ -1,9 +1,7 @@
 .draggable {
-  cursor: -webkit-grab;
   cursor: grab;
 }
 .gu-unselectable .draggable {
-  cursor: -webkit-grabbing;
   cursor: grabbing;
 }
 

@@ -2,6 +2,9 @@ const mix = require('laravel-mix')
 const exec = require('child_process').exec
 require('dotenv').config()
 
+// Evita el error del toast en Windows ("The toast encountered an error / app id is set correctly")
+mix.disableNotifications()
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management

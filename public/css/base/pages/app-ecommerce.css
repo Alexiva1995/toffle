@@ -105,9 +105,6 @@
 .ecommerce-application .search-product::-moz-placeholder, .ecommerce-application .input-group-text::-moz-placeholder {
   font-size: 0.95rem;
 }
-.ecommerce-application .search-product:-ms-input-placeholder, .ecommerce-application .input-group-text:-ms-input-placeholder {
-  font-size: 0.95rem;
-}
 .ecommerce-application .search-product::placeholder,
 .ecommerce-application .input-group-text::placeholder {
   font-size: 0.95rem;
@@ -321,10 +318,6 @@
   font-weight: 600;
 }
 .ecommerce-application .checkout-options .coupons input::-moz-placeholder {
-  color: #6e6b7b;
-  font-weight: 600;
-}
-.ecommerce-application .checkout-options .coupons input:-ms-input-placeholder {
   color: #6e6b7b;
   font-weight: 600;
 }

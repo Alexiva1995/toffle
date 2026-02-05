@@ -17,6 +17,11 @@ class Order extends Model
         'status',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function dishes()
     {
         return $this->belongsToMany('App\Models\Dish', 'order_dish')

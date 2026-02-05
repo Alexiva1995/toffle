@@ -1,11 +1,11 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./resources/js/core/app-menu.js":
+/***/ "./resources/js/core/app-menu.js"
 /*!***************************************!*\
   !*** ./resources/js/core/app-menu.js ***!
   \***************************************/
-/***/ (() => {
+() {
 
 /*=========================================================================================
   File Name: app-menu.js
@@ -25,8 +25,9 @@
   var $body = $('body');
   var $window = $(window);
   var menuWrapper_el = $('div[data-menu="menu-wrapper"]').html();
-  var menuWrapperClasses = $('div[data-menu="menu-wrapper"]').attr('class'); // Main menu
+  var menuWrapperClasses = $('div[data-menu="menu-wrapper"]').attr('class');
 
+  // Main menu
   $.app.menu = {
     expanded: null,
     collapsed: null,
@@ -35,17 +36,14 @@
     horizontalMenu: false,
     is_touch_device: function is_touch_device() {
       var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
-
       var mq = function mq(query) {
         return window.matchMedia(query).matches;
       };
-
       if ('ontouchstart' in window || window.DocumentTouch && document instanceof DocumentTouch) {
         return true;
-      } // include the 'heartz' as a way to have a non matching MQ to help terminate the join
+      }
+      // include the 'heartz' as a way to have a non matching MQ to help terminate the join
       // https://git.io/vznFH
-
-
       var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
       return mq(query);
     },
@@ -53,7 +51,6 @@
       obj: null,
       init: function init() {
         var scroll_theme = $('.main-menu').hasClass('menu-dark') ? 'light' : 'dark';
-
         if (!$.app.menu.is_touch_device()) {
           this.obj = new PerfectScrollbar('.main-menu-content', {
             suppressScrollX: true,
@@ -70,32 +67,29 @@
           var activeEl, menu, activeElHeight;
           activeEl = document.querySelector('.main-menu-content li.active');
           menu = document.querySelector('.main-menu-content');
-
           if ($body.hasClass('menu-collapsed')) {
             if ($('.main-menu-content li.sidebar-group-active').length) {
               activeEl = document.querySelector('.main-menu-content li.sidebar-group-active');
             }
           }
-
           if (activeEl) {
             activeElHeight = activeEl.getBoundingClientRect().top + menu.scrollTop;
-          } // If active element's top position is less than 2/3 (66%) of menu height than do not scroll
-
-
-          if (activeElHeight > parseInt(menu.clientHeight * 2 / 3)) {
-            var start = menu.scrollTop,
-                change = activeElHeight - start - parseInt(menu.clientHeight / 2);
           }
 
+          // If active element's top position is less than 2/3 (66%) of menu height than do not scroll
+          if (activeElHeight > parseInt(menu.clientHeight * 2 / 3)) {
+            var start = menu.scrollTop,
+              change = activeElHeight - start - parseInt(menu.clientHeight / 2);
+          }
           setTimeout(function () {
             $.app.menu.container.stop().animate({
               scrollTop: change
             }, 300);
             $('.main-menu').data('scroll-to-active', 'false');
           }, 300);
-        } // this.obj.update();
+        }
+        // this.obj.update();
         // }
-
       },
       enable: function enable() {
         if (!$('.main-menu-content').hasClass('ps')) {
@@ -126,7 +120,6 @@
 
       this.reset();
       var menuType = $body.data('menu');
-
       if (currentBreakpoint) {
         switch (currentBreakpoint.name) {
           case 'xl':
@@ -135,41 +128,35 @@
             } else {
               if (compactMenu === true) this.collapse(compactMenu);else this.expand();
             }
-
             break;
-
           case 'lg':
             if (menuType === 'vertical-overlay-menu' || menuType === 'vertical-menu-modern' || menuType === 'horizontal-menu') {
               this.hide();
             } else {
               this.collapse();
             }
-
             break;
-
           case 'md':
           case 'sm':
             this.hide();
             break;
-
           case 'xs':
             this.hide();
             break;
         }
-      } // On the small and extra small screen make them overlay menu
+      }
 
-
+      // On the small and extra small screen make them overlay menu
       if (menuType === 'vertical-menu' || menuType === 'vertical-menu-modern') {
         this.toOverlayMenu(currentBreakpoint.name, menuType);
       }
-
       if ($body.is('.horizontal-layout') && !$body.hasClass('.horizontal-menu-demo')) {
         this.changeMenu(currentBreakpoint.name);
         $('.menu-toggle').removeClass('is-active');
-      } // Dropdown submenu on large screen on hover For Large screen only
+      }
+
+      // Dropdown submenu on large screen on hover For Large screen only
       // ---------------------------------------------------------------
-
-
       if (currentBreakpoint.name == 'xl') {
         $('body[data-open="hover"] .main-menu-content .dropdown') // Use selector $('body[data-open="hover"] .header-navbar .dropdown') for menu and navbar DD open on hover
         .on('mouseenter', function () {
@@ -191,52 +178,48 @@
           }
         });
         */
-      } // Added data attribute brand-center for navbar-brand-center
+      }
 
+      // Added data attribute brand-center for navbar-brand-center
 
       if (currentBreakpoint.name == 'sm' || currentBreakpoint.name == 'xs') {
         $('.header-navbar[data-nav=brand-center]').removeClass('navbar-brand-center');
       } else {
         $('.header-navbar[data-nav=brand-center]').addClass('navbar-brand-center');
-      } // On screen width change, current active menu in horizontal
-
-
+      }
+      // On screen width change, current active menu in horizontal
       if (currentBreakpoint.name == 'xl' && menuType == 'horizontal-menu') {
         $('.main-menu-content').find('li.active').parents('li').addClass('sidebar-group-active active');
       }
-
       if (currentBreakpoint.name !== 'xl' && menuType == 'horizontal-menu') {
         $('#navbar-type').toggleClass('d-none d-xl-block');
-      } // Dropdown submenu on small screen on click
+      }
+
+      // Dropdown submenu on small screen on click
       // --------------------------------------------------
-
-
       $('ul.dropdown-menu [data-bs-toggle=dropdown]').on('click', function (event) {
         if ($(this).siblings('ul.dropdown-menu').length > 0) {
           event.preventDefault();
         }
-
         event.stopPropagation();
         $(this).parent().siblings().removeClass('show');
         $(this).parent().toggleClass('show');
-      }); // Horizontal layout submenu drawer scrollbar
+      });
 
+      // Horizontal layout submenu drawer scrollbar
       if (menuType == 'horizontal-menu') {
         $('li.dropdown-submenu').on('mouseenter', function () {
           if (!$(this).parent('.dropdown').hasClass('show')) {
             $(this).removeClass('openLeft');
           }
-
           var dd = $(this).find('.dropdown-menu');
-
           if (dd) {
             var pageHeight = $(window).height(),
-                // ddTop = dd.offset().top,
-            ddTop = $(this).position().top,
-                ddLeft = dd.offset().left,
-                ddWidth = dd.width(),
-                ddHeight = dd.height();
-
+              // ddTop = dd.offset().top,
+              ddTop = $(this).position().top,
+              ddLeft = dd.offset().left,
+              ddWidth = dd.width(),
+              ddHeight = dd.height();
             if (pageHeight - ddTop - ddHeight - 28 < 1) {
               var maxHeight = pageHeight - ddTop - 170;
               $(this).find('.dropdown-menu').css({
@@ -247,16 +230,17 @@
               var menu_content = new PerfectScrollbar('li.dropdown-submenu.show .dropdown-menu', {
                 wheelPropagation: false
               });
-            } // Add class to horizontal sub menu if screen width is small
-
-
+            }
+            // Add class to horizontal sub menu if screen width is small
             if (ddLeft + ddWidth - (window.innerWidth - 16) >= 0) {
               $(this).addClass('openLeft');
             }
           }
         });
         $('.theme-layouts').find('.semi-dark').hide();
-      } // Horizontal Fixed Nav Sticky hight issue on small screens
+      }
+
+      // Horizontal Fixed Nav Sticky hight issue on small screens
       // if (menuType == 'horizontal-menu') {
       //   if (currentBreakpoint.name == 'sm' || currentBreakpoint.name == 'xs') {
       //     if ($(".menu-fixed").length) {
@@ -269,25 +253,25 @@
       //     }
       //   }
       // }
-
     },
     transit: function transit(callback1, callback2) {
       var menuObj = this;
       $body.addClass('changing-menu');
       callback1.call(menuObj);
-
       if ($body.hasClass('vertical-layout')) {
         if ($body.hasClass('menu-open') || $body.hasClass('menu-expanded')) {
-          $('.menu-toggle').addClass('is-active'); // Show menu header search when menu is normally visible
+          $('.menu-toggle').addClass('is-active');
 
+          // Show menu header search when menu is normally visible
           if ($body.data('menu') === 'vertical-menu') {
             if ($('.main-menu-header')) {
               $('.main-menu-header').show();
             }
           }
         } else {
-          $('.menu-toggle').removeClass('is-active'); // Hide menu header search when only menu icons are visible
+          $('.menu-toggle').removeClass('is-active');
 
+          // Hide menu header search when only menu icons are visible
           if ($body.data('menu') === 'vertical-menu') {
             if ($('.main-menu-header')) {
               $('.main-menu-header').hide();
@@ -295,7 +279,6 @@
           }
         }
       }
-
       setTimeout(function () {
         callback2.call(menuObj);
         $body.removeClass('changing-menu');
@@ -307,19 +290,20 @@
         $body.removeClass('menu-hide menu-collapsed').addClass('menu-open');
         this.hidden = false;
         this.expanded = true;
-
         if ($body.hasClass('vertical-overlay-menu')) {
-          $('.sidenav-overlay').addClass('show'); // $('.sidenav-overlay').removeClass('d-none').addClass('d-block');
+          $('.sidenav-overlay').addClass('show');
+          // $('.sidenav-overlay').removeClass('d-none').addClass('d-block');
           // $('body').css('overflow', 'hidden');
         }
       }, function () {
         if (!$('.main-menu').hasClass('menu-native-scroll') && $('.main-menu').hasClass('menu-fixed')) {
           this.manualScroller.enable();
-          $('.main-menu-content').css('height', $(window).height() - $('.header-navbar').height() - $('.main-menu-header').outerHeight() - $('.main-menu-footer').outerHeight()); // this.manualScroller.update();
+          $('.main-menu-content').css('height', $(window).height() - $('.header-navbar').height() - $('.main-menu-header').outerHeight() - $('.main-menu-footer').outerHeight());
+          // this.manualScroller.update();
         }
-
         if (!$body.hasClass('vertical-overlay-menu')) {
-          $('.sidenav-overlay').removeClass('show'); // $('.sidenav-overlay').removeClass('d-block d-none');
+          $('.sidenav-overlay').removeClass('show');
+          // $('.sidenav-overlay').removeClass('d-block d-none');
           // $('body').css('overflow', 'auto');
         }
       });
@@ -329,18 +313,18 @@
         $body.removeClass('menu-open menu-expanded').addClass('menu-hide');
         this.hidden = true;
         this.expanded = false;
-
         if ($body.hasClass('vertical-overlay-menu')) {
-          $('.sidenav-overlay').removeClass('show'); // $('.sidenav-overlay').removeClass('d-block').addClass('d-none');
+          $('.sidenav-overlay').removeClass('show');
+          // $('.sidenav-overlay').removeClass('d-block').addClass('d-none');
           // $('body').css('overflow', 'auto');
         }
       }, function () {
         if (!$('.main-menu').hasClass('menu-native-scroll') && $('.main-menu').hasClass('menu-fixed')) {
           this.manualScroller.enable();
         }
-
         if (!$body.hasClass('vertical-overlay-menu')) {
-          $('.sidenav-overlay').removeClass('show'); // $('.sidenav-overlay').removeClass('d-block d-none');
+          $('.sidenav-overlay').removeClass('show');
+          // $('.sidenav-overlay').removeClass('d-block d-none');
           // $('body').css('overflow', 'auto');
         }
       });
@@ -352,21 +336,22 @@
             "class": 'd-none d-xl-block collapse-toggle-icon primary font-medium-4'
           }));
         }
-
         this.transit(function () {
           $body.removeClass('menu-collapsed').addClass('menu-expanded');
           this.collapsed = false;
           this.expanded = true;
-          $('.sidenav-overlay').removeClass('show'); // $('.sidenav-overlay').removeClass('d-block d-none');
+          $('.sidenav-overlay').removeClass('show');
+
+          // $('.sidenav-overlay').removeClass('d-block d-none');
         }, function () {
           if ($('.main-menu').hasClass('menu-native-scroll') || $body.data('menu') == 'horizontal-menu') {
             this.manualScroller.disable();
           } else {
             if ($('.main-menu').hasClass('menu-fixed')) this.manualScroller.enable();
           }
-
           if (($body.data('menu') == 'vertical-menu' || $body.data('menu') == 'vertical-menu-modern') && $('.main-menu').hasClass('menu-fixed')) {
-            $('.main-menu-content').css('height', $(window).height() - $('.header-navbar').height() - $('.main-menu-header').outerHeight() - $('.main-menu-footer').outerHeight()); // this.manualScroller.update();
+            $('.main-menu-content').css('height', $(window).height() - $('.header-navbar').height() - $('.main-menu-header').outerHeight() - $('.main-menu-footer').outerHeight());
+            // this.manualScroller.update();
           }
         });
       }
@@ -378,7 +363,6 @@
             "class": 'd-none d-xl-block collapse-toggle-icon primary font-medium-4'
           }));
         }
-
         this.transit(function () {
           $body.removeClass('menu-expanded').addClass('menu-collapsed');
           this.collapsed = true;
@@ -388,11 +372,10 @@
           if ($body.data('menu') == 'horizontal-menu' && $body.hasClass('vertical-overlay-menu')) {
             if ($('.main-menu').hasClass('menu-fixed')) this.manualScroller.enable();
           }
-
           if (($body.data('menu') == 'vertical-menu' || $body.data('menu') == 'vertical-menu-modern') && $('.main-menu').hasClass('menu-fixed')) {
-            $('.main-menu-content').css('height', $(window).height() - $('.header-navbar').height()); // this.manualScroller.update();
+            $('.main-menu-content').css('height', $(window).height() - $('.header-navbar').height());
+            // this.manualScroller.update();
           }
-
           if ($body.data('menu') == 'vertical-menu-modern') {
             if ($('.main-menu').hasClass('menu-fixed')) this.manualScroller.enable();
           }
@@ -401,7 +384,6 @@
     },
     toOverlayMenu: function toOverlayMenu(screen, menuType) {
       var menu = $body.data('menu');
-
       if (menuType == 'vertical-menu-modern') {
         if (screen == 'lg' || screen == 'md' || screen == 'sm' || screen == 'xs') {
           if ($body.hasClass(menu)) {
@@ -429,20 +411,20 @@
       $('div[data-menu="menu-wrapper"]').html('');
       $('div[data-menu="menu-wrapper"]').html(menuWrapper_el);
       var menuWrapper = $('div[data-menu="menu-wrapper"]'),
-          menuContainer = $('div[data-menu="menu-container"]'),
-          menuNavigation = $('ul[data-menu="menu-navigation"]'),
-
-      /*megaMenu           = $('li[data-menu="megamenu"]'),
-      megaMenuCol        = $('li[data-mega-col]'),*/
-      dropdownMenu = $('li[data-menu="dropdown"]'),
-          dropdownSubMenu = $('li[data-menu="dropdown-submenu"]');
-
+        menuContainer = $('div[data-menu="menu-container"]'),
+        menuNavigation = $('ul[data-menu="menu-navigation"]'),
+        /*megaMenu           = $('li[data-menu="megamenu"]'),
+        megaMenuCol        = $('li[data-mega-col]'),*/
+        dropdownMenu = $('li[data-menu="dropdown"]'),
+        dropdownSubMenu = $('li[data-menu="dropdown-submenu"]');
       if (screen === 'xl') {
         // Change body classes
-        $body.removeClass('vertical-layout vertical-overlay-menu fixed-navbar').addClass($body.data('menu')); // Remove navbar-fix-top class on large screens
+        $body.removeClass('vertical-layout vertical-overlay-menu fixed-navbar').addClass($body.data('menu'));
 
-        $('nav.header-navbar').removeClass('fixed-top'); // Change menu wrapper, menu container, menu navigation classes
+        // Remove navbar-fix-top class on large screens
+        $('nav.header-navbar').removeClass('fixed-top');
 
+        // Change menu wrapper, menu container, menu navigation classes
         menuWrapper.removeClass().addClass(menuWrapperClasses);
         $('a.dropdown-item.nav-has-children').on('click', function () {
           event.preventDefault();
@@ -454,22 +436,26 @@
         });
       } else {
         // Change body classes
-        $body.removeClass($body.data('menu')).addClass('vertical-layout vertical-overlay-menu fixed-navbar'); // Add navbar-fix-top class on small screens
+        $body.removeClass($body.data('menu')).addClass('vertical-layout vertical-overlay-menu fixed-navbar');
 
-        $('nav.header-navbar').addClass('fixed-top'); // Change menu wrapper, menu container, menu navigation classes
+        // Add navbar-fix-top class on small screens
+        $('nav.header-navbar').addClass('fixed-top');
 
-        menuWrapper.removeClass().addClass('main-menu menu-light menu-fixed menu-shadow'); // menuContainer.removeClass().addClass('main-menu-content');
+        // Change menu wrapper, menu container, menu navigation classes
+        menuWrapper.removeClass().addClass('main-menu menu-light menu-fixed menu-shadow');
+        // menuContainer.removeClass().addClass('main-menu-content');
+        menuNavigation.removeClass().addClass('navigation navigation-main');
 
-        menuNavigation.removeClass().addClass('navigation navigation-main'); // If Dropdown Menu
-
+        // If Dropdown Menu
         dropdownMenu.removeClass('dropdown').addClass('has-sub');
         dropdownMenu.find('a').removeClass('dropdown-toggle nav-link');
         dropdownMenu.children('ul').find('a').removeClass('dropdown-item');
         dropdownMenu.find('ul').removeClass('dropdown-menu');
         dropdownSubMenu.removeClass().addClass('has-sub');
-        $.app.nav.init(); // Dropdown submenu on small screen on click
-        // --------------------------------------------------
+        $.app.nav.init();
 
+        // Dropdown submenu on small screen on click
+        // --------------------------------------------------
         $('ul.dropdown-menu [data-bs-toggle=dropdown]').on('click', function (event) {
           event.preventDefault();
           event.stopPropagation();
@@ -479,7 +465,6 @@
         $('.main-menu-content').find('li.active').parents('li').addClass('sidebar-group-active');
         $('.main-menu-content').find('li.active').closest('li.nav-item').addClass('open');
       }
-
       if (feather) {
         feather.replace({
           width: 14,
@@ -489,12 +474,10 @@
     },
     toggle: function toggle() {
       var currentBreakpoint = Unison.fetch.now(); // Current Breakpoint
-
       var collapsed = this.collapsed;
       var expanded = this.expanded;
       var hidden = this.hidden;
       var menu = $body.data('menu');
-
       switch (currentBreakpoint.name) {
         case 'xl':
           if (expanded === true) {
@@ -510,9 +493,7 @@
               this.expand();
             }
           }
-
           break;
-
         case 'lg':
           if (expanded === true) {
             if (menu == 'vertical-overlay-menu' || menu == 'vertical-menu-modern' || menu == 'horizontal-menu') {
@@ -527,9 +508,7 @@
               this.expand();
             }
           }
-
           break;
-
         case 'md':
         case 'sm':
           if (hidden === true) {
@@ -537,16 +516,13 @@
           } else {
             this.hide();
           }
-
           break;
-
         case 'xs':
           if (hidden === true) {
             this.open();
           } else {
             this.hide();
           }
-
           break;
       }
     },
@@ -559,8 +535,9 @@
       this.hidden = false;
       $body.removeClass('menu-hide menu-open menu-collapsed menu-expanded');
     }
-  }; // Navigation Menu
+  };
 
+  // Navigation Menu
   $.app.nav = {
     container: $('.navigation-main'),
     initialized: false,
@@ -572,28 +549,26 @@
     },
     init: function init(config) {
       this.initialized = true; // Set to true when initialized
-
       $.extend(this.config, config);
       this.bind_events();
     },
     bind_events: function bind_events() {
       var menuObj = this;
       $('.navigation-main').on('mouseenter.app.menu', 'li', function () {
-        var $this = $(this); // $('.hover', '.navigation-main').removeClass('hover');
-
+        var $this = $(this);
+        // $('.hover', '.navigation-main').removeClass('hover');
         if ($body.hasClass('menu-collapsed') && $body.data('menu') != 'vertical-menu-modern') {
           $('.main-menu-content').children('span.menu-title').remove();
           $('.main-menu-content').children('a.menu-title').remove();
-          $('.main-menu-content').children('ul.menu-content').remove(); // Title
+          $('.main-menu-content').children('ul.menu-content').remove();
 
+          // Title
           var menuTitle = $this.find('span.menu-title').clone(),
-              tempTitle,
-              tempLink;
-
+            tempTitle,
+            tempLink;
           if (!$this.hasClass('has-sub')) {
             tempTitle = $this.find('span.menu-title').text();
             tempLink = $this.children('a').attr('href');
-
             if (tempTitle !== '') {
               menuTitle = $('<a>');
               menuTitle.attr('href', tempLink);
@@ -601,33 +576,31 @@
               menuTitle.text(tempTitle);
               menuTitle.addClass('menu-title');
             }
-          } // menu_header_height = ($('.main-menu-header').length) ? $('.main-menu-header').height() : 0,
+          }
+          // menu_header_height = ($('.main-menu-header').length) ? $('.main-menu-header').height() : 0,
           // fromTop = menu_header_height + $this.position().top + parseInt($this.css( "border-top" ),10);
-
-
           var fromTop;
-
           if ($this.css('border-top')) {
             fromTop = $this.position().top + parseInt($this.css('border-top'), 10);
           } else {
             fromTop = $this.position().top;
           }
-
           if ($body.data('menu') !== 'vertical-compact-menu') {
             menuTitle.appendTo('.main-menu-content').css({
               position: 'fixed',
               top: fromTop
             });
-          } // Content
+          }
 
+          // Content
           /* if ($this.hasClass('has-sub') && $this.hasClass('nav-item')) {
             var menuContent = $this.children('ul:first');
             menuObj.adjustSubmenu($this);
           } */
-
-        } // $this.addClass('hover');
-
-      }).on('mouseleave.app.menu', 'li', function () {// $(this).removeClass('hover');
+        }
+        // $this.addClass('hover');
+      }).on('mouseleave.app.menu', 'li', function () {
+        // $(this).removeClass('hover');
       }).on('active.app.menu', 'li', function (e) {
         $(this).addClass('active');
         e.stopPropagation();
@@ -636,26 +609,27 @@
         e.stopPropagation();
       }).on('open.app.menu', 'li', function (e) {
         var $listItem = $(this);
-        menuObj.expand($listItem); // $listItem.addClass('open');
-        // If menu collapsible then do not take any action
+        menuObj.expand($listItem);
+        // $listItem.addClass('open');
 
+        // If menu collapsible then do not take any action
         if ($('.main-menu').hasClass('menu-collapsible')) {
           return false;
-        } // If menu accordion then close all except clicked once
+        }
+        // If menu accordion then close all except clicked once
         else {
           $listItem.siblings('.open').find('li.open').trigger('close.app.menu');
           $listItem.siblings('.open').trigger('close.app.menu');
         }
-
         e.stopPropagation();
       }).on('close.app.menu', 'li.open', function (e) {
         var $listItem = $(this);
-        menuObj.collapse($listItem); // $listItem.removeClass('open');
+        menuObj.collapse($listItem);
+        // $listItem.removeClass('open');
 
         e.stopPropagation();
       }).on('click.app.menu', 'li', function (e) {
         var $listItem = $(this);
-
         if ($listItem.is('.disabled')) {
           e.preventDefault();
         } else {
@@ -676,65 +650,59 @@
             }
           }
         }
-
         e.stopPropagation();
       });
       $('.navbar-header, .main-menu').on('mouseenter', modernMenuExpand).on('mouseleave', modernMenuCollapse);
-
       function modernMenuExpand() {
         if ($body.data('menu') == 'vertical-menu-modern') {
           $('.main-menu, .navbar-header').addClass('expanded');
-
           if ($body.hasClass('menu-collapsed')) {
             if ($('.main-menu li.open').length === 0) {
               $('.main-menu-content').find('li.active').parents('li').addClass('open');
             }
-
             var $listItem = $('.main-menu li.menu-collapsed-open'),
-                $subList = $listItem.children('ul');
+              $subList = $listItem.children('ul');
             $subList.hide().slideDown(200, function () {
               $(this).css('display', '');
             });
-            $listItem.addClass('open').removeClass('menu-collapsed-open'); // $.app.menu.changeLogo('expand');
+            $listItem.addClass('open').removeClass('menu-collapsed-open');
+            // $.app.menu.changeLogo('expand');
           }
         }
       }
-
       function modernMenuCollapse() {
         if ($body.hasClass('menu-collapsed') && $body.data('menu') == 'vertical-menu-modern') {
           setTimeout(function () {
             if ($('.main-menu:hover').length === 0 && $('.navbar-header:hover').length === 0) {
               $('.main-menu, .navbar-header').removeClass('expanded');
-
               if ($body.hasClass('menu-collapsed')) {
                 var $listItem = $('.main-menu li.open'),
-                    $subList = $listItem.children('ul');
+                  $subList = $listItem.children('ul');
                 $listItem.addClass('menu-collapsed-open');
                 $subList.show().slideUp(200, function () {
                   $(this).css('display', '');
                 });
-                $listItem.removeClass('open'); // $.app.menu.changeLogo();
+                $listItem.removeClass('open');
+                // $.app.menu.changeLogo();
               }
             }
           }, 1);
         }
       }
-
       $('.main-menu-content').on('mouseleave', function () {
         if ($body.hasClass('menu-collapsed')) {
           $('.main-menu-content').children('span.menu-title').remove();
           $('.main-menu-content').children('a.menu-title').remove();
           $('.main-menu-content').children('ul.menu-content').remove();
         }
-
         $('.hover', '.navigation-main').removeClass('hover');
-      }); // If list item has sub menu items then prevent redirection.
+      });
 
+      // If list item has sub menu items then prevent redirection.
       $('.navigation-main li.has-sub > a').on('click', function (e) {
         e.preventDefault();
       });
     },
-
     /**
      * Ensure an admin submenu is within the visual viewport.
      * @param {jQuery} $menuItem The parent menu item containing the submenu.
@@ -772,24 +740,22 @@
         wheelPropagation: false
       });
     }, */
+
     // Collapse Submenu With Transition (Height animation)
     collapse: function collapse($listItem, callback) {
       var subList = $listItem.children('ul'),
-          toggleLink = $listItem.children().first(),
-          linkHeight = $(toggleLink).outerHeight();
+        toggleLink = $listItem.children().first(),
+        linkHeight = $(toggleLink).outerHeight();
       $listItem.css({
         height: linkHeight + subList.outerHeight() + 'px',
         overflow: 'hidden'
       });
       $listItem.addClass('menu-item-animating');
       $listItem.addClass('menu-item-closing');
-
       $.app.nav._bindAnimationEndEvent($listItem, function () {
         $listItem.removeClass('open');
-
         $.app.nav._clearItemStyle($listItem);
       });
-
       setTimeout(function () {
         $listItem.css({
           height: linkHeight + 'px'
@@ -799,19 +765,17 @@
     // Expand Submenu With Transition (Height animation)
     expand: function expand($listItem, callback) {
       var subList = $listItem.children('ul'),
-          toggleLink = $listItem.children().first(),
-          linkHeight = $(toggleLink).outerHeight();
+        toggleLink = $listItem.children().first(),
+        linkHeight = $(toggleLink).outerHeight();
       $listItem.addClass('menu-item-animating');
       $listItem.css({
         overflow: 'hidden',
         height: linkHeight + 'px'
       });
       $listItem.addClass('open');
-
       $.app.nav._bindAnimationEndEvent($listItem, function () {
         $.app.nav._clearItemStyle($listItem);
       });
-
       setTimeout(function () {
         $listItem.css({
           height: linkHeight + subList.outerHeight() + 'px'
@@ -820,15 +784,11 @@
     },
     _bindAnimationEndEvent: function _bindAnimationEndEvent(el, handler) {
       el = el[0];
-
       var cb = function cb(e) {
         if (e.target !== el) return;
-
         $.app.nav._unbindAnimationEndEvent(el);
-
         handler(e);
       };
-
       var duration = window.getComputedStyle(el).transitionDuration;
       duration = parseFloat(duration) * (duration.indexOf('ms') !== -1 ? 1 : 1000);
       el._menuAnimationEndEventCb = cb;
@@ -843,12 +803,10 @@
     },
     _unbindAnimationEndEvent: function _unbindAnimationEndEvent(el) {
       var cb = el._menuAnimationEndEventCb;
-
       if (el._menuAnimationEndEventTimeout) {
         clearTimeout(el._menuAnimationEndEventTimeout);
         el._menuAnimationEndEventTimeout = null;
       }
-
       if (!cb) return;
       $.app.nav.TRANSITION_EVENTS.forEach(function (ev) {
         el.removeEventListener(ev, cb, false);
@@ -866,776 +824,777 @@
     refresh: function refresh() {
       $.app.nav.container.find('.open').removeClass('open');
     }
-  }; // On href=# click page refresh issue resolve
-  //? User should remove this code for their project to enable # click
+  };
 
+  // On href=# click page refresh issue resolve
+  //? User should remove this code for their project to enable # click
   $(document).on('click', 'a[href="#"]', function (e) {
     e.preventDefault();
   });
-})(window, document, jQuery); // We listen to the resize event
+})(window, document, jQuery);
 
-
+// We listen to the resize event
 window.addEventListener('resize', function () {
   // We execute the same script as before
   var vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', vh + 'px');
 });
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-sliders.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-sliders.scss"
 /*!***************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-sliders.scss ***!
   \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-sweet-alerts.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-sweet-alerts.scss"
 /*!********************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-sweet-alerts.scss ***!
   \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-swiper.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-swiper.scss"
 /*!**************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-swiper.scss ***!
   \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-toastr.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-toastr.scss"
 /*!**************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-toastr.scss ***!
   \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-tour.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-tour.scss"
 /*!************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-tour.scss ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-tree.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-tree.scss"
 /*!************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-tree.scss ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/forms/form-file-uploader.scss":
+/***/ "./resources/sass/base/plugins/forms/form-file-uploader.scss"
 /*!*******************************************************************!*\
   !*** ./resources/sass/base/plugins/forms/form-file-uploader.scss ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/forms/form-number-input.scss":
+/***/ "./resources/sass/base/plugins/forms/form-number-input.scss"
 /*!******************************************************************!*\
   !*** ./resources/sass/base/plugins/forms/form-number-input.scss ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/forms/form-quill-editor.scss":
+/***/ "./resources/sass/base/plugins/forms/form-quill-editor.scss"
 /*!******************************************************************!*\
   !*** ./resources/sass/base/plugins/forms/form-quill-editor.scss ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/forms/form-validation.scss":
+/***/ "./resources/sass/base/plugins/forms/form-validation.scss"
 /*!****************************************************************!*\
   !*** ./resources/sass/base/plugins/forms/form-validation.scss ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/forms/form-wizard.scss":
+/***/ "./resources/sass/base/plugins/forms/form-wizard.scss"
 /*!************************************************************!*\
   !*** ./resources/sass/base/plugins/forms/form-wizard.scss ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/forms/pickers/form-flat-pickr.scss":
+/***/ "./resources/sass/base/plugins/forms/pickers/form-flat-pickr.scss"
 /*!************************************************************************!*\
   !*** ./resources/sass/base/plugins/forms/pickers/form-flat-pickr.scss ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/forms/pickers/form-pickadate.scss":
+/***/ "./resources/sass/base/plugins/forms/pickers/form-pickadate.scss"
 /*!***********************************************************************!*\
   !*** ./resources/sass/base/plugins/forms/pickers/form-pickadate.scss ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/maps/map-leaflet.scss":
+/***/ "./resources/sass/base/plugins/maps/map-leaflet.scss"
 /*!***********************************************************!*\
   !*** ./resources/sass/base/plugins/maps/map-leaflet.scss ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/ui/coming-soon.scss":
+/***/ "./resources/sass/base/plugins/ui/coming-soon.scss"
 /*!*********************************************************!*\
   !*** ./resources/sass/base/plugins/ui/coming-soon.scss ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-calendar.scss":
+/***/ "./resources/sass/base/pages/app-calendar.scss"
 /*!*****************************************************!*\
   !*** ./resources/sass/base/pages/app-calendar.scss ***!
   \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-chat-list.scss":
+/***/ "./resources/sass/base/pages/app-chat-list.scss"
 /*!******************************************************!*\
   !*** ./resources/sass/base/pages/app-chat-list.scss ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-chat.scss":
+/***/ "./resources/sass/base/pages/app-chat.scss"
 /*!*************************************************!*\
   !*** ./resources/sass/base/pages/app-chat.scss ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-ecommerce-details.scss":
+/***/ "./resources/sass/base/pages/app-ecommerce-details.scss"
 /*!**************************************************************!*\
   !*** ./resources/sass/base/pages/app-ecommerce-details.scss ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-ecommerce.scss":
+/***/ "./resources/sass/base/pages/app-ecommerce.scss"
 /*!******************************************************!*\
   !*** ./resources/sass/base/pages/app-ecommerce.scss ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-email.scss":
+/***/ "./resources/sass/base/pages/app-email.scss"
 /*!**************************************************!*\
   !*** ./resources/sass/base/pages/app-email.scss ***!
   \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-file-manager.scss":
+/***/ "./resources/sass/base/pages/app-file-manager.scss"
 /*!*********************************************************!*\
   !*** ./resources/sass/base/pages/app-file-manager.scss ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-invoice-list.scss":
+/***/ "./resources/sass/base/pages/app-invoice-list.scss"
 /*!*********************************************************!*\
   !*** ./resources/sass/base/pages/app-invoice-list.scss ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-invoice-print.scss":
+/***/ "./resources/sass/base/pages/app-invoice-print.scss"
 /*!**********************************************************!*\
   !*** ./resources/sass/base/pages/app-invoice-print.scss ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-invoice.scss":
+/***/ "./resources/sass/base/pages/app-invoice.scss"
 /*!****************************************************!*\
   !*** ./resources/sass/base/pages/app-invoice.scss ***!
   \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-kanban.scss":
+/***/ "./resources/sass/base/pages/app-kanban.scss"
 /*!***************************************************!*\
   !*** ./resources/sass/base/pages/app-kanban.scss ***!
   \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-todo.scss":
+/***/ "./resources/sass/base/pages/app-todo.scss"
 /*!*************************************************!*\
   !*** ./resources/sass/base/pages/app-todo.scss ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/app-user.scss":
+/***/ "./resources/sass/base/pages/app-user.scss"
 /*!*************************************************!*\
   !*** ./resources/sass/base/pages/app-user.scss ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/dashboard-ecommerce.scss":
+/***/ "./resources/sass/base/pages/dashboard-ecommerce.scss"
 /*!************************************************************!*\
   !*** ./resources/sass/base/pages/dashboard-ecommerce.scss ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/page-auth.scss":
+/***/ "./resources/sass/base/pages/page-auth.scss"
 /*!**************************************************!*\
   !*** ./resources/sass/base/pages/page-auth.scss ***!
   \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/page-blog.scss":
+/***/ "./resources/sass/base/pages/page-blog.scss"
 /*!**************************************************!*\
   !*** ./resources/sass/base/pages/page-blog.scss ***!
   \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/page-coming-soon.scss":
+/***/ "./resources/sass/base/pages/page-coming-soon.scss"
 /*!*********************************************************!*\
   !*** ./resources/sass/base/pages/page-coming-soon.scss ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/page-faq.scss":
+/***/ "./resources/sass/base/pages/page-faq.scss"
 /*!*************************************************!*\
   !*** ./resources/sass/base/pages/page-faq.scss ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/page-knowledge-base.scss":
+/***/ "./resources/sass/base/pages/page-knowledge-base.scss"
 /*!************************************************************!*\
   !*** ./resources/sass/base/pages/page-knowledge-base.scss ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/page-misc.scss":
+/***/ "./resources/sass/base/pages/page-misc.scss"
 /*!**************************************************!*\
   !*** ./resources/sass/base/pages/page-misc.scss ***!
   \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/page-pricing.scss":
+/***/ "./resources/sass/base/pages/page-pricing.scss"
 /*!*****************************************************!*\
   !*** ./resources/sass/base/pages/page-pricing.scss ***!
   \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/page-profile.scss":
+/***/ "./resources/sass/base/pages/page-profile.scss"
 /*!*****************************************************!*\
   !*** ./resources/sass/base/pages/page-profile.scss ***!
   \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/pages/ui-feather.scss":
+/***/ "./resources/sass/base/pages/ui-feather.scss"
 /*!***************************************************!*\
   !*** ./resources/sass/base/pages/ui-feather.scss ***!
   \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/colors/palette-gradient.scss":
+/***/ "./resources/sass/base/core/colors/palette-gradient.scss"
 /*!***************************************************************!*\
   !*** ./resources/sass/base/core/colors/palette-gradient.scss ***!
   \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/colors/palette-noui.scss":
+/***/ "./resources/sass/base/core/colors/palette-noui.scss"
 /*!***********************************************************!*\
   !*** ./resources/sass/base/core/colors/palette-noui.scss ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/colors/palette-variables.scss":
+/***/ "./resources/sass/base/core/colors/palette-variables.scss"
 /*!****************************************************************!*\
   !*** ./resources/sass/base/core/colors/palette-variables.scss ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/menu/menu-types/horizontal-menu.scss":
+/***/ "./resources/sass/base/core/menu/menu-types/horizontal-menu.scss"
 /*!***********************************************************************!*\
   !*** ./resources/sass/base/core/menu/menu-types/horizontal-menu.scss ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/menu/menu-types/vertical-menu.scss":
+/***/ "./resources/sass/base/core/menu/menu-types/vertical-menu.scss"
 /*!*********************************************************************!*\
   !*** ./resources/sass/base/core/menu/menu-types/vertical-menu.scss ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/menu/menu-types/vertical-overlay-menu.scss":
+/***/ "./resources/sass/base/core/menu/menu-types/vertical-overlay-menu.scss"
 /*!*****************************************************************************!*\
   !*** ./resources/sass/base/core/menu/menu-types/vertical-overlay-menu.scss ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/mixins/alert.scss":
+/***/ "./resources/sass/base/core/mixins/alert.scss"
 /*!****************************************************!*\
   !*** ./resources/sass/base/core/mixins/alert.scss ***!
   \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/mixins/hex2rgb.scss":
+/***/ "./resources/sass/base/core/mixins/hex2rgb.scss"
 /*!******************************************************!*\
   !*** ./resources/sass/base/core/mixins/hex2rgb.scss ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/mixins/main-menu-mixin.scss":
+/***/ "./resources/sass/base/core/mixins/main-menu-mixin.scss"
 /*!**************************************************************!*\
   !*** ./resources/sass/base/core/mixins/main-menu-mixin.scss ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/core/mixins/transitions.scss":
+/***/ "./resources/sass/base/core/mixins/transitions.scss"
 /*!**********************************************************!*\
   !*** ./resources/sass/base/core/mixins/transitions.scss ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/core.scss":
+/***/ "./resources/sass/core.scss"
 /*!**********************************!*\
   !*** ./resources/sass/core.scss ***!
   \**********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/overrides.scss":
+/***/ "./resources/sass/overrides.scss"
 /*!***************************************!*\
   !*** ./resources/sass/overrides.scss ***!
   \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/charts/chart-apex.scss":
+/***/ "./resources/sass/base/plugins/charts/chart-apex.scss"
 /*!************************************************************!*\
   !*** ./resources/sass/base/plugins/charts/chart-apex.scss ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/custom-rtl.scss":
+/***/ "./resources/sass/base/custom-rtl.scss"
 /*!*********************************************!*\
   !*** ./resources/sass/base/custom-rtl.scss ***!
   \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/assets/scss/style-rtl.scss":
+/***/ "./resources/assets/scss/style-rtl.scss"
 /*!**********************************************!*\
   !*** ./resources/assets/scss/style-rtl.scss ***!
   \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/assets/scss/style.scss":
+/***/ "./resources/assets/scss/style.scss"
 /*!******************************************!*\
   !*** ./resources/assets/scss/style.scss ***!
   \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-context-menu.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-context-menu.scss"
 /*!********************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-context-menu.scss ***!
   \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-drag-drop.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-drag-drop.scss"
 /*!*****************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-drag-drop.scss ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-media-player.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-media-player.scss"
 /*!********************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-media-player.scss ***!
   \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ }),
+/***/ },
 
-/***/ "./resources/sass/base/plugins/extensions/ext-component-ratings.scss":
+/***/ "./resources/sass/base/plugins/extensions/ext-component-ratings.scss"
 /*!***************************************************************************!*\
   !*** ./resources/sass/base/plugins/extensions/ext-component-ratings.scss ***!
   \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -1648,6 +1607,12 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 		var cachedModule = __webpack_module_cache__[moduleId];
 /******/ 		if (cachedModule !== undefined) {
 /******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Check if module exists (development only)
+/******/ 		if (__webpack_modules__[moduleId] === undefined) {
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -1816,7 +1781,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
 /******/ 					installedChunks[chunkId][0]();
 /******/ 				}
-/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 				installedChunks[chunkId] = 0;
 /******/ 			}
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}

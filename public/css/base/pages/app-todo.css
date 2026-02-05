@@ -178,20 +178,6 @@
 .gu-mirror.completed .todo-title {
   color: #b9b9c3;
 }
-
-@-webkit-keyframes fadeIn {
-  0% {
-    opacity: 0;
-    top: 100px;
-  }
-  75% {
-    opacity: 0.5;
-    top: 0px;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 @media (max-width: 991.98px) {
   .todo-application .content-area-wrapper .sidebar-left .todo-sidebar {
     transform: translateX(-110%);
