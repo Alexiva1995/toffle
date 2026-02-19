@@ -34,15 +34,16 @@ class ReportController extends Controller
         ->groupBy('name_dish', 'category_id');
 
         // Aplicar filtro por mes en curso si no se envían filtros de fecha específicos
-        if ( !request()->has('from') || request()->input('from') == '' || !request()->has('to') || request()->input('to') == '') {
+        if ( !request()->has('start_date') || request()->input('start_date') == '' || !request()->has('end_date') || request()->input('end_date') == '') {
             $best_sellers->whereBetween('orders.updated_at', [$month_start. " 00:00:00", $month_end. " 23:59:59"]);
         }
 
         return DataTables::of($best_sellers)->filter(function ($query) use($request) {
-            if (request()->has('from') && request()->input('from')!='' && request()->input('to')!='' && request()->has('to')) {
-                $start = date("Y-m-d",strtotime(request()->input('from')));
-                $end = date("Y-m-d",strtotime(request()->input('to')));
-                $query->whereBetween('orders.updated_at',[$start. " 00:00:00", $end. " 23:59:59"]);
+            // Capturar start_date y end_date del request
+            if (request()->has('start_date') && request()->input('start_date') != '' && request()->has('end_date') && request()->input('end_date') != '') {
+                $start = date("Y-m-d", strtotime(request()->input('start_date')));
+                $end = date("Y-m-d", strtotime(request()->input('end_date')));
+                $query->whereBetween('orders.updated_at', [$start. " 00:00:00", $end. " 23:59:59"]);
             }
 
             if(request()->has('category_id') && request()->input('category_id')!= ''){
@@ -380,7 +381,54 @@ class ReportController extends Controller
             // Asumo que tienes una propiedad accessor 'updated_at_timezone' en tu modelo Order
             return $sales->updated_at_timezone;
         })
+        ->addColumn('action', function (Order $sales) {
+            return '<button type="button" class="btn btn-sm btn-primary btn-show-details" data-id="' . $sales->id . '">
+                        <i data-feather="eye"></i>
+                    </button>';
+        })
+        ->rawColumns(['action'])
         ->toJson();
+    }
+
+    /**
+     * Obtiene los detalles de un pedido con sus productos vendidos
+     */
+    public function salesDetails($id)
+    {
+        $order = Order::with(['dishes' => function($query) {
+            $query->select('dishes.id', 'dishes.name')
+                  ->withPivot('unit', 'price');
+        }])->find($id);
+
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pedido no encontrado'
+            ], 404);
+        }
+
+        // Formatear los productos con nombre, cantidad y subtotal
+        $products = $order->dishes->map(function($dish) {
+            return [
+                'id' => $dish->id,
+                'nombre' => $dish->name,
+                'cantidad' => $dish->pivot->unit,
+                'precio_unitario' => $dish->pivot->price,
+                'subtotal' => round($dish->pivot->price * $dish->pivot->unit, 2)
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'order' => [
+                'id' => $order->id,
+                'total_amount' => $order->total_amount,
+                'status' => $order->status,
+                'created_at' => $order->created_at,
+                'updated_at' => $order->updated_at,
+            ],
+            'products' => $products
+        ]);
     }
 
     /*

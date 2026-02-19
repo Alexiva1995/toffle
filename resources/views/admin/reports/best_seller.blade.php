@@ -22,14 +22,23 @@
                 <div class="row mb-2">
                     <div class="col-12">
                         <div class="row justify-content-init mt-1">
-                            <div class="col-12 col-md-4">
-                                <label for="timestamp">Rango de Fecha</label>
-                                  <input type="text" class="form-control" placeholder="Rango de Fecha" id="timestamp">
-                                  <input type="hidden" id="from">
-                                  <input type="hidden" id="to">
+                            <div class="col-12 col-md-3">
+                                <label for="start_date">Fecha de Inicio</label>
+                                <input type="text" class="form-control flatpickr-basic" placeholder="dd/mm/yyyy" id="start_date">
                             </div>
 
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-3">
+                                <label for="end_date">Fecha Fin</label>
+                                <input type="text" class="form-control flatpickr-basic" placeholder="dd/mm/yyyy" id="end_date">
+                            </div>
+
+                            <div class="col-12 col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary w-100" id="btn-filter">
+                                    <i data-feather="filter"></i> Filtrar
+                                </button>
+                            </div>
+
+                            <div class="col-12 col-md-2">
                                 <label for="category_id">Categorías</label>
                                 <select class="select2 form-control" name="category_id" id="category_id" data-toggle="select"
                                     class="form-control" id="category">
@@ -40,7 +49,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-2">
                                 <label for="order_by_for">Organizar Por:</label>
                                 <select class="select2 form-control" name="order_by_for" id="order_by_for" data-toggle="select"
                                     class="form-control" id="category">
@@ -64,8 +73,23 @@
 
 @include('panels.datatable.scripts')
 
+<script src="{{ asset('vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
+<script src="{{ asset('vendors/js/pickers/flatpickr/locales/es.js') }}"></script>
+
 <script>
     $(document).ready(function () {
+        // Inicialización de Flatpickr para las fechas
+        flatpickr('#start_date', {
+            dateFormat: 'Y-m-d',
+            locale: 'es',
+        });
+
+        flatpickr('#end_date', {
+            dateFormat: 'Y-m-d',
+            locale: 'es',
+        });
+
+        // Inicialización de DataTable
         table = $('#best_seller_table').DataTable({
             processing: true,
             serverSide: true,
@@ -78,10 +102,10 @@
             ajax: {
                 url: '{!! route('reports.best.seller.data') !!}',
                 data: function (d) {
-                    d.from  = $('#from').val();
-                    d.to    = $('#to').val();
-                    d.category_id  = $('#category_id').val();
-                    d.order_by_for  = $('#order_by_for').val();
+                    d.start_date = $('#start_date').val();
+                    d.end_date = $('#end_date').val();
+                    d.category_id = $('#category_id').val();
+                    d.order_by_for = $('#order_by_for').val();
                 }
             },
             columns: [
@@ -126,19 +150,19 @@
             feather.replace();
         });
 
+        // Evento para el botón de filtrar
+        $('#btn-filter').on('click', function() {
+            table.search('').draw();
+        });
+
+        // Eventos para los otros filtros
         $('#category_id').change(function() {
             table.search('').draw();
         });
 
         $('#order_by_for').change(function() {
-            table.search('').draw()
-        });
-
-        $('#timestamp').change(function() {
             table.search('').draw();
         });
-
-        flatpickrRange('#timestamp', '#from', '#to');
     });
 </script>
 

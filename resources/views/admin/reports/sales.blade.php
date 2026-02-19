@@ -213,10 +213,50 @@
     </div>
 </section>
 
-<div class="modal fade text-start" id="modal_show_order_details" tabindex="-1" aria-labelledby="myModalLabel1"
-    aria-hidden="true">
+<!-- Modal para mostrar detalles del pedido -->
+<div class="modal fade text-start" id="modal_show_order_details" tabindex="-1" aria-labelledby="modalOrderDetailsLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content order_details">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalOrderDetailsLabel">Detalles del Pedido #<span id="modal_order_id"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col-6">
+                        <strong>Total del Pedido:</strong>
+                    </div>
+                    <div class="col-6 text-end">
+                        <span class="text-success fw-bold" id="modal_order_total">$ 0,00</span>
+                    </div>
+                </div>
+                <hr>
+                <h6 class="mb-3">Productos Vendidos:</h6>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-end">Precio Unitario</th>
+                                <th class="text-end">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modal_products_list">
+                            <!-- Los productos se cargarán aquí dinámicamente -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" class="text-end">Total:</th>
+                                <th class="text-end text-success" id="modal_products_total">$ 0,00</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
 </div>
@@ -458,23 +498,15 @@
                 searchable: true,
             },
             {
-                data: "id",
-                name: "id",
+                data: "action",
+                name: "action",
                 title: "Detalles",
                 "class": "text-center",
                 visible: true,
-                searchable: true,
+                searchable: false,
+                orderable: false,
             },
             ],
-            fnCreatedRow: function (elemt, data, iDataIndex) {
-                // Lógica de creación de botones...
-                var index = iDataIndex + 1;
-                column=$('td:eq(4)', elemt);
-                buttons='';
-                button="<button type='button' class='btn btn-sm btn-primary' onclick='showOrderDetails("+data.id+")'> <i data-feather='eye'></i> </button>";
-                buttons+=button;
-                column=column.html(buttons);
-            },
 
         }).on('processing.dt', function (e, settings, processing) {
             // Se actualiza la llamada a la función central de métricas CADA VEZ que la tabla se redibuja/filtra
@@ -519,19 +551,78 @@
 
     });
 
-    // Función showOrderDetails (debe estar disponible globalmente)
-    function showOrderDetails(orderId) {
-        // Debes implementar esta lógica si aún no lo has hecho
-        // Ejemplo:
-        // $.ajax({
-        //     url: '/orders/' + orderId + '/details', // Asegúrate de tener esta ruta
-        //     success: function(data) {
-        //         $('.order_details').html(data);
-        //         $('#modal_show_order_details').modal('show');
-        //     }
-        // });
-        console.log("Mostrando detalles de la orden: " + orderId);
-    }
+    // Delegación de eventos para el botón de detalles (necesario porque DataTables es server-side)
+    $(document).on('click', '.btn-show-details', function(e) {
+        e.preventDefault();
+        const orderId = $(this).data('id');
+        
+        if (!orderId) {
+            console.error('No se encontró el ID del pedido');
+            return;
+        }
+
+        // Mostrar loading en el modal
+        $('#modal_products_list').html('<tr><td colspan="4" class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Cargando...</span></div></td></tr>');
+        $('#modal_order_id').text(orderId);
+        $('#modal_order_total').text('$ 0,00');
+        $('#modal_products_total').text('$ 0,00');
+
+        // Hacer petición con Axios
+        const detailsUrl = '{!! route("reports.sales.details", ["id" => ":id"]) !!}'.replace(':id', orderId);
+        axios.get(detailsUrl)
+            .then(function(response) {
+                if (response.data.success && response.data.products) {
+                    const order = response.data.order;
+                    const products = response.data.products;
+
+                    // Actualizar información del pedido
+                    $('#modal_order_id').text(order.id);
+                    const formattedTotal = new Intl.NumberFormat('es-CO', numberFormatOptions).format(parseFloat(order.total_amount) || 0);
+                    $('#modal_order_total').text('$ ' + formattedTotal);
+
+                    // Construir tabla de productos
+                    let productsHtml = '';
+                    let totalProducts = 0;
+
+                    if (products.length === 0) {
+                        productsHtml = '<tr><td colspan="4" class="text-center text-muted">No hay productos en este pedido</td></tr>';
+                    } else {
+                        products.forEach(function(product) {
+                            const formattedPrice = new Intl.NumberFormat('es-CO', numberFormatOptions).format(parseFloat(product.precio_unitario) || 0);
+                            const formattedSubtotal = new Intl.NumberFormat('es-CO', numberFormatOptions).format(parseFloat(product.subtotal) || 0);
+                            
+                            productsHtml += '<tr>';
+                            productsHtml += '<td>' + product.nombre + '</td>';
+                            productsHtml += '<td class="text-center">' + product.cantidad + '</td>';
+                            productsHtml += '<td class="text-end">$ ' + formattedPrice + '</td>';
+                            productsHtml += '<td class="text-end">$ ' + formattedSubtotal + '</td>';
+                            productsHtml += '</tr>';
+                            
+                            totalProducts += parseFloat(product.subtotal) || 0;
+                        });
+                    }
+
+                    $('#modal_products_list').html(productsHtml);
+                    const formattedTotalProducts = new Intl.NumberFormat('es-CO', numberFormatOptions).format(totalProducts);
+                    $('#modal_products_total').text('$ ' + formattedTotalProducts);
+
+                    // Mostrar el modal (Bootstrap 5)
+                    const modal = new bootstrap.Modal(document.getElementById('modal_show_order_details'));
+                    modal.show();
+
+                    // Reemplazar iconos feather después de mostrar el modal
+                    feather.replace();
+                } else {
+                    console.error('Error en la respuesta del servidor');
+                    alert('No se pudieron cargar los detalles del pedido');
+                }
+            })
+            .catch(function(error) {
+                console.error('Error al obtener detalles del pedido:', error);
+                $('#modal_products_list').html('<tr><td colspan="4" class="text-center text-danger">Error al cargar los detalles del pedido</td></tr>');
+                alert('Error al cargar los detalles del pedido. Por favor, intente nuevamente.');
+            });
+    });
 </script>
 
 @endsection

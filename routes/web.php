@@ -125,6 +125,7 @@ Route::middleware('auth')->group(function () {
 
                 Route::get('sales', [ReportController::class, 'sales'])->name('reports.sales');
                 Route::get('sales-data', [ReportController::class, 'salesData'])->name('reports.sales.data');
+                Route::get('sales/details/{id}', [ReportController::class, 'salesDetails'])->name('reports.sales.details');
                 Route::get('sales/fixed-cost', [ReportController::class, 'fixedCostAmount'])->name('reports.fixed.cost.data');
                 Route::get('sales/unexpected', [ReportController::class, 'unexpectedAmount'])->name('reports.unexpected.data');
                 Route::get('sales/total-amount', [ReportController::class, 'totalSalesAmount'])->name('reports.total.sales.amount.data');
