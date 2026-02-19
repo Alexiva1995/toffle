@@ -58,13 +58,13 @@ var columnChart = new ApexCharts(columnChartWs, columnChartWsConfig);
 columnChart.render();
 
 function dataChartWeeklySales() {
-    var parametros = { 
+    var parametros = {
        "week" : $('#week').data('week')
     }
 
     var weekly_sales_route = $('#weekly_sales_route').val();
     $.ajax({
-        type: "POST",
+        type: "GET",  // Cambiado de POST a GET
         data:  parametros,
         url: weekly_sales_route,
         success: function (response) {
@@ -91,6 +91,10 @@ function dataChartWeeklySales() {
         },
         error: function(xhr) {
             console.log(xhr.responseJSON);
+            if (xhr.status === 419) {
+                console.error('CSRF token mismatch. Recarga la página o verifica la configuración.');
+            }
         }
     });
 }
+

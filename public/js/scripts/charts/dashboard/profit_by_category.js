@@ -1,5 +1,5 @@
 var profit_by_category_route = $('#profit_by_category_route').val();
-var parametros = { 
+var parametros = {
   "week" : $('#weekCategory').data('week-category')
 }
 //Variable global para el grafico
@@ -9,19 +9,19 @@ $.ajax({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
   },
-  type: "POST",
+  type: "GET",
   data:  parametros,
   url: profit_by_category_route,
   success: function (response) {
-    
+
     var orders = response.orders;
-    
+
     var labels = orders.map(function (e) {
       if (e.category_name != null) {
         return e.category_name;
       }
     })
-  
+
       var data_gain = orders.map(function (e) {
           if (e.gain != null) {
             return Number(e.gain.toFixed(2));
@@ -132,16 +132,16 @@ $.ajax({
 });
 //Funcion actualizar DonutChart
 function dataChartCategorySales(){
-  parametros = { 
+  parametros = {
     "week" : $('#weekCategory').data('week-category')
   }
-  
+
   // console.log(parametros)
   $.ajax({
     headers: {
       "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
     },
-    type: "POST",
+    type: "GET",
     data:  parametros,
     url: profit_by_category_route,
     success: function (response) {
@@ -150,19 +150,19 @@ function dataChartCategorySales(){
             if (e.category_name != null) {
               return e.category_name;
             }
-            
+
         });
-    
+
         var data_gain = orders.map(function (e) {
           if (e.gain != null) {
             return Number(e.gain.toFixed(2));
           }
         });
-        
+
         var labels = labels.filter(element => {
           return element !== undefined;
         });
-        
+
         var data_gain = data_gain.filter(element => {
           return element !== undefined;
         });
@@ -171,11 +171,11 @@ function dataChartCategorySales(){
           labels: labels
         })
         donutChart.updateSeries(removeData());
-        
+
         donutChart.updateSeries(data_gain);
         //mostrar labels existentens en el donutchart
         // console.log(donutChart.w.globals.labels)
-  
+
     },
     error: function(xhr) {
         // console.log(xhr.responseJSON);

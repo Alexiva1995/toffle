@@ -70,7 +70,7 @@ function flatpickrDateCalendar(initial_date, final_date) {
               dataChartAmountVsGain();
             }
             setTimeout(() => {
-                $('#spiner-chart').addClass('d-none');                     
+                $('#spiner-chart').addClass('d-none');
             },1500)
         },
     });
@@ -111,7 +111,7 @@ lineTopChartConfig = {
               min: new Date(initial_date).getTime(),
               max: new Date(final_date).getTime()
             }
-          } 
+          }
         }
       }
     }
@@ -215,7 +215,7 @@ var amount_vs_gain_route = $('#amount_vs_gain_route').val();
 function dataChartAmountVsGain() {
 
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: amount_vs_gain_route,
         success: function (response) {
 
