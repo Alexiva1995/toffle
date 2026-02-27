@@ -241,15 +241,14 @@
               field = $('td:eq(4)', elemt);
               buttons = '';
 
-              if (data.status == '0') {
-                options = '<option value="0">Pendiente</option><option value="1">En Espera</option>';
-              }
+              let options = `
+                <option value="0" ${data.status == '0' ? 'selected' : ''}>Pendiente</option>
+                <option value="1" ${data.status == '1' ? 'selected' : ''}>En Espera</option>
+                <option value="2" ${data.status == '2' ? 'selected' : ''}>Finalizado</option>
+                <option value="3" ${data.status == '3' ? 'selected' : ''}>Cancelado</option>
+              `;
 
-              if (data.status == '1') {
-                options = '<option value="1">En Espera</option><option value="0">Pendiente</option>';
-              }
-
-              button = '<select class="form-control text-center update_status" name="status" data-id="'+data.id+'" >'+options+'<option value="2">Finalizado</option><option value="3">Cancelado</option></select>'
+              button = '<select class="form-control text-center update_status" name="status" data-id="'+data.id+'" >'+options+'</select>'
 
               buttons += button;
               field = field.html(buttons);

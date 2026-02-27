@@ -24,31 +24,17 @@
                         <td class="text-center"> {{ $order->customer_name }} </td>
                         <td class="text-center"> {{ $order->table }} </td>
                         <td class="text-center"> {{ $order->total_amount }} </td>
-                        <td class="text-center">  
-                            <span class="badge badge-light-{{ $order->colorStatus() }}"> 
-
-                                @switch($order->status)
-                                    @case(0)
-                                        <i data-feather="alert-circle"></i> 
-                                        @break
-                                    @case(1)
-                                        <i data-feather="clock"></i> 
-                                        @break
-                                    @case(2)
-                                        <i data-feather="check-circle"></i>
-                                        @break
-                                    @case(3)
-                                        <i data-feather="x-circle"></i> 
-                                        @break
-                                    @default                                           
-                                @endswitch
-
-                                {{ $order->estado() }}
-                            </span>  
+                        <td class="text-center">
+                            <select class="form-control text-center update_status" name="status" data-id="{{ $order->id }}">
+                                <option value="0" {{ $order->status == '0' ? 'selected' : '' }}>Pendiente</option>
+                                <option value="1" {{ $order->status == '1' ? 'selected' : '' }}>En Espera</option>
+                                <option value="2" {{ $order->status == '2' ? 'selected' : '' }}>Finalizado</option>
+                                <option value="3" {{ $order->status == '3' ? 'selected' : '' }}>Cancelado</option>
+                            </select>
                         </td>
-                        <td class="text-center"> 
-                            <button type='button' class='btn btn-sm btn-primary' onclick='showOrderDetails({{ $order->id }})'> <i data-feather='eye'></i> 
-                            </button> 
+                        <td class="text-center">
+                            <button type='button' class='btn btn-sm btn-primary' onclick='showOrderDetails({{ $order->id }})'> <i data-feather='eye'></i>
+                            </button>
                         </td>
                     </tr>
                     @endforeach
