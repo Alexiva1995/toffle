@@ -26,6 +26,12 @@
                         <td class="text-center"> {{ $order->total_amount }} </td>
                         <td class="text-center">
                             <span class="badge badge-light-{{ $order->status_color }}">
+                                @switch($order->status)
+                                    @case(0) <i data-feather="alert-circle"></i> @break
+                                    @case(1) <i data-feather="clock"></i> @break
+                                    @case(2) <i data-feather="check-circle"></i> @break
+                                    @case(3) <i data-feather="x-circle"></i> @break
+                                @endswitch
                                 {{ $order->status_label }}
                             </span>
                         </td>
@@ -47,4 +53,5 @@
 
 <script>
     dataTable('#order_history_table');
+    if (typeof feather !== 'undefined') feather.replace();
 </script>
