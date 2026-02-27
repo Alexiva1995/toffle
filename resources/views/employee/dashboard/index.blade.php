@@ -154,8 +154,6 @@
           }
         });
       };
-        });
-      });
 
       function showOrderDetails(id) {
         $.get("{{ route('reports.show.order.details') }}", { id: id },
