@@ -25,22 +25,17 @@
                         <td class="text-center"> {{ $order->table }} </td>
                         <td class="text-center"> {{ $order->total_amount }} </td>
                         <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle badge badge-light-{{ $order->status_color }}"
-                                    data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-boundary="viewport">
-                                    {{ $order->status_label }}
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="{{ $order->id }}" data-status="0">Pendiente</a>
-                                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="{{ $order->id }}" data-status="1">En Espera</a>
-                                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="{{ $order->id }}" data-status="2">Finalizado</a>
-                                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="{{ $order->id }}" data-status="3">Cancelado</a>
-                                </div>
-                            </div>
+                            <span class="badge badge-light-{{ $order->status_color }}">
+                                {{ $order->status_label }}
+                            </span>
                         </td>
                         <td class="text-center">
                             <button type='button' class='btn btn-sm btn-primary' onclick='showOrderDetails({{ $order->id }})'> <i data-feather='eye'></i>
                             </button>
+                            @if($order->status != 3)
+                            <button type='button' class='btn btn-sm btn-danger' onclick='cancelOrder({{ $order->id }})'> <i data-feather='x'></i>
+                            </button>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

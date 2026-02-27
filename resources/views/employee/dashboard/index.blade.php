@@ -95,70 +95,65 @@
       loadData('cash_flow');
       // loadData('inventory_replenishment');
 
-      $(document).on('click', '.update_status_item', function (e) {
-        e.preventDefault();
-        let item = {};
-        let input = this;
-        let orderId = $(this).data('id');
-        let newStatus = $(this).data('status');
-        let dropdownButton = $(this).closest('.dropdown').find('.dropdown-toggle');
+      window.cancelOrder = function(id) {
+        Swal.fire({
+          title: '¿Confirmar cancelación?',
+          text: "Esta acción devolverá los ingredientes al inventario.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, cancelar pedido',
+          cancelButtonText: 'No, mantener',
+          customClass: {
+            confirmButton: 'btn btn-danger',
+            cancelButton: 'btn btn-outline-secondary ms-1'
+          },
+          buttonsStyling: false
+        }).then(function (result) {
+          if (result.value) {
+            let item = {
+              status: '3',
+              form: 'update_general_data',
+              _method: 'PATCH',
+              _token: $('meta[name="csrf-token"]').attr('content')
+            };
 
-        item.status = newStatus;
-        item.form = 'update_general_data';
-        item._method = 'PATCH';
-        item._token = $('meta[name="csrf-token"]').attr('content');
+            var url = "{{ route('orders.update', 'id') }}";
+            url = url.replace('id', id);
 
-        var url = "{{ route('orders.update', 'id') }}";
-        url = url.replace('id', orderId);
-
-        $.ajax({
-          url: url,
-          type: 'POST',
-          data: item,
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-          }
-        })
-        .done( function(data){
-          if('error' in data){
-            toastr['error']('', data.message, {
-                closeButton: true,
-                tapToDismiss: false,
+            $.ajax({
+              url: url,
+              type: 'POST',
+              data: item,
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+              }
+            })
+            .done(function(data){
+              if('error' in data){
+                toastr['error']('', data.message, { closeButton: true, tapToDismiss: false });
+              }else{
+                toastr['success']('Unidades devueltas: ' + data.total_portions, 'Pedido Cancelado', {
+                  closeButton: true,
+                  tapToDismiss: false,
+                });
+                loadData('statistics');
+                loadData('order_history');
+                loadData('cash_flow');
+              }
+              if (typeof table !== 'undefined') {
+                table.ajax.reload(null, false);
+              }
+            })
+            .fail(function(xhr) {
+                if (xhr.status === 419) {
+                  toastr['error']('', 'Sesión expirada. Recarga (F5)', { closeButton: true, tapToDismiss: false });
+                }
             });
-          }else{
-            // Actualizar el botón del dropdown visualmente sin recargar toda la tabla si es posible,
-            // aunque loadData se llama después.
-            dropdownButton.text(data.status_label);
-            dropdownButton.removeClass(function (index, className) {
-                return (className.match (/(^|\s)badge-light-\S+/g) || []).join(' ');
-            }).addClass('badge-light-' + data.status_color);
-
-            if (item.status == '2' || item.status == '3') {
-              let title = item.status == '2' ? 'Pedido Finalizado' : 'Pedido Cancelado';
-              let msg = item.status == '2' ? 'Unidades gastadas: ' : 'Unidades devueltas: ';
-              toastr['success'](msg + data.total_portions, title, {
-                closeButton: true,
-                tapToDismiss: false,
-              });
-            }
-
-            loadData('statistics');
-            loadData('order_history');
-            loadData('cash_flow');
           }
-          if (typeof table !== 'undefined') {
-              table.ajax.reload(null, false); // Recargar tabla sin perder paginación
-          }
-        })
-        .fail(function(xhr) {
-            if (xhr.status === 419) {
-              toastr['error']('', 'Sesión expirada. Recarga la página (F5) e intenta de nuevo.', {
-                closeButton: true,
-                tapToDismiss: false,
-              });
-            }
+        });
+      };
         });
       });
 
@@ -244,23 +239,8 @@
               field = $('td:eq(4)', elemt);
               buttons = '';
 
-              let dropdown = `
-                <div class="dropdown">
-                  <button type="button" class="btn btn-sm dropdown-toggle badge badge-light-${data.status_color}"
-                    data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-boundary="viewport">
-                    ${data.status_label}
-                  </button>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="${data.id}" data-status="0">Pendiente</a>
-                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="${data.id}" data-status="1">En Espera</a>
-                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="${data.id}" data-status="2">Finalizado</a>
-                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="${data.id}" data-status="3">Cancelado</a>
-                  </div>
-                </div>
-              `;
-
-              field.html(dropdown);
-
+              let badge = `<span class="badge badge-light-${data.status_color}">${data.status_label}</span>`;
+              field.html(badge);
 
               field = $('td:eq(5)', elemt);
               buttons = '';
@@ -270,9 +250,11 @@
 
               buttonShow = "<button type='button' class='btn btn-sm btn-primary me-1' onclick='showOrderDetails("+data.id+")'> <i data-feather='eye'></i> </button>";
 
+              buttonCancel = data.status != '3' ? "<button type='button' class='btn btn-sm btn-danger me-1' onclick='cancelOrder("+data.id+")'> <i data-feather='x'></i> </button>" : "";
+
               buttonEdit = '<a href="'+url+'" class="btn btn-sm btn-info my-1 me-1"> <i data-feather="edit"></i> </a>';
 
-              button = buttonShow+buttonEdit;
+              button = buttonShow + buttonCancel + buttonEdit;
 
               buttons += button;
               field = field.html(buttons);
