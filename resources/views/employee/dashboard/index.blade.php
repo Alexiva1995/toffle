@@ -127,6 +127,15 @@
             $(input).removeClass('is-invalid')
             $(input).addClass('is-valid')
 
+            if (item.status == '2' || item.status == '3') {
+              let title = item.status == '2' ? 'Pedido Finalizado' : 'Pedido Cancelado';
+              let msg = item.status == '2' ? 'Unidades gastadas: ' : 'Unidades devueltas: ';
+              toastr['success'](msg + data.total_portions, title, {
+                closeButton: true,
+                tapToDismiss: false,
+              });
+            }
+
             setTimeout(() => {
                 $(input).removeClass('is-valid')
             },1000)
@@ -138,8 +147,6 @@
             // loadData('inventory_replenishment');
           }
           table.search('').draw();
-
-          
         })
         .fail(function(xhr) {
             $(input).addClass('is-invalid');
@@ -176,13 +183,13 @@
               }
           },
           columns: [
-            { 
+            {
               data: null,
-              sortable: false, 
+              sortable: false,
               title: "N°",
               render: function (data, type, row, meta) {
                   return meta.row + meta.settings._iDisplayStart + 1;
-              }  
+              }
             },
             {
               data: "customer_name",
@@ -209,7 +216,7 @@
               searchable: true,
               render: function (data, type, row, meta) {
                   return (row.total_amount).toFixed(2);
-              }  
+              }
             },
             {
               data: "status",
@@ -217,7 +224,7 @@
               title: "Estado",
               "class": "text-center",
               visible: true,
-              searchable: true, 
+              searchable: true,
             },
             {
               data: "id",
@@ -255,7 +262,7 @@
               url = url.replace('id', data.id);
 
               buttonShow = "<button type='button' class='btn btn-sm btn-primary me-1' onclick='showOrderDetails("+data.id+")'> <i data-feather='eye'></i> </button>";
-              
+
               buttonEdit = '<a href="'+url+'" class="btn btn-sm btn-info my-1 me-1"> <i data-feather="edit"></i> </a>';
 
               button = buttonShow+buttonEdit;
@@ -267,7 +274,7 @@
           feather.replace();
         });
       });
-      
+
   </script>
 
   @endsection

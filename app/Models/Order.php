@@ -149,4 +149,9 @@ class Order extends Model
             'total_amount' => number_format($order_total_amount, 2, '.', '')
         ]);
     }
+
+    public function getTotalPortionsAttribute()
+    {
+        return $this->ingredients()->sum('portion');
+    }
 }

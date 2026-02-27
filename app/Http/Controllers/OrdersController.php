@@ -110,15 +110,17 @@ class OrdersController extends Controller
             $order = Order::find($id);
 
             if ($request->form == 'update_general_data') {
-                $order_ingredients = DB::table('order_ingredient')->where('order_id', $order->id)->get();
-                foreach($order_ingredients as $ingredient)
-                {
-                    if($ingredient->it_has_flavors == 1 && $ingredient->flavor_name == null)
+                if ($request->status != '3') { // No validar sabores si se está CANCELANDO
+                    $order_ingredients = DB::table('order_ingredient')->where('order_id', $order->id)->get();
+                    foreach($order_ingredients as $ingredient)
                     {
-                        $response = new stdClass;
-                        $response->error = true;
-                        $response->message = 'Esta orden tiene ingredientes con sabores sin definir';
-                        return $response;
+                        if($ingredient->it_has_flavors == 1 && $ingredient->flavor_name == null)
+                        {
+                            $response = new stdClass;
+                            $response->error = true;
+                            $response->message = 'Esta orden tiene ingredientes con sabores sin definir';
+                            return $response;
+                        }
                     }
                 }
                 $this->updateGeneralData($request, $order);
@@ -218,6 +220,7 @@ class OrdersController extends Controller
         }
 
         $order->update($request->only($order->getFillable()));
+        $order->refresh()->append('total_portions');
     }
 
     public function updateDishOrder(Request $request, Order $order): void
