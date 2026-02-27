@@ -246,7 +246,8 @@
 
               let dropdown = `
                 <div class="dropdown">
-                  <button type="button" class="btn btn-sm dropdown-toggle badge badge-light-${data.status_color}" data-bs-toggle="dropdown" aria-expanded="false">
+                  <button type="button" class="btn btn-sm dropdown-toggle badge badge-light-${data.status_color}"
+                    data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-boundary="viewport">
                     ${data.status_label}
                   </button>
                   <div class="dropdown-menu">

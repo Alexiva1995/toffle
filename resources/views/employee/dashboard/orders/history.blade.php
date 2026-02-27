@@ -26,7 +26,8 @@
                         <td class="text-center"> {{ $order->total_amount }} </td>
                         <td class="text-center">
                             <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle badge badge-light-{{ $order->status_color }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button type="button" class="btn btn-sm dropdown-toggle badge badge-light-{{ $order->status_color }}"
+                                    data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-boundary="viewport">
                                     {{ $order->status_label }}
                                 </button>
                                 <div class="dropdown-menu">
