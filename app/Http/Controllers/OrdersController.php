@@ -352,8 +352,9 @@ class OrdersController extends Controller
         }
 
 
-        return datatables()::of($orders)->filter(function ($query) use($request) {
-        }, true)->toJson();
+        return datatables()::of($orders->get()->map(function($order){
+            return $order->append(['status_label', 'status_color']);
+        }))->toJson();
     }
 
     public function showOrderDetails(Request $request)

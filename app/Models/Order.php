@@ -150,6 +150,16 @@ class Order extends Model
         ]);
     }
 
+    public function getStatusLabelAttribute()
+    {
+        return $this->estado();
+    }
+
+    public function getStatusColorAttribute()
+    {
+        return $this->colorStatus();
+    }
+
     public function getTotalPortionsAttribute()
     {
         return $this->ingredients()->sum('portion');

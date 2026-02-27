@@ -95,17 +95,21 @@
       loadData('cash_flow');
       // loadData('inventory_replenishment');
 
-      $(document).on('change', '.update_status', function () {
+      $(document).on('click', '.update_status_item', function (e) {
+        e.preventDefault();
         let item = {};
         let input = this;
+        let orderId = $(this).data('id');
+        let newStatus = $(this).data('status');
+        let dropdownButton = $(this).closest('.dropdown').find('.dropdown-toggle');
 
-        item.status = this.value;
+        item.status = newStatus;
         item.form = 'update_general_data';
         item._method = 'PATCH';
         item._token = $('meta[name="csrf-token"]').attr('content');
 
         var url = "{{ route('orders.update', 'id') }}";
-        url = url.replace('id', $(this).data('id'));
+        url = url.replace('id', orderId);
 
         $.ajax({
           url: url,
@@ -124,8 +128,12 @@
                 tapToDismiss: false,
             });
           }else{
-            $(input).removeClass('is-invalid')
-            $(input).addClass('is-valid')
+            // Actualizar el botón del dropdown visualmente sin recargar toda la tabla si es posible,
+            // aunque loadData se llama después.
+            dropdownButton.text(data.status_label);
+            dropdownButton.removeClass(function (index, className) {
+                return (className.match (/(^|\s)badge-light-\S+/g) || []).join(' ');
+            }).addClass('badge-light-' + data.status_color);
 
             if (item.status == '2' || item.status == '3') {
               let title = item.status == '2' ? 'Pedido Finalizado' : 'Pedido Cancelado';
@@ -136,20 +144,15 @@
               });
             }
 
-            setTimeout(() => {
-                $(input).removeClass('is-valid')
-            },1000)
-
             loadData('statistics');
             loadData('order_history');
-            // loadData('tables');
             loadData('cash_flow');
-            // loadData('inventory_replenishment');
           }
-          table.search('').draw();
+          if (typeof table !== 'undefined') {
+              table.ajax.reload(null, false); // Recargar tabla sin perder paginación
+          }
         })
         .fail(function(xhr) {
-            $(input).addClass('is-invalid');
             if (xhr.status === 419) {
               toastr['error']('', 'Sesión expirada. Recarga la página (F5) e intenta de nuevo.', {
                 closeButton: true,
@@ -241,17 +244,21 @@
               field = $('td:eq(4)', elemt);
               buttons = '';
 
-              let options = `
-                <option value="0" ${data.status == '0' ? 'selected' : ''}>Pendiente</option>
-                <option value="1" ${data.status == '1' ? 'selected' : ''}>En Espera</option>
-                <option value="2" ${data.status == '2' ? 'selected' : ''}>Finalizado</option>
-                <option value="3" ${data.status == '3' ? 'selected' : ''}>Cancelado</option>
+              let dropdown = `
+                <div class="dropdown">
+                  <button type="button" class="btn btn-sm dropdown-toggle badge badge-light-${data.status_color}" data-bs-toggle="dropdown" aria-expanded="false">
+                    ${data.status_label}
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="${data.id}" data-status="0">Pendiente</a>
+                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="${data.id}" data-status="1">En Espera</a>
+                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="${data.id}" data-status="2">Finalizado</a>
+                    <a class="dropdown-item update_status_item" href="javascript:void(0)" data-id="${data.id}" data-status="3">Cancelado</a>
+                  </div>
+                </div>
               `;
 
-              button = '<select class="form-control text-center update_status" name="status" data-id="'+data.id+'" >'+options+'</select>'
-
-              buttons += button;
-              field = field.html(buttons);
+              field.html(dropdown);
 
 
               field = $('td:eq(5)', elemt);
