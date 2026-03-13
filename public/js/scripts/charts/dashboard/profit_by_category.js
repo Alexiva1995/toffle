@@ -1,6 +1,7 @@
 var profit_by_category_route = $('#profit_by_category_route').val();
 var parametros = {
-  "week" : $('#weekCategory').data('week-category')
+  "start_date" : $('#start_date_cat').val(),
+  "end_date"   : $('#end_date_cat').val()
 }
 //Variable global para el grafico
  var donutChart;
@@ -133,7 +134,8 @@ $.ajax({
 //Funcion actualizar DonutChart
 function dataChartCategorySales(){
   parametros = {
-    "week" : $('#weekCategory').data('week-category')
+    "start_date" : $('#start_date_cat').val(),
+    "end_date"   : $('#end_date_cat').val()
   }
 
   // console.log(parametros)

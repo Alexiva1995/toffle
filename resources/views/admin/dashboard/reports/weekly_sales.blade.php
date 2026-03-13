@@ -11,12 +11,16 @@
         >
             <h4 class="card-title">Informes de Ventas Semanales</h4>
 
-            <div class="col-auto">
-                <label class="form-label" for="week"> <i data-feather="calendar"></i> N° de Semana</label>
-                <div class="d-flex align-items-center mt-md-0 mt-1"> 
-                    <input type="text" id="week" name="week" data-week = "{{ date("Y") }}-W{{ date("W") }}" class="form-control"/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label" for="start_date"> <i data-feather="calendar"></i> Fecha Inicio</label>
+                        <input type="text" id="start_date" name="start_date" class="form-control flatpickr-basic" value="{{ date('Y-m-d', strtotime('-6 days')) }}" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="end_date"> <i data-feather="calendar"></i> Fecha Fin</label>
+                        <input type="text" id="end_date" name="end_date" class="form-control flatpickr-basic" value="{{ date('Y-m-d') }}" />
+                    </div>
                 </div>
-            </div>
         </div>
         <div class="card-body">
             <input type="hidden" id="weekly_sales_route" value="{{ route('data.chart.weekly.sales') }}">

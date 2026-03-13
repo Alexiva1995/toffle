@@ -109,17 +109,8 @@ class DashboardController extends Controller
   public function dataProfitByCategory(Request $request): JsonResponse
   {
 
-    $week_str = $request->week; // Formato esperado: YYYY-Www (ej. 2026-W11)
-    if (!preg_match('/^(\d{4})-W(\d{2})$/', $week_str, $matches)) {
-        return response()->json(['orders' => []]);
-    }
-
-    $year = (int)$matches[1];
-    $week_number = (int)$matches[2];
-
-    $carbon = Carbon::now()->setISODate($year, $week_number);
-    $week_start = $carbon->copy()->startOfWeek(Carbon::SUNDAY)->format('Y-m-d');
-    $week_end = $carbon->copy()->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
+    $start_date = $request->start_date;
+    $end_date = $request->end_date;
 
     $orders = Order::selectRaw('d.name as category_name')
       ->selectRaw('SUM( ROUND((b.price - b.cost) * b.unit , 2 ) ) as gain')
@@ -127,7 +118,7 @@ class DashboardController extends Controller
       ->leftJoin('dishes as c', 'b.dish_id', '=', 'c.id')
       ->leftJoin('categories as d', 'c.category_id', '=', 'd.id')
       ->where('orders.status', '2')
-      ->whereBetween('orders.created_at', [$week_start. " 00:00:00", $week_end. " 23:59:59"] )
+      ->whereBetween('orders.created_at', [$start_date. " 00:00:00", $end_date. " 23:59:59"] )
       ->orderBy('category_name', 'ASC')
       ->groupBy('d.id', 'd.name')
       ->get();
@@ -145,31 +136,26 @@ class DashboardController extends Controller
       $dates_not_found = [];
       $array_dates_found = [];
 
-      $week_str = $request->week;
-      if (!preg_match('/^(\d{4})-W(\d{2})$/', $week_str, $matches)) {
-          return response()->json(['dates' => [], 'error' => 'Invalid format']);
+      $start_date = $request->start_date;
+      $end_date = $request->end_date;
+
+      $period = \Carbon\CarbonPeriod::create($start_date, $end_date);
+      $period_dates = [];
+      foreach ($period as $date) {
+          $period_dates[] = $date->format('Y-m-d');
       }
-
-      $year = (int)$matches[1];
-      $week_number = (int)$matches[2];
-
-      $carbon = Carbon::now()->setISODate($year, $week_number);
-      $week_start = $carbon->copy()->startOfWeek(Carbon::SUNDAY)->format('Y-m-d');
-      $week_end = $carbon->copy()->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
-      
-      $weekdays = $this->weekdays($year, $week_number);
 
       $orders = Order::selectRaw('DATE(created_at) as date')
       ->selectRaw('sum(total_amount) as total_amount')
       ->where('status', '2')
-      ->whereBetween('created_at', [$week_start. " 00:00:00", $week_end. " 23:59:59"])
+      ->whereBetween('created_at', [$start_date. " 00:00:00", $end_date. " 23:59:59"])
       ->orderBy('date', 'DESC')
       ->groupBy('date')
       ->get();
 
       if ($orders != null) {
         foreach ($orders as $key => $order) {
-          if (in_array($order->date, $weekdays)) {
+          if (in_array($order->date, $period_dates)) {
              $array = array( $order->date => [
                'total_amount' => $order->total_amount,
                'date' => date('d', strtotime($order->date)).' '.$this->getDay($order->date),
@@ -183,7 +169,7 @@ class DashboardController extends Controller
         }
       }
 
-      foreach ($weekdays as $key => $weekday) {
+      foreach ($period_dates as $key => $weekday) {
         if (!in_array($weekday, $array_dates_found)) {
             $array = array( $weekday => [
               'total_amount' => 0,
@@ -204,8 +190,8 @@ class DashboardController extends Controller
 
       return response()->json([
         'dates' => $dates,
-        'week_start' => $week_start,
-        'week_end'  =>  $week_end
+        'start_date' => $start_date,
+        'end_date'  =>  $end_date
       ]);
   }
 

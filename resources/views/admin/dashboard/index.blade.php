@@ -97,19 +97,31 @@
           // --------------------------------------------------------------------
           dataChartWeeklySales();
 
-          $('#week').change(function() {
+          $('#start_date, #end_date').change(function() {
             dataChartWeeklySales();
           });
-
-          flatpickrWeek('#week');
 
           //Donuts chart for categories
           dataChartCategorySales();
           
-          $('#weekCategory').change( () => {
+          $('#start_date_cat, #end_date_cat').change( () => {
             dataChartCategorySales();
           });
-          flatpickrWeekCategory('#weekCategory');
+          
+          $('.flatpickr-basic').flatpickr({
+              dateFormat: "Y-m-d",
+              locale: {
+                firstDayOfWeek: 1, // Lunes
+                weekdays: {
+                  shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                  longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
+                }, 
+                months: {
+                  shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
+                  longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                },
+              }
+          });
           
 
       });

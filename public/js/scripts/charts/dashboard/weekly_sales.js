@@ -59,7 +59,8 @@ columnChart.render();
 
 function dataChartWeeklySales() {
     var parametros = {
-       "week" : $('#week').data('week')
+       "start_date" : $('#start_date').val(),
+       "end_date"   : $('#end_date').val()
     }
 
     var weekly_sales_route = $('#weekly_sales_route').val();
