@@ -156,24 +156,15 @@
             // weekNumbers: true,
             "plugins": [new weekSelect({})],
             onChange: [function(selectedDates, dateStr, instance){
+                if (selectedDates.length === 0) return;
 
-                const year = this.selectedDates[0]
-                    ? this.currentYear
-                    : null;
+                const date = selectedDates[0];
+                const year = date.getFullYear();
+                const weekNumber = instance.config.getWeek(date);
 
-                const weekNumber = this.selectedDates[0]
-                    ? this.config.getWeek(this.selectedDates[0])
-                    : null;
-
-                dataWeek = '';
-
-                if (weekNumber > 10) {
-                    dataWeek = year+'-W'+weekNumber;
-                }else{
-                    dataWeek = year+'-W0'+weekNumber;
-                }
-                $('#week').data('week', dataWeek)
-                // console.log($('#range_week').val());
+                let dataWeek = year + '-W' + weekNumber.toString().padStart(2, '0');
+                
+                $('#week').data('week', dataWeek);
             }]
         });
     }
