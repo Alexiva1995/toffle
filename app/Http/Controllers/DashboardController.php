@@ -209,19 +209,17 @@ class DashboardController extends Controller
       ]);
   }
 
-  public function weekdays(string $year, string $week_number): array
+  public function weekdays(int $year, int $week_number): array
   {
-
       $weekdays = [];
-      $days = ['0', '1', '2', '3', '4', '5', '6'];
+      $carbon = \Carbon\Carbon::now()->setISODate($year, $week_number)->startOfWeek(\Carbon\Carbon::SUNDAY);
      
-      foreach ($days as $key => $day) {
-        $dates = array(date('Y-m-d', strtotime($year."W".$week_number.$day)));
-          $weekdays = array_merge($weekdays, $dates) ;
+      for ($i = 0; $i < 7; $i++) {
+          $weekdays[] = $carbon->copy()->addDays($i)->format('Y-m-d');
       }
 
       return $weekdays;
- }
+  }
 
  public function getDay(string $date): string
  {

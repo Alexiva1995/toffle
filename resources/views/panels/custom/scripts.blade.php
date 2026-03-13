@@ -153,7 +153,7 @@
                 minuteAriaLabel: "Minuto",
             },
             // weekNumbers: true,
-            "plugins": [new weekSelect({})],
+            "plugins": [typeof weekSelect !== 'undefined' ? weekSelect() : null].filter(p => p !== null),
             onChange: [function(selectedDates, dateStr, instance){
                 if (selectedDates.length === 0) return;
 
@@ -190,7 +190,7 @@
                 minuteAriaLabel: "Minuto",
             },
             // weekNumbers: true,
-            "plugins": [new weekSelect({})],
+            "plugins": [typeof weekSelect !== 'undefined' ? weekSelect() : null].filter(p => p !== null),
             onChange: [function(selectedDates, dateStr, instance){
                 if (selectedDates.length === 0) return;
 
