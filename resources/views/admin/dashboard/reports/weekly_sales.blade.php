@@ -14,7 +14,7 @@
             <div class="col-auto">
                 <label class="form-label" for="week"> <i data-feather="calendar"></i> N° de Semana</label>
                 <div class="d-flex align-items-center mt-md-0 mt-1"> 
-                    <input type="text" id="week" name="week" data-week = "{{ date("Y") }}-W{{ date("W") }}" class="form-control" value="Semana {{ date("W") }}, {{ date("Y") }}"/>
+                    <input type="text" id="week" name="week" data-week = "{{ date("Y") }}-W{{ date("W") }}" class="form-control"/>
                 </div>
             </div>
         </div>

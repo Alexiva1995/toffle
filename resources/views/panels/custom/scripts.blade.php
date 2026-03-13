@@ -134,7 +134,6 @@
 
     function flatpickrWeek(id) {
         $(id).flatpickr({
-            mode: "range",
             dateFormat: "W-Y",
             defaultDate: ["today"],
             locale: {
@@ -164,14 +163,14 @@
 
                 let dataWeek = year + '-W' + weekNumber.toString().padStart(2, '0');
                 
-                $('#week').data('week', dataWeek);
+                $(id).data('week', dataWeek);
+                $(id).trigger('change');
             }]
         });
     }
 
     function flatpickrWeekCategory(id) {
         $(id).flatpickr({
-            mode: "range",
             dateFormat: "W-Y",
             defaultDate: ["today"],
             locale: {
@@ -201,7 +200,8 @@
 
                 let dataWeek = year + '-W' + weekNumber.toString().padStart(2, '0');
 
-                $('#weekCategory').data('week-category', dataWeek);
+                $(id).data('week-category', dataWeek);
+                $(id).trigger('change');
             }]
         });
     }
