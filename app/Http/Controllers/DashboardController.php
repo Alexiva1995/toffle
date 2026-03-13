@@ -109,14 +109,17 @@ class DashboardController extends Controller
   public function dataProfitByCategory(Request $request): JsonResponse
   {
 
-    $year = substr($request->week, 0, -4);
-    $week_number = substr($request->week, -2);
-    $weekdays = $this->weekdays($year, $week_number);
+    $week_str = $request->week; // Formato esperado: YYYY-Www (ej. 2026-W11)
+    if (!preg_match('/^(\d{4})-W(\d{2})$/', $week_str, $matches)) {
+        return response()->json(['orders' => []]);
+    }
 
-    $custom_date = strtotime( date('Y-m-d', strtotime($request->week.'0')) );
+    $year = (int)$matches[1];
+    $week_number = (int)$matches[2];
 
-    $week_start = date('Y-m-d', strtotime('this week sunday', $custom_date));
-    $week_end = date('Y-m-d', strtotime('this week next saturday', $custom_date));
+    $carbon = Carbon::now()->setISODate($year, $week_number);
+    $week_start = $carbon->copy()->startOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+    $week_end = $carbon->copy()->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
 
     $orders = Order::selectRaw('d.name as category_name')
       ->selectRaw('SUM( ROUND((b.price - b.cost) * b.unit , 2 ) ) as gain')
@@ -142,14 +145,19 @@ class DashboardController extends Controller
       $dates_not_found = [];
       $array_dates_found = [];
 
-      $year = substr($request->week, 0, -4);
-      $week_number = substr($request->week, -2);
+      $week_str = $request->week;
+      if (!preg_match('/^(\d{4})-W(\d{2})$/', $week_str, $matches)) {
+          return response()->json(['dates' => [], 'error' => 'Invalid format']);
+      }
+
+      $year = (int)$matches[1];
+      $week_number = (int)$matches[2];
+
+      $carbon = Carbon::now()->setISODate($year, $week_number);
+      $week_start = $carbon->copy()->startOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+      $week_end = $carbon->copy()->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
+      
       $weekdays = $this->weekdays($year, $week_number);
-
-      $custom_date = strtotime( date('Y-m-d', strtotime($request->week.'0')) );
-
-      $week_start = date('Y-m-d', strtotime('this week sunday', $custom_date));
-      $week_end = date('Y-m-d', strtotime('this week next saturday', $custom_date));
 
       $orders = Order::selectRaw('DATE(created_at) as date')
       ->selectRaw('sum(total_amount) as total_amount')
@@ -176,8 +184,7 @@ class DashboardController extends Controller
       }
 
       foreach ($weekdays as $key => $weekday) {
-        if (in_array($weekday, $array_dates_found)) {
-        }else{
+        if (!in_array($weekday, $array_dates_found)) {
             $array = array( $weekday => [
               'total_amount' => 0,
               'date' => date('d', strtotime($weekday)).' '.$this->getDay($weekday),
@@ -191,7 +198,7 @@ class DashboardController extends Controller
 
       ksort($dates);
 
-      $keys = array(0, 1, 2, 3, 4, 5, 6);
+      $keys = range(0, count($dates) - 1);
       
       $dates = array_combine($keys, $dates); 
 
